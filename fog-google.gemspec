@@ -6,11 +6,12 @@ require 'fog/google/version'
 Gem::Specification.new do |spec|
   spec.name          = "fog-google"
   spec.version       = Fog::Google::VERSION
-  spec.authors       = ["Paulo Henrique Lopes Ribeiro"]
-  spec.email         = ["plribeiro3000@gmail.com"]
-  spec.summary       = %q{TODO: Write a short summary. Required.}
-  spec.description   = %q{TODO: Write a longer description. Optional.}
-  spec.homepage      = ""
+  spec.authors       = []
+  spec.email         = []
+  spec.summary       = %q{Module for the 'fog' gem to support Google.}
+  spec.description   = %q{This library can be used as a module for `fog` or as standalone provider
+                        to use the Google in applications.}
+  spec.homepage      = "https://github.com/fog/fog-google"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0")
@@ -18,6 +19,18 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
 
-  spec.add_development_dependency "bundler", "~> 1.7"
-  spec.add_development_dependency "rake", "~> 10.0"
+  spec.add_dependency 'fog-xml'
+  spec.add_dependency 'fog-json'
+  spec.add_dependency 'fog-core'
+  spec.add_development_dependency 'rake'
+  spec.add_development_dependency 'shindo'
+  spec.add_development_dependency 'minitest'
+  spec.add_development_dependency 'turn'
+  spec.add_development_dependency 'pry'
+  spec.add_development_dependency 'vcr'
+  spec.add_development_dependency 'webmock'
+  if RUBY_VERSION.to_f > 1.9
+    spec.add_development_dependency 'coveralls'
+    spec.add_development_dependency 'rubocop'
+  end
 end
