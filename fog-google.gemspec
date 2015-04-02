@@ -20,8 +20,8 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_dependency 'fog-xml'
-  spec.add_dependency 'fog-json'
   spec.add_dependency 'fog-core'
+  spec.add_development_dependency 'google-api-client', '~> 0.6', '>= 0.6.2'
   spec.add_development_dependency 'rake'
   spec.add_development_dependency 'shindo'
   spec.add_development_dependency 'minitest'
@@ -29,6 +29,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'pry'
   spec.add_development_dependency 'vcr'
   spec.add_development_dependency 'webmock'
+
   if RUBY_VERSION.to_f > 1.9
     spec.add_development_dependency 'coveralls'
     spec.add_development_dependency 'rubocop'
