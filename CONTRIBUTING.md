@@ -1,6 +1,6 @@
-## Getting Involved
+# Getting Involved
 
-New contributors are always welcome, when it doubt please ask questions. We strive to be an open and welcoming community. Please be nice to one another.
+New contributors are always welcome, and when in doubt please ask questions! We strive to be an open and welcoming community. Please be nice to one another.
 
 ### Coding
 
@@ -16,3 +16,5 @@ New contributors are always welcome, when it doubt please ask questions. We stri
 
 * Offer feedback on open [issues](https://github.com/fog/fog-google/issues).
 * Organize or volunteer at events.
+
+I recommend heading over to fog's [CONTRIBUTING](https://github.com/fog/fog/blob/master/CONTRIBUTING.md) and having a look around as well.  It has information and context about the state of the `fog` project as a whole.
