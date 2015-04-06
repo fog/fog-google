@@ -25,7 +25,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rake'
   spec.add_development_dependency 'shindo'
   spec.add_development_dependency 'minitest'
-  spec.add_development_dependency 'turn'
   spec.add_development_dependency 'pry'
   spec.add_development_dependency 'vcr'
   spec.add_development_dependency 'webmock'
