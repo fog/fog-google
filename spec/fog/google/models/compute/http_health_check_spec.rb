@@ -1,12 +1,12 @@
 require "minitest_helper"
-require "helpers/model_helper"
-
-def http_health_check_param_generator
-  Proc.new do
-    {:name => test_name("http-health-check")}
-  end
-end
+require "helpers/collection_spec"
 
 describe Fog::Compute[:google].http_health_checks do
-  model_spec(Fog::Compute[:google].http_health_checks, http_health_check_param_generator)
+  subject { Fog::Compute[:google].http_health_checks }
+
+  def params
+    {:name => test_name}
+  end
+
+  include Fog::CollectionSpec
 end

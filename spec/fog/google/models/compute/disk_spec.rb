@@ -1,14 +1,14 @@
 require "minitest_helper"
-require "helpers/model_helper"
+require "helpers/collection_spec"
 
-def disk_param_generator
-  Proc.new do
-    {:name => test_name("disk"),
+describe Fog::Compute[:google].disks do
+  subject { Fog::Compute[:google].disks }
+
+  def params
+    {:name => test_name,
      :zone_name => TEST_ZONE,
      :size_gb => TEST_SIZE_GB}
   end
-end
 
-describe Fog::Compute[:google].disks do
-  model_spec(Fog::Compute[:google].disks, disk_param_generator)
+  include Fog::CollectionSpec
 end
