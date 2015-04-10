@@ -1,3 +1,5 @@
+# TODO REMOVE this testing functionality is now covered in `spec/fog/google/models/compute/http_health_check_spec.rb`
+
 require 'securerandom'
 Shindo.tests("Fog::Compute[:google] | HTTP health checks model", ['google']) do
   random_string = SecureRandom.hex
