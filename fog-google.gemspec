@@ -19,8 +19,9 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
 
-  spec.add_dependency 'fog-xml'
   spec.add_dependency 'fog-core'
+  spec.add_dependency 'fog-json'
+  spec.add_dependency 'fog-xml'
   spec.add_development_dependency 'google-api-client', '~> 0.6', '>= 0.6.2'
   spec.add_development_dependency 'rake'
   spec.add_development_dependency 'shindo'
