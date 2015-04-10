@@ -1,3 +1,5 @@
+# TODO REMOVE this testing functionality is now covered in `spec/fog/google_spec.rb`
+
 require 'google/api_client'
 
 Shindo.tests('Google | credentials', ['google']) do
