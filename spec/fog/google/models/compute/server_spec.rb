@@ -1,20 +1,20 @@
 require "minitest_helper"
-require "helpers/model_helper"
-
-def server_param_generator
-  Proc.new do
-    {:name => test_name("server"),
-     :zone_name => TEST_ZONE,
-     :machine_type => "n1-standard-1",
-     :disks => [create_test_disk]}
-  end
-end
+require "helpers/collection_spec"
 
 describe Fog::Compute[:google].servers do
-  model_spec(Fog::Compute[:google].servers, server_param_generator)
+  subject { Fog::Compute[:google].servers }
+
+  def params
+    {:name => test_name,
+     :zone_name => TEST_ZONE,
+     :machine_type => TEST_MACHINE_TYPE,
+     :disks => [create_test_disk]}
+  end
+
+  include Fog::CollectionSpec
 
   it "can do ::bootstrap, #ssh, and #destroy" do
-    instance = Fog::Compute[:google].servers.bootstrap
+    instance = subject.bootstrap
 
     assert instance.ready?
     instance.wait_for { sshable? }
