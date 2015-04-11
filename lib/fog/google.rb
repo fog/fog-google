@@ -1,4 +1,5 @@
 require "fog/core"
+require "fog/json"
 require "fog/xml"
 require "fog/google/version"
 
@@ -150,7 +151,7 @@ module Fog
         application_name = app_name.nil? ? 'fog' : "#{app_name}/#{app_version || '0.0.0'} fog"
         api_client_options = {
             :application_name => application_name,
-            :application_version => Fog::VERSION,
+            :application_version => Fog::Google::VERSION,
         }
         client = ::Google::APIClient.new(api_client_options)
 
