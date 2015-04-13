@@ -1,29 +1,29 @@
 require "minitest_helper"
-require "helpers/collection_spec"
+require "helpers/test_collection"
 
-describe Fog::Compute[:google].servers do
-  subject { Fog::Compute[:google].servers }
+class ServerTest < MiniTest::Test
+  include TestCollection
 
-  before do
+  def setup
+    @subject = Fog::Compute[:google].servers
+
     @disks = []
   end
 
-  after do
+  def teardown
     @disks.each { |disk| disk.destroy }
   end
 
   def params
     @disks << test_disk = create_test_disk
-    params = {:name => test_name,
+    params = {:name => create_test_name,
               :zone_name => TEST_ZONE,
               :machine_type => TEST_MACHINE_TYPE,
               :disks => [test_disk]}
   end
 
-  include Fog::CollectionSpec
-
-  it "can do ::bootstrap, #ssh, and #destroy" do
-    instance = subject.bootstrap
+  def test_bootstrap_ssh_destroy
+    instance = @subject.bootstrap
 
     assert instance.ready?
     instance.wait_for { sshable? }

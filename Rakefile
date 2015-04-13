@@ -2,8 +2,8 @@ require 'bundler/gem_tasks'
 require 'rake/testtask'
 
 Rake::TestTask.new do |t|
-  t.libs << "spec"
-  t.pattern = File.join("spec", "**", "*_spec.rb")
+  t.libs << "test"
+  t.pattern = File.join("test", "**", "test_*.rb")
 end
 
 desc 'Default Task'
