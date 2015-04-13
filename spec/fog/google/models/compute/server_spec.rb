@@ -4,11 +4,20 @@ require "helpers/collection_spec"
 describe Fog::Compute[:google].servers do
   subject { Fog::Compute[:google].servers }
 
+  before do
+    @disks = []
+  end
+
+  after do
+    @disks.each { |disk| disk.destroy }
+  end
+
   def params
-    {:name => test_name,
-     :zone_name => TEST_ZONE,
-     :machine_type => TEST_MACHINE_TYPE,
-     :disks => [create_test_disk]}
+    @disks << test_disk = create_test_disk
+    params = {:name => test_name,
+              :zone_name => TEST_ZONE,
+              :machine_type => TEST_MACHINE_TYPE,
+              :disks => [test_disk]}
   end
 
   include Fog::CollectionSpec
