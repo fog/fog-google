@@ -24,7 +24,9 @@ module Fog::CollectionSpec
 
     Fog.wait_for { !subject.all.map(&:identity).include? instance_one.identity }
     Fog.wait_for { !subject.all.map(&:identity).include? instance_two.identity }
+  end
 
+  it "has no identity if it has not been persisted" do
     assert_nil subject.get(subject.new(params).identity)
   end
 
