@@ -1,5 +1,4 @@
 require 'minitest/autorun'
-require 'minitest/spec'
 require 'securerandom'
 
 if ENV['COVERAGE']
@@ -7,7 +6,7 @@ if ENV['COVERAGE']
   require 'simplecov'
 
   SimpleCov.start do
-    add_filter '/spec/'
+    add_filter '/test/'
   end
 end
 
@@ -26,13 +25,13 @@ TEST_SOURCE_IMAGE = "debian-7-wheezy-v20140408"
 TEST_SIZE_GB = 10
 TEST_MACHINE_TYPE = "n1-standard-1"
 
-def test_name(base="resource", prefix="fog-test", suffix=SecureRandom.hex)
+def create_test_name(base="resource", prefix="fog-test", suffix=SecureRandom.hex)
   [prefix, base, suffix] * "-"
 end
 
 # XXX this creates a disk, then doesn't delete it
 def create_test_disk()
-  disk = Fog::Compute[:google].disks.create({:name => test_name,
+  disk = Fog::Compute[:google].disks.create({:name => create_test_name,
                                              :size_gb => TEST_SIZE_GB,
                                              :zone => TEST_ZONE,
                                              :source_image => TEST_SOURCE_IMAGE})
