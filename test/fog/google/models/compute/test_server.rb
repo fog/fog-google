@@ -1,7 +1,7 @@
 require "minitest_helper"
 require "helpers/test_collection"
 
-class ServerTest < MiniTest::Test
+class TestServer < MiniTest::Test
   include TestCollection
 
   def setup
