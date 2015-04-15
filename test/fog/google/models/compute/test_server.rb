@@ -12,6 +12,9 @@ class TestServer < MiniTest::Test
 
   def teardown
     @disks.each { |disk| disk.destroy }
+    @disks.each do |disk|
+      Fog.wait_for { !Fog::Compute[:google].disks.all.map(&:identity).include? disk.identity }
+    end
   end
 
   def params
