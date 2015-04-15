@@ -1,27 +1,32 @@
+require "helpers/use_vcr"
+
 module TestCollection
+  include UseVCR
+
   # this should be reimplemented in the subject's TestClass if the subject has required params
   def params
     {}
   end
 
-  def test_new_save_create_all_identity_get_destroy
-    instance_one = @subject.new(params)
-    instance_one.save
-    instance_two = @subject.create(params)
-
+  def test_new_save_lifecycle
+    instance = @subject.new(params)
+    instance.save
     # XXX HACK compares identities
     # should be replaced with simple includes? when `==` is properly implemented in fog-core; see fog/fog-core#148
-    assert_includes @subject.all.map(&:identity), instance_one.identity
-    assert_includes @subject.all.map(&:identity), instance_two.identity
+    assert_includes @subject.all.map(&:identity), instance.identity
+    assert_equal instance.identity, @subject.get(instance.identity).identity
+    instance.destroy
+    Fog.wait_for { !@subject.all.map(&:identity).include? instance.identity }
+  end
 
-    assert_equal instance_one.identity, @subject.get(instance_one.identity).identity
-    assert_equal instance_two.identity, @subject.get(instance_two.identity).identity
-
-    instance_one.destroy
-    instance_two.destroy
-
-    Fog.wait_for { !@subject.all.map(&:identity).include? instance_one.identity }
-    Fog.wait_for { !@subject.all.map(&:identity).include? instance_two.identity }
+  def test_create_lifecycle
+    instance = @subject.create(params)
+    # XXX HACK compares identities
+    # should be replaced with simple includes? when `==` is properly implemented in fog-core; see fog/fog-core#148
+    assert_includes @subject.all.map(&:identity), instance.identity
+    assert_equal instance.identity, @subject.get(instance.identity).identity
+    instance.destroy
+    Fog.wait_for { !@subject.all.map(&:identity).include? instance.identity }
   end
 
   def test_has_no_identity_if_it_has_not_been_persisted
