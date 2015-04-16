@@ -2,7 +2,7 @@ require "minitest_helper"
 require "helpers/test_collection"
 require "factories/forwarding_rules_factory"
 
-class TestForwardingRule < MiniTest::Test
+class TestForwardingRules < MiniTest::Test
   include TestCollection
 
   def setup
