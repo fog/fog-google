@@ -29,7 +29,3 @@ TEST_ZONE = "us-central1-a"
 TEST_REGION = "us-central1"
 TEST_SIZE_GB = 10
 TEST_MACHINE_TYPE = "n1-standard-1"
-
-def create_test_name(base="resource", prefix="fog-test")
-  [prefix, base] * "-"
-end
