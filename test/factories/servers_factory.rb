@@ -3,14 +3,14 @@ require "factories/disks_factory"
 
 class ServersFactory < CollectionFactory
   def initialize
-    super
     @subject = Fog::Compute[:google].servers
     @disks = DisksFactory.new
+    super
   end
 
   def cleanup
-    @disks.cleanup
     super
+    @disks.cleanup
   end
 
   def params
