@@ -2,7 +2,7 @@ require 'minitest_helper'
 require "helpers/use_vcr"
 
 # TODO this is a port over from legacy tests.  It shouldn't be scoped under Google, but under Google::Shared.
-class TestGoogle < MiniTest::Test
+class TestAuthentication < MiniTest::Test
   include UseVCR
 
   def setup
