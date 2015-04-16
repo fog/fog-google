@@ -2,7 +2,7 @@ require "minitest_helper"
 require "helpers/test_collection"
 require "factories/servers_factory"
 
-class TestServer < MiniTest::Test
+class TestServers < MiniTest::Test
   include TestCollection
 
   def setup

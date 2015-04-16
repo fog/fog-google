@@ -2,7 +2,7 @@ require "minitest_helper"
 require "helpers/test_collection"
 require "factories/http_health_checks_factory"
 
-class TestHttpHealthCheck < MiniTest::Test
+class TestHttpHealthChecks < MiniTest::Test
   include TestCollection
 
   def setup

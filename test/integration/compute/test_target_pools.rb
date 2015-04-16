@@ -2,7 +2,7 @@ require "minitest_helper"
 require "helpers/test_collection"
 require "factories/target_pools_factory"
 
-class TestTargetPool < MiniTest::Test
+class TestTargetPools < MiniTest::Test
   include TestCollection
 
   def setup
