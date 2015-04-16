@@ -1,4 +1,4 @@
-# TODO REMOVE this testing functionality is now covered in `spec/fog/google/models/compute/forwarding_rule_spec.rb`
+# TODO REMOVE this testing functionality is now covered in test/integration/compute
 
 require 'securerandom'
 Shindo.tests("Fog::Compute[:google] | forwarding rule model", ['google']) do
