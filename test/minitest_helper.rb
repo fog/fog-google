@@ -26,20 +26,9 @@ Fog.credential = :test
 # Helpers
 
 TEST_ZONE = "us-central1-a"
-TEST_SOURCE_IMAGE = "debian-7-wheezy-v20140408"
 TEST_SIZE_GB = 10
 TEST_MACHINE_TYPE = "n1-standard-1"
 
 def create_test_name(base="resource", prefix="fog-test")
   [prefix, base] * "-"
-end
-
-# XXX this creates a disk, then doesn't delete it
-def create_test_disk()
-  disk = Fog::Compute[:google].disks.create({:name => create_test_name,
-                                             :size_gb => TEST_SIZE_GB,
-                                             :zone => TEST_ZONE,
-                                             :source_image => TEST_SOURCE_IMAGE})
-  disk.wait_for { ready? }
-  disk
 end

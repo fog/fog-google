@@ -3,13 +3,12 @@ require "helpers/use_vcr"
 module TestCollection
   include UseVCR
 
-  # this should be reimplemented in the subject's TestClass if the subject has required params
-  def params
-    {}
-  end
+  # Anything that includes TestCollection must, during setup, assign @subject and @factory, where
+  #   @subject is the collection under test, (e.g. Fog::Compute[:google].servers)
+  #   @factory is a CollectionFactory
 
   def test_new_save_lifecycle
-    instance = @subject.new(params)
+    instance = @subject.new(@factory.params)
     instance.save
     # XXX HACK compares identities
     # should be replaced with simple includes? when `==` is properly implemented in fog-core; see fog/fog-core#148
@@ -20,7 +19,7 @@ module TestCollection
   end
 
   def test_create_lifecycle
-    instance = @subject.create(params)
+    instance = @subject.create(@factory.params)
     # XXX HACK compares identities
     # should be replaced with simple includes? when `==` is properly implemented in fog-core; see fog/fog-core#148
     assert_includes @subject.all.map(&:identity), instance.identity
@@ -30,7 +29,7 @@ module TestCollection
   end
 
   def test_has_no_identity_if_it_has_not_been_persisted
-    assert_nil @subject.get(@subject.new(params).identity)
+    assert_nil @subject.get(@subject.new(@factory.params).identity)
   end
 
   def test_enumerable

@@ -1,28 +1,17 @@
 require "minitest_helper"
 require "helpers/test_collection"
+require "factories/servers_factory"
 
 class TestServer < MiniTest::Test
   include TestCollection
 
   def setup
     @subject = Fog::Compute[:google].servers
-
-    @disks = []
+    @factory = ServersFactory.new
   end
 
   def teardown
-    @disks.each { |disk| disk.destroy }
-    @disks.each do |disk|
-      Fog.wait_for { !Fog::Compute[:google].disks.all.map(&:identity).include? disk.identity }
-    end
-  end
-
-  def params
-    @disks << test_disk = create_test_disk
-    params = {:name => create_test_name,
-              :zone_name => TEST_ZONE,
-              :machine_type => TEST_MACHINE_TYPE,
-              :disks => [test_disk]}
+    @factory.cleanup
   end
 
   def test_bootstrap_ssh_destroy
