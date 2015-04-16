@@ -1,3 +1,5 @@
+# TODO REMOVE this testing functionality is now covered in `spec/fog/google/models/compute/target_pool_spec.rb`
+
 require 'securerandom'
 Shindo.tests("Fog::Compute[:google] | target pools model", ['google']) do
   random_string = SecureRandom.hex
