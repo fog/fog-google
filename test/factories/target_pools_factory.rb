@@ -17,7 +17,7 @@ class TargetPoolsFactory < CollectionFactory
   end
 
   def params
-    params = {:name => create_test_name,
+    params = {:name => test_name,
               :region => TEST_REGION,
               :instances => [@servers.create.self_link],
               :healthChecks => [@http_health_checks.create.self_link]}

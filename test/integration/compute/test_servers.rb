@@ -21,7 +21,7 @@ class TestServers < MiniTest::Test
     # where it returns false because the ssh times out,
     # TODO or maybe because of some other error!?
     if VCR.current_cassette.recording?
-      test_name = create_test_name
+      test_name = @factory.test_name
       instance = @subject.bootstrap({:name => test_name})
       assert instance.ready?
       instance.wait_for { sshable? }

@@ -14,4 +14,8 @@ class CollectionFactory
     @resources << resource = @subject.create(params)
     return resource
   end
+
+  def test_name(base="resource", prefix="fog-test")
+    [prefix, base] * "-"
+  end
 end
