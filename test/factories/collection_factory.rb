@@ -3,6 +3,7 @@ class CollectionFactory
     @subject = subject
     @example = example
     @resources = []
+    @num_resources = 0
   end
 
   def cleanup
@@ -18,6 +19,7 @@ class CollectionFactory
   end
 
   def resource_name(base=@example, prefix="fog")
-    ([prefix, base] * "-").gsub(/_/, '-').downcase[0..61]
+    index = @num_resources += 1
+    ([prefix, base, index] * "-").gsub(/_/, '-').downcase[0..61]
   end
 end
