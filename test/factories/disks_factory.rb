@@ -6,7 +6,7 @@ class DisksFactory < CollectionFactory
   end
 
   def params
-    {:name => test_name,
+    {:name => resource_name,
      :zone_name => TEST_ZONE,
      :size_gb => TEST_SIZE_GB}
   end
