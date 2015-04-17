@@ -1,9 +1,8 @@
 require "factories/collection_factory"
 
 class DisksFactory < CollectionFactory
-  def initialize
-    @subject = Fog::Compute[:google].disks
-    super
+  def initialize(example)
+    super(Fog::Compute[:google].disks, example)
   end
 
   def params

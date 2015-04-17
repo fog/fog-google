@@ -2,12 +2,12 @@ require "minitest_helper"
 require "helpers/test_collection"
 require "factories/servers_factory"
 
-class TestServers < MiniTest::Test
+class TestServers < FogIntegrationTest
   include TestCollection
 
   def setup
     @subject = Fog::Compute[:google].servers
-    @factory = ServersFactory.new
+    @factory = ServersFactory.new(namespaced_name)
   end
 
   def teardown

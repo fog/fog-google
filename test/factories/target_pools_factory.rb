@@ -3,11 +3,10 @@ require "factories/servers_factory"
 require "factories/http_health_checks_factory"
 
 class TargetPoolsFactory < CollectionFactory
-  def initialize
-    @subject = Fog::Compute[:google].target_pools
-    @http_health_checks = HttpHealthChecksFactory.new
-    @servers = ServersFactory.new
-    super
+  def initialize(example)
+    @http_health_checks = HttpHealthChecksFactory.new(example)
+    @servers = ServersFactory.new(example)
+    super(Fog::Compute[:google].target_pools, example)
   end
 
   def cleanup

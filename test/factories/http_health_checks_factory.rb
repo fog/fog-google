@@ -1,9 +1,8 @@
 require "factories/collection_factory"
 
 class HttpHealthChecksFactory < CollectionFactory
-  def initialize
-    @subject = Fog::Compute[:google].http_health_checks
-    super
+  def initialize(example)
+    super(Fog::Compute[:google].http_health_checks, example)
   end
 
   def params

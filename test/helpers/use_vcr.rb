@@ -4,7 +4,7 @@ module UseVCR
 
   def before_setup
     super
-    VCR.insert_cassette("#{self.class.to_s}_#{name}")
+    VCR.insert_cassette(namespaced_name)
     @default_fog_interval = Fog.interval
     Fog.interval = VCR.current_cassette.recording? ? VCR_RECORDING_INTERVAL : VCR_PLAYBACK_INTERVAL
   end
