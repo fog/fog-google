@@ -21,8 +21,8 @@ class TestServers < FogIntegrationTest
     # where it returns false because the ssh times out,
     # TODO or maybe because of some other error!?
     if VCR.current_cassette.recording?
-      test_name = @factory.test_name
-      instance = @subject.bootstrap({:name => test_name})
+      resource_name = @factory.resource_name
+      instance = @subject.bootstrap({:name => resource_name})
       assert instance.ready?
       instance.wait_for { sshable? }
       assert_match /Linux/, instance.ssh("uname").first.stdout
@@ -32,7 +32,7 @@ class TestServers < FogIntegrationTest
       # This should be removed when
       #     https://github.com/fog/fog-google/issues/17
       # is solved
-      disk = Fog::Compute[:google].disks.get(test_name)
+      disk = Fog::Compute[:google].disks.get(resource_name)
       disk.destroy
       Fog.wait_for { !Fog::Compute[:google].disks.all.map(&:identity).include? disk.identity }
     else

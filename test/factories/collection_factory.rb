@@ -17,7 +17,7 @@ class CollectionFactory
     return resource
   end
 
-  def test_name(base="resource", prefix="fog-test")
-    [prefix, base] * "-"
+  def resource_name(base=@example, prefix="fog")
+    ([prefix, base] * "-").gsub(/_/, '-').downcase[0..61]
   end
 end

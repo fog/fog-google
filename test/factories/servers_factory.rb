@@ -13,7 +13,7 @@ class ServersFactory < CollectionFactory
   end
 
   def params
-    params = {:name => test_name,
+    params = {:name => resource_name,
               :zone_name => TEST_ZONE,
               :machine_type => TEST_MACHINE_TYPE,
               :disks => [@disks.create]}
