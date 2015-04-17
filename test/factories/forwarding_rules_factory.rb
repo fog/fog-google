@@ -2,10 +2,9 @@ require "factories/collection_factory"
 require "factories/target_pools_factory"
 
 class ForwardingRulesFactory < CollectionFactory
-  def initialize
-    @subject = Fog::Compute[:google].forwarding_rules
-    @target_pools = TargetPoolsFactory.new
-    super
+  def initialize(example)
+    @target_pools = TargetPoolsFactory.new(example)
+    super(Fog::Compute[:google].forwarding_rules, example)
   end
 
   def cleanup

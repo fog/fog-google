@@ -1,5 +1,7 @@
 class CollectionFactory
-  def initialize
+  def initialize(subject, example)
+    @subject = subject
+    @example = example
     @resources = []
   end
 

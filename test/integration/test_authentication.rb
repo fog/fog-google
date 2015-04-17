@@ -2,7 +2,7 @@ require 'minitest_helper'
 require "helpers/use_vcr"
 
 # TODO this is a port over from legacy tests.  It shouldn't be scoped under Google, but under Google::Shared.
-class TestAuthentication < MiniTest::Test
+class TestAuthentication < FogIntegrationTest
   include UseVCR
 
   def setup

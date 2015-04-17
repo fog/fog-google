@@ -2,10 +2,9 @@ require "factories/collection_factory"
 require "factories/disks_factory"
 
 class ServersFactory < CollectionFactory
-  def initialize
-    @subject = Fog::Compute[:google].servers
-    @disks = DisksFactory.new
-    super
+  def initialize(example)
+    @disks = DisksFactory.new(example)
+    super(Fog::Compute[:google].servers, example)
   end
 
   def cleanup
