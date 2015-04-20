@@ -7,25 +7,24 @@ module TestCollection
   #   @subject is the collection under test, (e.g. Fog::Compute[:google].servers)
   #   @factory is a CollectionFactory
 
-  def test_new_save_lifecycle
-    instance = @subject.new(@factory.params)
-    instance.save
-    # XXX HACK compares identities
-    # should be replaced with simple includes? when `==` is properly implemented in fog-core; see fog/fog-core#148
-    assert_includes @subject.all.map(&:identity), instance.identity
-    assert_equal instance.identity, @subject.get(instance.identity).identity
-    instance.destroy
-    Fog.wait_for { !@subject.all.map(&:identity).include? instance.identity }
-  end
+  def test_lifecycle
+    one = @subject.new(@factory.params)
+    one.save
+    two = @subject.create(@factory.params)
 
-  def test_create_lifecycle
-    instance = @subject.create(@factory.params)
     # XXX HACK compares identities
     # should be replaced with simple includes? when `==` is properly implemented in fog-core; see fog/fog-core#148
-    assert_includes @subject.all.map(&:identity), instance.identity
-    assert_equal instance.identity, @subject.get(instance.identity).identity
-    instance.destroy
-    Fog.wait_for { !@subject.all.map(&:identity).include? instance.identity }
+    assert_includes @subject.all.map(&:identity), one.identity
+    assert_includes @subject.all.map(&:identity), two.identity
+
+    assert_equal one.identity, @subject.get(one.identity).identity
+    assert_equal two.identity, @subject.get(two.identity).identity
+
+    one.destroy
+    two.destroy
+
+    Fog.wait_for { !@subject.all.map(&:identity).include? one.identity }
+    Fog.wait_for { !@subject.all.map(&:identity).include? two.identity }
   end
 
   def test_has_no_identity_if_it_has_not_been_persisted
