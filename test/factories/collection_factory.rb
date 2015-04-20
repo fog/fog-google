@@ -20,6 +20,8 @@ class CollectionFactory
 
   def resource_name(base=@example, prefix="fog")
     index = @num_resources += 1
-    ([prefix, base, index] * "-").gsub(/_/, '-').downcase[0..61]
+    # concatenate prefix, index, and base; strip all non-alphanumerics except _;
+    # convert _ to -; downcase; truncate to 62 characters; delete trailing -
+    ([prefix, index, base] * "_").gsub(/\W/, '').gsub(/_/, '-').downcase[0..61].chomp('-')
   end
 end
