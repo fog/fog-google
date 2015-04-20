@@ -1,3 +1,5 @@
+# TODO REMOVE this testing functionality is now covered in test/integration/compute
+
 Shindo.tests("Fog::Compute[:google] | disk model", ['google']) do
 
   model_tests(Fog::Compute[:google].disks, {:name => 'fog-disk-model-tests',

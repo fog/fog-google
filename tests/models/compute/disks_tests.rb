@@ -1,3 +1,5 @@
+# TODO REMOVE this testing functionality is now covered in test/integration/compute
+
 Shindo.tests("Fog::Compute[:google] | disks", ['google']) do
 
   collection_tests(Fog::Compute[:google].disks, {:name => 'fog-disks-collections-tests',

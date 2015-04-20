@@ -1,3 +1,5 @@
+# TODO REMOVE this testing functionality is now covered in test/integration/compute
+
 Shindo.tests("Fog::Compute[:google] | regions model", ['google']) do
   @regions = Fog::Compute[:google].regions
 

@@ -1,3 +1,5 @@
+# TODO REMOVE this testing functionality is now covered in test/integration/compute
+
 require 'securerandom'
 
 Shindo.tests("Fog::Compute[:google] | server model", ['google']) do
