@@ -36,3 +36,7 @@ test:
   google_key_location: /path/to/my-project-xxxxxxxxxxxxx.p12
   google_json_key_location: /path/to/my-project-xxxxxxxxxxxxx.json
 ```
+
+#### Some notes about the tests as they stand
+
+- The images tests reference the `fog-test-raw-disk-source.image.tar.gz` image created [like so](https://cloud.google.com/compute/docs/images#export_an_image_to_google_cloud_storage).
