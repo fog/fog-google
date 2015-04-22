@@ -13,7 +13,7 @@ module Fog
         end
 
         def get(identity)
-          resonse = nil
+          response = nil
           response = service.get_http_health_check(identity)
           return nil if response.nil?
           new(response.body)
