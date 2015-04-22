@@ -37,14 +37,13 @@ module Fog
           reload
         end
 
-        def destroy(async=false)
+        def destroy(async=true)
           requires :name
 
-          operation = service.delete_backend_service(name)
+          data = service.delete_backend_service(name)
+          operation = Fog::Compute::Google::Operations.new(:service => service).get(data.body['name'])
           unless async
-            Fog.wait_for do
-              operation.body["status"] == "DONE"
-            end
+            operation.wait_for { ready? }
           end
           operation
         end

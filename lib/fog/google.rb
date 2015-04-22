@@ -183,7 +183,10 @@ module Fog
             :api_method => api_method,
             :parameters => parameters,
         }
-        client_parms[:body_object] = body_object if body_object
+        # The Google API complains when given null values for enums, so just don't pass it any null fields
+        # XXX It may still balk if we have a nested object, e.g.:
+        #   {:a_field => "string", :a_nested_field => { :an_empty_nested_field => nil } }
+        client_parms[:body_object] = body_object.reject { |k, v| v.nil? } if body_object
 
         result = @client.execute(client_parms)
 
