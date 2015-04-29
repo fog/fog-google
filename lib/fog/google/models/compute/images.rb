@@ -21,12 +21,12 @@ module Fog
           'ubuntu-os-cloud'
         ]
 
-        # Returns the current or a specific project (if provided) images
-        # followed by the global project ones. Same behaviour than
+        # Returns the current or a specific project (if provided) images,
+        # followed by the global projects ones. Same behaviour than
         # https://cloud.google.com/sdk/gcloud/reference/compute/images/list
         def all(options = {})
-          project_id = options[:project] || self.service.project
           data = []
+          project_id = options[:project] || self.service.project
           all_projects = [ project_id ] + GLOBAL_PROJECTS
 
           all_projects.each do |project|
