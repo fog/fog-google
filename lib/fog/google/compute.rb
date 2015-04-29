@@ -220,9 +220,11 @@ module Fog
 
       class Mock
         include Fog::Google::Shared
+        attr_reader :extra_global_projects
 
         def initialize(options)
           shared_initialize(options[:google_project], GOOGLE_COMPUTE_API_VERSION, GOOGLE_COMPUTE_BASE_URL)
+          @extra_global_projects = options[:google_extra_global_projects] || []
         end
 
         def self.data(api_version)
