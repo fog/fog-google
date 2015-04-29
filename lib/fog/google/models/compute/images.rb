@@ -18,7 +18,8 @@ module Fog
           'opensuse-cloud',
           'rhel-cloud',
           'suse-cloud',
-          'ubuntu-os-cloud'
+          'ubuntu-os-cloud',
+          'bitnami-launchpad'
         ]
 
         def all
