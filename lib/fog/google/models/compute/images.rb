@@ -21,9 +21,13 @@ module Fog
           'ubuntu-os-cloud'
         ]
 
-        def all
+        # Returns the current or a specific project (if provided) images,
+        # followed by the global projects ones. Same behaviour than
+        # https://cloud.google.com/sdk/gcloud/reference/compute/images/list
+        def all(options = {})
           data = []
-          all_projects = GLOBAL_PROJECTS + [ self.service.project ]
+          project_id = options[:project] || self.service.project
+          all_projects = [ project_id ] + GLOBAL_PROJECTS
 
           all_projects.each do |project|
             begin
@@ -42,9 +46,9 @@ module Fog
           load(data)
         end
 
-        def get(identity)
-          # Search own project before global projects
-          all_projects = [ self.service.project ] + GLOBAL_PROJECTS
+        def get(identity, options = {})
+          project_id = options[:project] || self.service.project
+          all_projects = [ project_id ] + GLOBAL_PROJECTS
 
           data = nil
           all_projects.each do |project|
