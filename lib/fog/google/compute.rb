@@ -3,7 +3,7 @@ module Fog
     class Google < Fog::Service
       requires :google_project
       recognizes :app_name, :app_version, :google_client_email, :google_key_location, :google_key_string,
-                 :google_client, :google_json_key_location, :google_json_key_string
+                 :google_client, :google_json_key_location, :google_json_key_string, :google_extra_global_projects
 
       GOOGLE_COMPUTE_API_VERSION     = 'v1'
       GOOGLE_COMPUTE_BASE_URL        = 'https://www.googleapis.com/compute/'
@@ -220,9 +220,11 @@ module Fog
 
       class Mock
         include Fog::Google::Shared
+        attr_reader :extra_global_projects
 
         def initialize(options)
           shared_initialize(options[:google_project], GOOGLE_COMPUTE_API_VERSION, GOOGLE_COMPUTE_BASE_URL)
+          @extra_global_projects = options[:google_extra_global_projects] || []
         end
 
         def self.data(api_version)
@@ -1050,7 +1052,7 @@ module Fog
         include Fog::Google::Shared
 
         attr_accessor :client
-        attr_reader :compute
+        attr_reader :compute, :extra_global_projects
 
         def initialize(options)
           shared_initialize(options[:google_project], GOOGLE_COMPUTE_API_VERSION, GOOGLE_COMPUTE_BASE_URL)
@@ -1059,6 +1061,7 @@ module Fog
           @client = initialize_google_client(options)
           @compute = @client.discovered_api('compute', api_version)
           @resourceviews = @client.discovered_api('resourceviews', 'v1beta1')
+          @extra_global_projects = options[:google_extra_global_projects] || []
         end
       end
 

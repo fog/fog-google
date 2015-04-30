@@ -23,7 +23,7 @@ module Fog
 
         def all
           data = []
-          all_projects = GLOBAL_PROJECTS + [ self.service.project ]
+          all_projects = [ self.service.project ] + global_projects
 
           all_projects.each do |project|
             begin
@@ -44,7 +44,7 @@ module Fog
 
         def get(identity)
           # Search own project before global projects
-          all_projects = [ self.service.project ] + GLOBAL_PROJECTS
+          all_projects = [ self.service.project ] + global_projects
 
           data = nil
           all_projects.each do |project|
@@ -59,6 +59,12 @@ module Fog
           end
           return nil if data.nil?
           new(data)
+        end
+
+        private
+
+        def global_projects
+          GLOBAL_PROJECTS + self.service.extra_global_projects
         end
       end
     end
