@@ -1,3 +1,8 @@
+# The next line was added to squelch a warning message in Ruby 1.9.
+# It ensures we're using the gem, not the built-in Minitest
+# See https://github.com/seattlerb/minitest/#install
+gem 'minitest'
+
 require 'minitest/autorun'
 require 'vcr'
 
