@@ -46,6 +46,7 @@ module Fog
       request :list_region_view_resources
       request :list_zone_view_resources
       request :list_target_instances
+      request :list_aggregated_target_instances
 
       request :get_server
       request :get_address

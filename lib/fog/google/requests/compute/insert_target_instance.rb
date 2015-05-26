@@ -44,7 +44,7 @@ module Fog
             'project' => @project,
             'zone' => zone_name,
           }
-          body_object = { 'name' => target_pool_name }
+          body_object = { 'name' => target_instance_name }
           body_object.merge!(opts)
 
           request(api_method, parameters, body_object=body_object)
