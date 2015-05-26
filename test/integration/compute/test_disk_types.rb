@@ -1,8 +1,6 @@
 require "minitest_helper"
 
 class TestDiskTypes < FogIntegrationTest
-  include UseVCR
-
   NAMES = %w(local-ssd pd-ssd pd-standard)
   ZONES = %w(https://www.googleapis.com/compute/v1/projects/graphite-fog/zones/us-central1-a
              https://www.googleapis.com/compute/v1/projects/graphite-fog/zones/us-central1-b

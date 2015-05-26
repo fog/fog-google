@@ -4,7 +4,6 @@
 gem 'minitest'
 
 require 'minitest/autorun'
-require 'vcr'
 
 if ENV['COVERAGE']
   require 'coveralls'
@@ -18,11 +17,6 @@ end
 require File.join(File.dirname(__FILE__), '../lib/fog/google.rb')
 
 Coveralls.wear! if ENV['COVERAGE']
-
-VCR.configure do |c|
-  c.cassette_library_dir = "test/cassettes"
-  c.hook_into :webmock
-end
 
 # Use :test credentials in ~/.fog for live integration testing
 # XXX not sure if this will work on Travis CI or not

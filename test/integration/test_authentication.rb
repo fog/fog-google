@@ -1,10 +1,7 @@
 require 'minitest_helper'
-require "helpers/use_vcr"
 
 # TODO this is a port over from legacy tests.  It shouldn't be scoped under Google, but under Google::Shared.
 class TestAuthentication < FogIntegrationTest
-  include UseVCR
-
   def setup
     @google_key_location = Fog.credentials[:google_key_location]
     @google_key_string = File.open(File.expand_path(@google_key_location), 'rb') { |io| io.read }

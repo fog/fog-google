@@ -1,8 +1,6 @@
 require "minitest_helper"
 
 class TestRegions < FogIntegrationTest
-  include UseVCR
-
   NAMES = %w(asia-east1 europe-west1 us-central1)
 
   def setup
