@@ -37,6 +37,18 @@ test:
   google_json_key_location: /path/to/my-project-xxxxxxxxxxxxx.json
 ```
 
+Then you can run all the tests:
+
+```shell
+$ rake test
+```
+
+or just one:
+
+```shell
+$ rake test TEST=test/integration/compute/test_servers.rb TESTOPTS="--name=TestServers#test_bootstrap_ssh_destroy"
+```
+
 #### Some notes about the tests as they stand
 
 - The images tests reference the `fog-test-raw-disk-source.image.tar.gz` image created [like so](https://cloud.google.com/compute/docs/images#export_an_image_to_google_cloud_storage).
