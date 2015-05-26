@@ -8,7 +8,7 @@ module Fog
         model Fog::Compute::Google::ResourceView
 
         def all(filters={})
-          if fliters['region'].nil? && filters['zone'].nil?
+          if filters['region'].nil? && filters['zone'].nil?
             data = []
             service.list_regions.body['items'].each do |region|
               data += service.list_region_views(region['name']).body['items'] || []
@@ -17,7 +17,7 @@ module Fog
               data += service.list_zone_views(zone['name']).body['items'] || []
             end
           elsif filters['zone'] 
-            data = service.list_zone_views(fliters['zone']).body['items'] || []
+            data = service.list_zone_views(filters['zone']).body['items'] || []
           else 
             data = service.list_region_views(filters['region']).body['items'] || []
           end
