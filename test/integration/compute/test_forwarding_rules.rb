@@ -9,8 +9,4 @@ class TestForwardingRules < FogIntegrationTest
     @subject = Fog::Compute[:google].forwarding_rules
     @factory = ForwardingRulesFactory.new(namespaced_name)
   end
-
-  def teardown
-    @factory.cleanup
-  end
 end

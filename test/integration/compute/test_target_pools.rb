@@ -9,8 +9,4 @@ class TestTargetPools < FogIntegrationTest
     @subject = Fog::Compute[:google].target_pools
     @factory = TargetPoolsFactory.new(namespaced_name)
   end
-
-  def teardown
-    @factory.cleanup
-  end
 end

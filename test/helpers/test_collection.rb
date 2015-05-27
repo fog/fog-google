@@ -30,4 +30,8 @@ module TestCollection
   def test_enumerable
     assert_respond_to @subject, :each
   end
+
+  def teardown
+    @factory.cleanup
+  end
 end

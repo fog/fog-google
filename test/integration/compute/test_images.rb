@@ -9,8 +9,4 @@ class TestImages < FogIntegrationTest
     @subject = Fog::Compute[:google].images
     @factory = ImagesFactory.new(namespaced_name)
   end
-
-  def teardown
-    @factory.cleanup
-  end
 end

@@ -10,10 +10,6 @@ class TestServers < FogIntegrationTest
     @factory = ServersFactory.new(namespaced_name)
   end
 
-  def teardown
-    @factory.cleanup
-  end
-
   def test_bootstrap_ssh_destroy
     resource_name = @factory.resource_name
     instance = @subject.bootstrap({:name => resource_name})
