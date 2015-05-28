@@ -46,6 +46,12 @@ Or install it yourself as:
 
     $ gem install fog-google
 
+### Other setup
+
+#### SSH-ing into instances
+
+If you want to be able to bootstrap SSH-able instances, (using `servers.bootstrap`,) be sure you have a key in `~/.ssh/id_rsa` and `~/.ssh/id_rsa.pub`.
+
 ## Contributing
 
 1. Fork it ( https://github.com/fog/fog-google/fork )
