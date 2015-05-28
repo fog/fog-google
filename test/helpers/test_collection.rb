@@ -23,8 +23,8 @@ module TestCollection
     Fog.wait_for { !@subject.all.map(&:identity).include? two.identity }
   end
 
-  def test_has_no_identity_if_it_has_not_been_persisted
-    assert_nil @subject.get(@subject.new(@factory.params).identity)
+  def test_get_returns_nil_if_resource_does_not_exist
+    assert_nil @subject.get('fog-test-fake-identity')
   end
 
   def test_enumerable
