@@ -95,7 +95,13 @@ Note that you need both a `.p12` and a `.json` key file for all the tests to pas
 Then, you can run the live tests with:
 
 ```shell
-rake test
+$ rake test
+```
+
+If you'd like to just run one test or test file, use the `TEST`argument:
+
+```shell
+$ rake test TEST=test/integration/compute/test_servers.rb
 ```
 
 The live integration tests for resources, (servers, disks, etc.,) have a few components:
