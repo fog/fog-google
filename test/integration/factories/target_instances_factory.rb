@@ -1,5 +1,5 @@
-require "factories/collection_factory"
-require "factories/servers_factory"
+require "integration/factories/collection_factory"
+require "integration/factories/servers_factory"
 
 class TargetInstancesFactory < CollectionFactory
   def initialize(example)

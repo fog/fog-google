@@ -1,4 +1,4 @@
-require 'minitest_helper'
+require 'helpers/integration_test_helper'
 
 # TODO this is a port over from legacy tests.  It shouldn't be scoped under Google, but under Google::Shared.
 class TestAuthentication < FogIntegrationTest

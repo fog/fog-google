@@ -1,5 +1,5 @@
-require "factories/collection_factory"
-require "factories/http_health_checks_factory"
+require "integration/factories/collection_factory"
+require "integration/factories/http_health_checks_factory"
 
 class BackendServicesFactory < CollectionFactory
   def initialize(example)

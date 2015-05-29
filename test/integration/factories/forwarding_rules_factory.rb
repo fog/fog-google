@@ -1,5 +1,5 @@
-require "factories/collection_factory"
-require "factories/target_pools_factory"
+require "integration/factories/collection_factory"
+require "integration/factories/target_pools_factory"
 
 class ForwardingRulesFactory < CollectionFactory
   def initialize(example)

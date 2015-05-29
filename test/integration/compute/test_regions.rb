@@ -1,4 +1,4 @@
-require "minitest_helper"
+require "helpers/integration_test_helper"
 
 class TestRegions < FogIntegrationTest
   NAMES = %w(asia-east1 europe-west1 us-central1)

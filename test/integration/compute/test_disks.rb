@@ -1,6 +1,5 @@
-require "minitest_helper"
-require "helpers/test_collection"
-require "factories/disks_factory"
+require "helpers/integration_test_helper"
+require "integration/factories/disks_factory"
 
 class TestDisks < FogIntegrationTest
   include TestCollection

@@ -1,6 +1,5 @@
-require "minitest_helper"
-require "helpers/test_collection"
-require "factories/images_factory"
+require "helpers/integration_test_helper"
+require "integration/factories/images_factory"
 
 class TestImages < FogIntegrationTest
   include TestCollection

@@ -1,6 +1,5 @@
-require "minitest_helper"
-require "helpers/test_collection"
-require "factories/backend_services_factory"
+require "helpers/integration_test_helper"
+require "integration/factories/backend_services_factory"
 
 class TestBackendServices < FogIntegrationTest
   include TestCollection

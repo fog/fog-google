@@ -1,4 +1,4 @@
-require "factories/collection_factory"
+require "integration/factories/collection_factory"
 
 class ImagesFactory < CollectionFactory
   def initialize(example)

@@ -1,6 +1,5 @@
-require "minitest_helper"
-require "helpers/test_collection"
-require "factories/http_health_checks_factory"
+require "helpers/integration_test_helper"
+require "integration/factories/http_health_checks_factory"
 
 class TestHttpHealthChecks < FogIntegrationTest
   include TestCollection

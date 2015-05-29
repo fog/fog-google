@@ -1,5 +1,5 @@
-require "factories/collection_factory"
-require "factories/backend_services_factory"
+require "integration/factories/collection_factory"
+require "integration/factories/backend_services_factory"
 
 class UrlMapsFactory < CollectionFactory
   def initialize(example)

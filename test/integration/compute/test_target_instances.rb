@@ -1,6 +1,5 @@
-require "minitest_helper"
-require "helpers/test_collection"
-require "factories/target_instances_factory"
+require "helpers/integration_test_helper"
+require "integration/factories/target_instances_factory"
 
 class TestTargetInstances < FogIntegrationTest
   include TestCollection

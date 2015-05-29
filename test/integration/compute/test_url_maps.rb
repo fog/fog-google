@@ -1,6 +1,5 @@
-require "minitest_helper"
-require "helpers/test_collection"
-require "factories/url_maps_factory"
+require "helpers/integration_test_helper"
+require "integration/factories/url_maps_factory"
 
 class TestUrlMaps < FogIntegrationTest
   include TestCollection

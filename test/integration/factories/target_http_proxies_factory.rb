@@ -1,5 +1,5 @@
-require "factories/collection_factory"
-require "factories/url_maps_factory"
+require "integration/factories/collection_factory"
+require "integration/factories/url_maps_factory"
 
 class TargetHttpProxiesFactory < CollectionFactory
   def initialize(example)

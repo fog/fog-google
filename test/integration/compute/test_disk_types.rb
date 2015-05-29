@@ -1,4 +1,4 @@
-require "minitest_helper"
+require "helpers/integration_test_helper"
 
 class TestDiskTypes < FogIntegrationTest
   NAMES = %w(local-ssd pd-ssd pd-standard)

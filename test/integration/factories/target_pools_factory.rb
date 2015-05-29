@@ -1,6 +1,6 @@
-require "factories/collection_factory"
-require "factories/servers_factory"
-require "factories/http_health_checks_factory"
+require "integration/factories/collection_factory"
+require "integration/factories/servers_factory"
+require "integration/factories/http_health_checks_factory"
 
 class TargetPoolsFactory < CollectionFactory
   def initialize(example)
