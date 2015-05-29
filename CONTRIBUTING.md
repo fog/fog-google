@@ -2,6 +2,8 @@
 
 New contributors are always welcome, and when in doubt please ask questions! We strive to be an open and welcoming community. Please be nice to one another.
 
+I recommend heading over to fog's [CONTRIBUTING](https://github.com/fog/fog/blob/master/CONTRIBUTING.md) and having a look around as well.  It has information and context about the state of the `fog` project as a whole.
+
 ### Coding
 
 * Pick a task:
@@ -9,6 +11,11 @@ New contributors are always welcome, and when in doubt please ask questions! We 
   * Review open [issues](https://github.com/fog/fog-google/issues) for things to help on.
   * [Create an issue](https://github.com/fog/fog-google/issues/new) to start a discussion on additions or features.
 * Fork the project, add your changes and tests to cover them in a topic branch.
+  * [Fork](https://github.com/fog/fog-google/fork)
+  * Create your feature branch (`git checkout -b my-new-feature`)
+  * Commit your changes (`git commit -am 'Add some feature'`)
+  * Push to the branch (`git push origin my-new-feature`)
+  * Create a new pull request
 * Commit your changes and rebase against `fog/fog-google` to ensure everything is up to date.
 * [Submit a pull request](https://github.com/fog/fog-google/compare/)
 
@@ -17,17 +24,15 @@ New contributors are always welcome, and when in doubt please ask questions! We 
 * Offer feedback on open [issues](https://github.com/fog/fog-google/issues).
 * Organize or volunteer at events.
 
-I recommend heading over to fog's [CONTRIBUTING](https://github.com/fog/fog/blob/master/CONTRIBUTING.md) and having a look around as well.  It has information and context about the state of the `fog` project as a whole.
-
 ## Contributing Code
 
 This document is very much a work in progress.  Sorry about that.
 
+It's worth noting that, if you're looking through the code, and you'd like to know the history of a line, you may not find it in the history of this repository, since most of the code was extracted from [fog/fog].  So, you can look at the history from commit [fog/fog#c596e] backward for more information.
+
 ### Testing
 
-We're in the middle of switching from using `shindo` to `minitest` as our testing framework.  Right now, the `shindo` tests in `test/` work in mocking mode, but don't work when mocking is turned off.  To start, we'll only be writing live integration tests in our `minitest` suite, and we'll hopefully flesh out mocks later down the line, (perhaps when a more stable mocking framework for the whole `fog` ecosystem is worked out; for example, see [fog/fog#1252](https://github.com/fog/fog/issues/1252)).
-
-If you'd like to run live integration tests for `Fog::Compute`, you need a `:test` configuration in `~/.fog`.  Something like:
+This module is tested with [Minitest](https://github.com/seattlerb/minitest).  Right now, the only tests that exist are live integration tests, found in `test/integration/`.  After completing the installation above, (including setting up your credentials and keys,) make sure you have a `:test` credential in `~/.fog`, something like:
 
 ```
 test:
@@ -37,7 +42,9 @@ test:
   google_json_key_location: /path/to/my-project-xxxxxxxxxxxxx.json
 ```
 
-Then you can run all the tests:
+Note that you need both a `.p12` and a `.json` key file for all the tests to pass.
+
+Then you can run all the live tests:
 
 ```shell
 $ rake test
@@ -51,4 +58,10 @@ $ rake test TEST=test/integration/compute/test_servers.rb TESTOPTS="--name=TestS
 
 #### Some notes about the tests as they stand
 
-- The images tests reference the `fog-test-raw-disk-source.image.tar.gz` image created [like so](https://cloud.google.com/compute/docs/images#export_an_image_to_google_cloud_storage).
+The live integration tests for resources, (servers, disks, etc.,) have a few components:
+
+- The `TestCollection` **mixin module** lives in `test/helpers/test_collection.rb` and contains the standard tests to run for all resources, (e.g. `test_lifecycle`).  It also calls `cleanup` on the resource's factory during teardown, to make sure that resources are getting destroyed before the next test run.
+- The **factory**, (e.g. `ServersFactory`, in `test/factories/servers_factory.rb`,) automates the creation of resources and/or supplies parameters for explicit creation of resources.  For example, `ServersFactory` initializes a `DisksFactory` to supply disks in order to create servers, and implements the `params` method so that tests can create servers with unique names, correct zones and machine types, and automatically-created disks.  `ServersFactory` inherits the `create` method from `CollectionFactory`, which allows tests to create servers on-demand.
+- The **main test**, (e.g. `TestServers`, in `test/integration/compute/test_servers.rb`,) is the test that actually runs.  It mixes in the `TestCollection` module in order to run the tests in that module, it supplies the `setup` method in which it initializes a `ServersFactory`, and it includes any other tests specific to this collection, (e.g. `test_bootstrap_ssh_destroy`).
+
+If you want to create another resource, you should add live integration tests; all you need to do is create a factory in `test/factories/my_resource_factory.rb` and a main test in `test/integration/compute/test_my_resource.rb` that mixes in `TestCollection`.
