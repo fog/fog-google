@@ -30,9 +30,27 @@ This document is very much a work in progress.  Sorry about that.
 
 It's worth noting that, if you're looking through the code, and you'd like to know the history of a line, you may not find it in the history of this repository, since most of the code was extracted from [fog/fog](https://github.com/fog/fog).  So, you can look at the history from commit [fog/fog#c596e](https://github.com/fog/fog/tree/c596e710952aa9c90713da3fbfb3027db0608413) backward for more information.
 
+### Development environment
+
+If you're going to be doing any kind of modifications, I highly recommend using [rbenv](https://github.com/sstephenson/rbenv), [ruby-build](https://github.com/sstephenson/ruby-build), (don't forget the [dependencies](https://github.com/sstephenson/ruby-build/wiki#suggested-build-environment)!) and [bundler](http://bundler.io/).
+
+Once you've got that all installed, run
+
+```shell
+$ bundle install
+```
+
+to install the required gems.  You might have to fight a bit to get Nokogiri installed.
+
+Then, you should be ready to go!  If you'd like to drop into an interactive shell, configured with your `:test` credential, use
+
+```shell
+rake console
+```
+
 ### Testing
 
-This module is tested with [Minitest](https://github.com/seattlerb/minitest).  Right now, the only tests that exist are live integration tests, found in `test/integration/`.  After completing the installation above, (including setting up your credentials and keys,) make sure you have a `:test` credential in `~/.fog`, something like:
+This module is tested with [Minitest](https://github.com/seattlerb/minitest).  Right now, the only tests that exist are live integration tests, found in `test/integration/`.  After completing the installation in the README, (including setting up your credentials and keys,) make sure you have a `:test` credential in `~/.fog`, something like:
 
 ```
 test:
