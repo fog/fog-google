@@ -40,7 +40,7 @@ Once you've got that all installed, run
 $ bundle install
 ```
 
-to install the required gems.  You might have to fight a bit to get Nokogiri installed.
+to install the required gems.  You might have to [fight a bit](http://www.nokogiri.org/tutorials/installing_nokogiri.html) to get Nokogiri installed.
 
 Then, you should be ready to go!  If you'd like to drop into an interactive shell, configured with your `:test` credential, use
 
