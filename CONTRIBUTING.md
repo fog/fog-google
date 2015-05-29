@@ -28,7 +28,7 @@ I recommend heading over to fog's [CONTRIBUTING](https://github.com/fog/fog/blob
 
 This document is very much a work in progress.  Sorry about that.
 
-It's worth noting that, if you're looking through the code, and you'd like to know the history of a line, you may not find it in the history of this repository, since most of the code was extracted from [fog/fog].  So, you can look at the history from commit [fog/fog#c596e] backward for more information.
+It's worth noting that, if you're looking through the code, and you'd like to know the history of a line, you may not find it in the history of this repository, since most of the code was extracted from [fog/fog](https://github.com/fog/fog).  So, you can look at the history from commit [fog/fog#c596e](https://github.com/fog/fog/tree/c596e710952aa9c90713da3fbfb3027db0608413) backward for more information.
 
 ### Testing
 
