@@ -31,6 +31,21 @@ module Fog
         attribute :auto_restart
         attribute :on_host_maintenance
 
+        # Security account scope aliases used by official gcloud utility
+        # List derived from 'gcloud compute instances create --help'
+        GCE_SCOPE_ALIASES = {
+              'compute-ro' => 'compute.readonly',
+              'compute-rw' => 'compute',
+              'computeaccounts-ro' => 'computeaccounts.readonly',
+              'computeaccounts-rw' => 'computeaccounts',
+              'logging-write' => 'logging.write',
+              'sql' => 'sqlservice',
+              'sql-admin' => 'sqlservice.admin',
+              'storage-full' => 'devstorage.full_control',
+              'storage-ro' => 'devstorage.read_only',
+              'storage-rw' => 'devstorage.read_write'
+            }
+
         def image_name=(args)
           Fog::Logger.deprecation("image_name= is no longer used [light_black](#{caller.first})[/]")
         end
@@ -206,6 +221,27 @@ module Fog
           return self.metadata
         end
 
+        def map_service_accounts(scope_array)
+
+          scope_array_expanded = scope_array.map do |e|
+            if GCE_SCOPE_ALIASES[e]
+              GCE_SCOPE_ALIASES[e]
+            else
+              e
+            end
+          end
+
+          scope_array_finalized = scope_array_expanded.map do |e|
+            if e.start_with?("https://")
+              e
+            else
+              "https://www.googleapis.com/auth/#{e}"
+            end
+          end
+
+          return scope_array_finalized
+        end
+
         def reload
           data = service.get_server(self.name, zone_name).body
           self.merge_attributes(data)
@@ -241,9 +277,7 @@ module Fog
             options['serviceAccounts'] = [{
               "kind" => "compute#serviceAccount",
               "email" => "default",
-              "scopes" => service_accounts.map {
-                |w| w.start_with?("https://") ? w : "https://www.googleapis.com/auth/#{w}"
-              }
+              "scopes" => self.map_service_accounts(service_accounts)
             }]
           end
 
