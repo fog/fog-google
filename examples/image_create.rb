@@ -2,7 +2,7 @@ def test
   connection = Fog::Compute.new({ :provider => "Google" })
 
   rawdisk = {
-    :source         => nil, # 'http://some_valid_url_to_rootfs_tarball'
+    :source         => nil, # Google Cloud Storage URL pointing to the disk image. (e.g. http://storage.googleapis.com/test/test.tar.gz)
     :container_type => 'TAR',
   }
 
