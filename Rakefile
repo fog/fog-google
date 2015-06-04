@@ -1,6 +1,7 @@
 require 'bundler/gem_tasks'
 require 'rake/testtask'
 require 'fog/google'
+require 'rubocop/rake_task'
 
 Rake::TestTask.new do |t|
   t.libs.push %w(spec)
@@ -32,3 +33,5 @@ namespace :google do
     end
   end
 end
+
+RuboCop::RakeTask.new(:lint)
