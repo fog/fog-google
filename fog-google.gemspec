@@ -24,6 +24,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'fog-xml'
   spec.add_development_dependency 'google-api-client', '~> 0.6', '>= 0.6.2'
   spec.add_development_dependency 'rake'
+  spec.add_development_dependency 'rubocop', '~> 0.30.0'
   spec.add_development_dependency 'shindo'
   spec.add_development_dependency 'minitest'
   spec.add_development_dependency 'pry'
