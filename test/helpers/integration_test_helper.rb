@@ -7,7 +7,7 @@ Fog.credential = :test
 
 # Helpers
 
-TEST_ZONE = "us-central1-a"
+TEST_ZONE = "us-central1-f"
 TEST_REGION = "us-central1"
 TEST_SIZE_GB = 10
 TEST_MACHINE_TYPE = "n1-standard-1"
