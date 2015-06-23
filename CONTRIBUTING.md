@@ -74,6 +74,16 @@ or just one:
 $ rake test TEST=test/integration/compute/test_servers.rb TESTOPTS="--name=TestServers#test_bootstrap_ssh_destroy"
 ```
 
+#### The transition from `shindo` to Minitest
+
+Previously, [shindo](https://github.com/geemus/shindo) was the primary testing framework.  We've started moving away from it, and to Minitest, but some artifacts remain.
+
+- The `test` directory contains the new Minitest tests, which currently only cover live integration testing for `compute`.
+- The `tests` directory contains the old `shindo` tests, which generally pass if mocking is turned on.  No promises if mocking is off.
+- Travis CI runs the mocked `shindo` tests, though hopefully in the long run it will run the unit and integration `Minitest` tests.  Currently, Google maintains its own Jenkins instance that runs the Minitest integraiton tests.
+
+Follow [#50](https://github.com/fog/fog-google/issues/50) for the status of the transition from `shindo` to Minitest.
+
 #### Some notes about the tests as they stand
 
 The live integration tests for resources, (servers, disks, etc.,) have a few components:
