@@ -13,10 +13,9 @@ module Fog
         end
 
         def get(identity)
-          response = nil
-          response = service.get_backend_service(identity)
-          return nil if response.nil?
-          new(response.body)
+          if backend_service = service.get_backend_service(identity).body
+            new(backend_service)
+          end
         rescue Fog::Errors::NotFound
           nil
         end

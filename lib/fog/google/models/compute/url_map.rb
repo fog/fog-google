@@ -8,7 +8,7 @@ module Fog
 
         attribute :kind, :aliases => 'kind'
         attribute :creationTimestamp, :aliases => 'creation_timestamp'
-        attribute :defaultService, :aliases => 'default_service'
+        attribute :defaultService, :aliases => ['default_service', :default_service]
         attribute :description, :aliases => 'description'
         attribute :fingerprint, :aliases => 'fingerprint'
         attribute :hostRules, :aliases => 'host_rules'

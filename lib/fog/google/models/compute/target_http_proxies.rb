@@ -13,8 +13,11 @@ module Fog
         end
 
         def get(identity)
-          response = service.get_target_http_proxy(identity)
-          new(response.body) unless response.nil?
+          if target_http_proxy = service.get_target_http_proxy(identity).body
+            new(target_http_proxy)
+          end
+        rescue Fog::Errors::NotFound
+          nil
         end
       end
     end

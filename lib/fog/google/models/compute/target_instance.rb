@@ -25,8 +25,8 @@ module Fog
             'instance' => instance,
           }
 
-          data = service.insert_target_instance(name, zone, options).body
-          operation = Fog::Compute::Google::Operations.new(:service => service).get(data['name'])
+          data = service.insert_target_instance(name, zone, options)
+          operation = Fog::Compute::Google::Operations.new(:service => service).get(data.body['name'], data.body['zone'])
           operation.wait_for { !pending? }
           reload
         end

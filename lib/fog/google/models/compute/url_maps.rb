@@ -13,8 +13,11 @@ module Fog
         end
 
         def get(identity)
-          response = service.get_url_map(identity)
-          new(response.body) unless response.nil?
+          if url_map = service.get_url_map(identity).body
+            new(url_map)
+          end
+        rescue Fog::Errors::NotFound
+          nil
         end
       end
     end

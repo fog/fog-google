@@ -1,3 +1,5 @@
+# TODO REMOVE this testing functionality is now covered in `spec/helpers/model_helper.rb`
+
 def model_tests(collection, params = {}, mocks_implemented = true)
   tests('success') do
 

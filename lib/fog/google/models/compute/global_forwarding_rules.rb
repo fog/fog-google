@@ -13,9 +13,11 @@ module Fog
         end
 
         def get(identity, region='global')
-          response = service.get_global_forwarding_rule(identity, region)
-          return nil if response.nil?
-          new(response.body)
+          if global_forwarding_rule = service.get_global_forwarding_rule(identity, region).body
+            new(global_forwarding_rule)
+          end
+        rescue Fog::Errors::NotFound
+          nil
         end
       end
     end

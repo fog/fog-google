@@ -40,16 +40,33 @@ gem 'fog-google'
 
 And then execute:
 
-    $ bundle
+```shell
+$ bundle
+```
 
 Or install it yourself as:
 
-    $ gem install fog-google
+```shell
+$ gem install fog-google
+```
+
+### Setup
+
+#### Credentials
+
+Follow the [instructions to generate a private key](https://cloud.google.com/storage/docs/authentication#generating-a-private-key).  You can then create a fog credentials file at `~/.fog`, which will look something like this:
+
+```
+my_credential:
+    google_project: my-project
+    google_client_email: xxxxxxxxxxxx-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx@developer.gserviceaccount.com
+    google_json_key_location: /path/to/my-project-xxxxxxxxxxxx.json
+```
+
+#### SSH-ing into instances
+
+If you want to be able to bootstrap SSH-able instances, (using `servers.bootstrap`,) be sure you have a key in `~/.ssh/id_rsa` and `~/.ssh/id_rsa.pub`.
 
 ## Contributing
 
-1. Fork it ( https://github.com/fog/fog-google/fork )
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create a new Pull Request
+See `CONTRIBUTING.md` in this repository.
