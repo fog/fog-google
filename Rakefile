@@ -7,7 +7,7 @@ Rake::TestTask.new do |t|
 end
 
 desc 'Default Task'
-task :default => [ :test, 'test:travis' ]
+task :default => [ 'test:travis' ]
 
 namespace :test do
   mock = ENV['FOG_MOCK'] || 'true'
