@@ -30,6 +30,7 @@ module Fog
         attribute :external_ip, :aliases => 'externalIP'
         attribute :auto_restart
         attribute :on_host_maintenance
+        attribute :preemptible
 
         # Security account scope aliases used by official gcloud utility
         # List derived from 'gcloud compute instances create --help'
@@ -172,10 +173,10 @@ module Fog
           Fog::Compute::Google::Operations.new(:service => service).get(data.body['name'], data.body['zone'])
         end
 
-        def set_scheduling(on_host_maintenance, automatic_restart)
+        def set_scheduling(on_host_maintenance, automatic_restart, preemptible)
           requires :identity, :zone
 
-          data = service.set_server_scheduling(identity, zone_name, on_host_maintenance, automatic_restart)
+          data = service.set_server_scheduling(identity, zone_name, on_host_maintenance, automatic_restart, preemptible)
           Fog::Compute::Google::Operations.new(:service => service).get(data.body['name'], data.body['zone'])
         end
 
@@ -270,6 +271,7 @@ module Fog
               'tags' => tags,
               'auto_restart' => auto_restart,
               'on_host_maintenance' => on_host_maintenance,
+              'preemptible' => preemptible,
               'can_ip_forward' => can_ip_forward
           }.delete_if {|key, value| value.nil?}
 
