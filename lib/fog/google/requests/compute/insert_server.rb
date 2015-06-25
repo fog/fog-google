@@ -151,11 +151,16 @@ module Fog
 
           scheduling = {
             'automaticRestart' => false,
-            'onHostMaintenance' => "MIGRATE"
+            'onHostMaintenance' => "MIGRATE",
+            'preemptible' => false
           }
           if options.key? 'auto_restart'
             scheduling['automaticRestart'] = options.delete 'auto_restart'
             scheduling['automaticRestart'] = scheduling['automaticRestart'].class == TrueClass
+          end
+          if options.key? 'preemptible'
+            scheduling['preemptible'] = options.delete 'preemptible'
+            scheduling['preemptible'] = scheduling['preemptible'].class == TrueClass
           end
           if options.key? 'on_host_maintenance'
             ohm = options.delete 'on_host_maintenance'
