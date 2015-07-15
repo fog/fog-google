@@ -32,7 +32,7 @@ module Fog
             :host       => "#{bucket_name}.#{@host}",
             :idempotent => true,
             :method     => 'PUT',
-            :path       => CGI.escape(object_name)
+            :path       => Google.escape(object_name)
           })
         end
       end
