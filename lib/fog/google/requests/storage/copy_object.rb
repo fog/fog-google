@@ -32,7 +32,7 @@ module Fog
             :host     => "#{target_bucket_name}.#{@host}",
             :method   => 'PUT',
             :parser   => Fog::Parsers::Storage::Google::CopyObject.new,
-            :path     => CGI.escape(target_object_name)
+            :path     => Google.escape(target_object_name)
           })
         end
       end
