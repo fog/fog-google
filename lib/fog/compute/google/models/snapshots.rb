@@ -1,5 +1,5 @@
 require 'fog/core/collection'
-require 'fog/google/models/compute/snapshot'
+require 'fog/compute/google/models/snapshot'
 
 module Fog
   module Compute

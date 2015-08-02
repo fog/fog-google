@@ -1,20 +1,20 @@
 require 'fog/core/collection'
-require 'fog/google/models/compute/region'
+require 'fog/compute/google/models/network'
 
 module Fog
   module Compute
     class Google
-      class Regions < Fog::Collection
-        model Fog::Compute::Google::Region
+      class Networks < Fog::Collection
+        model Fog::Compute::Google::Network
 
         def all
-          data = service.list_regions.body
+          data = service.list_networks.body
           load(data['items'] || [])
         end
 
         def get(identity)
-          if region = service.get_region(identity).body
-            new(region)
+          if network = service.get_network(identity).body
+            new(network)
           end
         rescue Fog::Errors::NotFound
           nil

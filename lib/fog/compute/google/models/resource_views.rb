@@ -1,5 +1,5 @@
 require 'fog/core/collection'
-require 'fog/google/models/compute/resource_view'
+require 'fog/compute/google/models/resource_view'
 
 module Fog
   module Compute

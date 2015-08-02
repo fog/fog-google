@@ -1,5 +1,5 @@
 require 'fog/core/collection'
-require 'fog/google/models/compute/flavor'
+require 'fog/compute/google/models/flavor'
 
 module Fog
   module Compute

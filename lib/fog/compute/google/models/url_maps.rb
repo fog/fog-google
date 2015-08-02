@@ -1,5 +1,5 @@
 require 'fog/core/collection'
-require 'fog/google/models/compute/url_map'
+require 'fog/compute/google/models/url_map'
 
 module Fog
   module Compute

@@ -13,7 +13,7 @@ module Fog
                                          https://www.googleapis.com/auth/cloud-platform)
       GOOGLE_COMPUTE_DEFAULT_NETWORK = 'default'
 
-      request_path 'fog/google/requests/compute'
+      request_path 'fog/compute/google/requests'
       request :list_servers
       request :list_aggregated_servers
       request :list_addresses
@@ -157,7 +157,7 @@ module Fog
       request :start_server
       request :stop_server
 
-      model_path 'fog/google/models/compute'
+      model_path 'fog/compute/google/models'
       model :server
       collection :servers
 

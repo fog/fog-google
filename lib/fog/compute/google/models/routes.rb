@@ -1,5 +1,5 @@
 require 'fog/core/collection'
-require 'fog/google/models/compute/route'
+require 'fog/compute/google/models/route'
 
 module Fog
   module Compute

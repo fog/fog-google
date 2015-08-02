@@ -1,20 +1,20 @@
 require 'fog/core/collection'
-require 'fog/google/models/compute/network'
+require 'fog/compute/google/models/firewall'
 
 module Fog
   module Compute
     class Google
-      class Networks < Fog::Collection
-        model Fog::Compute::Google::Network
+      class Firewalls < Fog::Collection
+        model Fog::Compute::Google::Firewall
 
         def all
-          data = service.list_networks.body
+          data = service.list_firewalls.body
           load(data['items'] || [])
         end
 
         def get(identity)
-          if network = service.get_network(identity).body
-            new(network)
+          if firewall = service.get_firewall(identity).body
+            new(firewall)
           end
         rescue Fog::Errors::NotFound
           nil

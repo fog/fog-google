@@ -1,5 +1,5 @@
 require 'fog/core/collection'
-require 'fog/google/models/compute/global_forwarding_rule'
+require 'fog/compute/google/models/global_forwarding_rule'
 
 module Fog
   module Compute

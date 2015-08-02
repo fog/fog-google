@@ -1,5 +1,5 @@
 require 'fog/core/collection'
-require 'fog/google/models/compute/disk_type'
+require 'fog/compute/google/models/disk_type'
 
 module Fog
   module Compute

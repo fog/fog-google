@@ -1,5 +1,5 @@
 require 'fog/core/collection'
-require 'fog/google/models/compute/target_http_proxy'
+require 'fog/compute/google/models/target_http_proxy'
 
 module Fog
   module Compute

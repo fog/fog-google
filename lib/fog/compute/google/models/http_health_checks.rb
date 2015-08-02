@@ -1,5 +1,5 @@
 require 'fog/core/collection'
-require 'fog/google/models/compute/http_health_check'
+require 'fog/compute/google/models/http_health_check'
 
 module Fog
   module Compute
