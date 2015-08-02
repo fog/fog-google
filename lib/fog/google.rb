@@ -5,20 +5,20 @@ require "fog/google/version"
 
 module Fog
   module Compute
-    autoload :Google, "fog/google/compute"
+    autoload :Google, File.expand_path("../google/compute", __FILE__)
   end
 
   module DNS
-    autoload :Google, "fog/google/dns"
+    autoload :Google, File.expand_path("../google/dns", __FILE__)
   end
-  
+
   module Storage
-    autoload :Google, "fog/google/storage"
+    autoload :Google, File.expand_path("../google/storage", __FILE__)
   end
 
   module Google
-    autoload :Monitoring, "fog/google/monitoring"
-    autoload :SQL, "fog/google/sql"
+    autoload :Monitoring, File.expand_path("../google/monitoring", __FILE__)
+    autoload :SQL, File.expand_path("../google/sql", __FILE__)
 
     extend Fog::Provider
 
