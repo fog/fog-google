@@ -47,6 +47,7 @@ module Fog
       request :list_zone_view_resources
       request :list_target_instances
       request :list_aggregated_target_instances
+      request :list_instance_groups
 
       request :get_server
       request :get_address
@@ -117,6 +118,7 @@ module Fog
       request :insert_zone_view
       request :insert_region_view
       request :insert_target_instance
+      request :insert_instance_group
 
       request :set_metadata
       request :set_tags
@@ -131,6 +133,7 @@ module Fog
       request :add_url_map_path_matchers
       request :add_zone_view_resources
       request :add_region_view_resources
+      request :add_group_instance_instance
 
       request :remove_target_pool_instances
       request :remove_target_pool_health_checks
@@ -218,6 +221,9 @@ module Fog
 
       model :target_instance
       collection :target_instances
+
+      model :instance_group
+      collection :instance_groups
 
       class Mock
         include Fog::Google::Shared
