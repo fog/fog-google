@@ -48,6 +48,7 @@ module Fog
       request :list_target_instances
       request :list_aggregated_target_instances
       request :list_instance_groups
+      request :list_aggregated_instance_groups
 
       request :get_server
       request :get_address
@@ -77,6 +78,7 @@ module Fog
       request :get_zone_view
       request :get_region_view
       request :get_target_instance
+      request :get_instance_group
 
       request :delete_address
       request :delete_disk
@@ -99,6 +101,7 @@ module Fog
       request :delete_zone_view
       request :delete_region_view
       request :delete_target_instance
+      request :delete_instance_group
 
       request :insert_address
       request :insert_disk

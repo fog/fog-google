@@ -2,7 +2,7 @@ module Fog
   module Compute
     class Google
       class Mock
-        def list_instance_groups(zone_name)
+        def get_instance_group(group_name, zone_name, project=@project)
           build_excon_response({
             "selfLink" => "https://www.googleapis.com/compute/#{api_version}/#{project}/zones/#{zone_name}/instanceGroups",
           })
@@ -10,10 +10,11 @@ module Fog
       end
 
       class Real
-        def list_instance_groups(zone_name)
-          api_method = @compute.instance_groups.list
+        def get_instance_group(group_name, zone_name, project=@project)
+          api_method = @compute.instance_groups.get
           parameters = {
-            'project' => @project,
+            'instanceGroup' => group_name,
+            'project' => project,
             'zone' => zone_name
           }
 

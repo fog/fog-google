@@ -36,7 +36,9 @@ module Fog
         end
 
         def delete_instance
+          requires :name, :zone,  :instance_name
 
+          data = service.remove_group_instance_instance(name, zone, instance_name)
         end
       end
     end
