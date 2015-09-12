@@ -25,21 +25,14 @@ module Fog
 
         def destroy(async=true)
           requires :name, :zone
-
-          data = service.delete_instance_group(name, zone)
+          
+          data = service.delete_instance_group(name, zone_name)
         end
 
-        def add_instance
-          requires :name, :zone, :instance_name
-
-          data = service.add_group_instance_instance(name, zone, instance_name)
+        def zone_name
+          zone.nil? ? nil : zone.split('/')[-1]
         end
 
-        def delete_instance
-          requires :name, :zone,  :instance_name
-
-          data = service.remove_group_instance_instance(name, zone, instance_name)
-        end
       end
     end
   end

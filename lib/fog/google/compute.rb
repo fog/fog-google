@@ -49,6 +49,7 @@ module Fog
       request :list_aggregated_target_instances
       request :list_instance_groups
       request :list_aggregated_instance_groups
+      #request :list_instance_group_instances
 
       request :get_server
       request :get_address
@@ -136,11 +137,12 @@ module Fog
       request :add_url_map_path_matchers
       request :add_zone_view_resources
       request :add_region_view_resources
-      request :add_group_instance_instance
+      request :add_instance_group_instance
 
       request :remove_target_pool_instances
       request :remove_target_pool_health_checks
       request :set_common_instance_metadata
+      request :remove_instance_group_instance
 
       request :attach_disk
       request :detach_disk
