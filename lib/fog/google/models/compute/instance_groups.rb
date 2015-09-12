@@ -42,6 +42,10 @@ module Fog
         def remove_instance(params)
           data = service.remove_instance_group_instance(params[:group], params[:zone], params[:instance])
         end
+
+        def get_instances(params)
+          data = service.list_instance_group_instances(params[:group], params[:zone])
+        end
       end
     end
   end

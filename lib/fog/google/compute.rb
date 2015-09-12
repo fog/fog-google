@@ -49,7 +49,7 @@ module Fog
       request :list_aggregated_target_instances
       request :list_instance_groups
       request :list_aggregated_instance_groups
-      #request :list_instance_group_instances
+      request :list_instance_group_instances
 
       request :get_server
       request :get_address
