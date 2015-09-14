@@ -3,7 +3,7 @@ module Fog
     class Google
       class Mock
         def list_images(project=@project)
-          id = Fog::Mock.random_numbers(19).to_s
+          images = data(project)[:images].values
           build_excon_response({
             "kind" => "compute#imageList",
             "selfLink" => "https://www.googleapis.com/compute/#{api_version}/projects/#{project}/global/images",
