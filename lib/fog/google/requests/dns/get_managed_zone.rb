@@ -4,7 +4,7 @@ module Fog
       ##
       # Fetches the representation of an existing Managed Zone.
       #
-      # @see https://developers.google.com/cloud-dns/api/v1beta1/managedZones/get
+      # @see https://developers.google.com/cloud-dns/api/v1/managedZones/get
       class Real
         def get_managed_zone(name_or_id)
           api_method = @dns.managed_zones.get

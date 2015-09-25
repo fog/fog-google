@@ -4,7 +4,7 @@ module Fog
       ##
       # Fetches the representation of an existing Change.
       #
-      # @see https://developers.google.com/cloud-dns/api/v1beta1/changes/get
+      # @see https://developers.google.com/cloud-dns/api/v1/changes/get
       class Real
         def get_change(zone_name_or_id, identity)
           api_method = @dns.changes.get

@@ -4,7 +4,7 @@ module Fog
       ##
       # Enumerates Managed Zones that have been created but not yet deleted.
       #
-      # @see hhttps://developers.google.com/cloud-dns/api/v1beta1/managedZones/list
+      # @see hhttps://developers.google.com/cloud-dns/api/v1/managedZones/list
       class Real
         def list_managed_zones()
           api_method = @dns.managed_zones.list

@@ -4,7 +4,7 @@ module Fog
       ##
       # Enumerates the list of Changes.
       #
-      # @see https://developers.google.com/cloud-dns/api/v1beta1/changes/list
+      # @see https://developers.google.com/cloud-dns/api/v1/changes/list
       class Real
         def list_changes(zone_name_or_id)
           api_method = @dns.changes.list

@@ -4,7 +4,7 @@ module Fog
       ##
       # Atomically updates a ResourceRecordSet collection.
       #
-      # @see https://cloud.google.com/dns/api/v1beta1/changes/create
+      # @see https://cloud.google.com/dns/api/v1/changes/create
       class Real
         def create_change(zone_name_or_id, additions = [], deletions = [])
           api_method = @dns.changes.create

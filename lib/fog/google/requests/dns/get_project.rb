@@ -5,7 +5,7 @@ module Fog
       # Fetches the representation of an existing Project. Use this method to look up the limits on the number of
       # resources that are associated with your project.
       #
-      # @see https://developers.google.com/cloud-dns/api/v1beta1/projects/get
+      # @see https://developers.google.com/cloud-dns/api/v1/projects/get
       class Real
         def get_project(identity)
           api_method = @dns.projects.get

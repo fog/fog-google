@@ -6,7 +6,7 @@ module Fog
       ##
       # Represents a Change resource
       #
-      # @see https://developers.google.com/cloud-dns/api/v1beta1/changes
+      # @see https://developers.google.com/cloud-dns/api/v1/changes
       class Change < Fog::Model
         identity :id
 

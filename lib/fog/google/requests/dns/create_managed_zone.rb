@@ -5,7 +5,7 @@ module Fog
       ##
       # Creates a new Managed Zone.
       #
-      # @see https://developers.google.com/cloud-dns/api/v1beta1/managedZones/create
+      # @see https://developers.google.com/cloud-dns/api/v1/managedZones/create
       class Real
         def create_managed_zone(name, dns_name, description)
           api_method = @dns.managed_zones.create
