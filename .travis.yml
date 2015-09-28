@@ -1,11 +1,13 @@
 matrix:
   include:
     - rvm: 1.9.3
-      gemfile: gemfiles/Gemfile.1.9.2+
+      gemfile: gemfiles/Gemfile.2.0.0-
     - rvm: 2.0.0
-      gemfile: gemfiles/Gemfile.1.9.2+
-    - rvm: 2.1.4
-      gemfile: gemfiles/Gemfile.1.9.2+
+      gemfile: gemfiles/Gemfile.2.0.0+
+    - rvm: 2.1.5
+      gemfile: gemfiles/Gemfile.2.0.0+
       env: COVERAGE=true
-    - rvm: jruby-19mode
-      gemfile: gemfiles/Gemfile.1.9.2+
+    - rvm: ree
+      gemfile: gemfiles/Gemfile.2.0.0-
+    - rvm: jruby
+      gemfile: gemfiles/Gemfile.2.0.0-
