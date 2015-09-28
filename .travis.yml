@@ -5,7 +5,7 @@ matrix:
     - rvm: 1.9.2
       gemfile: gemfiles/Gemfile.2.0.0-
     - rvm: 1.9.3
-      gemfile: gemfiles/Gemfile.2.0.0+
+      gemfile: gemfiles/Gemfile.2.0.0-
     - rvm: 2.0.0
       gemfile: gemfiles/Gemfile.2.0.0+
     - rvm: 2.1.4
@@ -14,4 +14,4 @@ matrix:
     - rvm: ree
       gemfile: gemfiles/Gemfile.2.0.0-
     - rvm: jruby
-      gemfile: gemfiles/Gemfile.2.0.0+
+      gemfile: gemfiles/Gemfile.2.0.0-
