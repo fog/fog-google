@@ -6,7 +6,7 @@ module Fog
       ##
       # Managed Zone resource
       #
-      # @see https://developers.google.com/cloud-dns/api/v1beta1/managedZones
+      # @see https://developers.google.com/cloud-dns/api/v1/managedZones
       class Zone < Fog::Model
         identity :id
 

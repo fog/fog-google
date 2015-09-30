@@ -4,7 +4,7 @@ module Fog
       ##
       # Deletes a previously created Managed Zone.
       #
-      # @see https://developers.google.com/cloud-dns/api/v1beta1/managedZones/delete
+      # @see https://developers.google.com/cloud-dns/api/v1/managedZones/delete
       class Real
         def delete_managed_zone(name_or_id)
           api_method = @dns.managed_zones.delete

@@ -6,7 +6,7 @@ module Fog
       ##
       # Represents a Project resource
       #
-      # @see https://developers.google.com/cloud-dns/api/v1beta1/projects
+      # @see https://developers.google.com/cloud-dns/api/v1/projects
       class Project < Fog::Model
         identity :id
 
