@@ -19,6 +19,9 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
 
+  # As of 0.1.1
+  spec.required_ruby_version = '>= 2.0'
+
   spec.add_dependency 'fog-core'
   spec.add_dependency 'fog-json'
   spec.add_dependency 'fog-xml'
