@@ -20,7 +20,7 @@ module Fog
           body_object = {
             "instances" => [
               {
-                "instance" => "https://www.googleapis.com/compute/v1/projects/chaostest-1/zones/us-central1-a/instances/inst-1\n"
+                "instance" => "https://www.googleapis.com/compute/#{api_version}/projects/#{@project}/zones/#{zone}/instances/#{instance_name}\n"
               }
             ]
           }
