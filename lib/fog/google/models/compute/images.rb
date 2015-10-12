@@ -7,9 +7,10 @@ module Fog
       class Images < Fog::Collection
         model Fog::Compute::Google::Image
 
-        # NOTE: Not everyone has access to these projects because of the
-        # licenses needed to use some of them.
-        # https://developers.google.com/compute/docs/premium-operating-systems
+        # NOTE: some of these operating systems are premium and users will be
+        # charged a license fee beyond the base Google Compute Engine VM
+        # charges. See https://cloud.google.com/compute/docs/operating-systems/
+        # for more info.
         GLOBAL_PROJECTS = [
           'centos-cloud',
           'coreos-cloud',
@@ -18,7 +19,8 @@ module Fog
           'opensuse-cloud',
           'rhel-cloud',
           'suse-cloud',
-          'ubuntu-os-cloud'
+          'ubuntu-os-cloud',
+          'windows-cloud'
         ]
 
         def all
