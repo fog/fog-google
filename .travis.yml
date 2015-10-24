@@ -6,8 +6,9 @@ matrix:
     - rvm: 2.0
     - rvm: 2.1
     - rvm: 2.2
-    - rvm: ree
-    - rvm: jruby
+    - rvm: jruby-head
+  allow_failures:
+    - rvm: jruby-head
 
 notifications:
   email: false
