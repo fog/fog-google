@@ -13,7 +13,7 @@ class GlobalForwardingRulesFactory < CollectionFactory
   end
 
   def params
-    params = {:name => resource_name,
-              :target => @targets.create.self_link}
+    params = { :name => resource_name,
+               :target => @targets.create.self_link }
   end
 end

@@ -1,6 +1,5 @@
 def server_tests(connection, params = {}, mocks_implemented = true)
   model_tests(connection.servers, params, mocks_implemented) do
-
     tests('#reload').returns(true) do
       pending if Fog.mocking? && !mocks_implemented
       @instance.wait_for { ready? }
@@ -17,9 +16,6 @@ def server_tests(connection, params = {}, mocks_implemented = true)
       @instance.reboot
     end
 
-    if !Fog.mocking? || mocks_implemented
-      @instance.wait_for { ready? }
-    end
-
+    @instance.wait_for { ready? } if !Fog.mocking? || mocks_implemented
   end
 end

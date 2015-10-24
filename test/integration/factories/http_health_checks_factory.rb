@@ -6,6 +6,6 @@ class HttpHealthChecksFactory < CollectionFactory
   end
 
   def params
-    {:name => resource_name}
+    { :name => resource_name }
   end
 end

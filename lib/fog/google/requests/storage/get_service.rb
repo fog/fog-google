@@ -2,7 +2,7 @@ module Fog
   module Storage
     class Google
       class Real
-        require 'fog/google/parsers/storage/get_service'
+        require "fog/google/parsers/storage/get_service"
 
         # List information about Google Storage buckets for authorized user
         #
@@ -16,29 +16,27 @@ module Fog
         #       * 'DisplayName'<~String> - Display name of bucket owner
         #       * 'ID'<~String> - Id of bucket owner
         def get_service
-          request({
-            :expects  => 200,
-            :headers  => {},
-            :host     => @host,
-            :idempotent => true,
-            :method   => 'GET',
-            :parser   => Fog::Parsers::Storage::Google::GetService.new
-          })
+          request(:expects  => 200,
+                  :headers  => {},
+                  :host     => @host,
+                  :idempotent => true,
+                  :method   => "GET",
+                  :parser   => Fog::Parsers::Storage::Google::GetService.new)
         end
       end
 
       class Mock
         def get_service
           response = Excon::Response.new
-          response.headers['Status'] = 200
-          buckets = self.data[:buckets].values.map do |bucket|
-            bucket.reject do |key, value|
-              !['CreationDate', 'Name'].include?(key)
+          response.headers["Status"] = 200
+          buckets = data[:buckets].values.map do |bucket|
+            bucket.reject do |key, _value|
+              !%w(CreationDate Name).include?(key)
             end
           end
           response.body = {
-            'Buckets' => buckets,
-            'Owner'   => { 'ID' => 'some_id'}
+            "Buckets" => buckets,
+            "Owner"   => { "ID" => "some_id" }
           }
           response
         end

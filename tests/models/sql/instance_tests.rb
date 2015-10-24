@@ -1,15 +1,14 @@
-Shindo.tests('Fog::Google[:sql] | instance model', ['google']) do
+Shindo.tests("Fog::Google[:sql] | instance model", ["google"]) do
   @instances = Fog::Google[:sql].instances
 
-  tests('success') do
-
+  tests("success") do
     tests('#create').succeeds do
-      @instance = @instances.create(:instance => Fog::Mock.random_letters(16), :tier => 'D1')
+      @instance = @instances.create(:instance => Fog::Mock.random_letters(16), :tier => "D1")
       @instance.wait_for { ready? }
     end
 
     tests('#update').succeeds do
-      @instance.activation_policy = 'ALWAYS'
+      @instance.activation_policy = "ALWAYS"
       @instance.update
       @instance.wait_for { ready? }
     end
@@ -50,7 +49,5 @@ Shindo.tests('Fog::Google[:sql] | instance model', ['google']) do
     tests('#destroy').succeeds do
       @instance.destroy
     end
-
   end
-
 end

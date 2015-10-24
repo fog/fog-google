@@ -13,8 +13,8 @@ class TargetInstancesFactory < CollectionFactory
   end
 
   def params
-    {:name => resource_name,
-     :zone => TEST_ZONE,
-     :instance => @servers.create}
+    { :name => resource_name,
+      :zone => TEST_ZONE,
+      :instance => @servers.create }
   end
 end

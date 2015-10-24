@@ -14,7 +14,7 @@ module Fog
         # * response<~Excon::Response>:
         #   * status<~Integer> - 200
         def put_bucket(bucket_name, options = {})
-          if location_constraint = options.delete('LocationConstraint')
+          if location_constraint = options.delete("LocationConstraint")
             data =
 <<-DATA
   <CreateBucketConfiguration>
@@ -24,44 +24,42 @@ DATA
           else
             data = nil
           end
-          request({
-            :expects    => 200,
-            :body       => data,
-            :headers    => options,
-            :idempotent => true,
-            :host       => "#{bucket_name}.#{@host}",
-            :method     => 'PUT'
-          })
+          request(:expects    => 200,
+                  :body       => data,
+                  :headers    => options,
+                  :idempotent => true,
+                  :host       => "#{bucket_name}.#{@host}",
+                  :method     => "PUT")
         end
       end
 
       class Mock
         def put_bucket(bucket_name, options = {})
-          acl = options['x-goog-acl'] || 'private'
-          if !['private', 'public-read', 'public-read-write', 'authenticated-read'].include?(acl)
-            raise Excon::Errors::BadRequest.new('invalid x-goog-acl')
+          acl = options["x-goog-acl"] || "private"
+          if !["private", "public-read", "public-read-write", "authenticated-read"].include?(acl)
+            raise Excon::Errors::BadRequest.new("invalid x-goog-acl")
           else
-            self.data[:acls][:bucket][bucket_name] = self.class.acls(options[acl])
+            data[:acls][:bucket][bucket_name] = self.class.acls(options[acl])
           end
           response = Excon::Response.new
           response.status = 200
           bucket = {
             :objects        => {},
-            'Name'          => bucket_name,
-            'CreationDate'  => Time.now,
-            'Owner'         => { 'DisplayName' => 'owner', 'ID' => 'some_id'},
-            'Payer'         => 'BucketOwner'
+            "Name"          => bucket_name,
+            "CreationDate"  => Time.now,
+            "Owner"         => { "DisplayName" => "owner", "ID" => "some_id" },
+            "Payer"         => "BucketOwner"
           }
-          if options['LocationConstraint']
-            bucket['LocationConstraint'] = options['LocationConstraint']
+          if options["LocationConstraint"]
+            bucket["LocationConstraint"] = options["LocationConstraint"]
           else
-            bucket['LocationConstraint'] = ''
+            bucket["LocationConstraint"] = ""
           end
-          if self.data[:buckets][bucket_name].nil?
-            self.data[:buckets][bucket_name] = bucket
+          if data[:buckets][bucket_name].nil?
+            data[:buckets][bucket_name] = bucket
           else
             response.status = 409
-            raise(Excon::Errors.status_error({:expects => 200}, response))
+            raise(Excon::Errors.status_error({ :expects => 200 }, response))
           end
           response
         end

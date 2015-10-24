@@ -14,35 +14,27 @@ module Fog
         #   * body<~String> - url for object
         #
         def put_object_url(bucket_name, object_name, expires, headers = {})
-          unless bucket_name
-            raise ArgumentError.new('bucket_name is required')
-          end
-          unless object_name
-            raise ArgumentError.new('object_name is required')
-          end
+          raise ArgumentError.new("bucket_name is required") unless bucket_name
+          raise ArgumentError.new("object_name is required") unless object_name
           https_url({
-            :headers  => headers,
-            :host     => @host,
-            :method   => 'PUT',
-            :path     => "#{bucket_name}/#{object_name}"
-          }, expires)
+                      :headers  => headers,
+                      :host     => @host,
+                      :method   => "PUT",
+                      :path     => "#{bucket_name}/#{object_name}"
+                    }, expires)
         end
       end
 
       class Mock
         def put_object_url(bucket_name, object_name, expires, headers = {})
-          unless bucket_name
-            raise ArgumentError.new('bucket_name is required')
-          end
-          unless object_name
-            raise ArgumentError.new('object_name is required')
-          end
+          raise ArgumentError.new("bucket_name is required") unless bucket_name
+          raise ArgumentError.new("object_name is required") unless object_name
           https_url({
-            :headers  => headers,
-            :host     => @host,
-            :method   => 'PUT',
-            :path     => "#{bucket_name}/#{object_name}"
-          }, expires)
+                      :headers  => headers,
+                      :host     => @host,
+                      :method   => "PUT",
+                      :path     => "#{bucket_name}/#{object_name}"
+                    }, expires)
         end
       end
     end

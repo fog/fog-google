@@ -23,28 +23,22 @@ module Fog
         #     * 'Content-Type'<~String> - MIME type of object
         #     * 'ETag'<~String> - Etag of object
         #     * 'Last-Modified'<~String> - Last modified timestamp for object
-        def head_object(bucket_name, object_name, options={})
-          unless bucket_name
-            raise ArgumentError.new('bucket_name is required')
-          end
-          unless object_name
-            raise ArgumentError.new('object_name is required')
-          end
-          if version_id = options.delete('versionId')
-            query = {'versionId' => version_id}
+        def head_object(bucket_name, object_name, options = {})
+          raise ArgumentError.new("bucket_name is required") unless bucket_name
+          raise ArgumentError.new("object_name is required") unless object_name
+          if version_id = options.delete("versionId")
+            query = { "versionId" => version_id }
           end
           headers = {}
-          headers['If-Modified-Since'] = Fog::Time.at(options['If-Modified-Since'].to_i).to_date_header if options['If-Modified-Since']
-          headers['If-Unmodified-Since'] = Fog::Time.at(options['If-Unmodified-Since'].to_i).to_date_header if options['If-Modified-Since']
+          headers["If-Modified-Since"] = Fog::Time.at(options["If-Modified-Since"].to_i).to_date_header if options["If-Modified-Since"]
+          headers["If-Unmodified-Since"] = Fog::Time.at(options["If-Unmodified-Since"].to_i).to_date_header if options["If-Modified-Since"]
           headers.merge!(options)
-          request({
-            :expects  => 200,
-            :headers  => headers,
-            :host     => "#{bucket_name}.#{@host}",
-            :method   => 'HEAD',
-            :path     => CGI.escape(object_name),
-            :query    => query
-          })
+          request(:expects  => 200,
+                  :headers  => headers,
+                  :host     => "#{bucket_name}.#{@host}",
+                  :method   => "HEAD",
+                  :path     => CGI.escape(object_name),
+                  :query    => query)
         end
       end
 

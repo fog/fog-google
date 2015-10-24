@@ -1,63 +1,61 @@
-Shindo.tests('Fog::Compute[:google] | HTTP health checks requests', ['google']) do
-
+Shindo.tests("Fog::Compute[:google] | HTTP health checks requests", ["google"]) do
   @google = Fog::Compute[:google]
 
   @insert_http_health_check_format = {
-      'kind' => String,
-      'id' => String,
-      'selfLink' => String,
-      'name' => String,
-      'targetLink' => String,
-      'status' => String,
-      'user' => String,
-      'progress' => Integer,
-      'zone' => String,
-      'insertTime' => String,
-      'startTime' => String,
-      'operationType' => String
+    "kind" => String,
+    "id" => String,
+    "selfLink" => String,
+    "name" => String,
+    "targetLink" => String,
+    "status" => String,
+    "user" => String,
+    "progress" => Integer,
+    "zone" => String,
+    "insertTime" => String,
+    "startTime" => String,
+    "operationType" => String
   }
 
   @get_http_health_check_format = {
-      'kind' => String,
-      'id' => String,
-      'selfLink' => String,
-      'creationTimestamp' => String,
-      'name' => String,
-      'host' => String,
-      'requestPath' => String,
-      'port' => Integer,
-      'checkIntervalSec' => Integer,
-      'timeoutSec' => Integer,
-      'unhealthyThreshold' => Integer,
-      'healthyThreshold' => Integer
+    "kind" => String,
+    "id" => String,
+    "selfLink" => String,
+    "creationTimestamp" => String,
+    "name" => String,
+    "host" => String,
+    "requestPath" => String,
+    "port" => Integer,
+    "checkIntervalSec" => Integer,
+    "timeoutSec" => Integer,
+    "unhealthyThreshold" => Integer,
+    "healthyThreshold" => Integer
   }
 
   @delete_http_health_check_format = {
-      'kind' => String,
-      'id' => String,
-      'selfLink' => String,
-      'name' => String,
-      'targetLink' => String,
-      'targetId' => String,
-      'status' => String,
-      'user' => String,
-      'progress' => Integer,
-      'insertTime' => String,
-      'zone' => String,
-      'startTime' => String,
-      'operationType' => String
+    "kind" => String,
+    "id" => String,
+    "selfLink" => String,
+    "name" => String,
+    "targetLink" => String,
+    "targetId" => String,
+    "status" => String,
+    "user" => String,
+    "progress" => Integer,
+    "insertTime" => String,
+    "zone" => String,
+    "startTime" => String,
+    "operationType" => String
   }
 
   @list_http_health_checks_format = {
-      'kind' => String,
-      'id' => String,
-      'selfLink' => String,
-      'items' => Array
+    "kind" => String,
+    "id" => String,
+    "selfLink" => String,
+    "items" => Array
   }
 
-  tests('success') do
-
-    http_health_check_name = 'test-http-health-check'
+  tests("success") do
+    http_health_check_name = "test-http-health-check"
 
     # These will all fail if errors happen on insert
     tests("#insert_http_health_check").formats(@insert_http_health_check_format) do
@@ -77,7 +75,5 @@ Shindo.tests('Fog::Compute[:google] | HTTP health checks requests', ['google']) 
     tests("#delete_http_health_check").formats(@delete_http_health_check_format) do
       @google.delete_http_health_check(http_health_check_name).body
     end
-
   end
-
 end

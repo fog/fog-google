@@ -1,10 +1,9 @@
-Shindo.tests('Fog::Compute[:google] | operation requests', ['google']) do
+Shindo.tests("Fog::Compute[:google] | operation requests", ["google"]) do
   pending if Fog.mocking?
 
   @google = Fog::Compute[:google]
 
-  tests('success') do
-
+  tests("success") do
     # We are not testing the format here because operation formats are pretty
     # extensive based on what has happened to you account, ever.
     # https://developers.google.com/compute/docs/reference/latest/globalOperations#resource

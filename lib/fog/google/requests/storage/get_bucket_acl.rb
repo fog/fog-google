@@ -2,7 +2,7 @@ module Fog
   module Storage
     class Google
       class Real
-        require 'fog/google/parsers/storage/access_control_list'
+        require "fog/google/parsers/storage/access_control_list"
 
         # Get access control list for an Google Storage bucket
         #
@@ -26,30 +26,26 @@ module Fog
         #           * 'Permission'<~String> - Permission, in [FULL_CONTROL, WRITE, WRITE_ACP, READ, READ_ACP]
         #
         def get_bucket_acl(bucket_name)
-          unless bucket_name
-            raise ArgumentError.new('bucket_name is required')
-          end
-          request({
-            :expects    => 200,
-            :headers    => {},
-            :host       => "#{bucket_name}.#{@host}",
-            :idempotent => true,
-            :method     => 'GET',
-            :parser     => Fog::Parsers::Storage::Google::AccessControlList.new,
-            :query      => {'acl' => nil}
-          })
+          raise ArgumentError.new("bucket_name is required") unless bucket_name
+          request(:expects    => 200,
+                  :headers    => {},
+                  :host       => "#{bucket_name}.#{@host}",
+                  :idempotent => true,
+                  :method     => "GET",
+                  :parser     => Fog::Parsers::Storage::Google::AccessControlList.new,
+                  :query      => { "acl" => nil })
         end
       end
 
       class Mock
         def get_bucket_acl(bucket_name)
           response = Excon::Response.new
-          if acl = self.data[:acls][:bucket][bucket_name]
+          if acl = data[:acls][:bucket][bucket_name]
             response.status = 200
             response.body = acl
           else
             response.status = 404
-            raise(Excon::Errors.status_error({:expects => 200}, response))
+            raise(Excon::Errors.status_error({ :expects => 200 }, response))
           end
           response
         end

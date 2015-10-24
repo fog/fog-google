@@ -15,14 +15,14 @@ module Fog
     module Array; end
   end
 end
-[FalseClass, TrueClass].each {|klass| klass.send(:include, Fog::Boolean)}
-[FalseClass, TrueClass, NilClass, Fog::Boolean].each {|klass| klass.send(:include, Fog::Nullable::Boolean)}
-[NilClass, String].each {|klass| klass.send(:include, Fog::Nullable::String)}
-[NilClass, Time].each {|klass| klass.send(:include, Fog::Nullable::Time)}
-[Integer, NilClass].each {|klass| klass.send(:include, Fog::Nullable::Integer)}
-[Float, NilClass].each {|klass| klass.send(:include, Fog::Nullable::Float)}
-[Hash, NilClass].each {|klass| klass.send(:include, Fog::Nullable::Hash)}
-[Array, NilClass].each {|klass| klass.send(:include, Fog::Nullable::Array)}
+[FalseClass, TrueClass].each { |klass| klass.send(:include, Fog::Boolean) }
+[FalseClass, TrueClass, NilClass, Fog::Boolean].each { |klass| klass.send(:include, Fog::Nullable::Boolean) }
+[NilClass, String].each { |klass| klass.send(:include, Fog::Nullable::String) }
+[NilClass, Time].each { |klass| klass.send(:include, Fog::Nullable::Time) }
+[Integer, NilClass].each { |klass| klass.send(:include, Fog::Nullable::Integer) }
+[Float, NilClass].each { |klass| klass.send(:include, Fog::Nullable::Float) }
+[Hash, NilClass].each { |klass| klass.send(:include, Fog::Nullable::Hash) }
+[Array, NilClass].each { |klass| klass.send(:include, Fog::Nullable::Array) }
 
 module Shindo
   class Tests
@@ -72,7 +72,7 @@ module Shindo
     #
     # @return [Boolean]
     def data_matches_schema(schema, options = {})
-      test('data matches schema') do
+      test("data matches schema") do
         validator = Fog::Schema::DataValidator.new
         valid = validator.validate(yield, schema, options)
         @message = validator.message unless valid
@@ -82,11 +82,11 @@ module Shindo
 
     # @deprecated #formats is deprecated. Use #data_matches_schema instead
     def formats(format, strict = true)
-      test('has proper format') do
+      test("has proper format") do
         if strict
-          options = {:allow_extra_keys => false, :allow_optional_rules => true}
+          options = { :allow_extra_keys => false, :allow_optional_rules => true }
         else
-          options = {:allow_extra_keys => true, :allow_optional_rules => true}
+          options = { :allow_extra_keys => true, :allow_optional_rules => true }
         end
         validator = Fog::Schema::DataValidator.new
         valid = validator.validate(yield, format, options)

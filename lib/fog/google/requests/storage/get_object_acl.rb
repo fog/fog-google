@@ -2,7 +2,7 @@ module Fog
   module Storage
     class Google
       class Real
-        require 'fog/google/parsers/storage/access_control_list'
+        require "fog/google/parsers/storage/access_control_list"
 
         # Get access control list for an Google Storage object
         #
@@ -29,38 +29,32 @@ module Fog
         #           * 'Permission'<~String> - Permission, in [FULL_CONTROL, WRITE, WRITE_ACP, READ, READ_ACP]
         #
         def get_object_acl(bucket_name, object_name, options = {})
-          unless bucket_name
-            raise ArgumentError.new('bucket_name is required')
+          raise ArgumentError.new("bucket_name is required") unless bucket_name
+          raise ArgumentError.new("object_name is required") unless object_name
+          query = { "acl" => nil }
+          if version_id = options.delete("versionId")
+            query["versionId"] = version_id
           end
-          unless object_name
-            raise ArgumentError.new('object_name is required')
-          end
-          query = {'acl' => nil}
-          if version_id = options.delete('versionId')
-            query['versionId'] = version_id
-          end
-          request({
-            :expects    => 200,
-            :headers    => {},
-            :host       => "#{bucket_name}.#{@host}",
-            :idempotent => true,
-            :method     => 'GET',
-            :parser     => Fog::Parsers::Storage::Google::AccessControlList.new,
-            :path       => CGI.escape(object_name),
-            :query      => query
-          })
+          request(:expects    => 200,
+                  :headers    => {},
+                  :host       => "#{bucket_name}.#{@host}",
+                  :idempotent => true,
+                  :method     => "GET",
+                  :parser     => Fog::Parsers::Storage::Google::AccessControlList.new,
+                  :path       => CGI.escape(object_name),
+                  :query      => query)
         end
       end
 
       class Mock
         def get_object_acl(bucket_name, object_name)
           response = Excon::Response.new
-          if acl = self.data[:acls][:object][bucket_name] && self.data[:acls][:object][bucket_name][object_name]
+          if acl = data[:acls][:object][bucket_name] && data[:acls][:object][bucket_name][object_name]
             response.status = 200
             response.body = acl
           else
             response.status = 404
-            raise(Excon::Errors.status_error({:expects => 200}, response))
+            raise(Excon::Errors.status_error({ :expects => 200 }, response))
           end
           response
         end
