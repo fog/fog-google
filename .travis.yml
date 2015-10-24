@@ -1,13 +1,13 @@
+language: ruby
+sudo: false
 matrix:
+  fast_finish: true
   include:
-    - rvm: 1.9.3
-      gemfile: gemfiles/Gemfile.2.0.0-
-    - rvm: 2.0.0
-      gemfile: gemfiles/Gemfile.2.0.0+
-    - rvm: 2.1.5
-      gemfile: gemfiles/Gemfile.2.0.0+
-      env: COVERAGE=true
+    - rvm: 2.0
+    - rvm: 2.1
+    - rvm: 2.2
     - rvm: ree
-      gemfile: gemfiles/Gemfile.2.0.0-
     - rvm: jruby
-      gemfile: gemfiles/Gemfile.2.0.0-
+
+notifications:
+  email: false
