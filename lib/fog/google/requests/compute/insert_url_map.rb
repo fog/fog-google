@@ -4,21 +4,21 @@ module Fog
       class Mock
         def insert_url_map(url_map_name, opts)
           id = Fog::Mock.random_numbers(19).to_s
-          self.data[:url_maps][url_map_name] = {
+          data[:url_maps][url_map_name] = {
             "kind" => "compute#urlMap",
             "id" => id,
             "creationTimestamp" => Time.now.iso8601,
             "name" => url_map_name,
-            "description" => '',
+            "description" => "",
             "hostRules" => [],
             "pathMatchers" => [],
             "tests" => [],
-            "defaultService" => opts['defaultService'],
+            "defaultService" => opts["defaultService"],
             "selfLink" => "https://www.googleapis.com/compute/#{api_version}/projects/#{@project}/global/urlMaps/#{url_map_name}"
           }
 
-          operation = self.random_operation
-          self.data[:operations][operation] = {
+          operation = random_operation
+          data[:operations][operation] = {
             "kind" => "compute#operation",
             "id" => Fog::Mock.random_numbers(19).to_s,
             "name" => operation,
@@ -34,7 +34,7 @@ module Fog
             "selfLink" => "https://www.googleapis.com/compute/#{api_version}/projects/#{@project}/global/operations/#{operation}"
           }
 
-          build_excon_response(self.data[:operations][operation])
+          build_excon_response(data[:operations][operation])
         end
       end
 
@@ -42,12 +42,12 @@ module Fog
         def insert_url_map(url_map_name, opts = {})
           api_method = @compute.url_maps.insert
           parameters = {
-            'project' => @project,
+            "project" => @project
           }
-          body_object = { 'name' => url_map_name }
+          body_object = { "name" => url_map_name }
           body_object.merge!(opts)
 
-          request(api_method, parameters, body_object=body_object)
+          request(api_method, parameters, body_object = body_object)
         end
       end
     end

@@ -2,7 +2,7 @@ module Fog
   module Compute
     class Google
       class Mock
-        def set_common_instance_metadata(identity, current_fingerprint, metadata = {})
+        def set_common_instance_metadata(_identity, _current_fingerprint, _metadata = {})
           Fog::Mock.not_implemented
         end
       end
@@ -11,11 +11,11 @@ module Fog
         def set_common_instance_metadata(identity, current_fingerprint, metadata = {})
           api_method = @compute.projects.set_common_instance_metadata
           parameters = {
-            :project => identity,
+            :project => identity
           }
           body_object = {
             :fingerprint => current_fingerprint,
-            :items => Array(metadata).map { |pair| { :key => pair[0], :value => pair[1] } },
+            :items => Array(metadata).map { |pair| { :key => pair[0], :value => pair[1] } }
           }
 
           request(api_method, parameters, body_object)

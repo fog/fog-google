@@ -2,25 +2,25 @@ module Fog
   module Compute
     class Google
       class Mock
-        def insert_firewall(firewall_name, allowed, network = GOOGLE_COMPUTE_DEFAULT_NETWORK, options = {})
+        def insert_firewall(_firewall_name, _allowed, _network = GOOGLE_COMPUTE_DEFAULT_NETWORK, _options = {})
           Fog::Mock.not_implemented
         end
       end
 
       class Real
         def insert_firewall(firewall_name, allowed, network = GOOGLE_COMPUTE_DEFAULT_NETWORK, options = {})
-          unless network.start_with? 'http'
+          unless network.start_with? "http"
             network = "#{@api_url}#{@project}/global/networks/#{network}"
           end
 
           api_method = @compute.firewalls.insert
           parameters = {
-            'project' => @project,
+            "project" => @project
           }
           body_object = {
             "name" => firewall_name,
             "network" => network,
-            "allowed" => allowed,
+            "allowed" => allowed
           }
           unless options[:description].nil?
             body_object["description"] = options[:description]

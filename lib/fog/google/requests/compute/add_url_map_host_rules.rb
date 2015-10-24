@@ -2,7 +2,7 @@ module Fog
   module Compute
     class Google
       class Mock
-        def add_url_map_host_rules(url_map, host_rules)
+        def add_url_map_host_rules(_url_map, _host_rules)
           Fog::Mock.not_implemented
         end
       end
@@ -11,13 +11,13 @@ module Fog
         def add_url_map_host_rules(url_map, host_rules)
           api_method = @compute.url_maps.update
           parameters = {
-            'project' => @project,
-            'urlMap' => url_map.name
+            "project" => @project,
+            "urlMap" => url_map.name
           }
-          if  url_map.hostRules then  url_map.hostRules.concat( host_rules) else  url_map.hostRules = host_rules end
+          if url_map.hostRules then url_map.hostRules.concat(host_rules) else url_map.hostRules = host_rules end
           body = url_map
-        
-          request(api_method, parameters, body_object=body)
+
+          request(api_method, parameters, body_object = body)
         end
       end
     end

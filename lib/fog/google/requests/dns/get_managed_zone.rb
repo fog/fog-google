@@ -9,8 +9,8 @@ module Fog
         def get_managed_zone(name_or_id)
           api_method = @dns.managed_zones.get
           parameters = {
-            'project' => @project,
-            'managedZone' => name_or_id,
+            "project" => @project,
+            "managedZone" => name_or_id
           }
 
           request(api_method, parameters)
@@ -19,10 +19,10 @@ module Fog
 
       class Mock
         def get_managed_zone(name_or_id)
-          if self.data[:managed_zones].has_key?(name_or_id)
+          if data[:managed_zones].key?(name_or_id)
             data = self.data[:managed_zones][name_or_id]
           else
-            data = self.data[:managed_zones].values.find { |zone| zone['name'] = name_or_id }
+            data = self.data[:managed_zones].values.find { |zone| zone["name"] = name_or_id }
           end
 
           unless data

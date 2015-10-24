@@ -2,7 +2,7 @@ module Fog
   module Compute
     class Google
       class Mock
-        def attach_disk(instance, zone, source, options = {})
+        def attach_disk(_instance, _zone, _source, _options = {})
           Fog::Mock.not_implemented
         end
       end
@@ -11,19 +11,19 @@ module Fog
         def attach_disk(instance, zone, source, options = {})
           api_method = @compute.instances.attach_disk
           parameters = {
-            'project' => @project,
-            'instance' => instance,
-            'zone' => zone.split('/')[-1],
+            "project" => @project,
+            "instance" => instance,
+            "zone" => zone.split("/")[-1]
           }
 
           writable = options.delete(:writable)
           body_object = {
-            'type' =>       'PERSISTENT',
-            'source' =>     source,
-            'mode' =>       writable ? 'READ_WRITE' : 'READ_ONLY',
-            'deviceName' => options.delete(:deviceName),
-            'boot' =>       options.delete(:boot),
-            'autoDelete' => options.delete(:autoDelete),
+            "type" =>       "PERSISTENT",
+            "source" =>     source,
+            "mode" =>       writable ? "READ_WRITE" : "READ_ONLY",
+            "deviceName" => options.delete(:deviceName),
+            "boot" =>       options.delete(:boot),
+            "autoDelete" => options.delete(:autoDelete)
           }
 
           request(api_method, parameters, body_object)

@@ -5,13 +5,13 @@ module Fog
       recognizes :google_client_email, :google_key_location, :google_key_string, :google_client,
                  :app_name, :app_version, :google_json_key_location, :google_json_key_string
 
-      GOOGLE_MONITORING_API_VERSION    = 'v2beta1'
-      GOOGLE_MONITORING_BASE_URL       = 'https://www.googleapis.com/cloudmonitoring/'
+      GOOGLE_MONITORING_API_VERSION    = "v2beta1"
+      GOOGLE_MONITORING_BASE_URL       = "https://www.googleapis.com/cloudmonitoring/"
       GOOGLE_MONITORING_API_SCOPE_URLS = %w(https://www.googleapis.com/auth/monitoring.readonly)
 
       ##
       # MODELS
-      model_path 'fog/google/models/monitoring'
+      model_path "fog/google/models/monitoring"
 
       # Timeseries
       model :timeseries
@@ -27,7 +27,7 @@ module Fog
 
       ##
       # REQUESTS
-      request_path 'fog/google/requests/monitoring'
+      request_path "fog/google/requests/monitoring"
 
       # Timeseries
       request :list_timeseries
@@ -50,7 +50,7 @@ module Fog
             hash[key] = {
               :timeseries => {},
               :timeseries_descriptors => {},
-              :metric_descriptors => {},
+              :metric_descriptors => {}
             }
           end
         end
@@ -76,10 +76,10 @@ module Fog
 
         def initialize(options)
           shared_initialize(options[:google_project], GOOGLE_MONITORING_API_VERSION, GOOGLE_MONITORING_BASE_URL)
-          options.merge!(:google_api_scope_url => GOOGLE_MONITORING_API_SCOPE_URLS.join(' '))
+          options.merge!(:google_api_scope_url => GOOGLE_MONITORING_API_SCOPE_URLS.join(" "))
 
           @client = initialize_google_client(options)
-          @monitoring = @client.discovered_api('cloudmonitoring', api_version)
+          @monitoring = @client.discovered_api("cloudmonitoring", api_version)
         end
       end
     end

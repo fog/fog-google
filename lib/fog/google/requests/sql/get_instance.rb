@@ -10,8 +10,8 @@ module Fog
         def get_instance(instance_id)
           api_method = @sql.instances.get
           parameters = {
-            'project' => @project,
-            'instance' => instance_id,
+            "project" => @project,
+            "instance" => instance_id
           }
 
           request(api_method, parameters)
@@ -20,22 +20,22 @@ module Fog
 
       class Mock
         def get_instance(instance_id)
-          if self.data[:instances].has_key?(instance_id)
-            body = self.data[:instances][instance_id]
+          if data[:instances].key?(instance_id)
+            body = data[:instances][instance_id]
             status = 200
           else
             body = {
-              'error' => {
-                'errors' => [
+              "error" => {
+                "errors" => [
                   {
-                    'domain' => 'global',
-                    'reason' => 'notAuthorized',
-                    'message' => 'The client is not authorized to make this request.',
+                    "domain" => "global",
+                    "reason" => "notAuthorized",
+                    "message" => "The client is not authorized to make this request."
                   }
                 ],
-                'code' => 403,
-                'message' => 'The client is not authorized to make this request.',
-             }
+                "code" => 403,
+                "message" => "The client is not authorized to make this request."
+              }
             }
             status = 403
           end

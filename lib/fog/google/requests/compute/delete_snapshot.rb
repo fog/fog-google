@@ -2,7 +2,7 @@ module Fog
   module Compute
     class Google
       class Mock
-        def delete_snapshot(snapshot_name)
+        def delete_snapshot(_snapshot_name)
           Fog::Mock.not_implemented
         end
       end
@@ -11,8 +11,8 @@ module Fog
         def delete_snapshot(snapshot_name)
           api_method = @compute.snapshots.delete
           parameters = {
-            'project' => @project,
-            'snapshot' => snapshot_name,
+            "project" => @project,
+            "snapshot" => snapshot_name
           }
 
           request(api_method, parameters)

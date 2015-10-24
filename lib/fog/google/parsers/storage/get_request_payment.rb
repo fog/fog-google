@@ -5,7 +5,7 @@ module Fog
         class GetRequestPayment < Fog::Parsers::Base
           def end_element(name)
             case name
-            when 'Payer'
+            when "Payer"
               @response[name] = value
             end
           end

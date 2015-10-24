@@ -2,7 +2,7 @@ module Fog
   module Compute
     class Google
       class Mock
-        def list_zone_view_resources(zone_view)
+        def list_zone_view_resources(_zone_view)
           Fog::Mock.not_implemented
         end
       end
@@ -11,9 +11,9 @@ module Fog
         def list_zone_view_resources(zone_view)
           api_method = @resourceviews.zone_views.list_resources
           parameters = {
-            'projectName' => @project,
-            'zone' => zone_view.zone,
-            'resourceViewName' => zone_view.name
+            "projectName" => @project,
+            "zone" => zone_view.zone,
+            "resourceViewName" => zone_view.name
           }
 
           request(api_method, parameters)
@@ -22,4 +22,3 @@ module Fog
     end
   end
 end
-

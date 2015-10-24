@@ -12,8 +12,8 @@ module Fog
         def reset_instance_ssl_config(instance_id)
           api_method = @sql.instances.reset_ssl_config
           parameters = {
-            'project' => @project,
-            'instance' => instance_id,
+            "project" => @project,
+            "instance" => instance_id
           }
 
           request(api_method, parameters)
@@ -22,23 +22,23 @@ module Fog
 
       class Mock
         def reset_instance_ssl_config(instance_id)
-          operation = self.random_operation
-          self.data[:operations][instance_id] ||= {}
-          self.data[:operations][instance_id][operation] = {
-            'kind' => 'sql#instanceOperation',
-            'instance' => instance_id,
-            'operation' => operation,
-            'operationType' => 'UPDATE',
-            'state' => Fog::Google::SQL::Operation::DONE_STATE,
-            'userEmailAddress' => 'google_client_email@developer.gserviceaccount.com',
-            'enqueuedTime' => Time.now.iso8601,
-            'startTime' => Time.now.iso8601,
-            'endTime' => Time.now.iso8601,
+          operation = random_operation
+          data[:operations][instance_id] ||= {}
+          data[:operations][instance_id][operation] = {
+            "kind" => 'sql#instanceOperation',
+            "instance" => instance_id,
+            "operation" => operation,
+            "operationType" => "UPDATE",
+            "state" => Fog::Google::SQL::Operation::DONE_STATE,
+            "userEmailAddress" => "google_client_email@developer.gserviceaccount.com",
+            "enqueuedTime" => Time.now.iso8601,
+            "startTime" => Time.now.iso8601,
+            "endTime" => Time.now.iso8601
           }
 
           body = {
-            'kind' => 'sql#instancesResetSslConfig',
-            'operation' => operation,
+            "kind" => 'sql#instancesResetSslConfig',
+            "operation" => operation
           }
 
           build_excon_response(body)

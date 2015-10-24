@@ -2,7 +2,7 @@ module Fog
   module Compute
     class Google
       class Mock
-        def set_metadata(instance, zone, fingerprint, metadata={})
+        def set_metadata(_instance, _zone, _fingerprint, _metadata = {})
           Fog::Mock.not_implemented
         end
       end
@@ -20,18 +20,18 @@ module Fog
         #
         # ==== Returns
         # * response<~Excon::Response>
-        def set_metadata(instance, zone, fingerprint, metadata={})
+        def set_metadata(instance, zone, fingerprint, metadata = {})
           api_method = @compute.instances.set_metadata
           parameters = {
-            'project' => @project,
-            'instance' => instance,
-            'zone' => zone
+            "project" => @project,
+            "instance" => instance,
+            "zone" => zone
           }
           body_object = {
-            'fingerprint' => fingerprint,
-            "items" => metadata.to_a.map {|pair| { :key => pair[0], :value => pair[1] } }
+            "fingerprint" => fingerprint,
+            "items" => metadata.to_a.map { |pair| { :key => pair[0], :value => pair[1] } }
           }
-          request(api_method, parameters, body_object=body_object)
+          request(api_method, parameters, body_object = body_object)
         end
       end
     end

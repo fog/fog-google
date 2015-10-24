@@ -2,7 +2,7 @@ module Fog
   module Compute
     class Google
       class Mock
-        def list_zone_operations(zone)
+        def list_zone_operations(_zone)
           Fog::Mock.not_implemented
         end
       end
@@ -13,8 +13,8 @@ module Fog
         def list_zone_operations(zone)
           api_method = @compute.zone_operations.list
           parameters = {
-            'zone' => zone,
-            'project' => @project,
+            "zone" => zone,
+            "project" => @project
           }
 
           request(api_method, parameters)

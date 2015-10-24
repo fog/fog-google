@@ -1,5 +1,5 @@
-require 'fog/core/collection'
-require 'fog/google/models/sql/flag'
+require "fog/core/collection"
+require "fog/google/models/sql/flag"
 
 module Fog
   module Google
@@ -12,7 +12,7 @@ module Fog
         #
         # @return [Array<Fog::Google::SQL::Flag>] List of flags
         def all
-          data = service.list_flags.body['items'] || []
+          data = service.list_flags.body["items"] || []
           load(data)
         end
       end

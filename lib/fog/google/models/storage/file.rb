@@ -1,26 +1,26 @@
-require 'fog/core/model'
+require "fog/core/model"
 
 module Fog
   module Storage
     class Google
       class File < Fog::Model
-        identity  :key,                 :aliases => 'Key'
+        identity :key, :aliases => "Key"
 
-        attribute :cache_control,       :aliases => 'Cache-Control'
-        attribute :content_disposition, :aliases => 'Content-Disposition'
-        attribute :content_encoding,    :aliases => 'Content-Encoding'
-        attribute :content_length,      :aliases => ['Content-Length', 'Size'], :type => :integer
-        attribute :content_md5,         :aliases => 'Content-MD5'
-        attribute :content_type,        :aliases => 'Content-Type'
-        attribute :etag,                :aliases => ['Etag', 'ETag']
-        attribute :expires,             :aliases => 'Expires'
-        attribute :last_modified,       :aliases => ['Last-Modified', 'LastModified']
+        attribute :cache_control,       :aliases => "Cache-Control"
+        attribute :content_disposition, :aliases => "Content-Disposition"
+        attribute :content_encoding,    :aliases => "Content-Encoding"
+        attribute :content_length,      :aliases => ["Content-Length", "Size"], :type => :integer
+        attribute :content_md5,         :aliases => "Content-MD5"
+        attribute :content_type,        :aliases => "Content-Type"
+        attribute :etag,                :aliases => %w(Etag ETag)
+        attribute :expires,             :aliases => "Expires"
+        attribute :last_modified,       :aliases => ["Last-Modified", "LastModified"]
         attribute :metadata
-        attribute :owner,               :aliases => 'Owner'
-        attribute :storage_class,       :aliases => ['x-goog-storage-class', 'StorageClass']
+        attribute :owner,               :aliases => "Owner"
+        attribute :storage_class,       :aliases => ["x-goog-storage-class", "StorageClass"]
 
         def acl=(new_acl)
-          valid_acls = ['private', 'public-read', 'public-read-write', 'authenticated-read']
+          valid_acls = ["private", "public-read", "public-read-write", "authenticated-read"]
           unless valid_acls.include?(new_acl)
             raise ArgumentError.new("acl must be one of [#{valid_acls.join(', ')}]")
           end
@@ -29,9 +29,9 @@ module Fog
 
         def body
           attributes[:body] ||= if last_modified && (file = collection.get(identity))
-            file.body
-          else
-            ''
+                                  file.body
+                                else
+                                  ""
           end
         end
 
@@ -39,9 +39,7 @@ module Fog
           attributes[:body] = new_body
         end
 
-        def directory
-          @directory
-        end
+        attr_reader :directory
 
         def copy(target_directory_key, target_file_key)
           requires :directory, :key
@@ -61,7 +59,7 @@ module Fog
 
         remove_method :metadata
         def metadata
-          attributes.reject {|key, value| !(key.to_s =~ /^x-goog-meta-/)}
+          attributes.reject { |key, _value| !(key.to_s =~ /^x-goog-meta-/) }
         end
 
         remove_method :metadata=
@@ -73,17 +71,17 @@ module Fog
         def owner=(new_owner)
           if new_owner
             attributes[:owner] = {
-              :display_name => new_owner['DisplayName'],
-              :id           => new_owner['ID']
+              :display_name => new_owner["DisplayName"],
+              :id           => new_owner["ID"]
             }
           end
         end
 
         def public=(new_public)
           if new_public
-            @acl = 'public-read'
+            @acl = "public-read"
           else
-            @acl = 'private'
+            @acl = "private"
           end
           new_public
         end
@@ -91,9 +89,9 @@ module Fog
         def public_url
           requires :directory, :key
 
-          acl = service.get_object_acl(directory.key, key).body['AccessControlList']
+          acl = service.get_object_acl(directory.key, key).body["AccessControlList"]
           access_granted = acl.find do |entry|
-            entry['Scope']['type'] == 'AllUsers' && entry['Permission'] == 'READ'
+            entry["Scope"]["type"] == "AllUsers" && entry["Permission"] == "READ"
           end
 
           if access_granted
@@ -102,8 +100,6 @@ module Fog
             else
               "https://storage.googleapis.com/#{directory.key}/#{key}"
             end
-          else
-            nil
           end
         end
 
@@ -112,17 +108,17 @@ module Fog
           if options != {}
             Fog::Logger.deprecation("options param is deprecated, use acl= instead [light_black](#{caller.first})[/]")
           end
-          options['x-goog-acl'] ||= @acl if @acl
-          options['Cache-Control'] = cache_control if cache_control
-          options['Content-Disposition'] = content_disposition if content_disposition
-          options['Content-Encoding'] = content_encoding if content_encoding
-          options['Content-MD5'] = content_md5 if content_md5
-          options['Content-Type'] = content_type if content_type
-          options['Expires'] = expires if expires
+          options["x-goog-acl"] ||= @acl if @acl
+          options["Cache-Control"] = cache_control if cache_control
+          options["Content-Disposition"] = content_disposition if content_disposition
+          options["Content-Encoding"] = content_encoding if content_encoding
+          options["Content-MD5"] = content_md5 if content_md5
+          options["Content-Type"] = content_type if content_type
+          options["Expires"] = expires if expires
           options.merge!(metadata)
 
           data = service.put_object(directory.key, key, body, options)
-          merge_attributes(data.headers.reject {|key, value| ['Content-Length', 'Content-Type'].include?(key)})
+          merge_attributes(data.headers.reject { |key, _value| ["Content-Length", "Content-Type"].include?(key) })
           self.content_length = Fog::Storage.get_body_size(body)
           self.content_type ||= Fog::Storage.get_content_type(body)
           true
@@ -135,9 +131,7 @@ module Fog
 
         private
 
-        def directory=(new_directory)
-          @directory = new_directory
-        end
+        attr_writer :directory
       end
     end
   end

@@ -10,7 +10,7 @@ module Fog
         def list_instances
           api_method = @sql.instances.list
           parameters = {
-            'project' => @project,
+            "project" => @project
           }
 
           request(api_method, parameters)
@@ -20,8 +20,8 @@ module Fog
       class Mock
         def list_instances
           body = {
-            'kind' => 'sql#instancesList',
-            'items' => self.data[:instances].values,
+            "kind" => 'sql#instancesList',
+            "items" => data[:instances].values
           }
 
           build_excon_response(body)

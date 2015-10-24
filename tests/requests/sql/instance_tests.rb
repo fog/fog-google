@@ -1,76 +1,75 @@
-Shindo.tests('Fog::Google[:sql] | instance requests', ['google']) do
+Shindo.tests("Fog::Google[:sql] | instance requests", ["google"]) do
   @sql = Fog::Google[:sql]
   @instance_id = Fog::Mock.random_letters(16)
 
   @insert_instance_format = {
-    'kind' => String,
-    'operation' => String,
+    "kind" => String,
+    "operation" => String
   }
 
   @get_instance_format = {
-    'instance' => String,
-    'currentDiskSize' => Fog::Nullable::String,
-    'databaseVersion' => String,
-    'etag' => String,
-    'ipAddresses' => Fog::Nullable::String,
-    'kind' => String,
-    'maxDiskSize' => String,
-    'project' => String,
-    'region' => String,
-    'serverCaCert' => Hash,
-    'settings' => Hash,
-    'state' => String,
+    "instance" => String,
+    "currentDiskSize" => Fog::Nullable::String,
+    "databaseVersion" => String,
+    "etag" => String,
+    "ipAddresses" => Fog::Nullable::String,
+    "kind" => String,
+    "maxDiskSize" => String,
+    "project" => String,
+    "region" => String,
+    "serverCaCert" => Hash,
+    "settings" => Hash,
+    "state" => String
   }
 
   @list_instances_format = {
-    'kind' => String,
-    'items' => [@get_instance_format],
+    "kind" => String,
+    "items" => [@get_instance_format]
   }
 
   @clone_instance_format = {
-    'kind' => String,
-    'operation' => String,
+    "kind" => String,
+    "operation" => String
   }
 
   @export_instance_format = {
-    'kind' => String,
-    'operation' => String,
+    "kind" => String,
+    "operation" => String
   }
 
   @import_instance_format = {
-    'kind' => String,
-    'operation' => String,
+    "kind" => String,
+    "operation" => String
   }
 
   @reset_instance_ssl_config_format = {
-    'kind' => String,
-    'operation' => String,
+    "kind" => String,
+    "operation" => String
   }
 
   @restart_instance_format = {
-    'kind' => String,
-    'operation' => String,
+    "kind" => String,
+    "operation" => String
   }
 
   @set_instance_root_password_format = {
-    'kind' => String,
-    'operation' => String,
+    "kind" => String,
+    "operation" => String
   }
 
   @update_instance_format = {
-    'kind' => String,
-    'operation' => String,
+    "kind" => String,
+    "operation" => String
   }
 
   @delete_instance_format = {
-    'kind' => String,
-    'operation' => String,
+    "kind" => String,
+    "operation" => String
   }
 
-  tests('success') do
-
+  tests("success") do
     tests('#insert_instance').formats(@insert_instance_format) do
-      result = @sql.insert_instance(@instance_id, 'D1').body
+      result = @sql.insert_instance(@instance_id, "D1").body
       @sql.instances.get(@instance_id).wait_for { ready? }
       result
     end
@@ -116,14 +115,12 @@ Shindo.tests('Fog::Google[:sql] | instance requests', ['google']) do
 
     tests('#restart_instance').formats(@restart_instance_format) do
       result = @sql.restart_instance(@instance_id).body
-      @sql.operations.get(@instance_id, result['operation']).wait_for { ready? }
+      @sql.operations.get(@instance_id, result["operation"]).wait_for { ready? }
       result
     end
 
     tests('#delete_instance').formats(@delete_instance_format) do
       @sql.delete_instance(@instance_id).body
     end
-
   end
-
 end

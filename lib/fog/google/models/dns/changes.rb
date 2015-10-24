@@ -1,5 +1,5 @@
-require 'fog/core/collection'
-require 'fog/google/models/dns/zone'
+require "fog/core/collection"
+require "fog/google/models/dns/zone"
 
 module Fog
   module DNS
@@ -16,7 +16,7 @@ module Fog
         def all
           requires :zone
 
-          data = service.list_changes(zone.identity).body['changes'] || []
+          data = service.list_changes(zone.identity).body["changes"] || []
           load(data)
         rescue Fog::Errors::NotFound
           []

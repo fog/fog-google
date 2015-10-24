@@ -1,5 +1,5 @@
-require 'fog/core/collection'
-require 'fog/google/models/sql/instance'
+require "fog/core/collection"
+require "fog/google/models/sql/instance"
 
 module Fog
   module Google
@@ -12,7 +12,7 @@ module Fog
         #
         # @return [Array<Fog::Google::SQL::Instance>] List of instance resources
         def all
-          data = service.list_instances.body['items'] || []
+          data = service.list_instances.body["items"] || []
           load(data)
         end
 
@@ -30,7 +30,7 @@ module Fog
         rescue Fog::Errors::Error => e
           # Google SQL returns a 403 if we try to access a non-existing resource
           # The default behaviour in Fog is to return a nil
-          return nil if e.message == 'The client is not authorized to make this request.'
+          return nil if e.message == "The client is not authorized to make this request."
           raise e
         end
       end

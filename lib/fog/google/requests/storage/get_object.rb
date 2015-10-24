@@ -24,63 +24,51 @@ module Fog
         #     * 'ETag'<~String> - Etag of object
         #     * 'Last-Modified'<~String> - Last modified timestamp for object
         #
-        def get_object(bucket_name, object_name, options = {}, &block)
-          unless bucket_name
-            raise ArgumentError.new('bucket_name is required')
-          end
-          unless object_name
-            raise ArgumentError.new('object_name is required')
-          end
+        def get_object(bucket_name, object_name, options = {}, &_block)
+          raise ArgumentError.new("bucket_name is required") unless bucket_name
+          raise ArgumentError.new("object_name is required") unless object_name
 
           params = { :headers => {} }
-          if version_id = options.delete('versionId')
-            params[:query] = {'versionId' => version_id}
+          if version_id = options.delete("versionId")
+            params[:query] = { "versionId" => version_id }
           end
           params[:headers].merge!(options)
-          if options['If-Modified-Since']
-            params[:headers]['If-Modified-Since'] = Fog::Time.at(options['If-Modified-Since'].to_i).to_date_header
+          if options["If-Modified-Since"]
+            params[:headers]["If-Modified-Since"] = Fog::Time.at(options["If-Modified-Since"].to_i).to_date_header
           end
-          if options['If-Modified-Since']
-            params[:headers]['If-Unmodified-Since'] = Fog::Time.at(options['If-Unmodified-Since'].to_i).to_date_header
-          end
-
-          if block_given?
-            params[:response_block] = Proc.new
+          if options["If-Modified-Since"]
+            params[:headers]["If-Unmodified-Since"] = Fog::Time.at(options["If-Unmodified-Since"].to_i).to_date_header
           end
 
-          request(params.merge!({
-            :expects        => 200,
-            :host           => "#{bucket_name}.#{@host}",
-            :idempotent     => true,
-            :method         => 'GET',
-            :path           => CGI.escape(object_name),
-          }))
+          params[:response_block] = Proc.new if block_given?
+
+          request(params.merge!(:expects        => 200,
+                                :host           => "#{bucket_name}.#{@host}",
+                                :idempotent     => true,
+                                :method         => "GET",
+                                :path           => CGI.escape(object_name)))
         end
       end
 
       class Mock
         def get_object(bucket_name, object_name, options = {}, &block)
-          unless bucket_name
-            raise ArgumentError.new('bucket_name is required')
-          end
-          unless object_name
-            raise ArgumentError.new('object_name is required')
-          end
+          raise ArgumentError.new("bucket_name is required") unless bucket_name
+          raise ArgumentError.new("object_name is required") unless object_name
           response = Excon::Response.new
-          if (bucket = self.data[:buckets][bucket_name]) && (object = bucket[:objects][object_name])
-            if options['If-Match'] && options['If-Match'] != object['ETag']
+          if (bucket = data[:buckets][bucket_name]) && (object = bucket[:objects][object_name])
+            if options["If-Match"] && options["If-Match"] != object["ETag"]
               response.status = 412
-            elsif options['If-Modified-Since'] && options['If-Modified-Since'] >= Time.parse(object['Last-Modified'])
+            elsif options["If-Modified-Since"] && options["If-Modified-Since"] >= Time.parse(object["Last-Modified"])
               response.status = 304
-            elsif options['If-None-Match'] && options['If-None-Match'] == object['ETag']
+            elsif options["If-None-Match"] && options["If-None-Match"] == object["ETag"]
               response.status = 304
-            elsif options['If-Unmodified-Since'] && options['If-Unmodified-Since'] < Time.parse(object['Last-Modified'])
+            elsif options["If-Unmodified-Since"] && options["If-Unmodified-Since"] < Time.parse(object["Last-Modified"])
               response.status = 412
             else
               response.status = 200
               for key, value in object
                 case key
-                when 'Cache-Control', 'Content-Disposition', 'Content-Encoding', 'Content-Length', 'Content-MD5', 'Content-Type', 'ETag', 'Expires', 'Last-Modified', /^x-goog-meta-/
+                when "Cache-Control", "Content-Disposition", "Content-Encoding", "Content-Length", "Content-MD5", "Content-Type", "ETag", "Expires", "Last-Modified", /^x-goog-meta-/
                   response.headers[key] = value
                 end
               end
@@ -98,7 +86,7 @@ module Fog
             end
           else
             response.status = 404
-            raise(Excon::Errors.status_error({:expects => 200}, response))
+            raise(Excon::Errors.status_error({ :expects => 200 }, response))
           end
           response
         end

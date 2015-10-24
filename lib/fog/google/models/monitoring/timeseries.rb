@@ -1,4 +1,4 @@
-require 'fog/core/model'
+require "fog/core/model"
 
 module Fog
   module Google
@@ -8,7 +8,7 @@ module Fog
       #
       # @see https://developers.google.com/cloud-monitoring/v2beta1/timeseries
       class Timeseries < Fog::Model
-        identity :time_series_desc, :aliases => 'timeseriesDesc'
+        identity :time_series_desc, :aliases => "timeseriesDesc"
 
         attribute :points
       end

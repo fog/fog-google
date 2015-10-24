@@ -1,4 +1,4 @@
-require 'fog/core/model'
+require "fog/core/model"
 
 module Fog
   module Google
@@ -6,15 +6,15 @@ module Fog
       class Instance < Fog::Model
         identity :instance
 
-        attribute :current_disk_size, :aliases => 'currentDiskSize'
-        attribute :database_version, :aliases => 'databaseVersion'
+        attribute :current_disk_size, :aliases => "currentDiskSize"
+        attribute :database_version, :aliases => "databaseVersion"
         attribute :etag
-        attribute :ip_addresses, :aliases => 'ipAddresses'
+        attribute :ip_addresses, :aliases => "ipAddresses"
         attribute :kind
-        attribute :max_disk_size, :aliases => 'maxDiskSize'
+        attribute :max_disk_size, :aliases => "maxDiskSize"
         attribute :project
         attribute :region
-        attribute :server_ca_cert, :aliases => 'serverCaCert'
+        attribute :server_ca_cert, :aliases => "serverCaCert"
         attribute :settings
         attribute :state
 
@@ -33,18 +33,18 @@ module Fog
         attribute :settings_version
         attribute :tier
 
-        MAINTENANCE_STATE    = 'MAINTENANCE'
-        PENDING_CREATE_STATE = 'PENDING_CREATE'
-        RUNNABLE_STATE       = 'RUNNABLE'
-        SUSPENDED_STATE      = 'SUSPENDED'
-        UNKNOWN_STATE        = 'UNKNOWN_STATE'
+        MAINTENANCE_STATE    = "MAINTENANCE"
+        PENDING_CREATE_STATE = "PENDING_CREATE"
+        RUNNABLE_STATE       = "RUNNABLE"
+        SUSPENDED_STATE      = "SUSPENDED"
+        UNKNOWN_STATE        = "UNKNOWN_STATE"
 
         ##
         # Returns the activation policy for this instance
         #
         # @return [String] The activation policy for this instance
         def activation_policy
-          self.settings['activationPolicy']
+          settings["activationPolicy"]
         end
 
         ##
@@ -52,7 +52,7 @@ module Fog
         #
         # @return [Array<String>] The AppEngine app ids that can access this instance
         def autorized_gae_applications
-          self.settings['authorizedGaeApplications']
+          settings["authorizedGaeApplications"]
         end
 
         ##
@@ -60,7 +60,7 @@ module Fog
         #
         # @return [Array<Hash>] The daily backup configuration for the instance
         def backup_configuration
-          self.settings['backupConfiguration']
+          settings["backupConfiguration"]
         end
 
         ##
@@ -75,11 +75,9 @@ module Fog
         def clone(destination_name, options = {})
           requires :identity
 
-          data = service.clone_instance(self.identity, destination_name, options)
-          operation = Fog::Google::SQL::Operations.new(:service => service).get(self.instance, data.body['operation'])
-          unless options.fetch(:async, true)
-            operation.wait_for { ready? }
-          end
+          data = service.clone_instance(identity, destination_name, options)
+          operation = Fog::Google::SQL::Operations.new(:service => service).get(instance, data.body["operation"])
+          operation.wait_for { ready? } unless options.fetch(:async, true)
           operation
         end
 
@@ -90,8 +88,8 @@ module Fog
         def create
           requires :identity
 
-          data = service.insert_instance(self.identity, self.attributes[:tier], self.attributes)
-          operation = Fog::Google::SQL::Operations.new(:service => service).get(self.instance, data.body['operation'])
+          data = service.insert_instance(identity, attributes[:tier], attributes)
+          operation = Fog::Google::SQL::Operations.new(:service => service).get(instance, data.body["operation"])
           operation.wait_for { !pending? }
           reload
         end
@@ -101,7 +99,7 @@ module Fog
         #
         # @return [Array<Hash>] The database flags passed to the instance at startup
         def database_flags
-          self.settings['databaseFlags']
+          settings["databaseFlags"]
         end
 
         ##
@@ -113,8 +111,8 @@ module Fog
         def destroy(options = {})
           requires :identity
 
-          data = service.delete_instance(self.identity)
-          operation = Fog::Google::SQL::Operations.new(:service => service).get(self.instance, data.body['operation'])
+          data = service.delete_instance(identity)
+          operation = Fog::Google::SQL::Operations.new(:service => service).get(instance, data.body["operation"])
           unless options.fetch(:async, true)
             # DISABLED: A delete instance operation never reachs a 'DONE' state (bug?)
             # operation.wait_for { ready? }
@@ -137,11 +135,9 @@ module Fog
         def export(uri, options = {})
           requires :identity
 
-          data = service.export_instance(self.identity, uri, options)
-          operation = Fog::Google::SQL::Operations.new(:service => service).get(self.instance, data.body['operation'])
-          unless options.fetch(:async, true)
-            operation.wait_for { ready? }
-          end
+          data = service.export_instance(identity, uri, options)
+          operation = Fog::Google::SQL::Operations.new(:service => service).get(instance, data.body["operation"])
+          operation.wait_for { ready? } unless options.fetch(:async, true)
           operation
         end
 
@@ -158,11 +154,9 @@ module Fog
         def import(uri, options = {})
           requires :identity
 
-          data = service.import_instance(self.identity, uri, options)
-          operation = Fog::Google::SQL::Operations.new(:service => service).get(self.instance, data.body['operation'])
-          unless options.fetch(:async, true)
-            operation.wait_for { ready? }
-          end
+          data = service.import_instance(identity, uri, options)
+          operation = Fog::Google::SQL::Operations.new(:service => service).get(instance, data.body["operation"])
+          operation.wait_for { ready? } unless options.fetch(:async, true)
           operation
         end
 
@@ -171,7 +165,7 @@ module Fog
         #
         # @return [Array<String>] The list of external networks that are allowed to connect to the instance using the IP
         def ip_configuration_authorized_networks
-          self.settings.fetch('ipConfiguration', {})['authorizedNetworks']
+          settings.fetch("ipConfiguration", {})["authorizedNetworks"]
         end
 
         ##
@@ -179,7 +173,7 @@ module Fog
         #
         # @return [Boolean] Whether the instance should be assigned an IP address or not
         def ip_configuration_enabled
-          self.settings.fetch('ipConfiguration', {})['enabled']
+          settings.fetch("ipConfiguration", {})["enabled"]
         end
 
         ##
@@ -187,7 +181,7 @@ module Fog
         #
         # @return [Boolean] Whether the mysqld should default to 'REQUIRE X509' for users connecting over IP
         def ip_configuration_require_ssl
-          self.settings.fetch('ipConfiguration', {})['requireSsl']
+          settings.fetch("ipConfiguration", {})["requireSsl"]
         end
 
         ##
@@ -195,7 +189,7 @@ module Fog
         #
         # @return [String] The AppEngine application to follow
         def location_preference_zone_follow_gae_application
-          self.settings.fetch('locationPreference', {})['followGaeApplication']
+          settings.fetch("locationPreference", {})["followGaeApplication"]
         end
 
         ##
@@ -203,7 +197,7 @@ module Fog
         #
         # @return [String] The preferred Compute Engine zone
         def location_preference_zone
-          self.settings.fetch('locationPreference', {})['zone']
+          settings.fetch("locationPreference", {})["zone"]
         end
 
         ##
@@ -211,7 +205,7 @@ module Fog
         #
         # @return [String] The pricing plan for this instance
         def pricing_plan
-          self.settings['pricingPlan']
+          settings["pricingPlan"]
         end
 
         ##
@@ -219,7 +213,7 @@ module Fog
         #
         # @return [Boolean] True if the instance is running; False otherwise
         def ready?
-          self.state == RUNNABLE_STATE
+          state == RUNNABLE_STATE
         end
 
         ##
@@ -227,7 +221,7 @@ module Fog
         #
         # @return [String] The type of replication this instance uses
         def replication_type
-          self.settings['replicationType']
+          settings["replicationType"]
         end
 
         ##
@@ -239,11 +233,9 @@ module Fog
         def reset_ssl_config(options = {})
           requires :identity
 
-          data = service.reset_instance_ssl_config(self.identity)
-          operation = Fog::Google::SQL::Operations.new(:service => service).get(self.instance, data.body['operation'])
-          unless options.fetch(:async, true)
-            operation.wait_for { ready? }
-          end
+          data = service.reset_instance_ssl_config(identity)
+          operation = Fog::Google::SQL::Operations.new(:service => service).get(instance, data.body["operation"])
+          operation.wait_for { ready? } unless options.fetch(:async, true)
           operation
         end
 
@@ -256,11 +248,9 @@ module Fog
         def restart(options = {})
           requires :identity
 
-          data = service.restart_instance(self.identity)
-          operation = Fog::Google::SQL::Operations.new(:service => service).get(self.instance, data.body['operation'])
-          unless options.fetch(:async, true)
-            operation.wait_for { ready? }
-          end
+          data = service.restart_instance(identity)
+          operation = Fog::Google::SQL::Operations.new(:service => service).get(instance, data.body["operation"])
+          operation.wait_for { ready? } unless options.fetch(:async, true)
           operation
         end
 
@@ -275,11 +265,9 @@ module Fog
         def restore_backup(backup_configuration, due_time, options = {})
           requires :identity
 
-          data = service.restore_instance_backup(self.identity, backup_configuration, due_time)
-          operation = Fog::Google::SQL::Operations.new(:service => service).get(self.instance, data.body['operation'])
-          unless options.fetch(:async, true)
-            operation.wait_for { ready? }
-          end
+          data = service.restore_instance_backup(identity, backup_configuration, due_time)
+          operation = Fog::Google::SQL::Operations.new(:service => service).get(instance, data.body["operation"])
+          operation.wait_for { ready? } unless options.fetch(:async, true)
           operation
         end
 
@@ -288,7 +276,7 @@ module Fog
         #
         # @return [Fog::Google::SQL::Instance] Instance resource
         def save
-          self.etag ? update : create
+          etag ? update : create
         end
 
         ##
@@ -301,11 +289,9 @@ module Fog
         def set_root_password(password, options = {})
           requires :identity
 
-          data = service.set_instance_root_password(self.identity, password)
-          operation = Fog::Google::SQL::Operations.new(:service => service).get(self.instance, data.body['operation'])
-          unless options.fetch(:async, true)
-            operation.wait_for { ready? }
-          end
+          data = service.set_instance_root_password(identity, password)
+          operation = Fog::Google::SQL::Operations.new(:service => service).get(instance, data.body["operation"])
+          operation.wait_for { ready? } unless options.fetch(:async, true)
           operation
         end
 
@@ -314,7 +300,7 @@ module Fog
         #
         # @return [String] The version of instance settings
         def settings_version
-          self.settings['settingsVersion']
+          settings["settingsVersion"]
         end
 
         ##
@@ -324,7 +310,7 @@ module Fog
         def ssl_certs
           requires :identity
 
-          service.ssl_certs.all(self.identity)
+          service.ssl_certs.all(identity)
         end
 
         ##
@@ -332,7 +318,7 @@ module Fog
         #
         # @return [String] The tier of service for this instance
         def tier
-          self.settings['tier']
+          settings["tier"]
         end
 
         ##
@@ -342,8 +328,8 @@ module Fog
         def update
           requires :identity
 
-          data = service.update_instance(self.identity, self.settings_version, self.tier, self.attributes)
-          operation = Fog::Google::SQL::Operations.new(:service => service).get(self.instance, data.body['operation'])
+          data = service.update_instance(identity, settings_version, tier, attributes)
+          operation = Fog::Google::SQL::Operations.new(:service => service).get(instance, data.body["operation"])
           operation.wait_for { !pending? }
           reload
         end

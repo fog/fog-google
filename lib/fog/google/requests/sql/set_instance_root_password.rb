@@ -10,14 +10,14 @@ module Fog
         def set_instance_root_password(instance_id, password)
           api_method = @sql.instances.set_root_password
           parameters = {
-            'project' => @project,
-            'instance' => instance_id,
+            "project" => @project,
+            "instance" => instance_id
           }
 
           body = {
-            'setRootPasswordContext' => {
-              'kind' => 'sql#setRootUserContext',
-              'password' => password,
+            "setRootPasswordContext" => {
+              "kind" => 'sql#setRootUserContext',
+              "password" => password
             }
           }
 
@@ -26,24 +26,24 @@ module Fog
       end
 
       class Mock
-        def set_instance_root_password(instance_id, password)
-          operation = self.random_operation
-          self.data[:operations][instance_id] ||= {}
-          self.data[:operations][instance_id][operation] = {
-            'kind' => 'sql#instanceOperation',
-            'instance' => instance_id,
-            'operation' => operation,
-            'operationType' => 'INJECT_USER',
-            'state' => Fog::Google::SQL::Operation::DONE_STATE,
-            'userEmailAddress' => 'google_client_email@developer.gserviceaccount.com',
-            'enqueuedTime' => Time.now.iso8601,
-            'startTime' => Time.now.iso8601,
-            'endTime' => Time.now.iso8601,
+        def set_instance_root_password(instance_id, _password)
+          operation = random_operation
+          data[:operations][instance_id] ||= {}
+          data[:operations][instance_id][operation] = {
+            "kind" => 'sql#instanceOperation',
+            "instance" => instance_id,
+            "operation" => operation,
+            "operationType" => "INJECT_USER",
+            "state" => Fog::Google::SQL::Operation::DONE_STATE,
+            "userEmailAddress" => "google_client_email@developer.gserviceaccount.com",
+            "enqueuedTime" => Time.now.iso8601,
+            "startTime" => Time.now.iso8601,
+            "endTime" => Time.now.iso8601
           }
 
           body = {
-            'kind' => 'sql#instancesSetRootPassword',
-            'operation' => operation,
+            "kind" => 'sql#instancesSetRootPassword',
+            "operation" => operation
           }
 
           build_excon_response(body)

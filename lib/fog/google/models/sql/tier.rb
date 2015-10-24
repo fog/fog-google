@@ -1,4 +1,4 @@
-require 'fog/core/model'
+require "fog/core/model"
 
 module Fog
   module Google
@@ -10,9 +10,9 @@ module Fog
       class Tier < Fog::Model
         identity :tier
 
-        attribute :disk_quota, :aliases => 'DiskQuota'
+        attribute :disk_quota, :aliases => "DiskQuota"
         attribute :kind
-        attribute :ram, :aliases => 'RAM'
+        attribute :ram, :aliases => "RAM"
         attribute :region
       end
     end

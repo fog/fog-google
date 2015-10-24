@@ -1,4 +1,4 @@
-require 'fog/core/model'
+require "fog/core/model"
 
 module Fog
   module Compute
@@ -6,11 +6,11 @@ module Fog
       class TargetInstance < Fog::Model
         identity :name
 
-        attribute :kind, :aliases => 'kind'
-        attribute :self_link, :aliases => 'selfLink'
-        attribute :id, :aliases => 'id'
-        attribute :creation_timestamp, :aliases => 'creationTimestamp'
-        attribute :description, :aliases => 'description'
+        attribute :kind, :aliases => "kind"
+        attribute :self_link, :aliases => "selfLink"
+        attribute :id, :aliases => "id"
+        attribute :creation_timestamp, :aliases => "creationTimestamp"
+        attribute :description, :aliases => "description"
         attribute :zone, :aliases => "zone"
         attribute :instance, :aliases => "instance"
         attribute :nat_policy, :aliases => "natPolicy"
@@ -19,22 +19,22 @@ module Fog
           requires :name, :zone
 
           options = {
-            'description' => description,
-            'zone' => zone,
-            'natPolicy' => nat_policy,
-            'instance' => instance,
+            "description" => description,
+            "zone" => zone,
+            "natPolicy" => nat_policy,
+            "instance" => instance
           }
 
           data = service.insert_target_instance(name, zone, options)
-          operation = Fog::Compute::Google::Operations.new(:service => service).get(data.body['name'], data.body['zone'])
+          operation = Fog::Compute::Google::Operations.new(:service => service).get(data.body["name"], data.body["zone"])
           operation.wait_for { !pending? }
           reload
         end
 
-        def destroy(async=true)
+        def destroy(async = true)
           requires :name, :zone
           operation = service.delete_target_instance(name, zone)
-          if not async
+          unless async
             # wait until "DONE" to ensure the operation doesn't fail, raises
             # exception on error
             Fog.wait_for do
@@ -45,12 +45,10 @@ module Fog
         end
 
         def ready?
-          begin
-            service.get_target_instance(self.name, self.zone)
-            true
-          rescue Fog::Errors::NotFound
-            false
-          end
+          service.get_target_instance(name, zone)
+          true
+        rescue Fog::Errors::NotFound
+          false
         end
 
         def reload

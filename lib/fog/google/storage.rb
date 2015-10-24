@@ -4,13 +4,13 @@ module Fog
       requires :google_storage_access_key_id, :google_storage_secret_access_key
       recognizes :host, :port, :scheme, :persistent, :path_style
 
-      model_path 'fog/google/models/storage'
-      collection  :directories
-      model       :directory
-      collection  :files
-      model       :file
+      model_path "fog/google/models/storage"
+      collection :directories
+      model :directory
+      collection :files
+      model :file
 
-      request_path 'fog/google/requests/storage'
+      request_path "fog/google/requests/storage"
       request :copy_object
       request :delete_bucket
       request :delete_object
@@ -47,8 +47,8 @@ module Fog
         private
 
         def host_path_query(params, expires)
-          params[:headers]['Date'] = expires.to_i
-          params[:path] = CGI.escape(params[:path]).gsub('%2F', '/')
+          params[:headers]["Date"] = expires.to_i
+          params[:path] = CGI.escape(params[:path]).gsub("%2F", "/")
           query = [params[:query]].compact
           query << "GoogleAccessId=#{@google_storage_access_key_id}"
           query << "Signature=#{CGI.escape(signature(params))}"
@@ -58,7 +58,7 @@ module Fog
 
         def request_params(params)
           subdomain = params[:host].split(".#{@host}").first
-          if @path_style or subdomain !~ /^(?!goog)(?:[a-z]|\d(?!\d{0,2}(?:\.\d{1,3}){3}$))(?:[a-z0-9]|\.(?![\.\-])|\-(?![\.])){1,61}[a-z0-9]$/
+          if @path_style || subdomain !~ /^(?!goog)(?:[a-z]|\d(?!\d{0,2}(?:\.\d{1,3}){3}$))(?:[a-z0-9]|\.(?![\.\-])|\-(?![\.])){1,61}[a-z0-9]$/
             if subdomain =~ /_/
               # https://github.com/fog/fog/pull/1258#issuecomment-10248620.
               Fog::Logger.warning("fog: the specified google storage bucket name (#{subdomain}) is not DNS compliant (only characters a through z, digits 0 through 9, and the hyphen).")
@@ -81,12 +81,10 @@ module Fog
             subdomain = nil
           end
 
-          if subdomain && subdomain != @host
-            params[:subdomain] = subdomain
-          end
+          params[:subdomain] = subdomain if subdomain && subdomain != @host
 
           params[:scheme] ||= @scheme
-          params[:port]   ||= @port
+          params[:port] ||= @port
           params
         end
       end
@@ -96,61 +94,61 @@ module Fog
 
         def self.acls(type)
           case type
-          when 'private'
+          when "private"
             {
-              "AccessControlList"=> [
+              "AccessControlList" => [
                 {
                   "Permission" => "FULL_CONTROL",
-                  "Scope" => {"ID" => "2744ccd10c7533bd736ad890f9dd5cab2adb27b07d500b9493f29cdc420cb2e0", "type" => "UserById"}
+                  "Scope" => { "ID" => "2744ccd10c7533bd736ad890f9dd5cab2adb27b07d500b9493f29cdc420cb2e0", "type" => "UserById" }
                 }
               ],
-              "Owner" => {"ID" => "2744ccd10c7533bd736ad890f9dd5cab2adb27b07d500b9493f29cdc420cb2e0"}
+              "Owner" => { "ID" => "2744ccd10c7533bd736ad890f9dd5cab2adb27b07d500b9493f29cdc420cb2e0" }
             }
-          when 'public-read'
+          when "public-read"
             {
-              "AccessControlList"=> [
+              "AccessControlList" => [
                 {
                   "Permission" => "FULL_CONTROL",
-                  "Scope" => {"ID" => "2744ccd10c7533bd736ad890f9dd5cab2adb27b07d500b9493f29cdc420cb2e0", "type" => "UserById"}
+                  "Scope" => { "ID" => "2744ccd10c7533bd736ad890f9dd5cab2adb27b07d500b9493f29cdc420cb2e0", "type" => "UserById" }
                 },
                 {
                   "Permission" => "READ",
-                  "Scope" => {"type" => "AllUsers"}
+                  "Scope" => { "type" => "AllUsers" }
                 }
               ],
-              "Owner" => {"ID" => "2744ccd10c7533bd736ad890f9dd5cab2adb27b07d500b9493f29cdc420cb2e0"}
+              "Owner" => { "ID" => "2744ccd10c7533bd736ad890f9dd5cab2adb27b07d500b9493f29cdc420cb2e0" }
             }
-          when 'public-read-write'
+          when "public-read-write"
             {
-              "AccessControlList"=> [
+              "AccessControlList" => [
                 {
                   "Permission" => "FULL_CONTROL",
-                  "Scope" => {"ID" => "2744ccd10c7533bd736ad890f9dd5cab2adb27b07d500b9493f29cdc420cb2e0", "type" => "UserById"}
+                  "Scope" => { "ID" => "2744ccd10c7533bd736ad890f9dd5cab2adb27b07d500b9493f29cdc420cb2e0", "type" => "UserById" }
                 },
                 {
                   "Permission" => "READ",
-                  "Scope" => {"type" => "AllUsers"}
+                  "Scope" => { "type" => "AllUsers" }
                 },
                 {
                   "Permission" => "WRITE",
-                  "Scope" => {"type" => "AllUsers"}
+                  "Scope" => { "type" => "AllUsers" }
                 }
               ],
-              "Owner" => {"ID" => "2744ccd10c7533bd736ad890f9dd5cab2adb27b07d500b9493f29cdc420cb2e0"}
+              "Owner" => { "ID" => "2744ccd10c7533bd736ad890f9dd5cab2adb27b07d500b9493f29cdc420cb2e0" }
             }
-          when 'authenticated-read'
+          when "authenticated-read"
             {
-              "AccessControlList"=> [
+              "AccessControlList" => [
                 {
                   "Permission" => "FULL_CONTROL",
-                  "Scope" => {"ID" => "2744ccd10c7533bd736ad890f9dd5cab2adb27b07d500b9493f29cdc420cb2e0", "type" => "UserById"}
+                  "Scope" => { "ID" => "2744ccd10c7533bd736ad890f9dd5cab2adb27b07d500b9493f29cdc420cb2e0", "type" => "UserById" }
                 },
                 {
                   "Permission" => "READ",
-                  "Scope" => {"type" => "AllAuthenticatedUsers"}
+                  "Scope" => { "type" => "AllAuthenticatedUsers" }
                 }
               ],
-              "Owner" => {"ID" => "2744ccd10c7533bd736ad890f9dd5cab2adb27b07d500b9493f29cdc420cb2e0"}
+              "Owner" => { "ID" => "2744ccd10c7533bd736ad890f9dd5cab2adb27b07d500b9493f29cdc420cb2e0" }
             }
           end
         end
@@ -171,7 +169,7 @@ module Fog
           @data = nil
         end
 
-        def initialize(options={})
+        def initialize(options = {})
           @google_storage_access_key_id = options[:google_storage_access_key_id]
         end
 
@@ -183,7 +181,7 @@ module Fog
           self.class.data.delete(@google_storage_access_key_id)
         end
 
-        def signature(params)
+        def signature(_params)
           "foo"
         end
       end
@@ -208,17 +206,16 @@ module Fog
         #
         # ==== Returns
         # * Storage object with connection to google.
-        def initialize(options={})
-
+        def initialize(options = {})
           @google_storage_access_key_id = options[:google_storage_access_key_id]
           @google_storage_secret_access_key = options[:google_storage_secret_access_key]
           @connection_options = options[:connection_options] || {}
-          @hmac = Fog::HMAC.new('sha1', @google_storage_secret_access_key)
-          @host = options[:host] || 'storage.googleapis.com'
+          @hmac = Fog::HMAC.new("sha1", @google_storage_secret_access_key)
+          @host = options[:host] || "storage.googleapis.com"
           @persistent = options.fetch(:persistent, true)
-          @port       = options[:port]        || 443
-          @scheme     = options[:scheme]      || 'https'
-          @path_style = options[:path_style]  || false
+          @port       = options[:port] || 443
+          @scheme     = options[:scheme] || "https"
+          @path_style = options[:path_style] || false
         end
 
         def reload
@@ -234,27 +231,26 @@ module Fog
 #{params[:headers]['Date']}
 DATA
 
-          google_headers, canonical_google_headers = {}, ''
+          google_headers = {}
+          canonical_google_headers = ""
           for key, value in params[:headers]
-            if key[0..6] == 'x-goog-'
-              google_headers[key] = value
-            end
+            google_headers[key] = value if key[0..6] == "x-goog-"
           end
 
-          google_headers = google_headers.sort {|x, y| x[0] <=> y[0]}
+          google_headers = google_headers.sort { |x, y| x[0] <=> y[0] }
           for key, value in google_headers
             canonical_google_headers << "#{key}:#{value}\n"
           end
           string_to_sign << "#{canonical_google_headers}"
 
-          canonical_resource  = "/"
+          canonical_resource = "/"
           if subdomain = params.delete(:subdomain)
             canonical_resource << "#{CGI.escape(subdomain).downcase}/"
           end
           canonical_resource << "#{params[:path]}"
-          canonical_resource << '?'
+          canonical_resource << "?"
           for key in (params[:query] || {}).keys
-            if ['acl', 'cors', 'location', 'logging', 'requestPayment', 'torrent', 'versions', 'versioning'].include?(key)
+            if %w(acl cors location logging requestPayment torrent versions versioning).include?(key)
               canonical_resource << "#{key}&"
             end
           end
@@ -287,8 +283,8 @@ DATA
           host   = params.delete(:host)
           port   = params.delete(:port)
 
-          params[:headers]['Date'] = Fog::Time.now.to_date_header
-          params[:headers]['Authorization'] = "GOOG1 #{@google_storage_access_key_id}:#{signature(params)}"
+          params[:headers]["Date"] = Fog::Time.now.to_date_header
+          params[:headers]["Authorization"] = "GOOG1 #{@google_storage_access_key_id}:#{signature(params)}"
 
           connection(scheme, host, port).request(params, &block)
         end

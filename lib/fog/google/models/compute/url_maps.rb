@@ -1,5 +1,5 @@
-require 'fog/core/collection'
-require 'fog/google/models/compute/url_map'
+require "fog/core/collection"
+require "fog/google/models/compute/url_map"
 
 module Fog
   module Compute
@@ -8,7 +8,7 @@ module Fog
         model Fog::Compute::Google::UrlMap
 
         def all
-          data = service.list_url_maps.body['items'] || []
+          data = service.list_url_maps.body["items"] || []
           load(data)
         end
 

@@ -1,5 +1,5 @@
-require 'fog/core/collection'
-require 'fog/google/models/compute/image'
+require "fog/core/collection"
+require "fog/google/models/compute/image"
 
 module Fog
   module Compute
@@ -12,20 +12,20 @@ module Fog
         # charges. See https://cloud.google.com/compute/docs/operating-systems/
         # for more info.
         GLOBAL_PROJECTS = [
-          'centos-cloud',
-          'coreos-cloud',
-          'debian-cloud',
-          'google-containers',
-          'opensuse-cloud',
-          'rhel-cloud',
-          'suse-cloud',
-          'ubuntu-os-cloud',
-          'windows-cloud'
+          "centos-cloud",
+          "coreos-cloud",
+          "debian-cloud",
+          "google-containers",
+          "opensuse-cloud",
+          "rhel-cloud",
+          "suse-cloud",
+          "ubuntu-os-cloud",
+          "windows-cloud"
         ]
 
         def all
           data = []
-          all_projects = [ self.service.project ] + global_projects
+          all_projects = [service.project] + global_projects
 
           all_projects.each do |project|
             begin
@@ -46,7 +46,7 @@ module Fog
 
         def get(identity)
           # Search own project before global projects
-          all_projects = [ self.service.project ] + global_projects
+          all_projects = [service.project] + global_projects
 
           data = nil
           all_projects.each do |project|
@@ -66,7 +66,7 @@ module Fog
         private
 
         def global_projects
-          GLOBAL_PROJECTS + self.service.extra_global_projects
+          GLOBAL_PROJECTS + service.extra_global_projects
         end
       end
     end

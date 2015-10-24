@@ -1,5 +1,5 @@
-require 'fog/core/collection'
-require 'fog/google/models/monitoring/metric_descriptor'
+require "fog/core/collection"
+require "fog/google/models/monitoring/metric_descriptor"
 
 module Fog
   module Google
@@ -19,7 +19,7 @@ module Fog
         #   no metrics are returned.
         # @return [Array<Fog::Google::Monitoring::MetricDescriptor>] List of Metric Descriptors.
         def all(options = {})
-          data = service.list_metric_descriptors(options).body['metrics'] || []
+          data = service.list_metric_descriptors(options).body["metrics"] || []
           load(data)
         end
       end

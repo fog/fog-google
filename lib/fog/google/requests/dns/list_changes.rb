@@ -9,8 +9,8 @@ module Fog
         def list_changes(zone_name_or_id)
           api_method = @dns.changes.list
           parameters = {
-            'project' => @project,
-            'managedZone' => zone_name_or_id,
+            "project" => @project,
+            "managedZone" => zone_name_or_id
           }
 
           request(api_method, parameters)
@@ -19,10 +19,10 @@ module Fog
 
       class Mock
         def list_changes(zone_name_or_id)
-          if self.data[:managed_zones].has_key?(zone_name_or_id)
-            zone = self.data[:managed_zones][zone_name_or_id]
+          if data[:managed_zones].key?(zone_name_or_id)
+            zone = data[:managed_zones][zone_name_or_id]
           else
-            zone = self.data[:managed_zones].values.find { |zone| zone['name'] == zone_name_or_id }
+            zone = data[:managed_zones].values.find { |zone| zone["name"] == zone_name_or_id }
           end
 
           unless zone
@@ -30,8 +30,8 @@ module Fog
           end
 
           body = {
-            'kind' => 'dns#changesListResponse',
-            'changes' => self.data[:changes][zone['id']],
+            "kind" => 'dns#changesListResponse',
+            "changes" => data[:changes][zone["id"]]
           }
           build_excon_response(body)
         end

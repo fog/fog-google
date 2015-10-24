@@ -1,4 +1,4 @@
-require 'fog/core/model'
+require "fog/core/model"
 
 module Fog
   module Compute
@@ -12,19 +12,19 @@ module Fog
 
         attribute :kind
         attribute :id
-        attribute :creation_timestamp, :aliases => 'creationTimestamp'
+        attribute :creation_timestamp, :aliases => "creationTimestamp"
         attribute :deprecated
         attribute :description
         attribute :quotas
-        attribute :self_link, :aliases => 'selfLink'
+        attribute :self_link, :aliases => "selfLink"
         attribute :status
         attribute :zones
 
-        DOWN_STATE = 'DOWN'
-        UP_STATE   = 'UP'
+        DOWN_STATE = "DOWN"
+        UP_STATE   = "UP"
 
         def up?
-          self.status == UP_STATE
+          status == UP_STATE
         end
       end
     end

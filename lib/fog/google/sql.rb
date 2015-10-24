@@ -5,14 +5,14 @@ module Fog
       recognizes :google_client_email, :google_key_location, :google_key_string, :google_client,
                  :app_name, :app_version, :google_json_key_location, :google_json_key_string
 
-      GOOGLE_SQL_API_VERSION    = 'v1beta3'
-      GOOGLE_SQL_BASE_URL       = 'https://www.googleapis.com/sql/'
+      GOOGLE_SQL_API_VERSION    = "v1beta3"
+      GOOGLE_SQL_BASE_URL       = "https://www.googleapis.com/sql/"
       GOOGLE_SQL_API_SCOPE_URLS = %w(https://www.googleapis.com/auth/sqlservice.admin
                                      https://www.googleapis.com/auth/cloud-platform)
 
       ##
       # MODELS
-      model_path 'fog/google/models/sql'
+      model_path "fog/google/models/sql"
 
       # Backup Run
       model :backup_run
@@ -40,7 +40,7 @@ module Fog
 
       ##
       # REQUESTS
-      request_path 'fog/google/requests/sql'
+      request_path "fog/google/requests/sql"
 
       # Backup Run
       request :get_backup_run
@@ -89,7 +89,7 @@ module Fog
               :backup_runs => {},
               :instances => {},
               :operations => {},
-              :ssl_certs => {},
+              :ssl_certs => {}
             }
           end
         end
@@ -119,10 +119,10 @@ module Fog
 
         def initialize(options)
           shared_initialize(options[:google_project], GOOGLE_SQL_API_VERSION, GOOGLE_SQL_BASE_URL)
-          options.merge!(:google_api_scope_url => GOOGLE_SQL_API_SCOPE_URLS.join(' '))
+          options.merge!(:google_api_scope_url => GOOGLE_SQL_API_SCOPE_URLS.join(" "))
 
           @client = initialize_google_client(options)
-          @sql = @client.discovered_api('sqladmin', api_version)
+          @sql = @client.discovered_api("sqladmin", api_version)
         end
       end
     end

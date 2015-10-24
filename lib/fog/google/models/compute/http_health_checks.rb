@@ -1,5 +1,5 @@
-require 'fog/core/collection'
-require 'fog/google/models/compute/http_health_check'
+require "fog/core/collection"
+require "fog/google/models/compute/http_health_check"
 
 module Fog
   module Compute
@@ -7,8 +7,8 @@ module Fog
       class HttpHealthChecks < Fog::Collection
         model Fog::Compute::Google::HttpHealthCheck
 
-        def all(filters={})
-          data = service.list_http_health_checks.body['items'] || []
+        def all(_filters = {})
+          data = service.list_http_health_checks.body["items"] || []
           load(data)
         end
 

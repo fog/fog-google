@@ -1,4 +1,4 @@
-require 'fog/core/model'
+require "fog/core/model"
 
 module Fog
   module Compute
@@ -7,15 +7,15 @@ module Fog
         identity :name
         attribute :description
         attribute :status
-        attribute :maintenance_windows, :aliases => 'maintenanceWindows'
-        attribute :begin_time, :aliases => 'beginTime'
-        attribute :end_time, :aliases => 'endTime'
+        attribute :maintenance_windows, :aliases => "maintenanceWindows"
+        attribute :begin_time, :aliases => "beginTime"
+        attribute :end_time, :aliases => "endTime"
         attribute :quotas
         attribute :region
-        attribute :self_link, :aliases => 'selfLink'
+        attribute :self_link, :aliases => "selfLink"
 
         def up?
-          self.status == "UP"
+          status == "UP"
         end
       end
     end

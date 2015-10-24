@@ -7,31 +7,31 @@ module Fog
         def handle_disks(options, zone_name)
           disks = []
           i = 0
-          options.delete('disks').each do |disk|
+          options.delete("disks").each do |disk|
             disk = Disk.new(disk) unless disk.is_a? Disk
             disks << {
-              "kind"=>"compute#attachedDisk",
-              "index"=>i,
-              "type"=>"PERSISTENT",
-              "mode"=>"READ_WRITE",
-              "source"=>"https://www.googleapis.com/compute/#{api_version}/projects/#{@project}/zones/#{zone_name}/disks/#{disk.name}",
-              "deviceName"=>"persistent-disk-#{i}",
-              "boot"=>true
+              "kind" => "compute#attachedDisk",
+              "index" => i,
+              "type" => "PERSISTENT",
+              "mode" => "READ_WRITE",
+              "source" => "https://www.googleapis.com/compute/#{api_version}/projects/#{@project}/zones/#{zone_name}/disks/#{disk.name}",
+              "deviceName" => "persistent-disk-#{i}",
+              "boot" => true
             }
-            i+=1
+            i += 1
           end
           disks
         end
 
-        def insert_server(server_name, zone_name, options={}, *deprecated_args)
+        def insert_server(server_name, zone_name, options = {}, *_deprecated_args)
           # check that zone exists
           get_zone(zone_name)
 
-          if options['disks'].nil? or options['disks'].empty?
+          if options["disks"].nil? || options["disks"].empty?
             raise ArgumentError.new "Empty value for field 'disks'. Boot disk must be specified"
           end
           id = Fog::Mock.random_numbers(19).to_s
-          self.data[:servers][server_name] = {
+          data[:servers][server_name] = {
             "kind" => "compute#instance",
             "id" => id,
             "creationTimestamp" => Time.now.iso8601,
@@ -70,8 +70,8 @@ module Fog
             "selfLink" => "https://www.googleapis.com/compute/#{api_version}/projects/#{@project}/zones/#{zone_name}/instances/#{server_name}"
           }
 
-          operation = self.random_operation
-          self.data[:operations][operation] = {
+          operation = random_operation
+          data[:operations][operation] = {
             "kind" => "compute#operation",
             "id" => Fog::Mock.random_numbers(19).to_s,
             "name" => operation,
@@ -87,7 +87,7 @@ module Fog
             "selfLink" => "https://www.googleapis.com/compute/#{api_version}/projects/#{@project}/zones/#{zone_name}/operations/#{operation}"
           }
 
-          build_excon_response(self.data[:operations][operation])
+          build_excon_response(data[:operations][operation])
         end
       end
 
@@ -98,97 +98,97 @@ module Fog
           disks = []
           # An array of persistent disks. You must supply a boot disk as the first disk in
           # this array and mark it as a boot disk using the disks[].boot property.
-          options.delete('disks').each do |disk|
+          options.delete("disks").each do |disk|
             if disk.is_a? Disk
               disks << disk.get_object
             else
               disks << disk
             end
           end
-          disks.first['boot'] = true
+          disks.first["boot"] = true
           disks
         end
 
         def format_metadata(metadata)
-          { "items" => metadata.map {|k,v| {"key" => k, "value" => v}} }
+          { "items" => metadata.map { |k, v| { "key" => k, "value" => v } } }
         end
 
-        def insert_server(server_name, zone_name, options={}, *deprecated_args)
-          if deprecated_args.length > 0 or not options.is_a? Hash
-            raise ArgumentError.new 'Too many parameters specified. This may be the cause of code written for an outdated'\
-                ' version of fog. Usage: server_name, zone_name, [options]'
+        def insert_server(server_name, zone_name, options = {}, *deprecated_args)
+          if deprecated_args.length > 0 or !options.is_a? Hash
+            raise ArgumentError.new "Too many parameters specified. This may be the cause of code written for an outdated"\
+                " version of fog. Usage: server_name, zone_name, [options]"
           end
           api_method = @compute.instances.insert
           parameters = {
-              'project' => @project,
-              'zone' => zone_name,
+            "project" => @project,
+            "zone" => zone_name
           }
-          body_object = {:name => server_name}
+          body_object = { :name => server_name }
 
-          body_object['machineType'] = @api_url + @project + "/zones/#{zone_name}/machineTypes/#{options.delete 'machineType'}"
+          body_object["machineType"] = @api_url + @project + "/zones/#{zone_name}/machineTypes/#{options.delete 'machineType'}"
           network = nil
-          if options.key? 'network'
-            network = options.delete 'network'
+          if options.key? "network"
+            network = options.delete "network"
           else
             network = GOOGLE_COMPUTE_DEFAULT_NETWORK
           end
 
           # ExternalIP is default value for server creation
-          access_config = {'type' => 'ONE_TO_ONE_NAT', 'name' => 'External NAT'}
+          access_config = { "type" => "ONE_TO_ONE_NAT", "name" => "External NAT" }
           # leave natIP undefined to use an IP from a shared ephemeral IP address pool
-          if options.key? 'externalIp'
-            access_config['natIP'] = options.delete 'externalIp'
+          if options.key? "externalIp"
+            access_config["natIP"] = options.delete "externalIp"
             # If set to 'false', that would mean user does no want to allocate an external IP
-            access_config = nil if access_config['natIP'] == false
+            access_config = nil if access_config["natIP"] == false
           end
 
           networkInterfaces = []
-          if ! network.nil?
-            networkInterface = { 'network' => @api_url + @project + "/global/networks/#{network}" }
-            networkInterface['accessConfigs'] = [access_config] if access_config
-            networkInterfaces <<  networkInterface
+          unless network.nil?
+            networkInterface = { "network" => @api_url + @project + "/global/networks/#{network}" }
+            networkInterface["accessConfigs"] = [access_config] if access_config
+            networkInterfaces << networkInterface
           end
 
           scheduling = {
-            'automaticRestart' => false,
-            'onHostMaintenance' => "MIGRATE",
-            'preemptible' => false
+            "automaticRestart" => false,
+            "onHostMaintenance" => "MIGRATE",
+            "preemptible" => false
           }
-          if options.key? 'auto_restart'
-            scheduling['automaticRestart'] = options.delete 'auto_restart'
-            scheduling['automaticRestart'] = scheduling['automaticRestart'].class == TrueClass
+          if options.key? "auto_restart"
+            scheduling["automaticRestart"] = options.delete "auto_restart"
+            scheduling["automaticRestart"] = scheduling["automaticRestart"].class == TrueClass
           end
-          if options.key? 'preemptible'
-            scheduling['preemptible'] = options.delete 'preemptible'
-            scheduling['preemptible'] = scheduling['preemptible'].class == TrueClass
+          if options.key? "preemptible"
+            scheduling["preemptible"] = options.delete "preemptible"
+            scheduling["preemptible"] = scheduling["preemptible"].class == TrueClass
           end
-          if options.key? 'on_host_maintenance'
-            ohm = options.delete 'on_host_maintenance'
-            scheduling['onHostMaintenance'] = (ohm.respond_to?("upcase") &&
+          if options.key? "on_host_maintenance"
+            ohm = options.delete "on_host_maintenance"
+            scheduling["onHostMaintenance"] = (ohm.respond_to?("upcase") &&
                     ohm.upcase == "MIGRATE" && "MIGRATE") || "TERMINATE"
           end
-          body_object['scheduling'] = scheduling
+          body_object["scheduling"] = scheduling
 
           # @see https://developers.google.com/compute/docs/networking#canipforward
-          if options.key? 'can_ip_forward'
-            body_object['canIpForward'] = options.delete 'can_ip_forward'
+          if options.key? "can_ip_forward"
+            body_object["canIpForward"] = options.delete "can_ip_forward"
           end
 
           # TODO: add other networks
-          body_object['networkInterfaces'] = networkInterfaces
+          body_object["networkInterfaces"] = networkInterfaces
 
-          if options['disks'].nil? or options['disks'].empty?
+          if options["disks"].nil? || options["disks"].empty?
             raise ArgumentError.new "Empty value for field 'disks'. Boot disk must be specified"
           end
-          body_object['disks'] = handle_disks(options)
+          body_object["disks"] = handle_disks(options)
 
-          options['metadata'] = format_metadata options['metadata'] if options['metadata']
+          options["metadata"] = format_metadata options["metadata"] if options["metadata"]
 
-          body_object['tags'] = { 'items' => options.delete('tags') } if options['tags']
+          body_object["tags"] = { "items" => options.delete("tags") } if options["tags"]
 
           body_object.merge!(options) # Adds in all remaining options that weren't explicitly handled.
 
-          request(api_method, parameters, body_object=body_object)
+          request(api_method, parameters, body_object = body_object)
         end
       end
     end

@@ -2,7 +2,7 @@ module Fog
   module Compute
     class Google
       class Mock
-        def list_region_operations(region)
+        def list_region_operations(_region)
           Fog::Mock.not_implemented
         end
       end
@@ -13,8 +13,8 @@ module Fog
         def list_region_operations(region)
           api_method = @compute.region_operations.list
           parameters = {
-            'region' => region,
-            'project' => @project,
+            "region" => region,
+            "project" => @project
           }
 
           request(api_method, parameters)

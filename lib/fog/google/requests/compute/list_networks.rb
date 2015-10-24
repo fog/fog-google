@@ -11,7 +11,7 @@ module Fog
         def list_networks
           api_method = @compute.networks.list
           parameters = {
-            'project' => @project
+            "project" => @project
           }
 
           request(api_method, parameters)

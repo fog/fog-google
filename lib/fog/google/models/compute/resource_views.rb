@@ -1,5 +1,5 @@
-require 'fog/core/collection'
-require 'fog/google/models/compute/resource_view'
+require "fog/core/collection"
+require "fog/google/models/compute/resource_view"
 
 module Fog
   module Compute
@@ -7,44 +7,44 @@ module Fog
       class ResourceViews < Fog::Collection
         model Fog::Compute::Google::ResourceView
 
-        def all(filters={})
-          if filters['region'].nil? && filters['zone'].nil?
+        def all(filters = {})
+          if filters["region"].nil? && filters["zone"].nil?
             data = []
-            service.list_regions.body['items'].each do |region|
-              data += service.list_region_views(region['name']).body['items'] || []
+            service.list_regions.body["items"].each do |region|
+              data += service.list_region_views(region["name"]).body["items"] || []
             end
-            service.list_zones.body['items'].each do |zone|
-              data += service.list_zone_views(zone['name']).body['items'] || []
+            service.list_zones.body["items"].each do |zone|
+              data += service.list_zone_views(zone["name"]).body["items"] || []
             end
-          elsif filters['zone'] 
-            data = service.list_zone_views(filters['zone']).body['items'] || []
-          else 
-            data = service.list_region_views(filters['region']).body['items'] || []
+          elsif filters["zone"]
+            data = service.list_zone_views(filters["zone"]).body["items"] || []
+          else
+            data = service.list_region_views(filters["region"]).body["items"] || []
           end
           load(data)
         end
 
-        def get(identity, region=nil, zone=nil)
+        def get(identity, region = nil, zone = nil)
           response = nil
-          
+
           if region.nil? & zone.nil?
-            service.list_regions.body['items'].each do |region|
+            service.list_regions.body["items"].each do |region|
               begin
-                response = service.get_region_view(identity, region['name'])
+                response = service.get_region_view(identity, region["name"])
                 break if response.status == 200
               rescue Fog::Errors::Error
               end
             end
-            service.list_zones.body['items'].each do |zone|
+            service.list_zones.body["items"].each do |zone|
               begin
-                response = service.get_zone_view(identity, zone['name'])
+                response = service.get_zone_view(identity, zone["name"])
                 break if response.status == 200
               rescue Fog::Errors::Error
               end
             end
           elsif region
             response = service.get_region_view(identity, region)
-          else 
+          else
             response = service.get_zone_view(identity, zone)
           end
 

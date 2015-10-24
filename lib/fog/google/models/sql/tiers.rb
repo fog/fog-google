@@ -1,5 +1,5 @@
-require 'fog/core/collection'
-require 'fog/google/models/sql/tier'
+require "fog/core/collection"
+require "fog/google/models/sql/tier"
 
 module Fog
   module Google
@@ -12,7 +12,7 @@ module Fog
         #
         # @return [Array<Fog::Google::SQL::Tier>] List of tiers
         def all
-          data = service.list_tiers.body['items'] || []
+          data = service.list_tiers.body["items"] || []
           load(data)
         end
       end

@@ -4,29 +4,29 @@ module Fog
       module Google
         class AccessControlList < Fog::Parsers::Base
           def reset
-            @grant = { 'Grantee' => {} }
-            @response = { 'BucketLoggingStatus' => {} }
+            @grant = { "Grantee" => {} }
+            @response = { "BucketLoggingStatus" => {} }
           end
 
           def end_element(name)
             case name
-            when 'DisplayName', 'ID'
+            when "DisplayName", "ID"
               if @in_access_control_list
-                @grant['Grantee'][name] = value
+                @grant["Grantee"][name] = value
               else
-                @response['Owner'][name] = value
+                @response["Owner"][name] = value
               end
-            when 'Grant'
-              @response['BucketLoggingStatus']['LoggingEnabled']['TargetGrants'] << @grant
-              @grant = { 'Grantee' => {} }
-            when 'LoggingEnabled'
-              @response['BucketLoggingStatus']['LoggingEnabled'] = { 'TargetGrants' => [] }
-            when 'Permission'
+            when "Grant"
+              @response["BucketLoggingStatus"]["LoggingEnabled"]["TargetGrants"] << @grant
+              @grant = { "Grantee" => {} }
+            when "LoggingEnabled"
+              @response["BucketLoggingStatus"]["LoggingEnabled"] = { "TargetGrants" => [] }
+            when "Permission"
               @grant[name] = value
-            when 'TargetBucket', 'TargetPrefix'
-              @response['BucketLoggingStatus'][name] = value
-            when 'URI'
-              @grant['Grantee'][name] = value
+            when "TargetBucket", "TargetPrefix"
+              @response["BucketLoggingStatus"][name] = value
+            when "URI"
+              @grant["Grantee"][name] = value
             end
           end
         end

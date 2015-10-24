@@ -5,19 +5,19 @@ module Fog
         class GetService < Fog::Parsers::Base
           def reset
             @bucket = {}
-            @response = { 'Owner' => {}, 'Buckets' => [] }
+            @response = { "Owner" => {}, "Buckets" => [] }
           end
 
           def end_element(name)
             case name
-            when 'Bucket'
-              @response['Buckets'] << @bucket
+            when "Bucket"
+              @response["Buckets"] << @bucket
               @bucket = {}
-            when 'CreationDate'
-              @bucket['CreationDate'] = Time.parse(value)
-            when 'DisplayName', 'ID'
-              @response['Owner'][name] = value
-            when 'Name'
+            when "CreationDate"
+              @bucket["CreationDate"] = Time.parse(value)
+            when "DisplayName", "ID"
+              @response["Owner"][name] = value
+            when "Name"
               @bucket[name] = value
             end
           end

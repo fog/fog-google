@@ -1,5 +1,5 @@
-require 'fog/core/collection'
-require 'fog/google/models/compute/flavor'
+require "fog/core/collection"
+require "fog/google/models/compute/flavor"
 
 module Fog
   module Compute
@@ -12,8 +12,8 @@ module Fog
             data = service.list_machine_types(filters[:zone]).body["items"]
           else
             data = []
-            service.list_aggregated_machine_types.body['items'].each_value do |zone|
-              data.concat(zone['machineTypes']) if zone['machineTypes']
+            service.list_aggregated_machine_types.body["items"].each_value do |zone|
+              data.concat(zone["machineTypes"]) if zone["machineTypes"]
             end
           end
           load(data)

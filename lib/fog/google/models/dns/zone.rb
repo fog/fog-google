@@ -1,4 +1,4 @@
-require 'fog/core/model'
+require "fog/core/model"
 
 module Fog
   module DNS
@@ -10,12 +10,12 @@ module Fog
       class Zone < Fog::Model
         identity :id
 
-        attribute :creation_time, :aliases => 'creationTime'
+        attribute :creation_time, :aliases => "creationTime"
         attribute :description
-        attribute :domain, :aliases => 'dnsName'
+        attribute :domain, :aliases => "dnsName"
         attribute :kind
         attribute :name
-        attribute :nameservers, :aliases => 'nameServers'
+        attribute :nameservers, :aliases => "nameServers"
 
         ##
         # Enumerates the list of Changes for the Managed Zone
@@ -37,7 +37,7 @@ module Fog
         def destroy
           requires :identity
 
-          service.delete_managed_zone(self.identity)
+          service.delete_managed_zone(identity)
           true
         end
 
@@ -62,9 +62,9 @@ module Fog
         def save
           requires :name, :domain, :description
 
-          raise Fog::Errors::Error.new('Resaving an existing object may create a duplicate') if persisted?
+          raise Fog::Errors::Error.new("Resaving an existing object may create a duplicate") if persisted?
 
-          data = service.create_managed_zone(self.name, self.domain, self.description)
+          data = service.create_managed_zone(name, domain, description)
           merge_attributes(data.body)
           self
         end

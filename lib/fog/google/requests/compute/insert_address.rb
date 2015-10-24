@@ -2,7 +2,7 @@ module Fog
   module Compute
     class Google
       class Mock
-        def insert_address(address_name, region_name, options = {})
+        def insert_address(_address_name, _region_name, _options = {})
           Fog::Mock.not_implemented
         end
       end
@@ -11,11 +11,11 @@ module Fog
         def insert_address(address_name, region_name, options = {})
           api_method = @compute.addresses.insert
           parameters = {
-            'project' => @project,
-            'region' => region_name,
+            "project" => @project,
+            "region" => region_name
           }
-          body_object = { 'name' => address_name }
-          body_object['description'] = options[:description] if options[:description]
+          body_object = { "name" => address_name }
+          body_object["description"] = options[:description] if options[:description]
 
           request(api_method, parameters, body_object)
         end

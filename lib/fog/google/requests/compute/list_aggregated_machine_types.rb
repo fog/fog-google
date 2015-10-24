@@ -11,7 +11,7 @@ module Fog
         def list_aggregated_machine_types
           api_method = @compute.machine_types.aggregated_list
           parameters = {
-            'project' => @project,
+            "project" => @project
           }
 
           request(api_method, parameters)

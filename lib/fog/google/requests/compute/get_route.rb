@@ -2,7 +2,7 @@ module Fog
   module Compute
     class Google
       class Mock
-        def get_route(identity)
+        def get_route(_identity)
           Fog::Mock.not_implemented
         end
       end
@@ -11,8 +11,8 @@ module Fog
         def get_route(identity)
           api_method = @compute.routes.get
           parameters = {
-            'project' => @project,
-            'route' => identity,
+            "project" => @project,
+            "route" => identity
           }
 
           request(api_method, parameters)

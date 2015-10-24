@@ -3,15 +3,15 @@ module Fog
     class Google
       class Mock
         def get_region(identity)
-          rname = identity.split('/')[-1]
-          region = self.data[:regions][rname] || {
+          rname = identity.split("/")[-1]
+          region = data[:regions][rname] || {
             "error" => {
               "errors" => [
-               {
-                "domain" => "global",
-                "reason" => "notFound",
-                "message" => "The resource 'projects/#{project}/regions/#{rname}' was not found"
-               }
+                {
+                  "domain" => "global",
+                  "reason" => "notFound",
+                  "message" => "The resource 'projects/#{project}/regions/#{rname}' was not found"
+                }
               ],
               "code" => 404,
               "message" => "The resource 'projects/#{project}/regions/#{rname}' was not found"
@@ -25,8 +25,8 @@ module Fog
         def get_region(identity)
           api_method = @compute.regions.get
           parameters = {
-            'project' => @project,
-            'region' => identity.split('/')[-1],
+            "project" => @project,
+            "region" => identity.split("/")[-1]
           }
 
           request(api_method, parameters)

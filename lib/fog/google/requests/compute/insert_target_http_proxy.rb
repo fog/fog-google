@@ -2,20 +2,20 @@ module Fog
   module Compute
     class Google
       class Mock
-        def insert_target_http_proxy(name, options={})
+        def insert_target_http_proxy(name, options = {})
           id = Fog::Mock.random_numbers(19).to_s
-          self.data[:target_http_proxies][name] = {
+          data[:target_http_proxies][name] = {
             "kind" => "compute#targetHttpProxy",
             "id" => id,
             "creationTimestamp" => Time.now.iso8601,
             "name" => name,
-            "description" => '',
+            "description" => "",
             "urlMap" => options["urlMap"],
             "selfLink" => "https://www.googleapis.com/compute/#{api_version}/projects/#{@project}/global/targetHttpProxies/#{name}"
           }
 
-          operation = self.random_operation
-          self.data[:operations][operation] = {
+          operation = random_operation
+          data[:operations][operation] = {
             "kind" => "compute#operation",
             "id" => Fog::Mock.random_numbers(19).to_s,
             "name" => operation,
@@ -31,17 +31,17 @@ module Fog
             "selfLink" => "https://www.googleapis.com/compute/#{api_version}/projects/#{@project}/global/operations/#{operation}"
           }
 
-          build_excon_response(self.data[:operations][operation])
+          build_excon_response(data[:operations][operation])
         end
       end
 
       class Real
-        def insert_target_http_proxy(name, opts={})
+        def insert_target_http_proxy(name, opts = {})
           api_method = @compute.target_http_proxies.insert
           parameters = {
-            'project' => @project
+            "project" => @project
           }
-          body_object = { 'name' => name }
+          body_object = { "name" => name }
           body_object.merge!(opts)
 
           request(api_method, parameters, body_object)

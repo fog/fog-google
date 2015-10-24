@@ -2,7 +2,7 @@ module Fog
   module Compute
     class Google
       class Mock
-        def delete_server_access_config(identity, zone, nic, options = {})
+        def delete_server_access_config(_identity, _zone, _nic, _options = {})
           Fog::Mock.not_implemented
         end
       end
@@ -11,11 +11,11 @@ module Fog
         def delete_server_access_config(identity, zone, nic, options = {})
           api_method = @compute.instances.delete_access_config
           parameters = {
-            'project'  => @project,
-            'instance' => identity,
-            'zone'     => zone.split('/')[-1],
-            'networkInterface' => nic,
-            'accessConfig'     => options[:access_config].nil? ? 'External NAT' : options[:access_config],
+            "project"  => @project,
+            "instance" => identity,
+            "zone"     => zone.split("/")[-1],
+            "networkInterface" => nic,
+            "accessConfig"     => options[:access_config].nil? ? "External NAT" : options[:access_config]
           }
 
           request(api_method, parameters)

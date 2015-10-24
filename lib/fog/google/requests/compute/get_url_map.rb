@@ -3,10 +3,8 @@ module Fog
     class Google
       class Mock
         def get_url_map(name)
-          url_map = self.data[:url_maps][name]
-          if url_map.nil?
-            return nil
-          end
+          url_map = data[:url_maps][name]
+          return nil if url_map.nil?
           build_excon_response(url_map)
         end
       end
@@ -15,8 +13,8 @@ module Fog
         def get_url_map(name)
           api_method = @compute.url_maps.get
           parameters = {
-            'project' => @project,
-            'urlMap' => name
+            "project" => @project,
+            "urlMap" => name
           }
 
           request(api_method, parameters)

@@ -1,4 +1,4 @@
-require 'fog/core/model'
+require "fog/core/model"
 # the resource view model creates either a region view or zone view depending on which is parameter is passed
 
 module Fog
@@ -7,11 +7,11 @@ module Fog
       class ResourceView < Fog::Model
         identity :name
 
-        attribute :kind, :aliases => 'kind'
-        attribute :self_link, :aliases => 'selfLink'
-        attribute :id, :aliases => 'id'
-        attribute :creation_timestamp, :aliases => 'creationTimestamp'
-        attribute :description, :aliases => 'description'
+        attribute :kind, :aliases => "kind"
+        attribute :self_link, :aliases => "selfLink"
+        attribute :id, :aliases => "id"
+        attribute :creation_timestamp, :aliases => "creationTimestamp"
+        attribute :description, :aliases => "description"
         attribute :region, :aliases => "region" # string, required for region views
         attribute :labels, :aliases => "labels" # array of hashes including 'key' and 'value' as keys
         attribute :zone, :aliases => "zone" # string, required for zone views
@@ -24,76 +24,70 @@ module Fog
           labels ||= []
           members ||= []
 
-          if region then
+          if region
             options = {
-              'description' => description,
-              'labels' => labels,
-              'lastModified' => last_modified,
-              'members' => members,
-              'numMembers' => num_members
+              "description" => description,
+              "labels" => labels,
+              "lastModified" => last_modified,
+              "members" => members,
+              "numMembers" => num_members
             }
             @region = region
             data = service.insert_region_view(name, region, options).body
-          operation = service.get_region_view(data['resource']['name'],nil, @region).body
+            operation = service.get_region_view(data["resource"]["name"], nil, @region).body
           end
 
-          if zone then
+          if zone
             options = {
-              'description' => description,
-              'labels' => labels,
-              'lastModified' => last_modified,
-              'members' => members,
-              'numMembers' => num_members
+              "description" => description,
+              "labels" => labels,
+              "lastModified" => last_modified,
+              "members" => members,
+              "numMembers" => num_members
             }
             @zone = zone
             data = service.insert_zone_view(name, zone, options).body
-          operation = service.get_zone_view(data['resource']['name'], @zone).body
+            operation = service.get_zone_view(data["resource"]["name"], @zone).body
           end
           reload
         end
 
-        def destroy(async=false)
+        def destroy(async = false)
           requires :name
-# parse the self link to get the zone or region          
-          selflink = self.self_link.split('/')
-          if selflink[7]=='regions' then
+          # parse the self link to get the zone or region
+          selflink = self_link.split("/")
+          if selflink[7] == "regions"
             operation = service.delete_region_view(name, selflink[8])
           end
-        
-          if selflink[7]== 'zones' then
-            operation= service.delete_zone_view(name, selflink[8])
+
+          if selflink[7] == "zones"
+            operation = service.delete_zone_view(name, selflink[8])
           end
 
-          if not async
+          unless async
             # wait until "DONE" to ensure the operation doesn't fail, raises
             # exception on error
             Fog.wait_for do
-              operation.body == nil
+              operation.body.nil?
             end
           end
           operation
         end
 
-        def add_resources resources
+        def add_resources(resources)
           resources = [resources] unless resources.class == Array
-          resources.map { |resource| resource.class == String ? resource : resource.self_link } 
-          if @zone then
-            service.add_zone_view_resources(self, resources, @zone)
-          end
-          if @region then
-            service.add_region_view_resources(self, reources, @region)
-          end
+          resources.map { |resource| resource.class == String ? resource : resource.self_link }
+          service.add_zone_view_resources(self, resources, @zone) if @zone
+          service.add_region_view_resources(self, reources, @region) if @region
           reload
         end
 
         def ready?
-          begin
-            if @zone then service.get_zone_view(self.name, @zone) end
-            if @region then service.get_region_view(self.name, @region) end
-            true
-          rescue Fog::Errors::NotFound
-            false
-          end
+          service.get_zone_view(name, @zone) if @zone
+          service.get_region_view(name, @region) if @region
+          true
+        rescue Fog::Errors::NotFound
+          false
         end
 
         def reload

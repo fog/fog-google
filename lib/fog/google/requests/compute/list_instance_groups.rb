@@ -2,7 +2,7 @@ module Fog
   module Compute
     class Google
       class Mock
-        def list_instance_groups(zone)
+        def list_instance_groups(_zone)
           Fog::Mock.not_implemented
         end
       end
@@ -11,8 +11,8 @@ module Fog
         def list_instance_groups(zone)
           api_method = @compute.instance_groups.list
           parameters = {
-            'project' => @project,
-            'zone' => zone
+            "project" => @project,
+            "zone" => zone
           }
 
           request(api_method, parameters)

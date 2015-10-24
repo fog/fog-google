@@ -11,7 +11,7 @@ class TestServers < FogIntegrationTest
 
   def test_bootstrap_ssh_destroy
     resource_name = @factory.resource_name
-    instance = @subject.bootstrap({:name => resource_name})
+    instance = @subject.bootstrap(:name => resource_name)
     assert instance.ready?
     instance.wait_for { sshable? }
     assert_match /Linux/, instance.ssh("uname").first.stdout

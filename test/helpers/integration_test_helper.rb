@@ -1,5 +1,5 @@
-require 'helpers/test_helper'
-require 'helpers/test_collection'
+require "helpers/test_helper"
+require "helpers/test_collection"
 
 # Use :test credentials in ~/.fog for live integration testing
 # XXX not sure if this will work on Travis CI or not
@@ -17,6 +17,6 @@ TEST_RAW_DISK_SOURCE = "http://storage.googleapis.com/fog-test-bucket/fog-test-r
 
 class FogIntegrationTest < MiniTest::Test
   def namespaced_name
-    "#{self.class.to_s}_#{name}"
+    "#{self.class}_#{name}"
   end
 end
