@@ -3,7 +3,7 @@ module Fog
     class Google
       class Mock
         def get_region_operation(region_name, operation)
-         operation = self.data[:operations][operation]
+          operation = data[:operations][operation]
           if operation
             case operation["status"]
             when Fog::Compute::Google::Operation::PENDING_STATE
@@ -17,11 +17,11 @@ module Fog
             operation = {
               "error" => {
                 "errors" => [
-                 {
-                  "domain" => "global",
-                  "reason" => "notFound",
-                  "message" => "The resource 'projects/#{project}/regions/#{region_name}/operations/#{operation}' was not found"
-                 }
+                  {
+                    "domain" => "global",
+                    "reason" => "notFound",
+                    "message" => "The resource 'projects/#{project}/regions/#{region_name}/operations/#{operation}' was not found"
+                  }
                 ],
                 "code" => 404,
                 "message" => "The resource 'projects/#{project}/regions/#{region_name}/operations/#{operation}' was not found"
@@ -36,15 +36,15 @@ module Fog
         # https://developers.google.com/compute/docs/reference/latest/regionOperations
 
         def get_region_operation(region_name, operation)
-          if region_name.start_with? 'http'
-            region_name = region_name.split('/')[-1]
+          if region_name.start_with? "http"
+            region_name = region_name.split("/")[-1]
           end
 
           api_method = @compute.region_operations.get
           parameters = {
-            'project' => @project,
-            'region' => region_name,
-            'operation' => operation
+            "project" => @project,
+            "region" => region_name,
+            "operation" => operation
           }
 
           request(api_method, parameters)

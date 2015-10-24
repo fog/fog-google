@@ -26,7 +26,7 @@ module Fog
       end
 
       class Mock
-        def set_instance_root_password(instance_id, password)
+        def set_instance_root_password(instance_id, _password)
           operation = self.random_operation
           self.data[:operations][instance_id] ||= {}
           self.data[:operations][instance_id][operation] = {

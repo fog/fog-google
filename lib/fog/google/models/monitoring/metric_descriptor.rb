@@ -1,4 +1,4 @@
-require 'fog/core/model'
+require "fog/core/model"
 
 module Fog
   module Google
@@ -13,7 +13,7 @@ module Fog
         attribute :description
         attribute :labels
         attribute :project
-        attribute :type_descriptor, :aliases => 'typeDescriptor'
+        attribute :type_descriptor, :aliases => "typeDescriptor"
       end
     end
   end

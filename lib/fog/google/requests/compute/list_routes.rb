@@ -2,7 +2,7 @@ module Fog
   module Compute
     class Google
       class Mock
-        def list_routes(options = {})
+        def list_routes(_options = {})
           Fog::Mock.not_implemented
         end
       end
@@ -11,7 +11,7 @@ module Fog
         def list_routes
           api_method = @compute.routes.list
           parameters = {
-            'project' => @project,
+            "project" => @project
           }
 
           request(api_method, parameters)

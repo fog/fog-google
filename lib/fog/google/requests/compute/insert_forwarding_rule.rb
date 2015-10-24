@@ -7,22 +7,22 @@ module Fog
           get_region(region_name)
 
           id = Fog::Mock.random_numbers(19).to_s
-          self.data[:forwarding_rules][name] = {
+          data[:forwarding_rules][name] = {
             "kind" => "compute#forwardingRule",
             "id" => id,
             "creationTimestamp" => Time.now.iso8601,
             "name" => name,
-            "description" => '',
+            "description" => "",
             "region" => "https://www.googleapis.com/compute/#{api_version}/projects/#{@project}/regions/#{region_name}",
-            "IPAddress" => '',
-            "IPProtocol" => '',
-            "portRange" => '',
-            "target" => opts['target'],
+            "IPAddress" => "",
+            "IPProtocol" => "",
+            "portRange" => "",
+            "target" => opts["target"],
             "selfLink" => "https://www.googleapis.com/compute/#{api_version}/projects/#{@project}/regions/#{region_name}/forwardingRules/#{name}"
           }
 
-          operation = self.random_operation
-          self.data[:operations][operation] = {
+          operation = random_operation
+          data[:operations][operation] = {
             "kind" => "compute#operation",
             "id" => Fog::Mock.random_numbers(19).to_s,
             "name" => operation,
@@ -38,7 +38,7 @@ module Fog
             "selfLink" => "https://www.googleapis.com/compute/#{api_version}/projects/#{@project}/regions/#{region_name}/operations/#{operation}"
           }
 
-          build_excon_response(self.data[:operations][operation])
+          build_excon_response(data[:operations][operation])
         end
       end
 
@@ -46,13 +46,13 @@ module Fog
         def insert_forwarding_rule(forwarding_rule_name, region_name, opts = {})
           api_method = @compute.forwarding_rules.insert
           parameters = {
-            'project' => @project,
-            'region' => region_name
+            "project" => @project,
+            "region" => region_name
           }
-          body_object = { 'name' => forwarding_rule_name }
+          body_object = { "name" => forwarding_rule_name }
           body_object.merge!(opts)
 
-          request(api_method, parameters, body_object=body_object)
+          request(api_method, parameters, body_object = body_object)
         end
       end
     end

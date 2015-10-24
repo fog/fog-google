@@ -2,7 +2,7 @@ module Fog
   module Compute
     class Google
       class Mock
-        def reset_server(identity, zone)
+        def reset_server(_identity, _zone)
           Fog::Mock.not_implemented
         end
       end
@@ -11,9 +11,9 @@ module Fog
         def reset_server(identity, zone)
           api_method = @compute.instances.reset
           parameters = {
-            'project'  => @project,
-            'instance' => identity,
-            'zone'     => zone.split('/')[-1],
+            "project"  => @project,
+            "instance" => identity,
+            "zone"     => zone.split("/")[-1]
           }
 
           request(api_method, parameters)

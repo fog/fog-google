@@ -4,13 +4,13 @@ module Fog
       module Google
         class GetBucketVersioning < Fog::Parsers::Base
           def reset
-            @response = { 'VersioningConfiguration' => {} }
+            @response = { "VersioningConfiguration" => {} }
           end
 
           def end_element(name)
             case name
-            when 'Status'
-              @response['VersioningConfiguration'][name] = value
+            when "Status"
+              @response["VersioningConfiguration"][name] = value
             end
           end
         end

@@ -1,5 +1,5 @@
-require 'fog/core/collection'
-require 'fog/google/models/compute/route'
+require "fog/core/collection"
+require "fog/google/models/compute/route"
 
 module Fog
   module Compute
@@ -9,7 +9,7 @@ module Fog
 
         def all
           data = service.list_routes.body
-          load(data['items'] || [])
+          load(data["items"] || [])
         end
 
         def get(identity)

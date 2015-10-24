@@ -5,8 +5,8 @@ module Fog
         def delete_forwarding_rule(name, region_name)
           get_forwarding_rule(name, region_name)
           id = Fog::Mock.random_numbers(19).to_s
-          operation = self.random_operation
-          self.data[:operations][operation] = {
+          operation = random_operation
+          data[:operations][operation] = {
             "kind" => "compute#operation",
             "id" => Fog::Mock.random_numbers(19).to_s,
             "name" => operation,
@@ -22,7 +22,7 @@ module Fog
             "selfLink" => "https://www.googleapis.com/compute/#{api_version}/projects/#{@project}/regions/#{region_name}/operations/#{operation}"
           }
 
-          build_excon_response(self.data[:operations][operation])
+          build_excon_response(data[:operations][operation])
         end
       end
 
@@ -30,15 +30,15 @@ module Fog
         # https://developers.google.com/compute/docs/reference/latest/regionOperations
 
         def delete_forwarding_rule(forwarding_rule_name, region_name)
-          if region_name.start_with? 'http'
-            region_name = region_name.split('/')[-1]
+          if region_name.start_with? "http"
+            region_name = region_name.split("/")[-1]
           end
 
           api_method = @compute.forwarding_rules.delete
           parameters = {
-            'project' => @project,
-            'forwardingRule' => forwarding_rule_name,
-            'region' => region_name
+            "project" => @project,
+            "forwardingRule" => forwarding_rule_name,
+            "region" => region_name
           }
 
           request(api_method, parameters)

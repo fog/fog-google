@@ -1,5 +1,5 @@
-require 'fog/core/collection'
-require 'fog/google/models/dns/zone'
+require "fog/core/collection"
+require "fog/google/models/dns/zone"
 
 module Fog
   module DNS
@@ -12,7 +12,7 @@ module Fog
         #
         # @return [Array<Fog::DNS::Google::Zone>] List of Managed Zone resources
         def all
-          data = service.list_managed_zones.body['managedZones'] || []
+          data = service.list_managed_zones.body["managedZones"] || []
           load(data)
         end
 

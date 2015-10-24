@@ -2,7 +2,7 @@ module Fog
   module Compute
     class Google
       class Mock
-        def get_address(address_name, region_name)
+        def get_address(_address_name, _region_name)
           Fog::Mock.not_implemented
         end
       end
@@ -11,9 +11,9 @@ module Fog
         def get_address(address_name, region_name)
           api_method = @compute.addresses.get
           parameters = {
-            'project' => @project,
-            'address' => address_name,
-            'region' => region_name
+            "project" => @project,
+            "address" => address_name,
+            "region" => region_name
           }
 
           request(api_method, parameters)

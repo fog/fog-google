@@ -1,4 +1,4 @@
-require 'fog/core/model'
+require "fog/core/model"
 
 module Fog
   module Compute
@@ -8,40 +8,40 @@ module Fog
 
         attribute :kind
         attribute :id
-        attribute :client_operation_id, :aliases => 'clientOperationId'
-        attribute :creation_timestamp, :aliases => 'creationTimestamp'
-        attribute :end_time, :aliases => 'endTime'
+        attribute :client_operation_id, :aliases => "clientOperationId"
+        attribute :creation_timestamp, :aliases => "creationTimestamp"
+        attribute :end_time, :aliases => "endTime"
         attribute :error
-        attribute :http_error_message, :aliases => 'httpErrorMessage'
-        attribute :http_error_status_code, :aliases => 'httpErrorStatusCode'
-        attribute :insert_time, :aliases => 'insertTime'
-        attribute :operation_type, :aliases => 'operationType'
+        attribute :http_error_message, :aliases => "httpErrorMessage"
+        attribute :http_error_status_code, :aliases => "httpErrorStatusCode"
+        attribute :insert_time, :aliases => "insertTime"
+        attribute :operation_type, :aliases => "operationType"
         attribute :progress
         attribute :region
-        attribute :self_link, :aliases => 'selfLink'
-        attribute :start_time, :aliases => 'startTime'
+        attribute :self_link, :aliases => "selfLink"
+        attribute :start_time, :aliases => "startTime"
         attribute :status
-        attribute :status_message, :aliases => 'statusMessage'
-        attribute :target_id, :aliases => 'targetId'
-        attribute :target_link, :aliases => 'targetLink'
+        attribute :status_message, :aliases => "statusMessage"
+        attribute :target_id, :aliases => "targetId"
+        attribute :target_link, :aliases => "targetLink"
         attribute :user
         attribute :warnings
         attribute :zone
 
         def ready?
-          self.status == DONE_STATE
+          status == DONE_STATE
         end
 
         def pending?
-          self.status == PENDING_STATE
+          status == PENDING_STATE
         end
 
         def region_name
-          region.nil? ? nil : region.split('/')[-1]
+          region.nil? ? nil : region.split("/")[-1]
         end
 
         def zone_name
-          zone.nil? ? nil : zone.split('/')[-1]
+          zone.nil? ? nil : zone.split("/")[-1]
         end
 
         def destroy

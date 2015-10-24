@@ -2,7 +2,7 @@ module Fog
   module Compute
     class Google
       class Mock
-        def delete_region_view(region_view)
+        def delete_region_view(_region_view)
           Fog::Mock.not_implemented
         end
       end
@@ -11,9 +11,9 @@ module Fog
         def delete_region_view(region_view, region)
           api_method = @resourceviews.region_views.delete
           parameters = {
-            'projectName' => @project,
-            'resourceViewName' => region_view,
-            'region' => region
+            "projectName" => @project,
+            "resourceViewName" => region_view,
+            "region" => region
           }
 
           request(api_method, parameters)

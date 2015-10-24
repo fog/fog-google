@@ -10,8 +10,8 @@ module Fog
         def list_ssl_certs(instance_id)
           api_method = @sql.ssl_certs.list
           parameters = {
-            'project' => @project,
-            'instance' => instance_id,
+            "project" => @project,
+            "instance" => instance_id
           }
 
           request(api_method, parameters)
@@ -20,25 +20,25 @@ module Fog
 
       class Mock
         def list_ssl_certs(instance_id)
-          if self.data[:ssl_certs].has_key?(instance_id)
+          if data[:ssl_certs].key?(instance_id)
             body = {
-              'kind' => 'sql#sslCertsList',
-              'items' => self.data[:ssl_certs][instance_id].values,
+              "kind" => 'sql#sslCertsList',
+              "items" => data[:ssl_certs][instance_id].values
             }
             status = 200
           else
             body = {
-              'error' => {
-                'errors' => [
+              "error" => {
+                "errors" => [
                   {
-                    'domain' => 'global',
-                    'reason' => 'notAuthorized',
-                    'message' => 'The client is not authorized to make this request.',
+                    "domain" => "global",
+                    "reason" => "notAuthorized",
+                    "message" => "The client is not authorized to make this request."
                   }
                 ],
-                'code' => 403,
-                'message' => 'The client is not authorized to make this request.',
-             }
+                "code" => 403,
+                "message" => "The client is not authorized to make this request."
+              }
             }
             status = 403
           end

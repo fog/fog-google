@@ -1,4 +1,4 @@
-require 'fog/core/model'
+require "fog/core/model"
 
 module Fog
   module Google
@@ -10,11 +10,11 @@ module Fog
       class Flag < Fog::Model
         identity :name
 
-        attribute :allowed_string_values, :aliases => 'allowedStringValues'
-        attribute :applies_to, :aliases => 'appliesTo'
+        attribute :allowed_string_values, :aliases => "allowedStringValues"
+        attribute :applies_to, :aliases => "appliesTo"
         attribute :kind
-        attribute :max_value, :aliases => 'maxValue'
-        attribute :min_value, :aliases => 'minValue'
+        attribute :max_value, :aliases => "maxValue"
+        attribute :min_value, :aliases => "minValue"
         attribute :type
       end
     end

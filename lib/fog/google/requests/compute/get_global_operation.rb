@@ -3,7 +3,7 @@ module Fog
     class Google
       class Mock
         def get_global_operation(operation)
-         operation = self.data[:operations][operation]
+          operation = data[:operations][operation]
           if operation
             case operation["status"]
             when Fog::Compute::Google::Operation::PENDING_STATE
@@ -17,11 +17,11 @@ module Fog
             operation = {
               "error" => {
                 "errors" => [
-                 {
-                  "domain" => "global",
-                  "reason" => "notFound",
-                  "message" => "The resource 'projects/#{project}/global/operations/#{operation}' was not found"
-                 }
+                  {
+                    "domain" => "global",
+                    "reason" => "notFound",
+                    "message" => "The resource 'projects/#{project}/global/operations/#{operation}' was not found"
+                  }
                 ],
                 "code" => 404,
                 "message" => "The resource 'projects/#{project}/global/operations/#{operation}' was not found"
@@ -38,8 +38,8 @@ module Fog
         def get_global_operation(operation)
           api_method = @compute.global_operations.get
           parameters = {
-            'project' => @project,
-            'operation' => operation
+            "project" => @project,
+            "operation" => operation
           }
 
           request(api_method, parameters)

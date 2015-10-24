@@ -1,5 +1,5 @@
-require 'fog/core/collection'
-require 'fog/google/models/dns/project'
+require "fog/core/collection"
+require "fog/google/models/dns/project"
 
 module Fog
   module DNS

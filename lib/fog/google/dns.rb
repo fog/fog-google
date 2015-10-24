@@ -5,13 +5,13 @@ module Fog
       recognizes :app_name, :app_version, :google_client_email, :google_key_location, :google_key_string,
                  :google_client, :google_json_key_location, :google_json_key_string
 
-      GOOGLE_DNS_API_VERSION     = 'v1'
-      GOOGLE_DNS_BASE_URL        = 'https://www.googleapis.com/dns/'
+      GOOGLE_DNS_API_VERSION     = "v1"
+      GOOGLE_DNS_BASE_URL        = "https://www.googleapis.com/dns/"
       GOOGLE_DNS_API_SCOPE_URLS  = %w(https://www.googleapis.com/auth/ndev.clouddns.readwrite)
 
       ##
       # MODELS
-      model_path 'fog/google/models/dns'
+      model_path "fog/google/models/dns"
 
       # Zone
       model :zone
@@ -31,7 +31,7 @@ module Fog
 
       ##
       # REQUESTS
-      request_path 'fog/google/requests/dns'
+      request_path "fog/google/requests/dns"
 
       # Zone
       request :create_managed_zone
@@ -57,7 +57,7 @@ module Fog
           shared_initialize(options[:google_project], GOOGLE_DNS_API_VERSION, GOOGLE_DNS_BASE_URL)
         end
 
-        def self.data(api_version)
+        def self.data(_api_version)
           @data ||= {}
         end
 
@@ -65,11 +65,11 @@ module Fog
           @data = nil
         end
 
-        def data(project=@project)
+        def data(project = @project)
           self.class.data(api_version)[project] ||= {
             :managed_zones => {},
             :resource_record_sets => {},
-            :changes => {},
+            :changes => {}
           }
         end
 
@@ -86,9 +86,9 @@ module Fog
 
         def initialize(options)
           shared_initialize(options[:google_project], GOOGLE_DNS_API_VERSION, GOOGLE_DNS_BASE_URL)
-          options.merge!(:google_api_scope_url => GOOGLE_DNS_API_SCOPE_URLS.join(' '))
+          options.merge!(:google_api_scope_url => GOOGLE_DNS_API_SCOPE_URLS.join(" "))
           @client = initialize_google_client(options)
-          @dns = @client.discovered_api('dns', api_version)
+          @dns = @client.discovered_api("dns", api_version)
         end
       end
     end

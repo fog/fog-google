@@ -5,9 +5,9 @@ module Fog
         class CopyObject < Fog::Parsers::Base
           def end_element(name)
             case name
-            when 'ETag'
-              @response[name] = value.gsub('"', '')
-            when 'LastModified'
+            when "ETag"
+              @response[name] = value.delete('"')
+            when "LastModified"
               @response[name] = Time.parse(value)
             end
           end

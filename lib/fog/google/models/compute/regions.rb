@@ -1,5 +1,5 @@
-require 'fog/core/collection'
-require 'fog/google/models/compute/region'
+require "fog/core/collection"
+require "fog/google/models/compute/region"
 
 module Fog
   module Compute
@@ -9,7 +9,7 @@ module Fog
 
         def all
           data = service.list_regions.body
-          load(data['items'] || [])
+          load(data["items"] || [])
         end
 
         def get(identity)

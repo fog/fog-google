@@ -2,7 +2,7 @@ module Fog
   module Compute
     class Google
       class Mock
-        def set_server_scheduling(identity, zone, on_host_maintenance, automatic_restart, preemptible)
+        def set_server_scheduling(_identity, _zone, _on_host_maintenance, _automatic_restart, _preemptible)
           Fog::Mock.not_implemented
         end
       end
@@ -11,15 +11,15 @@ module Fog
         def set_server_scheduling(identity, zone, on_host_maintenance, automatic_restart, preemptible)
           api_method = @compute.instances.set_scheduling
           parameters = {
-            'project'  => @project,
-            'instance' => identity,
-            'zone'     => zone.split('/')[-1],
+            "project"  => @project,
+            "instance" => identity,
+            "zone"     => zone.split("/")[-1]
           }
 
           body_object = {
-            'onHostMaintenance' => on_host_maintenance,
-            'automaticRestart'  => automatic_restart,
-            'preemptible' => preemptible
+            "onHostMaintenance" => on_host_maintenance,
+            "automaticRestart"  => automatic_restart,
+            "preemptible" => preemptible
           }
 
           request(api_method, parameters, body_object)

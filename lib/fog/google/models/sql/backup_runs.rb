@@ -1,5 +1,5 @@
-require 'fog/core/collection'
-require 'fog/google/models/sql/backup_run'
+require "fog/core/collection"
+require "fog/google/models/sql/backup_run"
 
 module Fog
   module Google
@@ -14,7 +14,7 @@ module Fog
         # @param [String] backup_configuration_id Backup Configuration ID
         # @return [Array<Fog::Google::SQL::BackupRun>] List of Backup run resources
         def all(instance_id, backup_configuration_id)
-          data = service.list_backup_runs(instance_id, backup_configuration_id).body['items'] || []
+          data = service.list_backup_runs(instance_id, backup_configuration_id).body["items"] || []
           load(data)
         end
 

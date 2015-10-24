@@ -1,5 +1,5 @@
-require 'fog/core/collection'
-require 'fog/google/models/compute/network'
+require "fog/core/collection"
+require "fog/google/models/compute/network"
 
 module Fog
   module Compute
@@ -9,7 +9,7 @@ module Fog
 
         def all
           data = service.list_networks.body
-          load(data['items'] || [])
+          load(data["items"] || [])
         end
 
         def get(identity)

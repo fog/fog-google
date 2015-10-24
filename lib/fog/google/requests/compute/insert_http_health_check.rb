@@ -2,16 +2,16 @@ module Fog
   module Compute
     class Google
       class Mock
-        def insert_http_health_check(name, options={})
+        def insert_http_health_check(name, _options = {})
           id = Fog::Mock.random_numbers(19).to_s
-          self.data[:http_health_checks][name] = {
+          data[:http_health_checks][name] = {
             "kind" => "compute#httpHealthCheck",
             "id" => id,
             "creationTimestamp" => Time.now.iso8601,
             "name" => name,
-            "description" => '',
-            "host" => '0.00.0.0',
-            "requestPath" => '/',
+            "description" => "",
+            "host" => "0.00.0.0",
+            "requestPath" => "/",
             "port" => 80,
             "checkIntervalSec" => 5,
             "timeoutSec" => 5,
@@ -20,8 +20,8 @@ module Fog
             "selfLink" => "https://www.googleapis.com/compute/#{api_version}/projects/#{@project}/global/httpHealthChecks/#{name}"
           }
 
-          operation = self.random_operation
-          self.data[:operations][operation] = {
+          operation = random_operation
+          data[:operations][operation] = {
             "kind" => "compute#operation",
             "id" => Fog::Mock.random_numbers(19).to_s,
             "name" => operation,
@@ -37,18 +37,18 @@ module Fog
             "selfLink" => "https://www.googleapis.com/compute/#{api_version}/projects/#{@project}/global/operations/#{operation}"
           }
 
-          build_excon_response(self.data[:operations][operation])
+          build_excon_response(data[:operations][operation])
         end
       end
 
       class Real
-        def insert_http_health_check(name, opts={})
+        def insert_http_health_check(name, opts = {})
           api_method = @compute.http_health_checks.insert
           parameters = {
-            'project' => @project
+            "project" => @project
           }
 
-          body_object = { 'name' => name }
+          body_object = { "name" => name }
           body_object.merge!(opts)
 
           request(api_method, parameters, body_object)

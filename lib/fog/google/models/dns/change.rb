@@ -1,4 +1,4 @@
-require 'fog/core/model'
+require "fog/core/model"
 
 module Fog
   module DNS
@@ -11,20 +11,20 @@ module Fog
         identity :id
 
         attribute :kind
-        attribute :start_time, :aliases => 'startTime'
+        attribute :start_time, :aliases => "startTime"
         attribute :status
         attribute :additions
         attribute :deletions
 
-        DONE_STATE    = 'done'
-        PENDING_STATE = 'pending'
+        DONE_STATE    = "done"
+        PENDING_STATE = "pending"
 
         ##
         # Checks if the change operation is pending
         #
         # @return [Boolean] True if the change operation is pending; False otherwise
         def pending?
-          self.status == PENDING_STATE
+          status == PENDING_STATE
         end
 
         ##
@@ -32,7 +32,7 @@ module Fog
         #
         # @return [Boolean] True if the change operation is done; False otherwise
         def ready?
-          self.status == DONE_STATE
+          status == DONE_STATE
         end
       end
     end

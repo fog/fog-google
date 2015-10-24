@@ -21,18 +21,6 @@ Lint/AmbiguousRegexpLiteral:
 Lint/AssignmentInCondition:
   Enabled: false
 
-# Offense count: 1
-# Cop supports --auto-correct.
-# Configuration parameters: AlignWith, SupportedStyles, AutoCorrect.
-Lint/DefEndAlignment:
-  Enabled: false
-
-# Offense count: 4
-# Cop supports --auto-correct.
-# Configuration parameters: AlignWith, SupportedStyles, AutoCorrect.
-Lint/EndAlignment:
-  Enabled: false
-
 # Offense count: 5
 Lint/HandleExceptions:
   Exclude:
@@ -105,22 +93,6 @@ Style/AccessorMethodName:
     - 'lib/fog/google/requests/storage/get_service.rb'
 
 # Offense count: 1
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles.
-Style/AndOr:
-  Exclude:
-    - 'lib/fog/google/requests/compute/insert_server.rb'
-
-# Offense count: 11
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles.
-Style/BracesAroundHashParameters:
-  Exclude:
-    - 'tests/helper.rb'
-    - 'tests/helpers/formats_helper_tests.rb'
-    - 'tests/helpers/schema_validator_tests.rb'
-
-# Offense count: 1
 Style/ClassVars:
   Exclude:
     - 'lib/fog/bin/google.rb'
@@ -180,13 +152,6 @@ Style/OneLineConditional:
 # Configuration parameters: EnforcedStyle, SupportedStyles.
 Style/RaiseArgs:
   Enabled: false
-
-# Offense count: 1
-# Cop supports --auto-correct.
-# Configuration parameters: AllowAsExpressionSeparator.
-Style/Semicolon:
-  Exclude:
-    - 'tests/helpers/collection_helper.rb'
 
 # Offense count: 1
 Style/UnlessElse:

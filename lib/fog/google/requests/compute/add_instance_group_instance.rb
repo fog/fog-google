@@ -2,7 +2,7 @@ module Fog
   module Compute
     class Google
       class Mock
-        def add_instance_group_instance(group_name, zone, instances)
+        def add_instance_group_instance(_group_name, _zone, _instances)
           Fog::Mock.not_implemented
         end
       end
@@ -12,9 +12,9 @@ module Fog
           api_method = @compute.instance_groups.add_instances
 
           parameters = {
-            'project' => @project,
-            'instanceGroup' => group_name,
-            'zone' => zone,
+            "project" => @project,
+            "instanceGroup" => group_name,
+            "zone" => zone
           }
 
           body_object = {

@@ -10,7 +10,7 @@ module Fog
         def get_project(identity)
           api_method = @dns.projects.get
           parameters = {
-            :project => identity,
+            :project => identity
           }
 
           request(api_method, parameters)
@@ -20,17 +20,17 @@ module Fog
       class Mock
         def get_project(identity)
           body = {
-            'kind' => 'dns#project',
-            'number' => Fog::Mock.random_numbers(12).to_s,
-            'id' => identity,
-            'quota' => {
-              'kind' => 'dns#quota',
-              'managedZones' => 100,
-              'rrsetsPerManagedZone' => 10000,
-              'rrsetAdditionsPerChange' => 100,
-              'rrsetDeletionsPerChange'=>100,
-              'totalRrdataSizePerChange' => 10000,
-              'resourceRecordsPerRrset' => 20,
+            "kind" => 'dns#project',
+            "number" => Fog::Mock.random_numbers(12).to_s,
+            "id" => identity,
+            "quota" => {
+              "kind" => 'dns#quota',
+              "managedZones" => 100,
+              "rrsetsPerManagedZone" => 10_000,
+              "rrsetAdditionsPerChange" => 100,
+              "rrsetDeletionsPerChange" => 100,
+              "totalRrdataSizePerChange" => 10_000,
+              "resourceRecordsPerRrset" => 20
             }
           }
 

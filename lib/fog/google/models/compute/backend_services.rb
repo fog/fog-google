@@ -1,5 +1,5 @@
-require 'fog/core/collection'
-require 'fog/google/models/compute/backend_service'
+require "fog/core/collection"
+require "fog/google/models/compute/backend_service"
 
 module Fog
   module Compute
@@ -7,8 +7,8 @@ module Fog
       class BackendServices < Fog::Collection
         model Fog::Compute::Google::BackendService
 
-        def all(filters={})
-          data = service.list_backend_services.body['items'] || []
+        def all(_filters = {})
+          data = service.list_backend_services.body["items"] || []
           load(data)
         end
 

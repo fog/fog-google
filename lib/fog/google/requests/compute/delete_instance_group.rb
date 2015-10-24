@@ -2,7 +2,7 @@ module Fog
   module Compute
     class Google
       class Mock
-        def delete_instance_group(group_name, zone)
+        def delete_instance_group(_group_name, _zone)
           Fog::Mock.not_implemented
         end
       end
@@ -11,9 +11,9 @@ module Fog
         def delete_instance_group(group_name, zone)
           api_method = @compute.instance_groups.delete
           parameters = {
-            'instanceGroup' => group_name,
-            'project' => @project,
-            'zone' => zone
+            "instanceGroup" => group_name,
+            "project" => @project,
+            "zone" => zone
           }
 
           request(api_method, parameters)

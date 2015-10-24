@@ -4,22 +4,22 @@ module Fog
       class Mock
         def insert_global_forwarding_rule(name, opts = {})
           id = Fog::Mock.random_numbers(19).to_s
-          self.data[:global_forwarding_rules][name] = {
+          data[:global_forwarding_rules][name] = {
             "kind" => "compute#forwardingRule",
             "id" => id,
             "creationTimestamp" => Time.now.iso8601,
             "name" => name,
-            "description" => '',
-            "region" => 'global',
-            "IPAddress" => '',
-            "IPProtocol" => '',
-            "portRange" => '',
-            "target" => opts['target'],
+            "description" => "",
+            "region" => "global",
+            "IPAddress" => "",
+            "IPProtocol" => "",
+            "portRange" => "",
+            "target" => opts["target"],
             "selfLink" => "https://www.googleapis.com/compute/#{api_version}/projects/#{@project}/global/forwardingRules/#{name}"
           }
 
-          operation = self.random_operation
-          self.data[:operations][operation] = {
+          operation = random_operation
+          data[:operations][operation] = {
             "kind" => "compute#operation",
             "id" => Fog::Mock.random_numbers(19).to_s,
             "name" => operation,
@@ -35,7 +35,7 @@ module Fog
             "selfLink" => "https://www.googleapis.com/compute/#{api_version}/projects/#{@project}/global/operations/#{operation}"
           }
 
-          build_excon_response(self.data[:operations][operation])
+          build_excon_response(data[:operations][operation])
         end
       end
 
@@ -43,12 +43,12 @@ module Fog
         def insert_global_forwarding_rule(global_forwarding_rule_name, opts = {})
           api_method = @compute.global_forwarding_rules.insert
           parameters = {
-            'project' => @project,
+            "project" => @project
           }
-          body_object = { 'name' => global_forwarding_rule_name, 'region' => 'global' }
+          body_object = { "name" => global_forwarding_rule_name, "region" => "global" }
           body_object.merge!(opts)
 
-          request(api_method, parameters,body_object=body_object)
+          request(api_method, parameters, body_object = body_object)
         end
       end
     end

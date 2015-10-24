@@ -2,7 +2,7 @@ module Fog
   module Compute
     class Google
       class Mock
-        def delete_firewall(firewall_name)
+        def delete_firewall(_firewall_name)
           Fog::Mock.not_implemented
         end
       end
@@ -11,8 +11,8 @@ module Fog
         def delete_firewall(firewall_name)
           api_method = @compute.firewalls.delete
           parameters = {
-            'project' => @project,
-            'firewall' => firewall_name
+            "project" => @project,
+            "firewall" => firewall_name
           }
 
           request(api_method, parameters)

@@ -2,7 +2,7 @@ module Fog
   module Compute
     class Google
       class Mock
-        def list_aggregated_instance_groups(options = {})
+        def list_aggregated_instance_groups(_options = {})
           Fog::Mock.not_implemented
         end
       end
@@ -11,9 +11,9 @@ module Fog
         def list_aggregated_instance_groups(options = {})
           api_method = @compute.instance_groups.aggregated_list
           parameters = {
-            'project' => @project,
+            "project" => @project
           }
-          parameters['filter'] = options[:filter] if options[:filter]
+          parameters["filter"] = options[:filter] if options[:filter]
 
           request(api_method, parameters)
         end

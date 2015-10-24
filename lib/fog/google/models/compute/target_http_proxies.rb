@@ -1,5 +1,5 @@
-require 'fog/core/collection'
-require 'fog/google/models/compute/target_http_proxy'
+require "fog/core/collection"
+require "fog/google/models/compute/target_http_proxy"
 
 module Fog
   module Compute
@@ -7,8 +7,8 @@ module Fog
       class TargetHttpProxies < Fog::Collection
         model Fog::Compute::Google::TargetHttpProxy
 
-        def all(filters={})
-          data = service.list_target_http_proxies.body['items'] || []
+        def all(_filters = {})
+          data = service.list_target_http_proxies.body["items"] || []
           load(data)
         end
 

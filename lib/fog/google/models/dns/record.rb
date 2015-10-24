@@ -1,4 +1,4 @@
-require 'fog/core/model'
+require "fog/core/model"
 
 module Fog
   module DNS
@@ -23,11 +23,9 @@ module Fog
         def destroy(async = true)
           requires :name, :type, :ttl, :rrdatas
 
-          data = service.create_change(self.zone.id, [], [resource_record_set_format])
-          change = Fog::DNS::Google::Changes.new(:service => service, :zone => zone).get(data.body['id'])
-          unless async
-            change.wait_for { ready? }
-          end
+          data = service.create_change(zone.id, [], [resource_record_set_format])
+          change = Fog::DNS::Google::Changes.new(:service => service, :zone => zone).get(data.body["id"])
+          change.wait_for { ready? } unless async
           true
         end
 
@@ -42,12 +40,10 @@ module Fog
           deletions = resource_record_set_format
           merge_attributes(new_attributes)
 
-          data = service.create_change(self.zone.id, [resource_record_set_format], [deletions])
-          change = Fog::DNS::Google::Changes.new(:service => service, :zone => zone).get(data.body['id'])
-          async = new_attributes.has_key?(:async) ? new_attributes[:async] : true
-          unless async
-            change.wait_for { ready? }
-          end
+          data = service.create_change(zone.id, [resource_record_set_format], [deletions])
+          change = Fog::DNS::Google::Changes.new(:service => service, :zone => zone).get(data.body["id"])
+          async = new_attributes.key?(:async) ? new_attributes[:async] : true
+          change.wait_for { ready? } unless async
           self
         end
 
@@ -58,7 +54,7 @@ module Fog
         def reload
           requires :name, :type
 
-          data = collection.get(self.name, self.type)
+          data = collection.get(name, type)
           merge_attributes(data.attributes)
           self
         end
@@ -70,8 +66,8 @@ module Fog
         def save
           requires :name, :type, :ttl, :rrdatas
 
-          data = service.create_change(self.zone.id, [resource_record_set_format], [])
-          change = Fog::DNS::Google::Changes.new(:service => service, :zone => zone).get(data.body['id'])
+          data = service.create_change(zone.id, [resource_record_set_format], [])
+          change = Fog::DNS::Google::Changes.new(:service => service, :zone => zone).get(data.body["id"])
           change.wait_for { !pending? }
           self
         end
@@ -80,9 +76,7 @@ module Fog
         # Returns the Managed Zone of the Resource Record Sets resource
         #
         # @return [Fog::DNS::Google::Zone] Managed Zone of the Resource Record Sets resource
-        def zone
-          @zone
-        end
+        attr_reader :zone
 
         private
 
@@ -90,20 +84,18 @@ module Fog
         # Assigns the Managed Zone of the Resource Record Sets resource
         #
         # @param [Fog::DNS::Google::Zone] new_zone Managed Zone of the Resource Record Sets resource
-        def zone=(new_zone)
-          @zone = new_zone
-        end
+        attr_writer :zone
 
         ##
         # Resource Record Sets resource representation
         #
         def resource_record_set_format
           {
-            'kind' => 'dns#resourceRecordSet',
-            'name' => self.name,
-            'type' => self.type,
-            'ttl'  => self.ttl,
-            'rrdatas' => self.rrdatas,
+            "kind" => 'dns#resourceRecordSet',
+            "name" => name,
+            "type" => type,
+            "ttl"  => ttl,
+            "rrdatas" => rrdatas
           }
         end
       end

@@ -2,8 +2,8 @@ module Fog
   module Compute
     class Google
       class Mock
-        def get_backend_services(service_name)
-          Fog::Mock::not_implemented
+        def get_backend_services(_service_name)
+          Fog::Mock.not_implemented
         end
       end
 
@@ -11,11 +11,11 @@ module Fog
         def get_backend_services(service_name)
           api_method = @compute.backend_services.get
           parameters = {
-            'project' => @project,
-            'backendService' => service_name
+            "project" => @project,
+            "backendService" => service_name
           }
-          result = self.build_result(api_method, parameters)
-          response = self.build_response(result)
+          result = build_result(api_method, parameters)
+          response = build_response(result)
         end
       end
     end

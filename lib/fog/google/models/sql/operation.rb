@@ -1,4 +1,4 @@
-require 'fog/core/model'
+require "fog/core/model"
 
 module Fog
   module Google
@@ -11,29 +11,29 @@ module Fog
       class Operation < Fog::Model
         identity :operation
 
-        attribute :end_time, :aliases => 'endTime'
-        attribute :enqueued_time, :aliases => 'enqueuedTime'
+        attribute :end_time, :aliases => "endTime"
+        attribute :enqueued_time, :aliases => "enqueuedTime"
         attribute :error
-        attribute :export_context, :aliases => 'exportContext'
-        attribute :import_context, :aliases => 'importContext'
+        attribute :export_context, :aliases => "exportContext"
+        attribute :import_context, :aliases => "importContext"
         attribute :instance
         attribute :kind
-        attribute :operation_type, :aliases => 'operationType'
-        attribute :start_time, :aliases => 'startTime'
+        attribute :operation_type, :aliases => "operationType"
+        attribute :start_time, :aliases => "startTime"
         attribute :state
-        attribute :user_email_address, :aliases => 'userEmailAddress'
+        attribute :user_email_address, :aliases => "userEmailAddress"
 
-        DONE_STATE    = 'DONE'
-        PENDING_STATE = 'PENDING'
-        RUNNING_STATE = 'RUNNING'
-        UNKNOWN_STATE = 'UNKNOWN'
+        DONE_STATE    = "DONE"
+        PENDING_STATE = "PENDING"
+        RUNNING_STATE = "RUNNING"
+        UNKNOWN_STATE = "UNKNOWN"
 
         ##
         # Checks if the instance operation is pending
         #
         # @return [Boolean] True if the operation is pending; False otherwise
         def pending?
-          self.state == PENDING_STATE
+          state == PENDING_STATE
         end
 
         ##
@@ -41,7 +41,7 @@ module Fog
         #
         # @return [Boolean] True if the operation is done; False otherwise
         def ready?
-          self.state == DONE_STATE
+          state == DONE_STATE
         end
 
         ##
@@ -51,7 +51,7 @@ module Fog
         def reload
           requires :identity
 
-          data = collection.get(self.instance, self.identity)
+          data = collection.get(instance, identity)
           merge_attributes(data.attributes)
           self
         end

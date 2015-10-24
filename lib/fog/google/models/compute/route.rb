@@ -1,4 +1,4 @@
-require 'fog/core/model'
+require "fog/core/model"
 
 module Fog
   module Compute
@@ -12,36 +12,34 @@ module Fog
 
         attribute :kind
         attribute :id
-        attribute :creation_timestamp, :aliases => 'creationTimestamp'
+        attribute :creation_timestamp, :aliases => "creationTimestamp"
         attribute :description
-        attribute :dest_range, :aliases => 'destRange'
+        attribute :dest_range, :aliases => "destRange"
         attribute :network
-        attribute :next_hop_gateway, :aliases => 'nextHopGateway'
-        attribute :next_hop_instance, :aliases => 'nextHopInstance'
-        attribute :next_hop_ip, :aliases => 'nextHopIp'
-        attribute :next_hop_network, :aliases => 'nextHopNetwork'
+        attribute :next_hop_gateway, :aliases => "nextHopGateway"
+        attribute :next_hop_instance, :aliases => "nextHopInstance"
+        attribute :next_hop_ip, :aliases => "nextHopIp"
+        attribute :next_hop_network, :aliases => "nextHopNetwork"
         attribute :priority
-        attribute :self_link, :aliases => 'selfLink'
+        attribute :self_link, :aliases => "selfLink"
         attribute :tags
         attribute :warnings
 
         def save
           requires :identity, :network, :dest_range, :priority
 
-          data = service.insert_route(identity, self.network, self.dest_range, self.priority, self.attributes)
-          operation = Fog::Compute::Google::Operations.new(:service => service).get(data.body['name'])
+          data = service.insert_route(identity, network, dest_range, priority, attributes)
+          operation = Fog::Compute::Google::Operations.new(:service => service).get(data.body["name"])
           operation.wait_for { !pending? }
           reload
         end
 
-        def destroy(async=true)
+        def destroy(async = true)
           requires :identity
 
           data = service.delete_route(identity)
-          operation = Fog::Compute::Google::Operations.new(:service => service).get(data.body['name'])
-          unless async
-            operation.wait_for { ready? }
-          end
+          operation = Fog::Compute::Google::Operations.new(:service => service).get(data.body["name"])
+          operation.wait_for { ready? } unless async
           operation
         end
       end

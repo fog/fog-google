@@ -7,20 +7,20 @@ module Fog
           get_region(region_name)
 
           id = Fog::Mock.random_numbers(19).to_s
-          self.data[:target_pools][name] = {
+          data[:target_pools][name] = {
             "kind" => "compute#targetPools",
             "id" => id,
             "creationTimestamp" => Time.now.iso8601,
             "name" => name,
-            "description" => '',
+            "description" => "",
             "region" => "https://www.googleapis.com/compute/#{api_version}/projects/#{@project}/regions/#{region_name}",
-            "instances" => opts['instances'],
-            "healthChecks" => opts['healthChecks'],
+            "instances" => opts["instances"],
+            "healthChecks" => opts["healthChecks"],
             "selfLink" => "https://www.googleapis.com/compute/#{api_version}/projects/#{@project}/regions/#{region_name}/targetPools/#{name}"
           }
 
-          operation = self.random_operation
-          self.data[:operations][operation] = {
+          operation = random_operation
+          data[:operations][operation] = {
             "kind" => "compute#operation",
             "id" => Fog::Mock.random_numbers(19).to_s,
             "name" => operation,
@@ -36,7 +36,7 @@ module Fog
             "selfLink" => "https://www.googleapis.com/compute/#{api_version}/projects/#{@project}/regions/#{region_name}/operations/#{operation}"
           }
 
-          build_excon_response(self.data[:operations][operation])
+          build_excon_response(data[:operations][operation])
         end
       end
 
@@ -44,13 +44,13 @@ module Fog
         def insert_target_pool(target_pool_name, region_name, opts = {})
           api_method = @compute.target_pools.insert
           parameters = {
-            'project' => @project,
-            'region' => region_name
+            "project" => @project,
+            "region" => region_name
           }
-          body_object = { 'name' => target_pool_name }
+          body_object = { "name" => target_pool_name }
           body_object.merge!(opts)
 
-          request(api_method, parameters, body_object=body_object)
+          request(api_method, parameters, body_object = body_object)
         end
       end
     end

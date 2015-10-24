@@ -10,10 +10,10 @@ module Fog
         def restore_instance_backup(identity, backup_configuration, due_time)
           api_method = @sql.instances.reset_ssl_config
           parameters = {
-            'project' => @project,
-            'instance' => identity,
-            'backupConfiguration' => backup_configuration,
-            'dueTime' => due_time,
+            "project" => @project,
+            "instance" => identity,
+            "backupConfiguration" => backup_configuration,
+            "dueTime" => due_time
           }
 
           request(api_method, parameters)
@@ -21,7 +21,7 @@ module Fog
       end
 
       class Mock
-        def restore_instance_backup(identity, backup_configuration, due_time)
+        def restore_instance_backup(_identity, _backup_configuration, _due_time)
           Fog::Mock.not_implemented
         end
       end

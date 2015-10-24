@@ -2,7 +2,7 @@ module Fog
   module Compute
     class Google
       class Mock
-        def get_firewall(firewall_name)
+        def get_firewall(_firewall_name)
           Fog::Mock.not_implemented
         end
       end
@@ -11,8 +11,8 @@ module Fog
         def get_firewall(firewall_name)
           api_method = @compute.firewalls.get
           parameters = {
-            'project' => @project,
-            'firewall' => firewall_name
+            "project" => @project,
+            "firewall" => firewall_name
           }
 
           request(api_method, parameters)

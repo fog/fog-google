@@ -1,5 +1,5 @@
-require 'fog/core/collection'
-require 'fog/google/models/compute/snapshot'
+require "fog/core/collection"
+require "fog/google/models/compute/snapshot"
 
 module Fog
   module Compute
@@ -9,7 +9,7 @@ module Fog
 
         def all
           data = service.list_snapshots
-          snapshots = data.body['items'] || []
+          snapshots = data.body["items"] || []
           load(snapshots)
         end
 

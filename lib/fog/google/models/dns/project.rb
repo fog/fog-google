@@ -1,4 +1,4 @@
-require 'fog/core/model'
+require "fog/core/model"
 
 module Fog
   module DNS
@@ -27,7 +27,7 @@ module Fog
         #
         # @return [Integer] Maximum allowed number of managed zones in the project
         def managed_zones
-          self.quota['managedZones']
+          quota["managedZones"]
         end
 
         ##
@@ -35,7 +35,7 @@ module Fog
         #
         # @return [Integer] The maximum allowed number of ResourceRecordSets per zone in the project
         def rrsets_per_managed_zone
-          self.quota['rrsetsPerManagedZone']
+          quota["rrsetsPerManagedZone"]
         end
 
         ##
@@ -43,7 +43,7 @@ module Fog
         #
         # @return [Integer] The maximum allowed number of resource records per ResourceRecordSet
         def resource_records_per_rrset
-          self.quota['resourceRecordsPerRrset']
+          quota["resourceRecordsPerRrset"]
         end
 
         ##
@@ -51,7 +51,7 @@ module Fog
         #
         # @return [Integer] The maximum allowed number of ResourceRecordSets to add per Changes.create request
         def rrset_additions_per_change
-          self.quota['rrsetAdditionsPerChange']
+          quota["rrsetAdditionsPerChange"]
         end
 
         ##
@@ -59,7 +59,7 @@ module Fog
         #
         # @return [Integer] The maximum allowed number of ResourceRecordSets to delete per Changes.create request
         def rrset_deletions_per_change
-          self.quota['rrsetDeletionsPerChange']
+          quota["rrsetDeletionsPerChange"]
         end
 
         ##
@@ -67,7 +67,7 @@ module Fog
         #
         # @return [Integer] The maximum allowed size in bytes for the rrdata field in one Changes.create request
         def total_rrdatasize_per_change
-          self.quota['totalRrdataSizePerChange']
+          quota["totalRrdataSizePerChange"]
         end
       end
     end

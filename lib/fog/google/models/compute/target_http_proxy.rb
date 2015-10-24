@@ -1,4 +1,4 @@
-require 'fog/core/model'
+require "fog/core/model"
 
 module Fog
   module Compute
@@ -6,31 +6,31 @@ module Fog
       class TargetHttpProxy < Fog::Model
         identity :name
 
-        attribute :kind, :aliases => 'kind'
-        attribute :self_link, :aliases => 'selfLink'
-        attribute :id, :aliases => 'id'
-        attribute :creation_timestamp, :aliases => 'creationTimestamp'
-        attribute :description, :aliases => 'description'
+        attribute :kind, :aliases => "kind"
+        attribute :self_link, :aliases => "selfLink"
+        attribute :id, :aliases => "id"
+        attribute :creation_timestamp, :aliases => "creationTimestamp"
+        attribute :description, :aliases => "description"
         attribute :urlMap, :aliases => ["urlMap", :url_map]
 
         def save
           requires :name
 
           options = {
-            'description' => description,
-            'urlMap'      => urlMap
+            "description" => description,
+            "urlMap"      => urlMap
           }
 
-          data = service.insert_target_http_proxy(name,  options).body
-          operation = Fog::Compute::Google::Operations.new(:service => service).get(data['name'], data['zone'])
+          data = service.insert_target_http_proxy(name, options).body
+          operation = Fog::Compute::Google::Operations.new(:service => service).get(data["name"], data["zone"])
           operation.wait_for { !pending? }
           reload
         end
 
-        def destroy(async=true)
+        def destroy(async = true)
           requires :name
           operation = service.delete_target_http_proxy(name)
-          if not async
+          unless async
             # wait until "DONE" to ensure the operation doesn't fail, raises
             # exception on error
             Fog.wait_for do
@@ -39,19 +39,17 @@ module Fog
           end
           operation
         end
-        
-        def set_url_map urlMap
+
+        def set_url_map(urlMap)
           operation = service.set_target_http_proxy_url_map(self, urlMap)
           reload
         end
 
         def ready?
-          begin
-            service.get_target_http_proxy(self.name)
-            true
-          rescue Fog::Errors::NotFound
-            false
-          end
+          service.get_target_http_proxy(name)
+          true
+        rescue Fog::Errors::NotFound
+          false
         end
 
         def reload

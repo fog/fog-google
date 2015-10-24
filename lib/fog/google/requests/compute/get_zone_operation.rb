@@ -3,7 +3,7 @@ module Fog
     class Google
       class Mock
         def get_zone_operation(zone_name, operation)
-         operation = self.data[:operations][operation]
+          operation = data[:operations][operation]
           if operation
             case operation["status"]
             when Fog::Compute::Google::Operation::PENDING_STATE
@@ -17,11 +17,11 @@ module Fog
             operation = {
               "error" => {
                 "errors" => [
-                 {
-                  "domain" => "global",
-                  "reason" => "notFound",
-                  "message" => "The resource 'projects/#{project}/zones/#{zone_name}/operations/#{operation}' was not found"
-                 }
+                  {
+                    "domain" => "global",
+                    "reason" => "notFound",
+                    "message" => "The resource 'projects/#{project}/zones/#{zone_name}/operations/#{operation}' was not found"
+                  }
                 ],
                 "code" => 404,
                 "message" => "The resource 'projects/#{project}/zones/#{zone_name}/operations/#{operation}' was not found"
@@ -36,15 +36,13 @@ module Fog
         # https://developers.google.com/compute/docs/reference/latest/zoneOperations
 
         def get_zone_operation(zone_name, operation)
-          if zone_name.start_with? 'http'
-            zone_name = zone_name.split('/')[-1]
-          end
+          zone_name = zone_name.split("/")[-1] if zone_name.start_with? "http"
 
           api_method = @compute.zone_operations.get
           parameters = {
-            'project' => @project,
-            'zone' => zone_name,
-            'operation' => operation
+            "project" => @project,
+            "zone" => zone_name,
+            "operation" => operation
           }
 
           request(api_method, parameters)

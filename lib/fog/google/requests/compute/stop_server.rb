@@ -2,7 +2,7 @@ module Fog
   module Compute
     class Google
       class Mock
-        def stop_server(identity, zone_name)
+        def stop_server(_identity, _zone_name)
           Fog::Mock.not_implemented
         end
       end
@@ -11,9 +11,9 @@ module Fog
         def stop_server(identity, zone_name)
           api_method = @compute.instances.stop
           parameters = {
-            'project' => @project,
-            'zone' => zone_name,
-            'instance' => identity,
+            "project" => @project,
+            "zone" => zone_name,
+            "instance" => identity
           }
 
           request(api_method, parameters)

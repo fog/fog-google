@@ -5,15 +5,15 @@ module Fog
       recognizes :app_name, :app_version, :google_client_email, :google_key_location, :google_key_string,
                  :google_client, :google_json_key_location, :google_json_key_string, :google_extra_global_projects
 
-      GOOGLE_COMPUTE_API_VERSION     = 'v1'
-      GOOGLE_COMPUTE_BASE_URL        = 'https://www.googleapis.com/compute/'
+      GOOGLE_COMPUTE_API_VERSION     = "v1"
+      GOOGLE_COMPUTE_BASE_URL        = "https://www.googleapis.com/compute/"
       GOOGLE_COMPUTE_API_SCOPE_URLS  = %w(https://www.googleapis.com/auth/compute
-                                         https://www.googleapis.com/auth/devstorage.read_write
-                                         https://www.googleapis.com/auth/ndev.cloudman
-                                         https://www.googleapis.com/auth/cloud-platform)
-      GOOGLE_COMPUTE_DEFAULT_NETWORK = 'default'
+                                          https://www.googleapis.com/auth/devstorage.read_write
+                                          https://www.googleapis.com/auth/ndev.cloudman
+                                          https://www.googleapis.com/auth/cloud-platform)
+      GOOGLE_COMPUTE_DEFAULT_NETWORK = "default"
 
-      request_path 'fog/google/requests/compute'
+      request_path "fog/google/requests/compute"
       request :list_servers
       request :list_aggregated_servers
       request :list_addresses
@@ -157,7 +157,7 @@ module Fog
       request :start_server
       request :stop_server
 
-      model_path 'fog/google/models/compute'
+      model_path "fog/google/models/compute"
       model :server
       collection :servers
 
@@ -242,7 +242,7 @@ module Fog
         def self.data(api_version)
           @data ||= Hash.new do |hash, key|
             case key
-            when 'debian-cloud'
+            when "debian-cloud"
               hash[key] = {
                 :images => {
                   "debian-6-squeeze-v20130816" => {
@@ -304,7 +304,7 @@ module Fog
                   }
                 }
               }
-            when 'centos-cloud'
+            when "centos-cloud"
               hash[key] = {
                 :images => {
                   "centos-6-v20130813" => {
@@ -329,9 +329,9 @@ module Fog
                   "test-target-http-proxy" => {
                     "kind" => "compute#targetHttpProxy",
                     "id" => "1361932147851415729",
-                    "creationTimestamp" => '2014-08-23T10:06:13.951-07:00',
+                    "creationTimestamp" => "2014-08-23T10:06:13.951-07:00",
                     "name" => "test-target-http-proxy",
-                    "description" => '',
+                    "description" => "",
                     "selfLink" => "https://www.googleapis.com/compute/#{api_version}/projects/#{@project}/global/targetHttpProxies/test-target-http-proxy",
                     "urlMap" => "https://www.googleapis.com/compute/#{api_version}/projects/#{@project}/global/urlMaps/test-url-map"
                   }
@@ -340,9 +340,9 @@ module Fog
                   "test-url-map" => {
                     "kind" => "compute#urlMap",
                     "id" => "1361932147851415729",
-                    "creationTimestamp" => '2014-08-23T10:06:13.951-07:00',
-                    "name" => 'test-url-map',
-                    "description" => '',
+                    "creationTimestamp" => "2014-08-23T10:06:13.951-07:00",
+                    "name" => "test-url-map",
+                    "description" => "",
                     "hostRules" => [],
                     "pathMatchers" => [],
                     "tests" => [],
@@ -352,27 +352,27 @@ module Fog
                 },
                 :target_pools => {
                   "test-target-pool" => {
-                    'kind' => "compute#targetPool",
+                    "kind" => "compute#targetPool",
                     "id" => "1361932147851415729",
                     "selfLink" => "https://www.googleapis.com/compute/#{api_version}/projects/#{@project}/regions/us-central1/targetPools/test-target-pool",
-                    "creationTimestamp" => '2014-08-23T10:06:13.951-07:00',
-                    'name' => "test-target-pool",
+                    "creationTimestamp" => "2014-08-23T10:06:13.951-07:00",
+                    "name" => "test-target-pool",
                     "region" => "https://www.googleapis.com/compute/#{api_version}/projects/#{@project}/regions/us-central1",
                     "healthChecks" => ["https://www.googleapis.com/compute/#{api_version}/projects/#{@project}/global/httpHealthChecks/test-check"],
-                    "instances" => ["https://www.googleapis.com/compute/#{api_version}/projects/#{@project}/zones/us-central1-a/instances/test-instance"],
+                    "instances" => ["https://www.googleapis.com/compute/#{api_version}/projects/#{@project}/zones/us-central1-a/instances/test-instance"]
                   }
                 },
 
                 :http_health_checks => {
                   "test-http-health-check" => {
                     "checkIntervalSec" => 5,
-                    "creationTimestamp" => '2014-08-23T10:06:13.951-07:00',
+                    "creationTimestamp" => "2014-08-23T10:06:13.951-07:00",
                     "healthyThreshold" => 2,
                     "id" => "1361932147851415729",
                     "kind" => "compute#httphealthCheck",
                     "name" => "test-http-health-check",
                     "port" => 80,
-                    "requestPath" => '/',
+                    "requestPath" => "/",
                     "selfLink" => "https://www.googleapis.com/compute/#{api_version}/projects/#{@project}/global/httpHealthChecks/test-http-health-check",
                     "timeoutSec" => 5,
                     "unhealthyThreshold" => 2
@@ -382,11 +382,11 @@ module Fog
                   "test-global-forwarding-rule" => {
                     "kind" => "compute#forwardingRule",
                     "id" => "1361932147851415729",
-                    "creationTimestamp" => '2014-08-23T10:06:13.951-07:00',
-                    "name" => 'test-global-forwarding-rule',
-                    "IPAddress" => '107.178.255.155',
-                    "IPProtocol" => 'TCP',
-                    "portRange" => '80-80',
+                    "creationTimestamp" => "2014-08-23T10:06:13.951-07:00",
+                    "name" => "test-global-forwarding-rule",
+                    "IPAddress" => "107.178.255.155",
+                    "IPProtocol" => "TCP",
+                    "portRange" => "80-80",
                     "target" => "https://www.googleapis.com/compute/#{api_version}/projects/#{@project}/global/targetHttpProxies/proxy",
                     "selfLink" => "https://www.googleapis.com/compute/#{api_version}/projects/#{@project}/global/forwardngRules/test-global-forwarding-rule"
                   }
@@ -395,11 +395,11 @@ module Fog
                   "test-forwarding-rule" => {
                     "kind" => "compute#forwardingRule",
                     "id" => "1361932147851415729",
-                    "creationTimestamp" => '2014-08-23T10:06:13.951-07:00',
-                    "name" => 'test-forwarding-rule',
-                    "IPAddress" => '107.178.255.155',
-                    "IPProtocol" => 'TCP',
-                    "portRange" => '80-80',
+                    "creationTimestamp" => "2014-08-23T10:06:13.951-07:00",
+                    "name" => "test-forwarding-rule",
+                    "IPAddress" => "107.178.255.155",
+                    "IPProtocol" => "TCP",
+                    "portRange" => "80-80",
                     "target" => "https://www.googleapis.com/compute/#{api_version}/projects/#{@project}/regions/us-central1/targetPools/target_pool",
                     "selfLink" => "https://www.googleapis.com/compute/#{api_version}/projects/#{@project}/regions/us-central1/forwardngRules/test-forwarding-rule",
                     "region" => "https://www.googleapis.com/compute/#{api_version}/projects/#{@project}/regions/us-central1"
@@ -414,25 +414,25 @@ module Fog
                     "instance" => "https://www.googleapis.com/compute/#{api_version}/projects/#{@project}/zones/us-central1-a/instances/test-instance",
                     "selfLink" => "https://www.googleapis.com/compute/#{api_version}/projects/#{@project}/zones/us-central1-a/targetInstances/test-target-instance",
                     "id" => "1361932147851415729",
-                    "creationTimestamp" => '2014-08-23T10:06:13.951-07:00',
+                    "creationTimestamp" => "2014-08-23T10:06:13.951-07:00"
 
                   }
                 },
-                :backend_services =>{
+                :backend_services => {
                   "test-backend-service" => {
                     "kind" => "compute#backend_service",
                     "id" => "1361932147851415729",
-                    "creationTimestamp" => '2014-08-23T10:06:13.951-07:00',
+                    "creationTimestamp" => "2014-08-23T10:06:13.951-07:00",
                     "name" => "test-backend-service",
-                    "description" => '',
+                    "description" => "",
                     "backends" => [
-                       {
-                      "description" => '',
-                      "group" => "https://www.googleapis.com/resourceviews/v1beta1/projects#{@project}/zones/us-central1-a/zoneViews/name",
-                      "balancingMode" => "RATE",
-                      "capacityScaler" => 1.1,
-                      "maxRate" => 0.5,
-                    }],
+                      {
+                        "description" => "",
+                        "group" => "https://www.googleapis.com/resourceviews/v1beta1/projects#{@project}/zones/us-central1-a/zoneViews/name",
+                        "balancingMode" => "RATE",
+                        "capacityScaler" => 1.1,
+                        "maxRate" => 0.5
+                      }],
                     "selfLink" => "https://www.googleapis.com/compute/#{api_version}/projects/#{@project}/global/backendServices/test-backend-service"
                   }
                 },
@@ -504,10 +504,10 @@ module Fog
                       }
                     ],
                     "quotas" => [
-                      {"metric" => "INSTANCES", "limit" => 16.0, "usage" => 0.0},
-                      {"metric" => "CPUS", "limit" => 24.0, "usage" => 0.0},
-                      {"metric" => "DISKS", "limit" => 16.0, "usage" => 0.0},
-                      {"metric" => "DISKS_TOTAL_GB", "limit" => 2048.0, "usage" => 0.0}
+                      { "metric" => "INSTANCES", "limit" => 16.0, "usage" => 0.0 },
+                      { "metric" => "CPUS", "limit" => 24.0, "usage" => 0.0 },
+                      { "metric" => "DISKS", "limit" => 16.0, "usage" => 0.0 },
+                      { "metric" => "DISKS_TOTAL_GB", "limit" => 2048.0, "usage" => 0.0 }
                     ],
                     "region" => "https://www.googleapis.com/compute/#{api_version}/projects/#{key}/regions/europe-west1"
                   },
@@ -521,10 +521,10 @@ module Fog
                     "status" => "UP",
                     "maintenanceWindows" => nil,
                     "quotas" => [
-                      {"metric" => "INSTANCES", "limit" => 16.0, "usage" => 1.0},
-                      {"metric" => "CPUS", "limit" => 24.0, "usage" => 1.0},
-                      {"metric" => "DISKS", "limit" => 16.0, "usage" => 0.0},
-                      {"metric" => "DISKS_TOTAL_GB", "limit" => 2048.0, "usage" => 0.0}
+                      { "metric" => "INSTANCES", "limit" => 16.0, "usage" => 1.0 },
+                      { "metric" => "CPUS", "limit" => 24.0, "usage" => 1.0 },
+                      { "metric" => "DISKS", "limit" => 16.0, "usage" => 0.0 },
+                      { "metric" => "DISKS_TOTAL_GB", "limit" => 2048.0, "usage" => 0.0 }
                     ],
                     "region" => "https://www.googleapis.com/compute/#{api_version}/projects/#{key}/regions/us-central1"
                   },
@@ -536,15 +536,15 @@ module Fog
                     "name" => "us-central1-b",
                     "description" => "us-central1-b",
                     "status" => "UP",
-                    "maintenanceWindows" => [{"name" => "2013-10-26-planned-outage",
-                      "description" => "maintenance zone",
-                    "beginTime" => "2013-10-26T12:00:00.000-07:00",
-                    "endTime" => "2013-11-10T12:00:00.000-08:00"}],
+                    "maintenanceWindows" => [{ "name" => "2013-10-26-planned-outage",
+                                               "description" => "maintenance zone",
+                                               "beginTime" => "2013-10-26T12:00:00.000-07:00",
+                                               "endTime" => "2013-11-10T12:00:00.000-08:00" }],
                     "quotas" => [
-                      {"metric" => "INSTANCES", "limit" => 16.0, "usage" => 0.0},
-                      {"metric" => "CPUS", "limit" => 24.0, "usage" => 0.0},
-                      {"metric" => "DISKS", "limit" => 16.0, "usage" => 0.0},
-                      {"metric" => "DISKS_TOTAL_GB", "limit" => 2048.0, "usage" => 0.0}
+                      { "metric" => "INSTANCES", "limit" => 16.0, "usage" => 0.0 },
+                      { "metric" => "CPUS", "limit" => 24.0, "usage" => 0.0 },
+                      { "metric" => "DISKS", "limit" => 16.0, "usage" => 0.0 },
+                      { "metric" => "DISKS_TOTAL_GB", "limit" => 2048.0, "usage" => 0.0 }
                     ],
                     "region" => "https://www.googleapis.com/compute/#{api_version}/projects/#{key}/regions/us-central1"
                   },
@@ -565,75 +565,75 @@ module Fog
                       }
                     ],
                     "quotas" => [
-                      {"metric" => "INSTANCES", "limit" => 16.0, "usage" => 0.0},
-                      {"metric" => "CPUS", "limit" => 24.0, "usage" => 0.0},
-                      {"metric" => "DISKS", "limit" => 16.0, "usage" => 0.0},
-                      {"metric" => "DISKS_TOTAL_GB", "limit" => 2048.0, "usage" => 0.0}
+                      { "metric" => "INSTANCES", "limit" => 16.0, "usage" => 0.0 },
+                      { "metric" => "CPUS", "limit" => 24.0, "usage" => 0.0 },
+                      { "metric" => "DISKS", "limit" => 16.0, "usage" => 0.0 },
+                      { "metric" => "DISKS_TOTAL_GB", "limit" => 2048.0, "usage" => 0.0 }
                     ],
                     "region" => "https://www.googleapis.com/compute/#{api_version}/projects/#{key}/regions/us-central2"
                   }
                 },
                 :regions => {
                   "us-central1" => {
-                    "creationTimestamp" => '2014-01-21T10:30:54.895-08:00',
-                    "description" => 'us-central1',
-                    "id" => '18201118976141502843',
+                    "creationTimestamp" => "2014-01-21T10:30:54.895-08:00",
+                    "description" => "us-central1",
+                    "id" => "18201118976141502843",
                     "kind" => "compute#region",
-                    "name" =>"us-central1",
+                    "name" => "us-central1",
                     "quotas" => [
-                      {"metric" =>"CPUS", "limit" => 1050.0, "usage" => 28.0},
-                      {"metric" =>"DISKS_TOTAL_GB", "limit" => 10000.0, "usage" => 292.0},
-                      {"metric" =>"STATIC_ADDRESSES", "limit" => 10.0, "usage" => 0.0},
-                      {"metric" =>"IN_USE_ADDRESSES", "limit" => 1050.0, "usage" => 30.0},
-                      {"metric" =>"SSD_TOTAL_GB", "limit" => 1024.0, "usage" => 0.0}
+                      { "metric" => "CPUS", "limit" => 1050.0, "usage" => 28.0 },
+                      { "metric" => "DISKS_TOTAL_GB", "limit" => 10_000.0, "usage" => 292.0 },
+                      { "metric" => "STATIC_ADDRESSES", "limit" => 10.0, "usage" => 0.0 },
+                      { "metric" => "IN_USE_ADDRESSES", "limit" => 1050.0, "usage" => 30.0 },
+                      { "metric" => "SSD_TOTAL_GB", "limit" => 1024.0, "usage" => 0.0 }
                     ],
                     "selfLink" => "https://www.googleapis.com/compute/#{api_version}/projects/#{key}/regions/us-central1",
                     "status" => "UP",
-                    "zones" =>  [ 
+                    "zones" =>  [
                       "https://www.googleapis.com/compute/#{api_version}/projects/#{key}/zones/us-central1-a",
                       "https://www.googleapis.com/compute/#{api_version}/projects/#{key}/zones/us-central1-b",
-                      "https://www.googleapis.com/compute/#{api_version}/projects/#{key}/zones/us-central1-f",
+                      "https://www.googleapis.com/compute/#{api_version}/projects/#{key}/zones/us-central1-f"
                     ]
                   },
                   "europe-west1" => {
-                    "creationTimestamp" => '2014-01-21T10:30:54.891-08:00',
-                    "description" => 'europe-west1',
-                    "id" => '18201118976141502843',
+                    "creationTimestamp" => "2014-01-21T10:30:54.891-08:00",
+                    "description" => "europe-west1",
+                    "id" => "18201118976141502843",
                     "kind" => "compute#region",
-                    "name" =>"europe-west1",
+                    "name" => "europe-west1",
                     "quotas" => [
-                      {"metric" =>"CPUS", "limit" => 24.0, "usage" => 0.0},
-                      {"metric" =>"DISKS_TOTAL_GB", "limit" => 2048.0, "usage" => 0.0},
-                      {"metric" =>"STATIC_ADDRESSES", "limit" => 7.0, "usage" => 0.0},
-                      {"metric" =>"IN_USE_ADDRESSES", "limit" => 23.0, "usage" => 0.0},
-                      {"metric" =>"SSD_TOTAL_GB", "limit" => 1024.0, "usage" => 0.0}
+                      { "metric" => "CPUS", "limit" => 24.0, "usage" => 0.0 },
+                      { "metric" => "DISKS_TOTAL_GB", "limit" => 2048.0, "usage" => 0.0 },
+                      { "metric" => "STATIC_ADDRESSES", "limit" => 7.0, "usage" => 0.0 },
+                      { "metric" => "IN_USE_ADDRESSES", "limit" => 23.0, "usage" => 0.0 },
+                      { "metric" => "SSD_TOTAL_GB", "limit" => 1024.0, "usage" => 0.0 }
                     ],
                     "selfLink" => "https://www.googleapis.com/compute/#{api_version}/projects/#{key}/regions/erope-west1",
                     "status" => "UP",
-                    "zones" =>  [ 
+                    "zones" =>  [
                       "https://www.googleapis.com/compute/#{api_version}/projects/#{key}/zones/europe-west1-a",
-                      "https://www.googleapis.com/compute/#{api_version}/projects/#{key}/zones/europe-west1-b",
+                      "https://www.googleapis.com/compute/#{api_version}/projects/#{key}/zones/europe-west1-b"
                     ]
                   },
                   "asia-east1" => {
-                    "creationTimestamp" => '2014-01-21T10:30:54.895-08:00',
-                    "description" => 'asia-east1',
-                    "id" => '18201118976141502843',
+                    "creationTimestamp" => "2014-01-21T10:30:54.895-08:00",
+                    "description" => "asia-east1",
+                    "id" => "18201118976141502843",
                     "kind" => "compute#region",
-                    "name" =>"asia-east1",
+                    "name" => "asia-east1",
                     "quotas" => [
-                      {"metric" =>"CPUS", "limit" => 1050.0, "usage" => 28.0},
-                      {"metric" =>"DISKS_TOTAL_GB", "limit" => 10000.0, "usage" => 292.0},
-                      {"metric" =>"STATIC_ADDRESSES", "limit" => 10.0, "usage" => 0.0},
-                      {"metric" =>"IN_USE_ADDRESSES", "limit" => 1050.0, "usage" => 30.0},
-                      {"metric" =>"SSD_TOTAL_GB", "limit" => 1024.0, "usage" => 0.0}
+                      { "metric" => "CPUS", "limit" => 1050.0, "usage" => 28.0 },
+                      { "metric" => "DISKS_TOTAL_GB", "limit" => 10_000.0, "usage" => 292.0 },
+                      { "metric" => "STATIC_ADDRESSES", "limit" => 10.0, "usage" => 0.0 },
+                      { "metric" => "IN_USE_ADDRESSES", "limit" => 1050.0, "usage" => 30.0 },
+                      { "metric" => "SSD_TOTAL_GB", "limit" => 1024.0, "usage" => 0.0 }
                     ],
                     "selfLink" => "https://www.googleapis.com/compute/#{api_version}/projects/#{key}/regions/asia-east1",
                     "status" => "UP",
-                    "zones" =>  [ 
+                    "zones" =>  [
                       "https://www.googleapis.com/compute/#{api_version}/projects/#{key}/zones/asia-east1-a",
                       "https://www.googleapis.com/compute/#{api_version}/projects/#{key}/zones/asia-east1-b",
-                      "https://www.googleapis.com/compute/#{api_version}/projects/#{key}/zones/asia-east1-c",
+                      "https://www.googleapis.com/compute/#{api_version}/projects/#{key}/zones/asia-east1-c"
                     ]
                   }
                 },
@@ -692,9 +692,9 @@ module Fog
                       "memoryMb" => 1843,
                       "imageSpaceGb" => 10,
                       "scratchDisks" => [
-                       {
-                        "diskGb" => 870
-                       }
+                        {
+                          "diskGb" => 870
+                        }
                       ],
                       "maximumPersistentDisks" => 16,
                       "maximumPersistentDisksSizeGb" => "10240",
@@ -725,9 +725,9 @@ module Fog
                       "memoryMb" => 3686,
                       "imageSpaceGb" => 10,
                       "scratchDisks" => [
-                       {
-                        "diskGb" => 1770
-                       }
+                        {
+                          "diskGb" => 1770
+                        }
                       ],
                       "maximumPersistentDisks" => 16,
                       "maximumPersistentDisksSizeGb" => "10240",
@@ -758,12 +758,12 @@ module Fog
                       "memoryMb" => 7373,
                       "imageSpaceGb" => 10,
                       "scratchDisks" => [
-                       {
-                        "diskGb" => 1770
-                       },
-                       {
-                        "diskGb" => 1770
-                       }
+                        {
+                          "diskGb" => 1770
+                        },
+                        {
+                          "diskGb" => 1770
+                        }
                       ],
                       "maximumPersistentDisks" => 16,
                       "maximumPersistentDisksSizeGb" => "10240",
@@ -777,7 +777,7 @@ module Fog
                       "name" => "n1-highmem-2",
                       "description" => "2 vCPUs, 13 GB RAM",
                       "guestCpus" => 2,
-                      "memoryMb" => 13312,
+                      "memoryMb" => 13_312,
                       "imageSpaceGb" => 10,
                       "maximumPersistentDisks" => 16,
                       "maximumPersistentDisksSizeGb" => "10240",
@@ -791,12 +791,12 @@ module Fog
                       "name" => "n1-highmem-2-d",
                       "description" => "2 vCPUs, 13 GB RAM, 1 scratch disk (870 GB)",
                       "guestCpus" => 2,
-                      "memoryMb" => 13312,
+                      "memoryMb" => 13_312,
                       "imageSpaceGb" => 10,
                       "scratchDisks" => [
-                       {
-                        "diskGb" => 870
-                       }
+                        {
+                          "diskGb" => 870
+                        }
                       ],
                       "maximumPersistentDisks" => 16,
                       "maximumPersistentDisksSizeGb" => "10240",
@@ -810,7 +810,7 @@ module Fog
                       "name" => "n1-highmem-4",
                       "description" => "4 vCPUs, 26 GB RAM",
                       "guestCpus" => 4,
-                      "memoryMb" => 26624,
+                      "memoryMb" => 26_624,
                       "imageSpaceGb" => 10,
                       "maximumPersistentDisks" => 16,
                       "maximumPersistentDisksSizeGb" => "10240",
@@ -824,12 +824,12 @@ module Fog
                       "name" => "n1-highmem-4-d",
                       "description" => "4 vCPUs, 26 GB RAM, 1 scratch disk (1770 GB)",
                       "guestCpus" => 4,
-                      "memoryMb" => 26624,
+                      "memoryMb" => 26_624,
                       "imageSpaceGb" => 10,
                       "scratchDisks" => [
-                       {
-                        "diskGb" => 1770
-                       }
+                        {
+                          "diskGb" => 1770
+                        }
                       ],
                       "maximumPersistentDisks" => 16,
                       "maximumPersistentDisksSizeGb" => "10240",
@@ -843,7 +843,7 @@ module Fog
                       "name" => "n1-highmem-8",
                       "description" => "8 vCPUs, 52 GB RAM",
                       "guestCpus" => 8,
-                      "memoryMb" => 53248,
+                      "memoryMb" => 53_248,
                       "imageSpaceGb" => 10,
                       "maximumPersistentDisks" => 16,
                       "maximumPersistentDisksSizeGb" => "10240",
@@ -857,15 +857,15 @@ module Fog
                       "name" => "n1-highmem-8-d",
                       "description" => "8 vCPUs, 52 GB RAM, 2 scratch disks (1770 GB, 1770 GB)",
                       "guestCpus" => 8,
-                      "memoryMb" => 53248,
+                      "memoryMb" => 53_248,
                       "imageSpaceGb" => 10,
                       "scratchDisks" => [
-                       {
-                        "diskGb" => 1770
-                       },
-                       {
-                        "diskGb" => 1770
-                       }
+                        {
+                          "diskGb" => 1770
+                        },
+                        {
+                          "diskGb" => 1770
+                        }
                       ],
                       "maximumPersistentDisks" => 16,
                       "maximumPersistentDisksSizeGb" => "10240",
@@ -896,9 +896,9 @@ module Fog
                       "memoryMb" => 3840,
                       "imageSpaceGb" => 10,
                       "scratchDisks" => [
-                       {
-                        "diskGb" => 420
-                       }
+                        {
+                          "diskGb" => 420
+                        }
                       ],
                       "maximumPersistentDisks" => 16,
                       "maximumPersistentDisksSizeGb" => "10240",
@@ -929,9 +929,9 @@ module Fog
                       "memoryMb" => 7680,
                       "imageSpaceGb" => 10,
                       "scratchDisks" => [
-                       {
-                        "diskGb" => 870
-                       }
+                        {
+                          "diskGb" => 870
+                        }
                       ],
                       "maximumPersistentDisks" => 16,
                       "maximumPersistentDisksSizeGb" => "10240",
@@ -945,7 +945,7 @@ module Fog
                       "name" => "n1-standard-4",
                       "description" => "4 vCPUs, 15 GB RAM",
                       "guestCpus" => 4,
-                      "memoryMb" => 15360,
+                      "memoryMb" => 15_360,
                       "imageSpaceGb" => 10,
                       "maximumPersistentDisks" => 16,
                       "maximumPersistentDisksSizeGb" => "10240",
@@ -959,12 +959,12 @@ module Fog
                       "name" => "n1-standard-4-d",
                       "description" => "4 vCPUs, 15 GB RAM, 1 scratch disk (1770 GB)",
                       "guestCpus" => 4,
-                      "memoryMb" => 15360,
+                      "memoryMb" => 15_360,
                       "imageSpaceGb" => 10,
                       "scratchDisks" => [
-                       {
-                        "diskGb" => 1770
-                       }
+                        {
+                          "diskGb" => 1770
+                        }
                       ],
                       "maximumPersistentDisks" => 16,
                       "maximumPersistentDisksSizeGb" => "10240",
@@ -978,7 +978,7 @@ module Fog
                       "name" => "n1-standard-8",
                       "description" => "8 vCPUs, 30 GB RAM",
                       "guestCpus" => 8,
-                      "memoryMb" => 30720,
+                      "memoryMb" => 30_720,
                       "imageSpaceGb" => 10,
                       "maximumPersistentDisks" => 16,
                       "maximumPersistentDisksSizeGb" => "10240",
@@ -992,21 +992,21 @@ module Fog
                       "name" => "n1-standard-8-d",
                       "description" => "8 vCPUs, 30 GB RAM, 2 scratch disks (1770 GB, 1770 GB)",
                       "guestCpus" => 8,
-                      "memoryMb" => 30720,
+                      "memoryMb" => 30_720,
                       "imageSpaceGb" => 10,
                       "scratchDisks" => [
-                       {
-                        "diskGb" => 1770
-                       },
-                       {
-                        "diskGb" => 1770
-                       }
+                        {
+                          "diskGb" => 1770
+                        },
+                        {
+                          "diskGb" => 1770
+                        }
                       ],
                       "maximumPersistentDisks" => 16,
                       "maximumPersistentDisksSizeGb" => "10240",
                       "zone" => zone,
                       "selfLink" => "https://www.googleapis.com/compute/#{api_version}/projects/#{key}/zones/#{zone}/machineTypes/n1-standard-8-d"
-                     }
+                    }
                   }
                 end,
                 :images => {},
@@ -1022,7 +1022,7 @@ module Fog
                     "selfLink" => "https://www.googleapis.com/compute/#{api_version}/projects/#{key}/zones/us-central1-a/disks/fog-1",
                     "sourceImage" => "https://www.googleapis.com/compute/#{api_version}/projects/debian-cloud/global/images/debian-7-wheezy-v20131120",
                     "sourceImageId" => "17312518942796567788",
-                    "type" => "https://www.googleapis.com/compute/#{api_version}/projects/#{key}/zones/us-central1-a/diskTypes/pd-standard",
+                    "type" => "https://www.googleapis.com/compute/#{api_version}/projects/#{key}/zones/us-central1-a/diskTypes/pd-standard"
                   },
                   "fog-2" => {
                     "kind" => "compute#disk",
@@ -1033,7 +1033,7 @@ module Fog
                     "name" => "fog-2",
                     "sizeGb" => "10",
                     "selfLink" => "https://www.googleapis.com/compute/#{api_version}/projects/#{key}/zones/us-central1-a/disks/fog-1",
-                    "type" => "https://www.googleapis.com/compute/#{api_version}/projects/#{key}/zones/us-central1-a/diskTypes/pd-ssd",
+                    "type" => "https://www.googleapis.com/compute/#{api_version}/projects/#{key}/zones/us-central1-a/diskTypes/pd-ssd"
                   }
                 },
                 :operations => {}
@@ -1046,7 +1046,7 @@ module Fog
           @data = nil
         end
 
-        def data(project=@project)
+        def data(project = @project)
           self.class.data(api_version)[project]
         end
 
@@ -1068,16 +1068,16 @@ module Fog
 
         def initialize(options)
           shared_initialize(options[:google_project], GOOGLE_COMPUTE_API_VERSION, GOOGLE_COMPUTE_BASE_URL)
-          options.merge!(:google_api_scope_url => GOOGLE_COMPUTE_API_SCOPE_URLS.join(' '))
+          options.merge!(:google_api_scope_url => GOOGLE_COMPUTE_API_SCOPE_URLS.join(" "))
 
           @client = initialize_google_client(options)
-          @compute = @client.discovered_api('compute', api_version)
-          @resourceviews = @client.discovered_api('resourceviews', 'v1beta1')
+          @compute = @client.discovered_api("compute", api_version)
+          @resourceviews = @client.discovered_api("resourceviews", "v1beta1")
           @extra_global_projects = options[:google_extra_global_projects] || []
         end
       end
 
-      RUNNING = 'RUNNING'
+      RUNNING = "RUNNING"
     end
   end
 end

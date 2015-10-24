@@ -10,10 +10,10 @@ module Fog
         def get_backup_run(instance_id, backup_configuration_id, due_time)
           api_method = @sql.backup_runs.get
           parameters = {
-            'project' => @project,
-            'instance' => instance_id,
-            'backupConfiguration' => backup_configuration_id,
-            'dueTime' => due_time,
+            "project" => @project,
+            "instance" => instance_id,
+            "backupConfiguration" => backup_configuration_id,
+            "dueTime" => due_time
           }
 
           request(api_method, parameters)
@@ -21,7 +21,7 @@ module Fog
       end
 
       class Mock
-        def get_backup_run(instance_id, backup_configuration_id, due_time)
+        def get_backup_run(_instance_id, _backup_configuration_id, _due_time)
           Fog::Mock.not_implemented
         end
       end

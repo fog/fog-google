@@ -2,7 +2,7 @@ module Fog
   module Compute
     class Google
       class Mock
-        def get_network(network_name)
+        def get_network(_network_name)
           Fog::Mock.not_implemented
         end
       end
@@ -11,8 +11,8 @@ module Fog
         def get_network(network_name)
           api_method = @compute.networks.get
           parameters = {
-            'project' => @project,
-            'network' => network_name
+            "project" => @project,
+            "network" => network_name
           }
 
           request(api_method, parameters)

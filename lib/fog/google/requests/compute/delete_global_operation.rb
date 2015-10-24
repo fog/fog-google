@@ -2,7 +2,7 @@ module Fog
   module Compute
     class Google
       class Mock
-        def delete_global_operation(operation)
+        def delete_global_operation(_operation)
           Fog::Mock.not_implemented
         end
       end
@@ -13,8 +13,8 @@ module Fog
         def delete_global_operation(operation)
           api_method = @compute.global_operations.delete
           parameters = {
-            'project' => @project,
-            'operation' => operation
+            "project" => @project,
+            "operation" => operation
           }
 
           request(api_method, parameters)

@@ -1,5 +1,5 @@
-require 'fog/core/collection'
-require 'fog/google/models/monitoring/timeseries_descriptor'
+require "fog/core/collection"
+require "fog/google/models/monitoring/timeseries_descriptor"
 
 module Fog
   module Google
@@ -22,7 +22,7 @@ module Fog
         #   declare the interval.
         # @return [Array<Fog::Google::Monitoring::TimeseriesDescriptor>] List of Timeseries Descriptors.
         def all(metric, youngest, options = {})
-          data = service.list_timeseries_descriptors(metric, youngest, options).body['timeseries'] || []
+          data = service.list_timeseries_descriptors(metric, youngest, options).body["timeseries"] || []
           load(data)
         end
       end

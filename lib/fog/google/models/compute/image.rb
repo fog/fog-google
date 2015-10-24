@@ -1,4 +1,4 @@
-require 'fog/core/model'
+require "fog/core/model"
 
 module Fog
   module Compute
@@ -8,13 +8,13 @@ module Fog
 
         attribute :id
         attribute :kind
-        attribute :archive_size_bytes, :aliases => 'archiveSizeBytes'
-        attribute :creation_timestamp, :aliases => 'creationTimestamp'
+        attribute :archive_size_bytes, :aliases => "archiveSizeBytes"
+        attribute :creation_timestamp, :aliases => "creationTimestamp"
         attribute :deprecated
         attribute :description
-        attribute :disk_size_gb, :aliases => 'diskSizeGb'
-        attribute :self_link, :aliases => 'selfLink'
-        attribute :source_type, :aliases => 'sourceType'
+        attribute :disk_size_gb, :aliases => "diskSizeGb"
+        attribute :self_link, :aliases => "selfLink"
+        attribute :source_type, :aliases => "sourceType"
         attribute :status
 
         # This attribute is not available in the representation of an
@@ -30,9 +30,9 @@ module Fog
         #   :container_type => 'TAR',
         #   :sha1Checksum   => ,
         # }
-        attribute :raw_disk, :aliases => 'rawDisk'
+        attribute :raw_disk, :aliases => "rawDisk"
 
-        def preferred_kernel=(args)
+        def preferred_kernel=(_args)
           Fog::Logger.deprecation("preferred_kernel= is no longer used [light_black](#{caller.first})[/]")
         end
 
@@ -44,25 +44,23 @@ module Fog
         READY_STATE = "READY"
 
         def ready?
-          self.status == READY_STATE
+          status == READY_STATE
         end
 
-        def destroy(async=true)
+        def destroy(async = true)
           data = service.delete_image(name)
-          operation = Fog::Compute::Google::Operations.new(:service => service).get(data.body['name'])
-          unless async
-            operation.wait_for { ready? }
-          end
+          operation = Fog::Compute::Google::Operations.new(:service => service).get(data.body["name"])
+          operation.wait_for { ready? } unless async
           operation
         end
 
         def reload
           requires :name
 
-          self.project = self.service.project
-          data = service.get_image(name, self.project).body
+          self.project = service.project
+          data = service.get_image(name, project).body
 
-          self.merge_attributes(data)
+          merge_attributes(data)
           self
         end
 
@@ -71,18 +69,18 @@ module Fog
           requires :raw_disk
 
           options = {
-            'rawDisk'         => raw_disk,
-            'description'     => description,
+            "rawDisk"         => raw_disk,
+            "description"     => description
           }
 
           data = service.insert_image(name, options)
-          operation = Fog::Compute::Google::Operations.new(:service => service).get(data.body['name'])
+          operation = Fog::Compute::Google::Operations.new(:service => service).get(data.body["name"])
           operation.wait_for { !pending? }
           reload
         end
 
         def resource_url
-          "#{self.project}/global/images/#{name}"
+          "#{project}/global/images/#{name}"
         end
       end
     end

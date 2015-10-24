@@ -4,20 +4,20 @@ module Fog
       class Mock
         def insert_target_instance(target_instance, zone_name, opts = {})
           id = Fog::Mock.random_numbers(19).to_s
-          self.data[:target_instances][target_instance] = {
+          data[:target_instances][target_instance] = {
             "kind" => "compute#targetInstance",
             "id" => id,
             "creationTimestamp" => Time.now.iso8601,
             "name" => target_instance,
-            "description" => '',
-            "natPolicy" => '',
+            "description" => "",
+            "natPolicy" => "",
             "zone" => zone_name,
-            "instance" => opts['instance'],
+            "instance" => opts["instance"],
             "selfLink" => "https://www.googleapis.com/compute/#{api_version}/projects/#{@project}/zones/#{zone_name}/targetInstances/#{target_instance}"
           }
 
-          operation = self.random_operation
-          self.data[:operations][operation] = {
+          operation = random_operation
+          data[:operations][operation] = {
             "kind" => "compute#operation",
             "id" => Fog::Mock.random_numbers(19).to_s,
             "name" => operation,
@@ -33,7 +33,7 @@ module Fog
             "selfLink" => "https://www.googleapis.com/compute/#{api_version}/projects/#{@project}/zones/#{zone_name}/operations/#{operation}"
           }
 
-          build_excon_response(self.data[:operations][operation])
+          build_excon_response(data[:operations][operation])
         end
       end
 
@@ -41,13 +41,13 @@ module Fog
         def insert_target_instance(target_instance_name, zone_name, opts = {})
           api_method = @compute.target_instances.insert
           parameters = {
-            'project' => @project,
-            'zone' => zone_name,
+            "project" => @project,
+            "zone" => zone_name
           }
-          body_object = { 'name' => target_instance_name }
+          body_object = { "name" => target_instance_name }
           body_object.merge!(opts)
 
-          request(api_method, parameters, body_object=body_object)
+          request(api_method, parameters, body_object = body_object)
         end
       end
     end
