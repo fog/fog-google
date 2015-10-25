@@ -18,7 +18,7 @@ module Fog
 
           options = {
             "description" => description,
-            "urlMap"      => urlMap
+            "urlMap"      => url_map
           }
 
           data = service.insert_target_http_proxy(name, options).body
