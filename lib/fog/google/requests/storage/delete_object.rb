@@ -17,7 +17,7 @@ module Fog
                   :host       => "#{bucket_name}.#{@host}",
                   :idempotent => true,
                   :method     => "DELETE",
-                  :path       => CGI.escape(object_name))
+                  :path       => Fog::Google.escape(object_name))
         end
       end
 
