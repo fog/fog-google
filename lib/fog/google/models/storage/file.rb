@@ -28,11 +28,7 @@ module Fog
         end
 
         def body
-          attributes[:body] ||= if last_modified && (file = collection.get(identity))
-                                  file.body
-                                else
-                                  ""
-          end
+          attributes[:body] ||= last_modified && (file = collection.get(identity)) ? file.body : ""
         end
 
         def body=(new_body)
