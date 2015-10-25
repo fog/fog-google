@@ -7,13 +7,13 @@ module Fog
         identity :name
 
         attribute :kind, :aliases => "kind"
-        attribute :creationTimestamp, :aliases => "creation_timestamp"
-        attribute :defaultService, :aliases => ["default_service", :default_service]
+        attribute :creation_timestamp, :aliases => "creationTimestamp"
+        attribute :default_service, :aliases => "defaultService"
         attribute :description, :aliases => "description"
         attribute :fingerprint, :aliases => "fingerprint"
-        attribute :hostRules, :aliases => "host_rules"
+        attribute :host_rules, :aliases => "hostRules"
         attribute :id, :aliases => "id"
-        attribute :pathMatchers, :aliases => "path_matchers"
+        attribute :path_matchers, :aliases => "pathMatchers"
         attribute :self_link, :aliases => "selfLink"
         attribute :tests, :aliases => "tests"
 
