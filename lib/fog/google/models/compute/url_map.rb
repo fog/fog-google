@@ -18,7 +18,7 @@ module Fog
         attribute :tests, :aliases => "tests"
 
         def save
-          requires :name, :defaultService
+          requires :name, :default_service
 
           options = {
             "defaultService" => defaultService,
