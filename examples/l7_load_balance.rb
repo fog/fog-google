@@ -49,8 +49,8 @@ def test
                                          ]
                                        }],
                                        :hostRules => [{ "hosts" => ["*"], "pathMatcher" => "pathmatcher" }],
-                                       :defaultService => backend_service1.self_link)
+                                       :default_service => backend_service1.self_link)
   proxy = connection.target_http_proxies.create(:name => "fog-l7-proxy",
-                                                :urlMap => url_map.self_link)
+                                                :url_map => url_map.self_link)
   fwd_rle = connection.global_forwarding_rules.create(:name => "fog-l7-fwd-rule", :target => proxy.self_link)
 end
