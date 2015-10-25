@@ -21,11 +21,11 @@ module Fog
           requires :name, :default_service
 
           options = {
-            "defaultService" => defaultService,
+            "defaultService" => default_service,
             "description" => description,
             "fingerprint" => fingerprint,
-            "hostRules" => hostRules,
-            "pathMatchers" => pathMatchers,
+            "hostRules" => host_rules,
+            "pathMatchers" => path_matchers,
             "tests" => tests
           }
 
