@@ -13,3 +13,4 @@
 *.a
 mkmf.log
 .ruby-version
+.idea/
