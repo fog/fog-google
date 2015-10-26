@@ -62,7 +62,7 @@ def create_test_url_map(connection)
   backend_service = create_test_backend_service(connection)
   url_map = connection.url_maps.create({
                                          :name => "fog-test-url-map-#{random_string}",
-                                         :defaultService => backend_service.self_link
+                                         :default_service => backend_service.self_link
                                        })
 end
 
@@ -82,7 +82,7 @@ def create_test_target_http_proxy(connection)
   url_map = create_test_url_map(connection)
   proxy = connection.target_http_proxies.create({
                                                   :name => "fog-test-target-http-proxy-#{random_string}",
-                                                  :urlMap => url_map.self_link
+                                                  :url_map => url_map.self_link
                                                 })
 end
 
@@ -103,7 +103,7 @@ def create_test_target_pool(connection, region)
   target_pool = connection.target_pools.create({
                                                  :name => "fog-test-target-pool-#{random_string}",
                                                  :region => region,
-                                                 :healthChecks => [http_health_check.self_link],
+                                                 :health_checks => [http_health_check.self_link],
                                                  :instances => [instance.self_link]\
                                                })
 end

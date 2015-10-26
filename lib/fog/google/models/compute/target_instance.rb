@@ -54,19 +54,18 @@ module Fog
         def reload
           requires :name, :zone
 
-          return unless data = begin
-            collection.get(name, zone)
+          begin
+            data = collection.get(name, zone)
+            new_attributes = data.attributes
+            merge_attributes(new_attributes)
+            return self
           rescue Excon::Errors::SocketError
-            nil
+            return nil
           end
-
-          new_attributes = data.attributes
-          merge_attributes(new_attributes)
-          self
         end
 
         RUNNING_STATE = "READY"
       end
     end
-   end
   end
+end

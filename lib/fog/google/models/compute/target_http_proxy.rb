@@ -11,14 +11,14 @@ module Fog
         attribute :id, :aliases => "id"
         attribute :creation_timestamp, :aliases => "creationTimestamp"
         attribute :description, :aliases => "description"
-        attribute :urlMap, :aliases => ["urlMap", :url_map]
+        attribute :url_map, :aliases => "urlMap"
 
         def save
           requires :name
 
           options = {
             "description" => description,
-            "urlMap"      => urlMap
+            "urlMap"      => url_map
           }
 
           data = service.insert_target_http_proxy(name, options).body
