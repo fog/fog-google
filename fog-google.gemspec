@@ -32,9 +32,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "pry"
   spec.add_development_dependency "vcr"
   spec.add_development_dependency "webmock"
-
-  if RUBY_VERSION.to_f > 1.9
-    spec.add_development_dependency "coveralls"
-    spec.add_development_dependency "rubocop"
-  end
+  spec.add_development_dependency "coveralls"
+  spec.add_development_dependency "rubocop"
 end
