@@ -23,7 +23,7 @@ def test
 
   puts "Get the Record..."
   puts "-----------------"
-  record = connection.records(:zone => zone).get('test.example.org.', 'A')
+  record = connection.records(:zone => zone).get("test.example.org.", "A")
 
   puts 'Modify the "A" Record...'
   puts "------------------------"
