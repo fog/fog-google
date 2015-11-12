@@ -1,5 +1,4 @@
 require "fog/compute/models/server"
-require "net/ssh/proxy/command"
 
 module Fog
   module Compute
