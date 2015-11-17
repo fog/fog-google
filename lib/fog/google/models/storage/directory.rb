@@ -59,7 +59,7 @@ module Fog
           options = {}
           options["x-goog-acl"] = @acl if @acl
           options["LocationConstraint"] = @location if @location
-          options["StorageClass"] = attributes[:storage_class]  if attributes[:storage_class]  
+          options["StorageClass"] = attributes[:storage_class] if attributes[:storage_class]
           service.put_bucket(key, options)
           true
         end

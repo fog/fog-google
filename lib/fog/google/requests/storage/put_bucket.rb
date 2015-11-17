@@ -17,11 +17,11 @@ module Fog
           location_constraint = options.delete("LocationConstraint")
           storage_class = options.delete("StorageClass")
           if location_constraint || storage_class
-            data = '<CreateBucketConfiguration>'
+            data = "<CreateBucketConfiguration>"
 
             data += "<LocationConstraint>#{location_constraint}</LocationConstraint>" if location_constraint
             data += "<StorageClass>#{storage_class}</StorageClass>" if storage_class
-            data += '</CreateBucketConfiguration>'
+            data += "</CreateBucketConfiguration>"
 
           else
             data = nil
