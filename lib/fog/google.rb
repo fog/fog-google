@@ -20,13 +20,17 @@ module Fog
     autoload :Monitoring, "fog/google/monitoring"
     autoload :SQL, "fog/google/sql"
 
+    # TODO: Deprecate old storage API, make JSON main API.
+    autoload :StorageJSON, "fog/google/storage_json"
+
     extend Fog::Provider
 
-    service(:compute,    "Compute")
-    service(:dns,        "DNS")
+    service(:compute, "Compute")
+    service(:dns, "DNS")
     service(:monitoring, "Monitoring")
-    service(:storage,    "Storage")
-    service(:sql,        "SQL")
+    service(:storage, "Storage")
+    service(:storage_json, "StorageJSON")
+    service(:sql, "SQL")
 
     # CGI.escape, but without special treatment on spaces
     def self.escape(str, extra_exclude_chars = "")
