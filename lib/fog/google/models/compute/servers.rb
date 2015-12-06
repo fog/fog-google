@@ -38,7 +38,7 @@ module Fog
 
         def bootstrap(new_attributes = {})
           name = "fog-#{Time.now.to_i}"
-          zone = "us-central1-a"
+          zone = "us-central1-f"
 
           disks = new_attributes[:disks]
 
@@ -48,7 +48,7 @@ module Fog
               :name => name,
               :size_gb => 10,
               :zone_name => zone,
-              :source_image => "debian-7-wheezy-v20140408"
+              :source_image => "debian-7-wheezy-v20151104"
             }
 
             # backwards compatibility to pre-v1
