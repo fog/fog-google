@@ -1,4 +1,12 @@
-# This example needs google_storage_access_key_id: and google_storage_secret_access_key to be set in ~/.fog
+# All examples presume that you have a ~/.fog credentials file set up.
+# More info on it can be found here: http://fog.io/about/getting_started.html
+
+require "bundler"
+Bundler.require(:default, :development)
+# Uncomment this if you want to make real requests to GCE (you _will_ be billed!)
+# WebMock.disable!
+
+# This specific example needs google_storage_access_key_id: and google_storage_secret_access_key to be set in ~/.fog
 # One can request those keys via Google Developers console in:
 # Storage -> Storage -> Settings -> "Interoperability" tab -> "Create a new key"
 
@@ -25,3 +33,5 @@ def test
   puts "------------------"
   connection.delete_bucket("fog-smoke-test")
 end
+
+test
