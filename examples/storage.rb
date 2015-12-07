@@ -23,7 +23,7 @@ def test
 
   puts "Put a test file..."
   puts "---------------"
-  connection.put_object("fog-smoke-test", "my file" ,"THISISATESTFILE")
+  connection.put_object("fog-smoke-test", "my file", "THISISATESTFILE")
 
   puts "Delete the test file..."
   puts "---------------"

@@ -22,7 +22,7 @@ module Fog
           if data[:managed_zones].key?(name_or_id)
             data = self.data[:managed_zones][name_or_id]
           else
-            data = self.data[:managed_zones].values.find { |zone| zone["name"] = name_or_id }
+            data = self.data[:managed_zones].values.detect { |zone| zone["name"] = name_or_id }
           end
 
           unless data

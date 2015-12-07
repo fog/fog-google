@@ -1,5 +1,3 @@
-inherit_from: .rubocop_todo.yml
-
 # Fog custom enforced styles
 Metrics/LineLength:
   Enabled: false

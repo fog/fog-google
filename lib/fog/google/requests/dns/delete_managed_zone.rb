@@ -21,7 +21,7 @@ module Fog
         def delete_managed_zone(name_or_id)
           if data[:managed_zones].key?(name_or_id)
             data[:managed_zones].delete(name_or_id)
-          elsif zone = data[:managed_zones].values.find { |zone| zone["name"] = name_or_id }
+          elsif zone = data[:managed_zones].values.detect { |zone| zone["name"] = name_or_id }
             data[:managed_zones].delete(zone["id"])
           else
             raise Fog::Errors::NotFound, "The 'parameters.managedZone' resource named '#{name_or_id}' does not exist."

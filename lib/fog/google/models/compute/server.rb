@@ -96,11 +96,10 @@ module Fog
           ip = nil
           if network_interfaces.respond_to? :each
             network_interfaces.each do |netif|
-              if netif["accessConfigs"].respond_to? :each
-                netif["accessConfigs"].each do |access_config|
-                  if access_config["name"] == "External NAT"
-                    ip = access_config["natIP"]
-                  end
+              next unless netif["accessConfigs"].respond_to? :each
+              netif["accessConfigs"].each do |access_config|
+                if access_config["name"] == "External NAT"
+                  ip = access_config["natIP"]
                 end
               end
             end
@@ -244,7 +243,7 @@ module Fog
           requires :zone_name
           requires :disks
 
-          unless service.zones.find { |zone| zone.name == zone_name }
+          unless service.zones.detect { |zone| zone.name == zone_name }
             raise ArgumentError.new "#{zone_name.inspect} is either down or you don't have permission to use it."
           end
 

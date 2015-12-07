@@ -114,7 +114,7 @@ module Fog
         end
 
         def insert_server(server_name, zone_name, options = {}, *deprecated_args)
-          if deprecated_args.length > 0 or !options.is_a? Hash
+          if deprecated_args.length > 0 || !options.is_a?(Hash)
             raise ArgumentError.new "Too many parameters specified. This may be the cause of code written for an outdated"\
                 " version of fog. Usage: server_name, zone_name, [options]"
           end
