@@ -38,11 +38,13 @@ module Fog
         #
         def get_bucket(bucket_name, options = {})
           raise ArgumentError.new("bucket_name is required") unless bucket_name
-          bucket_get_result = client.execute(
-            api_method: storage_json.buckets.get,
-            parameters: { bucket: bucket_name },
-          )
-          contents = bucket_get_result.data
+
+          api_method = @storage_json.buckets.get
+          parameters = {
+            "bucket" => bucket_name
+          }
+
+          request(api_method, parameters)
         end
       end
 
