@@ -23,25 +23,30 @@ module Fog
         #   * headers<~Hash>:
         #     * 'ETag'<~String> - etag of new object
         def put_object(bucket_name, object_name, data, options = {})
+          if data.is_a? String
+            data = StringIO.new(data)
+            mime_type = 'text/plain'
+          elsif data.is_a? File
+            mime_type = Fog::Storage.parse_data(data)[:headers]['Content-Type']
+          end
+
           # Resumable upload
-          resumable_media = Google::APIClient::UploadIO.new(FILENAME, MIME_TYPE)
+          resumable_media = ::Google::APIClient::UploadIO.new(data, mime_type, object_name)
           resumable_result = client.execute(
-            api_method: storage.objects.insert,
+            api_method: storage_json.objects.insert,
             media: resumable_media,
             parameters: {
               uploadType: 'resumable',
               bucket: bucket_name,
               name: object_name
             },
-            body_object: {contentType: MIME_TYPE}
+            body_object: {contentType: mime_type}
           )
           # Does actual upload of file
           upload = resumable_result.resumable_upload
           if upload.resumable?
-            client.execute(upload)
+            storage_json.execute(upload)
           end
-          puts "\nResumable insert: "
-          puts "Created object #{upload.parameters['name']}"
         end
       end
 

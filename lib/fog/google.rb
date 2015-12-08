@@ -88,6 +88,13 @@ module Fog
         # NOTE: loaded here to avoid requiring this as a core Fog dependency
         begin
           require "google/api_client"
+          
+          # Use httpclient to avoid broken pipe errors with large uploads
+          Faraday.default_adapter = :httpclient
+
+          # Only add the following statement if using Faraday >= 0.9.2
+          # Override gzip middleware with no-op for httpclient
+          Faraday::Response.register_middleware :gzip => Faraday::Response::Middleware
         rescue LoadError => error
           Fog::Logger.warning("Please install the google-api-client gem before using this provider")
           raise error
