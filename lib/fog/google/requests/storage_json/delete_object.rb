@@ -18,7 +18,7 @@ module Fog
             "object" => object_name
           }
 
-          request(api_method, parameters, body_object=body_object, media=media)
+          request(api_method, parameters)
         end
       end
 

@@ -11,11 +11,12 @@ module Fog
         # * response<~Excon::Response>:
         #   * status<~Integer> - 204
         def delete_bucket(bucket_name)
-          bucket_delete_result = client.execute(
-            api_method: storage_json.buckets.delete,
-            parameters: { bucket: bucket_name }
-          )
-          contents = bucket_delete_result.data
+          api_method = @storage_json.buckets.delete
+          parameters = {
+            "bucket" => bucket_name
+          }
+
+          request(api_method, parameters)
         end
       end
 
