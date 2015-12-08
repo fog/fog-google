@@ -88,6 +88,13 @@ module Fog
         # NOTE: loaded here to avoid requiring this as a core Fog dependency
         begin
           require "google/api_client"
+          
+          # Use httpclient to avoid broken pipe errors with large uploads
+          Faraday.default_adapter = :httpclient
+
+          # Only add the following statement if using Faraday >= 0.9.2
+          # Override gzip middleware with no-op for httpclient
+          Faraday::Response.register_middleware :gzip => Faraday::Response::Middleware
         rescue LoadError => error
           Fog::Logger.warning("Please install the google-api-client gem before using this provider")
           raise error
@@ -190,7 +197,7 @@ module Fog
       # @param [Hash] parameters The parameters to send to the method
       # @param [Hash] body_object The body object of the request
       # @return [Excon::Response] The result from the API
-      def request(api_method, parameters, body_object = nil)
+      def request(api_method, parameters, body_object = nil, media = nil)
         client_parms = {
           :api_method => api_method,
           :parameters => parameters
@@ -199,6 +206,7 @@ module Fog
         # XXX It may still balk if we have a nested object, e.g.:
         #   {:a_field => "string", :a_nested_field => { :an_empty_nested_field => nil } }
         client_parms[:body_object] = body_object.reject { |_k, v| v.nil? } if body_object
+        client_parms[:media] = media if media
 
         result = @client.execute(client_parms)
 

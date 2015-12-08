@@ -6,7 +6,7 @@ module Fog
                  :app_name, :app_version, :google_json_key_location, :google_json_key_string
 
       # https://cloud.google.com/storage/docs/json_api/v1/
-      GOOGLE_STORAGE_JSON_API_VERSION = "v2beta1"
+      GOOGLE_STORAGE_JSON_API_VERSION = "v1"
       GOOGLE_STORAGE_JSON_BASE_URL = "https://www.googleapis.com/storage/"
 
       # TODO: Come up with a way to only request a subset of permissions.
@@ -20,6 +20,24 @@ module Fog
       ##
       # Requests
       request_path "fog/google/requests/storage_json"
+      # request :copy_object
+      request :delete_bucket
+      request :delete_object
+      request :get_bucket
+      # request :get_bucket_acl
+      # request :get_object
+      # request :get_object_acl
+      # request :get_object_torrent
+      # request :get_object_http_url
+      # request :get_object_https_url
+      # request :get_object_url
+      # request :get_service
+      # request :head_object
+      request :put_bucket
+      # request :put_bucket_acl
+      request :put_object
+      # request :put_object_acl
+      # request :put_object_url
 
       class Mock
         include Fog::Google::Shared
