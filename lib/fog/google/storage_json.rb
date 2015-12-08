@@ -22,7 +22,7 @@ module Fog
       request_path "fog/google/requests/storage_json"
       # request :copy_object
       request :delete_bucket
-      # request :delete_object
+      request :delete_object
       request :get_bucket
       # request :get_bucket_acl
       # request :get_object

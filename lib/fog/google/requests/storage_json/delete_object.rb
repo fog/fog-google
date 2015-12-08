@@ -9,15 +9,15 @@ module Fog
         # * object_name<~String> - Name of object to delete
         #
         # ==== Returns
-        # * response<~Excon::Response>:
+        # * response<~Faraday::Response>:
         #   * status<~Integer> - 204
         def delete_object(bucket_name, object_name)
-          # request(:expects    => 204,
-          #         :headers    => {},
-          #         :host       => "#{bucket_name}.#{@host}",
-          #         :idempotent => true,
-          #         :method     => "DELETE",
-          #         :path       => Fog::Google.escape(object_name))
+          # Delete object from bucket
+          object_delete_result = client.execute(
+            api_method: storage_json.objects.delete,
+            parameters: {bucket: bucket_name, object: object_name}
+          )
+          object_delete_result.response
         end
       end
 
