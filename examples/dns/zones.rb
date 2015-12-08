@@ -15,7 +15,7 @@ def test
 
   puts 'Create an "A" Record...'
   puts "-----------------------"
-  record = zone.records.create(:name => "test.example.org.", :type => "A", :ttl => 3600, :rrdatas => ["192.168.1.1"])
+  zone.records.create(:name => "test.example.org.", :type => "A", :ttl => 3600, :rrdatas => ["192.168.1.1"])
 
   puts "Get the Zone Resource Record Sets..."
   puts "------------------------------------"
