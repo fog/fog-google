@@ -90,7 +90,7 @@ def test
   end
 
   begin
-    servers.each &:destroy
+    servers.each(&:destroy)
   rescue
     puts "Failed to clean up instances."
   end

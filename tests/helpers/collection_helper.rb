@@ -45,23 +45,24 @@ def collection_tests(collection, params = {}, mocks_implemented = true)
       end
 
       methods.each do |enum_method|
-        if collection.respond_to?(enum_method)
-          tests("##{enum_method}").succeeds do
-            block_called = false
-            collection.send(enum_method) { |_x| block_called = true }
-            block_called
-          end
+        next unless collection.respond_to?(enum_method)
+        tests("##{enum_method}").succeeds do
+          block_called = false
+          collection.send(enum_method) { |_| block_called = true }
+          block_called
         end
       end
 
       %w(
         max_by min_by).each do |enum_method|
-        if collection.respond_to?(enum_method)
-          tests("##{enum_method}").succeeds do
-            block_called = false
-            collection.send(enum_method) { |_x| block_called = true; 0 }
-            block_called
+        next unless collection.respond_to?(enum_method)
+        tests("##{enum_method}").succeeds do
+          block_called = false
+          collection.send(enum_method) do |_|
+            block_called = true
+            0
           end
+          block_called
         end
       end
     end
