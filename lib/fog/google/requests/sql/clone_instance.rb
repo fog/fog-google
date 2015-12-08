@@ -11,7 +11,7 @@ module Fog
           # The @sql.instances.clone method is overrided by the standard Ruby clone method
           # so we cannot call it because it will just clone the @sql.instances instance.
           # Instead we need to find the proper method trough the discovered_methods.
-          api_method = @sql.instances.discovered_methods.find { |x| x.id == "sql.instances.clone" }
+          api_method = @sql.instances.discovered_methods.detect { |x| x.id == "sql.instances.clone" }
           parameters = {
             "project" => @project
           }

@@ -23,14 +23,14 @@ module Fog
           if data[:managed_zones].key?(zone_name_or_id)
             zone = data[:managed_zones][zone_name_or_id]
           else
-            zone = data[:managed_zones].values.find { |zone| zone["name"] = zone_name_or_id }
+            zone = data[:managed_zones].values.detect { |z| z["name"] = zone_name_or_id }
           end
 
           unless zone
             raise Fog::Errors::NotFound, "The 'parameters.managedZone' resource named '#{zone_name_or_id}' does not exist."
           end
 
-          unless data = self.data[:changes][zone["id"]].find { |c| c["id"] == identity }
+          unless data = self.data[:changes][zone["id"]].detect { |c| c["id"] == identity }
             raise Fog::Errors::NotFound, "The 'parameters.changeId' resource named '#{identity}' does not exist."
           end
 

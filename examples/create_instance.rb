@@ -11,24 +11,24 @@ def test
 
   name = "fog-smoke-test-#{Time.now.to_i}"
 
-  disk = connection.disks.create(:name => name,
-                                 :size_gb => 10,
-                                 :zone_name => "us-central1-f",
-                                 :source_image => "debian-7-wheezy-v20151104")
+  disk = connection.disks.create(
+    :name => name,
+    :size_gb => 10,
+    :zone_name => "us-central1-f",
+    :source_image => "debian-7-wheezy-v20151104")
 
   disk.wait_for { disk.ready? }
 
-  server = connection.servers.create(defaults = {
-                                       :name => "fog-smoke-test-#{Time.now.to_i}",
-                                       :disks => [disk],
-                                       :machine_type => "n1-standard-1",
-                                       :private_key_path => File.expand_path("~/.ssh/id_rsa"),
-                                       :public_key_path => File.expand_path("~/.ssh/id_rsa.pub"),
-                                       :zone_name => "us-central1-f",
-                                       :user => ENV["USER"],
-                                       :tags => ["fog"],
-                                       :service_accounts => %w(sql-admin bigquery https://www.googleapis.com/auth/compute)
-                                     })
+  server = connection.servers.create(
+    :name => "fog-smoke-test-#{Time.now.to_i}",
+    :disks => [disk],
+    :machine_type => "n1-standard-1",
+    :private_key_path => File.expand_path("~/.ssh/id_rsa"),
+    :public_key_path => File.expand_path("~/.ssh/id_rsa.pub"),
+    :zone_name => "us-central1-f",
+    :user => ENV["USER"],
+    :tags => ["fog"],
+    :service_accounts => %w(sql-admin bigquery https://www.googleapis.com/auth/compute))
 
   # Wait_for routine copied here to show errors, if necessary.
   duration = 0

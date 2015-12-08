@@ -16,4 +16,4 @@ Dir["#{task_dir}/**/*.rake"].each do |task_file|
 end
 
 desc "Default Task"
-task default: "test:travis"
+task :default => "test:travis"
