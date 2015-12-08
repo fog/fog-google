@@ -35,33 +35,33 @@ module Fog
 
       class Mock
         def put_bucket(bucket_name, options = {})
-          # acl = options["x-goog-acl"] || "private"
-          # if !["private", "public-read", "public-read-write", "authenticated-read"].include?(acl)
-          #   raise Excon::Errors::BadRequest.new("invalid x-goog-acl")
-          # else
-          #   data[:acls][:bucket][bucket_name] = self.class.acls(options[acl])
-          # end
-          # response = Excon::Response.new
-          # response.status = 200
-          # bucket = {
-          #   :objects        => {},
-          #   "Name"          => bucket_name,
-          #   "CreationDate"  => Time.now,
-          #   "Owner"         => { "DisplayName" => "owner", "ID" => "some_id" },
-          #   "Payer"         => "BucketOwner"
-          # }
-          # if options["LocationConstraint"]
-          #   bucket["LocationConstraint"] = options["LocationConstraint"]
-          # else
-          #   bucket["LocationConstraint"] = ""
-          # end
-          # if data[:buckets][bucket_name].nil?
-          #   data[:buckets][bucket_name] = bucket
-          # else
-          #   response.status = 409
-          #   raise(Excon::Errors.status_error({ :expects => 200 }, response))
-          # end
-          # response
+          acl = options["x-goog-acl"] || "private"
+          if !["private", "publicRead", "publicReadWrite", "authenticatedRead"].include?(acl)
+            raise Excon::Errors::BadRequest.new("invalid x-goog-acl")
+          else
+            data[:acls][:bucket][bucket_name] = self.class.acls(options[acl])
+          end
+          response = Excon::Response.new
+          response.status = 200
+          bucket = {
+            :objects        => {},
+            "Name"          => bucket_name,
+            "CreationDate"  => Time.now,
+            "Owner"         => { "DisplayName" => "owner", "ID" => "some_id" },
+            "Payer"         => "BucketOwner"
+          }
+          if options["LocationConstraint"]
+            bucket["LocationConstraint"] = options["LocationConstraint"]
+          else
+            bucket["LocationConstraint"] = ""
+          end
+          if data[:buckets][bucket_name].nil?
+            data[:buckets][bucket_name] = bucket
+          else
+            response.status = 409
+            raise(Excon::Errors.status_error({ :expects => 200 }, response))
+          end
+          response
         end
       end
     end
