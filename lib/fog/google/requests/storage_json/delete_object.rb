@@ -9,15 +9,16 @@ module Fog
         # * object_name<~String> - Name of object to delete
         #
         # ==== Returns
-        # * response<~Faraday::Response>:
+        # * response<~Excon::Response>:
         #   * status<~Integer> - 204
         def delete_object(bucket_name, object_name)
-          # Delete object from bucket
-          object_delete_result = client.execute(
-            api_method: storage_json.objects.delete,
-            parameters: {bucket: bucket_name, object: object_name}
-          )
-          object_delete_result.response
+          api_method = @storage_json.objects.delete
+          parameters = {
+            "bucket" => bucket_name,
+            "object" => object_name
+          }
+
+          request(api_method, parameters, body_object=body_object, media=media)
         end
       end
 
