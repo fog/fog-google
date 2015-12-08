@@ -15,19 +15,19 @@ def test
 
   puts "Put a bucket..."
   puts "----------------"
-  connection.put_bucket("fog-smoke-test")
+  connection.put_bucket("fog-smoke-test", options={ 'x-goog-acl' => 'publicReadWrite' })
 
   puts "Get the bucket..."
   puts "-----------------"
   connection.get_bucket("fog-smoke-test")
 
-  # puts "Put a test file..."
-  # puts "---------------"
-  # connection.put_object("fog-smoke-test", "my file" ,"THISISATESTFILE")
+  puts "Put a test file..."
+  puts "---------------"
+  connection.put_object("fog-smoke-test", "my file" ,"THISISATESTFILE")
 
-  # puts "Delete the test file..."
-  # puts "---------------"
-  # connection.delete_object("fog-smoke-test", "my file")
+  puts "Delete the test file..."
+  puts "---------------"
+  connection.delete_object("fog-smoke-test", "my file")
 
   puts "Delete the bucket..."
   puts "------------------"

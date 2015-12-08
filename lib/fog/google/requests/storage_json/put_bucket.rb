@@ -14,35 +14,22 @@ module Fog
         # * response<~Excon::Response>:
         #   * status<~Integer> - 200
         def put_bucket(bucket_name, options = {})
-          # Create a bucket in the project
-          bucket_insert_result = client.execute(
-            api_method: storage_json.buckets.insert,
-            parameters: { project: @project,
-                          predefinedAcl: 'publicReadWrite', #options.delete("predefinedAcl"),
-                          predefinedObjectAcl: 'publicReadWrite', #options.delete("predefinedObjectAcl"),
-                          projection: "full" },
-            body_object: { name: bucket_name }
-          )
-          contents = bucket_insert_result.data
+          acl = options["x-goog-acl"] || "private"
+          location = options["LocationConstraint"] || nil
 
-          # location_constraint = options.delete("LocationConstraint")
-          # storage_class = options.delete("StorageClass")
-          # if location_constraint || storage_class
-          #   data = "<CreateBucketConfiguration>"
+          api_method = @storage_json.buckets.insert
+          parameters = {
+            "project" => @project,
+            "predefinedAcl" => acl,
+            "predefinedObjectAcl" => acl,
+            "projection" => "full"
+          }
+          body_object = { 
+            name: bucket_name,
+            location: location 
+          }
 
-          #   data += "<LocationConstraint>#{location_constraint}</LocationConstraint>" if location_constraint
-          #   data += "<StorageClass>#{storage_class}</StorageClass>" if storage_class
-          #   data += "</CreateBucketConfiguration>"
-
-          # else
-          #   data = nil
-          # end
-          # request(:expects    => 200,
-          #         :body       => data,
-          #         :headers    => options,
-          #         :idempotent => true,
-          #         :host       => "#{bucket_name}.#{@host}",
-          #         :method     => "PUT")
+          request(api_method, parameters, body_object=body_object)
         end
       end
 
