@@ -33,7 +33,7 @@ module Fog
           media = ::Google::APIClient::UploadIO.new(data, mime_type, object_name)
           api_method = @storage_json.objects.insert
           parameters = {
-            "uploadType" => "resumable",
+            "uploadType" => "multipart",
             "bucket" => bucket_name,
             "name" => object_name
           }
