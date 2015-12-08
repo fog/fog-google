@@ -10,23 +10,23 @@ module Fog
       class Real
         # Change access control list for an Google Storage bucket
         def put_bucket_acl(bucket_name, acl)
-#           data = <<-DATA
-# <AccessControlList>
-#   <Owner>
-#     #{tag('ID', acl['Owner']['ID'])}
-#   </Owner>
-#   <Entries>
-#     #{entries_list(acl['AccessControlList'])}
-#   </Entries>
-# </AccessControlList>
-# DATA
+          #           data = <<-DATA
+          # <AccessControlList>
+          #   <Owner>
+          #     #{tag('ID', acl['Owner']['ID'])}
+          #   </Owner>
+          #   <Entries>
+          #     #{entries_list(acl['AccessControlList'])}
+          #   </Entries>
+          # </AccessControlList>
+          # DATA
 
-#           request(:body     => data,
-#                   :expects  => 200,
-#                   :headers  => {},
-#                   :host     => "#{bucket_name}.#{@host}",
-#                   :method   => "PUT",
-#                   :query    => { "acl" => nil })
+          #           request(:body     => data,
+          #                   :expects  => 200,
+          #                   :headers  => {},
+          #                   :host     => "#{bucket_name}.#{@host}",
+          #                   :method   => "PUT",
+          #                   :query    => { "acl" => nil })
         end
 
         private

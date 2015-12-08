@@ -22,12 +22,12 @@ module Fog
         # * response<~Excon::Response>:
         #   * headers<~Hash>:
         #     * 'ETag'<~String> - etag of new object
-        def put_object(bucket_name, object_name, data, options = {})
+        def put_object(bucket_name, object_name, data, _options = {})
           if data.is_a? String
             data = StringIO.new(data)
-            mime_type = 'text/plain'
+            mime_type = "text/plain"
           elsif data.is_a? File
-            mime_type = Fog::Storage.parse_data(data)[:headers]['Content-Type']
+            mime_type = Fog::Storage.parse_data(data)[:headers]["Content-Type"]
           end
 
           media = ::Google::APIClient::UploadIO.new(data, mime_type, object_name)
@@ -37,18 +37,18 @@ module Fog
             "bucket" => bucket_name,
             "name" => object_name
           }
-          body_object = { 
-            contentType: mime_type
+          body_object = {
+            :contentType => mime_type
           }
 
-          request(api_method, parameters, body_object=body_object, media=media)
+          request(api_method, parameters, body_object = body_object, media = media)
         end
       end
 
       class Mock
         def put_object(bucket_name, object_name, data, options = {})
           acl = options["x-goog-acl"] || "private"
-          if !["private", "publicRead", "publicReadWrite", "authenticatedRead"].include?(acl)
+          if !%w(private publicRead publicReadWrite authenticatedRead).include?(acl)
             raise Excon::Errors::BadRequest.new("invalid x-goog-acl")
           else
             self.data[:acls][:object][bucket_name] ||= {}

@@ -24,19 +24,19 @@ module Fog
             "predefinedObjectAcl" => acl,
             "projection" => "full"
           }
-          body_object = { 
-            name: bucket_name,
-            location: location 
+          body_object = {
+            :name => bucket_name,
+            :location => location
           }
 
-          request(api_method, parameters, body_object=body_object)
+          request(api_method, parameters, body_object = body_object)
         end
       end
 
       class Mock
         def put_bucket(bucket_name, options = {})
           acl = options["x-goog-acl"] || "private"
-          if !["private", "publicRead", "publicReadWrite", "authenticatedRead"].include?(acl)
+          if !%w(private publicRead publicReadWrite authenticatedRead).include?(acl)
             raise Excon::Errors::BadRequest.new("invalid x-goog-acl")
           else
             data[:acls][:bucket][bucket_name] = self.class.acls(options[acl])

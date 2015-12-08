@@ -11,7 +11,7 @@ module Fog
           # TODO: Write
         end
 
-        def get(key, options = {})
+        def get(_key, _options = {})
           # TODO: Write
         rescue Excon::Errors::NotFound
           nil

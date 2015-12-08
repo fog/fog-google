@@ -88,7 +88,7 @@ module Fog
         # NOTE: loaded here to avoid requiring this as a core Fog dependency
         begin
           require "google/api_client"
-          
+
           # Use httpclient to avoid broken pipe errors with large uploads
           Faraday.default_adapter = :httpclient
 

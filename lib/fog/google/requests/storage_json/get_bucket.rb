@@ -36,7 +36,7 @@ module Fog
         #         * 'ID'<~String> - Id of object owner
         #       * 'Size'<~Integer> - Size of object
         #
-        def get_bucket(bucket_name, options = {})
+        def get_bucket(bucket_name, _options = {})
           raise ArgumentError.new("bucket_name is required") unless bucket_name
 
           api_method = @storage_json.buckets.get
