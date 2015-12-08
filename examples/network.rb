@@ -6,27 +6,29 @@ def test
 
   name = "fog-smoke-test-#{Time.now.to_i}"
 
-  disk = connection.disks.create(:name => name,
-                                 :size_gb => 10,
-                                 :zone_name => "us-central1-a",
-                                 :source_image => "debian-7-wheezy-v20131120")
+  disk = connection.disks.create(
+    :name => name,
+    :size_gb => 10,
+    :zone_name => "us-central1-a",
+    :source_image => "debian-7-wheezy-v20131120")
 
   disk.wait_for { disk.ready? }
 
-  server = connection.servers.create(:name => name,
-                                     :disks => [disk],
-                                     :machine_type => "n1-standard-1",
-                                     :zone_name => "us-central1-a",
-                                     :private_key_path => File.expand_path("~/.ssh/id_rsa"),
-                                     :public_key_path => File.expand_path("~/.ssh/id_rsa.pub"),
-                                     :network => "my-private-network",
-                                     :external_ip => false,
-                                     :user => ENV["USER"])
+  server = connection.servers.create(
+    :name => name,
+    :disks => [disk],
+    :machine_type => "n1-standard-1",
+    :zone_name => "us-central1-a",
+    :private_key_path => File.expand_path("~/.ssh/id_rsa"),
+    :public_key_path => File.expand_path("~/.ssh/id_rsa.pub"),
+    :network => "my-private-network",
+    :external_ip => false,
+    :user => ENV["USER"])
 
   # The network won't have any firewall rules, so we won't be able to ssh in.
   server.wait_for { ready? }
 
   raise "Could not delete server." unless server.destroy
-rescue Exception => e
+rescue StandardError => e
   p e.message
 end
