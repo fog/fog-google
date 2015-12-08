@@ -30,23 +30,18 @@ module Fog
             mime_type = Fog::Storage.parse_data(data)[:headers]['Content-Type']
           end
 
-          # Resumable upload
-          resumable_media = ::Google::APIClient::UploadIO.new(data, mime_type, object_name)
-          resumable_result = client.execute(
-            api_method: storage_json.objects.insert,
-            media: resumable_media,
-            parameters: {
-              uploadType: 'resumable',
-              bucket: bucket_name,
-              name: object_name
-            },
-            body_object: {contentType: mime_type}
-          )
-          # Does actual upload of file
-          upload = resumable_result.resumable_upload
-          if upload.resumable?
-            storage_json.execute(upload)
-          end
+          media = ::Google::APIClient::UploadIO.new(data, mime_type, object_name)
+          api_method = @storage_json.objects.insert
+          parameters = {
+            "uploadType" => "resumable",
+            "bucket" => bucket_name,
+            "name" => object_name
+          }
+          body_object = { 
+            contentType: mime_type
+          }
+
+          request(api_method, parameters, body_object=body_object, media=media)
         end
       end
 
