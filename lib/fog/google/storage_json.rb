@@ -29,8 +29,8 @@ module Fog
       # request :get_object_acl
       # request :get_object_torrent
       # request :get_object_http_url
-      # request :get_object_https_url
-      # request :get_object_url
+      request :get_object_https_url
+      request :get_object_url
       # request :get_service
       # request :head_object
       request :put_bucket
