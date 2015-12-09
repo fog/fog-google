@@ -6,8 +6,6 @@ class TestBuckets < FogIntegrationTest
     # WebMock.disable!
 
     @connection = Fog::Google::StorageJSON.new
-    # @subject = Fog::Compute[:google].target_instances
-    # @factory = TargetInstancesFactory.new(namespaced_name)
   end
 
   def teardown
@@ -18,29 +16,40 @@ class TestBuckets < FogIntegrationTest
   end
 
   def test_put_bucket
-    response = @connection.put_bucket("fog-smoke-test", options={ 'x-goog-acl' => 'publicReadWrite' })
+    response = @connection.put_bucket("fog-smoke-test")
     assert_equal response.status, 200
   end
 
   def test_put_bucket_acl
-    skip
+    puts "test_put_bucket_acl"
+    response = @connection.put_bucket("fog-smoke-test", options={ 'x-goog-acl' => 'publicReadWrite' })
+    assert_equal response.status, 200
+    acl = { entity: 'domain-example.com',
+            role: 'READER' }
+    response = @connection.put_bucket_acl("fog-smoke-test", acl)
+    assert_equal response.status, 200
   end
 
   def test_delete_bucket
-    response = @connection.put_bucket("fog-smoke-test", options={ 'x-goog-acl' => 'publicReadWrite' })
+    response = @connection.put_bucket("fog-smoke-test")
     assert_equal response.status, 200
     response = @connection.delete_bucket("fog-smoke-test")
     assert_equal response.status, 204
   end
 
   def test_get_bucket
-    response = @connection.put_bucket("fog-smoke-test", options={ 'x-goog-acl' => 'publicReadWrite' })
+    response = @connection.put_bucket("fog-smoke-test")
     assert_equal response.status, 200
     response = @connection.get_bucket("fog-smoke-test")
     assert_equal response.status, 200
   end
 
   def test_get_bucket_acl
-    skip
+    client_email = Fog.credentials[:google_client_email]
+    response = @connection.put_bucket("fog-smoke-test", 
+      options={ 'acl' => [{ entity: 'user-'+client_email, role: 'OWNER' }] })
+    assert_equal response.status, 200
+    response = @connection.get_bucket_acl("fog-smoke-test")
+    assert_equal response.status, 200
   end
 end
