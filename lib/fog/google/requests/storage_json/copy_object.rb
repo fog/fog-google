@@ -25,38 +25,41 @@ module Fog
         #     * 'LastModified'<~Time> - date object was last modified
         #
         def copy_object(source_bucket_name, source_object_name, target_bucket_name, target_object_name, options = {})
-          # headers = { "x-goog-copy-source" => "/#{source_bucket_name}/#{source_object_name}" }.merge(options)
-          # request(:expects  => 200,
-          #         :headers  => headers,
-          #         :host     => "#{target_bucket_name}.#{@host}",
-          #         :method   => "PUT",
-          #         :parser   => Fog::Parsers::Storage::Google::CopyObject.new,
-          #         :path     => Fog::Google.escape(target_object_name))
+          api_method = @storage_json.objects.copy
+          parameters = {
+            "sourceBucket" => source_bucket_name,
+            "sourceObject" => source_object_name,
+            "destinationBucket" => target_bucket_name,
+            "destinationObject" => target_object_name
+          }
+          parameters.merge! options
+
+          request(api_method, parameters)
         end
       end
 
       class Mock
         def copy_object(source_bucket_name, source_object_name, target_bucket_name, target_object_name, _options = {})
-          # response = Excon::Response.new
-          # source_bucket = data[:buckets][source_bucket_name]
-          # source_object = source_bucket && source_bucket[:objects][source_object_name]
-          # target_bucket = data[:buckets][target_bucket_name]
+          response = Excon::Response.new
+          source_bucket = data[:buckets][source_bucket_name]
+          source_object = source_bucket && source_bucket[:objects][source_object_name]
+          target_bucket = data[:buckets][target_bucket_name]
 
-          # if source_object && target_bucket
-          #   response.status = 200
-          #   target_object = source_object.dup
-          #   target_object.merge!("Name" => target_object_name)
-          #   target_bucket[:objects][target_object_name] = target_object
-          #   response.body = {
-          #     "ETag"          => target_object["ETag"],
-          #     "LastModified"  => Time.parse(target_object["Last-Modified"])
-          #   }
-          # else
-          #   response.status = 404
-          #   raise(Excon::Errors.status_error({ :expects => 200 }, response))
-          # end
+          if source_object && target_bucket
+            response.status = 200
+            target_object = source_object.dup
+            target_object.merge!("Name" => target_object_name)
+            target_bucket[:objects][target_object_name] = target_object
+            response.body = {
+              "ETag"          => target_object["ETag"],
+              "LastModified"  => Time.parse(target_object["Last-Modified"])
+            }
+          else
+            response.status = 404
+            raise(Excon::Errors.status_error({ :expects => 200 }, response))
+          end
 
-          # response
+          response
         end
       end
     end
