@@ -24,24 +24,36 @@ module Fog
         end
 
         def put_object_acl(bucket_name, object_name, acl)
-          #           data = <<-DATA
-          # <AccessControlList>
-          #   <Owner>
-          #     #{tag('ID', acl['Owner']['ID'])}
-          #   </Owner>
-          #   <Entries>
-          #     #{entries_list(acl['AccessControlList'])}
-          #   </Entries>
-          # </AccessControlList>
-          # DATA
+          raise ArgumentError.new("bucket_name is required") unless bucket_name
+          raise ArgumentError.new("object_name is required") unless object_name
+          raise ArgumentError.new("acl is required") unless acl
 
-          #           request(:body     => data,
-          #                   :expects  => 200,
-          #                   :headers  => {},
-          #                   :host     => "#{bucket_name}.#{@host}",
-          #                   :method   => "PUT",
-          #                   :query    => { "acl" => nil },
-          #                   :path     => CGI.escape(object_name))
+          api_method = @storage_json.object_access_controls.insert
+          parameters = {
+            "bucket" => bucket_name,
+            "object" => object_name
+          }
+          body_object = acl
+
+          request(api_method, parameters, body_object=body_object)
+#           data = <<-DATA
+# <AccessControlList>
+#   <Owner>
+#     #{tag('ID', acl['Owner']['ID'])}
+#   </Owner>
+#   <Entries>
+#     #{entries_list(acl['AccessControlList'])}
+#   </Entries>
+# </AccessControlList>
+# DATA
+
+#           request(:body     => data,
+#                   :expects  => 200,
+#                   :headers  => {},
+#                   :host     => "#{bucket_name}.#{@host}",
+#                   :method   => "PUT",
+#                   :query    => { "acl" => nil },
+#                   :path     => CGI.escape(object_name))
         end
       end
     end
