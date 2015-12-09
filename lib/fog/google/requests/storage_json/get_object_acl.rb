@@ -28,7 +28,7 @@ module Fog
         #              * 'URI'<~String> - URI of group to grant access for
         #           * 'Permission'<~String> - Permission, in [FULL_CONTROL, WRITE, WRITE_ACP, READ, READ_ACP]
         #
-        def get_object_acl(bucket_name, object_name, options = {})
+        def get_object_acl(bucket_name, object_name, _options = {})
           raise ArgumentError.new("bucket_name is required") unless bucket_name
           raise ArgumentError.new("object_name is required") unless object_name
 

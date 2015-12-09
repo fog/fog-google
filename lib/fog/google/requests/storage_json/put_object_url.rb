@@ -13,7 +13,7 @@ module Fog
         # * response<~Excon::Response>:
         #   * body<~String> - url for object
         #
-        def put_object_url(bucket_name, object_name, headers = {})
+        def put_object_url(bucket_name, object_name, _headers = {})
           raise ArgumentError.new("bucket_name is required") unless bucket_name
           raise ArgumentError.new("object_name is required") unless object_name
 
@@ -23,7 +23,6 @@ module Fog
             "bucket" => bucket_name,
             "name" => object_name
           }
-
 
           request(api_method, parameters)
           # https_url({

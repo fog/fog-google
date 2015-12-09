@@ -14,20 +14,19 @@ module Fog
         # * response<~Excon::Response>:
         #   * status<~Integer> - 200
         def put_bucket(bucket_name, options = {})
-          acl = options["x-goog-acl"] || "private"
+          acl = options["x-goog-acl"] if options["x-goog-acl"]
           location = options["LocationConstraint"] || nil
 
           api_method = @storage_json.buckets.insert
           parameters = {
             "project" => @project,
-            "predefinedAcl" => acl,
-            "predefinedObjectAcl" => acl,
             "projection" => "full"
           }
           body_object = {
-            :name => bucket_name,
-            :location => location
+            name: bucket_name,
+            location: location
           }
+          body_object.merge! options
 
           request(api_method, parameters, body_object = body_object)
         end

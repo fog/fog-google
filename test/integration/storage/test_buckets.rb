@@ -6,10 +6,8 @@ class TestBuckets < FogIntegrationTest
   end
 
   def teardown
-    begin
-      @connection.delete_bucket("fog-smoke-test")
-    rescue
-    end
+    @connection.delete_bucket("fog-smoke-test")
+  rescue
   end
 
   def test_put_bucket
@@ -18,10 +16,10 @@ class TestBuckets < FogIntegrationTest
   end
 
   def test_put_bucket_acl
-    response = @connection.put_bucket("fog-smoke-test", options={ 'x-goog-acl' => 'publicReadWrite' })
+    response = @connection.put_bucket("fog-smoke-test", options = { "x-goog-acl" => "publicReadWrite" })
     assert_equal response.status, 200
-    acl = { entity: 'domain-example.com',
-            role: 'READER' }
+    acl = { entity: "domain-example.com",
+            role: "READER" }
     response = @connection.put_bucket_acl("fog-smoke-test", acl)
     assert_equal response.status, 200
   end
@@ -42,8 +40,8 @@ class TestBuckets < FogIntegrationTest
 
   def test_get_bucket_acl
     client_email = Fog.credentials[:google_client_email]
-    response = @connection.put_bucket("fog-smoke-test", 
-      options={ 'acl' => [{ entity: 'user-'+client_email, role: 'OWNER' }] })
+    response = @connection.put_bucket("fog-smoke-test",
+                                      options = { "acl" => [{ entity: "user-" + client_email, role: "OWNER" }] })
     assert_equal response.status, 200
     response = @connection.get_bucket_acl("fog-smoke-test")
     assert_equal response.status, 200

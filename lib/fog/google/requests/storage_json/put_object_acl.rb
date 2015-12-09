@@ -35,25 +35,25 @@ module Fog
           }
           body_object = acl
 
-          request(api_method, parameters, body_object=body_object)
-#           data = <<-DATA
-# <AccessControlList>
-#   <Owner>
-#     #{tag('ID', acl['Owner']['ID'])}
-#   </Owner>
-#   <Entries>
-#     #{entries_list(acl['AccessControlList'])}
-#   </Entries>
-# </AccessControlList>
-# DATA
+          request(api_method, parameters, body_object = body_object)
+          #           data = <<-DATA
+          # <AccessControlList>
+          #   <Owner>
+          #     #{tag('ID', acl['Owner']['ID'])}
+          #   </Owner>
+          #   <Entries>
+          #     #{entries_list(acl['AccessControlList'])}
+          #   </Entries>
+          # </AccessControlList>
+          # DATA
 
-#           request(:body     => data,
-#                   :expects  => 200,
-#                   :headers  => {},
-#                   :host     => "#{bucket_name}.#{@host}",
-#                   :method   => "PUT",
-#                   :query    => { "acl" => nil },
-#                   :path     => CGI.escape(object_name))
+          #           request(:body     => data,
+          #                   :expects  => 200,
+          #                   :headers  => {},
+          #                   :host     => "#{bucket_name}.#{@host}",
+          #                   :method   => "PUT",
+          #                   :query    => { "acl" => nil },
+          #                   :path     => CGI.escape(object_name))
         end
       end
     end

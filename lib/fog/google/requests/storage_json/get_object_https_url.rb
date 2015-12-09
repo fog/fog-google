@@ -2,7 +2,7 @@ module Fog
   module Google
     class StorageJSON
       module GetObjectHttpsUrl
-        # Formerly included "expires", but no doesn't seem to exist anymore? 
+        # Formerly included "expires", but no doesn't seem to exist anymore?
         def get_object_https_url(bucket_name, object_name)
           raise ArgumentError.new("bucket_name is required") unless bucket_name
           raise ArgumentError.new("object_name is required") unless object_name

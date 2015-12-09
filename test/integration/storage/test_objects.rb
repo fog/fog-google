@@ -1,12 +1,10 @@
 require "helpers/integration_test_helper"
 
 def before_run
-  begin
-    @connection = Fog::Google::StorageJSON.new
-    @connection.put_bucket("fog-smoke-test", options={ 'x-goog-acl' => 'publicReadWrite' })
-  rescue Exception => e
-    # puts e
-  end
+  @connection = Fog::Google::StorageJSON.new
+  @connection.put_bucket("fog-smoke-test", options = { "x-goog-acl" => "publicReadWrite" })
+rescue Exception => e
+  # puts e
 end
 before_run
 
@@ -43,8 +41,8 @@ class TestObjects < FogIntegrationTest
   def test_put_object_acl
     response = @connection.put_object("fog-smoke-test", "my file", "THISISATESTFILE")
     assert_equal response.status, 200
-    acl = { entity: 'domain-example.com',
-            role: 'READER' }
+    acl = { entity: "domain-example.com",
+            role: "READER" }
     response = @connection.put_object_acl("fog-smoke-test", "my file", acl)
     assert_equal response.status, 200
   end
