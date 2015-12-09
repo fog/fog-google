@@ -2,9 +2,6 @@ require "helpers/integration_test_helper"
 
 class TestBuckets < FogIntegrationTest
   def setup
-    # Uncomment this if you want to make real requests to GCE (you _will_ be billed!)
-    # WebMock.disable!
-
     @connection = Fog::Google::StorageJSON.new
   end
 
