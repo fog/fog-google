@@ -5,19 +5,18 @@ def before_run
     @connection = Fog::Google::StorageJSON.new
     @connection.put_bucket("fog-smoke-test", options={ 'x-goog-acl' => 'publicReadWrite' })
   rescue Exception => e
-    puts e
+    # puts e
   end
 end
 before_run
 
 class TestObjects < FogIntegrationTest
   Minitest.after_run do
-    puts "after run!"
     begin
       @connection = Fog::Google::StorageJSON.new
       @connection.delete_bucket("fog-smoke-test")
     rescue Exception => e
-      puts e
+      # puts e
     end
   end
 
@@ -80,7 +79,11 @@ class TestObjects < FogIntegrationTest
   end
 
   def test_get_object_acl
-    skip
+    response = @connection.put_object("fog-smoke-test", "my file", "THISISATESTFILE")
+    assert_equal response.status, 200
+    response = @connection.get_object_acl("fog-smoke-test", "my file")
+    assert_equal response.status, 200
+    assert_equal response.body["kind"], "storage#objectAccessControls"
   end
 
   def test_get_object_http_url

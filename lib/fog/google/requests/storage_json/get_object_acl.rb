@@ -29,8 +29,17 @@ module Fog
         #           * 'Permission'<~String> - Permission, in [FULL_CONTROL, WRITE, WRITE_ACP, READ, READ_ACP]
         #
         def get_object_acl(bucket_name, object_name, options = {})
-          # raise ArgumentError.new("bucket_name is required") unless bucket_name
-          # raise ArgumentError.new("object_name is required") unless object_name
+          raise ArgumentError.new("bucket_name is required") unless bucket_name
+          raise ArgumentError.new("object_name is required") unless object_name
+
+          api_method = @storage_json.object_access_controls.list
+          parameters = {
+            "bucket" => bucket_name,
+            "object" => object_name
+          }
+
+          request(api_method, parameters)
+
           # query = { "acl" => nil }
           # if version_id = options.delete("versionId")
           #   query["versionId"] = version_id
