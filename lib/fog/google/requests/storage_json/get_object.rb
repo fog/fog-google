@@ -25,8 +25,16 @@ module Fog
         #     * 'Last-Modified'<~String> - Last modified timestamp for object
         #
         def get_object(bucket_name, object_name, options = {}, &_block)
-          # raise ArgumentError.new("bucket_name is required") unless bucket_name
-          # raise ArgumentError.new("object_name is required") unless object_name
+          raise ArgumentError.new("bucket_name is required") unless bucket_name
+          raise ArgumentError.new("object_name is required") unless object_name
+
+          api_method = @storage_json.buckets.get
+          parameters = {
+            "bucket" => bucket_name,
+            "object" => object_name
+          }
+
+          request(api_method, parameters)
 
           # params = { :headers => {} }
           # if version_id = options.delete("versionId")

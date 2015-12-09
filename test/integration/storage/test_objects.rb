@@ -52,6 +52,10 @@ class TestObjects < FogIntegrationTest
 
   def test_put_object_url
     skip
+    # Doesn't actually work
+    response = @connection.put_object_url("fog-smoke-test", "my file url")
+    puts response.inspect
+    assert_equal response.status, 200
   end
 
   def test_copy_object
@@ -69,7 +73,10 @@ class TestObjects < FogIntegrationTest
   end
 
   def test_get_object
-    skip
+    response = @connection.put_object("fog-smoke-test", "my file", "THISISATESTFILE")
+    assert_equal response.status, 200
+    response = @connection.get_object("fog-smoke-test", "my file")
+    assert_equal response.status, 200
   end
 
   def test_get_object_acl
