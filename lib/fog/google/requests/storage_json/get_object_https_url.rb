@@ -14,7 +14,7 @@ module Fog
           }
 
           response = request(api_method, parameters)
-          response.body["selfLink"]
+          response.body["mediaLink"]
           # https_url({
           #             :headers  => {},
           #             :host     => @host,
