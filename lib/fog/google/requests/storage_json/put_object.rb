@@ -22,7 +22,7 @@ module Fog
         # * response<~Excon::Response>:
         #   * headers<~Hash>:
         #     * 'ETag'<~String> - etag of new object
-        def put_object(bucket_name, object_name, data, _options = {})
+        def put_object(bucket_name, object_name, data, options = {})
           if data.is_a? String
             data = StringIO.new(data)
             mime_type = "text/plain"
@@ -37,6 +37,8 @@ module Fog
             "bucket" => bucket_name,
             "name" => object_name
           }
+          parameters.merge! options
+          
           body_object = {
             contentType: mime_type
           }
