@@ -1,6 +1,6 @@
 require "helpers/integration_test_helper"
 
-class TestBuckets < FogIntegrationTest
+class TestDirectories < FogIntegrationTest
   begin
     client_email = Fog.credentials[:google_client_email]
     @@connection = Fog::Google::StorageJSON.new
