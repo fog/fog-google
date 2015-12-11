@@ -14,8 +14,7 @@ module Fog
         # * response<~Excon::Response>:
         #   * status<~Integer> - 200
         def put_bucket(bucket_name, options = {})
-          acl = options["x-goog-acl"] if options["x-goog-acl"]
-          location = options["LocationConstraint"] || nil
+          location = options["LocationConstraint"] if options["LocationConstraint"]
 
           api_method = @storage_json.buckets.insert
           parameters = {
@@ -26,7 +25,7 @@ module Fog
             name: bucket_name,
             location: location
           }
-          body_object.merge! options
+          parameters.merge! options
 
           request(api_method, parameters, body_object = body_object)
         end

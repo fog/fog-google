@@ -44,7 +44,6 @@ module Fog
         def public_url
           requires :key
           acl = service.get_bucket_acl(key).body
-          pp acl
           if acl["items"].detect { |entry| entry["entity"] == "allUsers" && entry["role"] == "READER" }
             if key.to_s =~ /^(?:[a-z]|\d(?!\d{0,2}(?:\.\d{1,3}){3}$))(?:[a-z0-9]|\.(?![\.\-])|\-(?![\.])){1,61}[a-z0-9]$/
               "https://#{key}.storage.googleapis.com"

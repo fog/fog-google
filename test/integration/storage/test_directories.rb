@@ -2,11 +2,13 @@ require "helpers/integration_test_helper"
 
 class TestBuckets < FogIntegrationTest
   begin
+    client_email = Fog.credentials[:google_client_email]
     @@connection = Fog::Google::StorageJSON.new
-    @@connection.put_bucket("fog-smoke-test", options = { "predefinedAcl" => "publicReadWrite" })
+    @@connection.put_bucket("fog-smoke-test", options = { "acl" => [{ entity: "user-" + client_email, role: "OWNER" }] })
+    @@connection.put_bucket_acl("fog-smoke-test", { entity: "allUsers", role: "READER" })
     @@directory = @@connection.directories.get("fog-smoke-test")
   rescue Exception => e
-    # puts e
+    puts e
   end
 
   Minitest.after_run do
@@ -14,7 +16,7 @@ class TestBuckets < FogIntegrationTest
       @connection = Fog::Google::StorageJSON.new
       @connection.delete_bucket("fog-smoke-test")
     rescue Exception => e
-      # puts e
+      puts e
     end
   end
 
