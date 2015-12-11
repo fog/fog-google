@@ -16,9 +16,9 @@ class TestBuckets < FogIntegrationTest
   end
 
   def test_put_bucket_acl
-    response = @connection.put_bucket("fog-smoke-test", options = { "x-goog-acl" => "publicReadWrite" })
+    response = @connection.put_bucket("fog-smoke-test")
     assert_equal response.status, 200
-    acl = { entity: "domain-example.com",
+    acl = { entity: "domain-google.com",
             role: "READER" }
     response = @connection.put_bucket_acl("fog-smoke-test", acl)
     assert_equal response.status, 200

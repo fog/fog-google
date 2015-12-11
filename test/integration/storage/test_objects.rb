@@ -2,7 +2,7 @@ require "helpers/integration_test_helper"
 
 def before_run
   @connection = Fog::Google::StorageJSON.new
-  @connection.put_bucket("fog-smoke-test", options = { "x-goog-acl" => "publicReadWrite" })
+  @connection.put_bucket("fog-smoke-test", options = { "predefinedAcl" => "publicReadWrite" })
 rescue Exception => e
   # puts e
 end
