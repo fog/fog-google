@@ -16,6 +16,10 @@ module Fog
       ##
       # Models
       model_path "fog/google/models/storage_json"
+      collection :directories
+      model :directory
+      collection :files
+      model :file
 
       ##
       # Requests
