@@ -6,7 +6,13 @@ class TestFiles < FogIntegrationTest
     @@connection = Fog::Google::StorageJSON.new
     @@connection.put_bucket("fog-smoke-test", options = { "acl" => [{ entity: "user-" + client_email, role: "OWNER" }] })
     @@connection.put_bucket_acl("fog-smoke-test", { entity: "allUsers", role: "READER" })
+  rescue Exception => e
+    puts e
+  end
+
+  begin
     @@directory = @@connection.directories.get("fog-smoke-test")
+    @@file = @@connection.put_object("fog-smoke-test", "fog-testfile", "THISISATESTFILE")
   rescue Exception => e
     puts e
   end
@@ -14,6 +20,7 @@ class TestFiles < FogIntegrationTest
   Minitest.after_run do
     begin
       @connection = Fog::Google::StorageJSON.new
+      @connection.delete_object("fog-smoke-test", "fog-testfile")
       @connection.delete_bucket("fog-smoke-test")
     rescue Exception => e
       puts e
@@ -23,6 +30,7 @@ class TestFiles < FogIntegrationTest
   def setup
     @connection = @@connection
     @directory = @@directory
+    @file = @@file
   end
 
   def test_all_files
@@ -62,11 +70,15 @@ class TestFiles < FogIntegrationTest
   end
 
   def test_copy
-    skip
+    copied_file = @file.copy("fog-smoke-test", "fog-testfile-copy")
+    assert_instance_of Fog::Google::StorageJSON::File, copied_file
+    assert copied_file.destroy
   end
 
   def test_create_destroy
-    skip
+    testfile = @directory.files.create(key: "fog-testfile-create-destroy")
+    assert_instance_of Fog::Google::StorageJSON::File, testfile
+    assert testfile.destroy
   end
 
   def test_metadata
