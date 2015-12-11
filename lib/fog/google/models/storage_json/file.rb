@@ -22,7 +22,7 @@ module Fog
 
         # TODO: Verify
         def acl=(new_acl)
-          valid_acls = ["private", "public-read", "public-read-write", "authenticated-read"]
+          valid_acls = ["private", "projectPrivate", "bucketOwnerFullControl", "bucketOwnerRead", "authenticatedRead", "publicRead"]
           unless valid_acls.include?(new_acl)
             raise ArgumentError.new("acl must be one of [#{valid_acls.join(', ')}]")
           end
@@ -85,7 +85,7 @@ module Fog
         # TODO: Verify
         def public=(new_public)
           if new_public
-            @acl = "public-read"
+            @acl = "publicRead"
           else
             @acl = "private"
           end
@@ -116,7 +116,7 @@ module Fog
           if options != {}
             Fog::Logger.deprecation("options param is deprecated, use acl= instead [light_black](#{caller.first})[/]")
           end
-          options["x-goog-acl"] ||= @acl if @acl
+          options["predefinedAcl"] ||= @acl if @acl
           options["Cache-Control"] = cache_control if cache_control
           options["Content-Disposition"] = content_disposition if content_disposition
           options["Content-Encoding"] = content_encoding if content_encoding
