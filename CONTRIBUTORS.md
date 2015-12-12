@@ -14,6 +14,7 @@
 * Chris Gianelloni <wolf31o2@gmail.com>
 * Dan Prince <dprince@redhat.com>
 * Daniel Broudy <broudy@google.com>
+* Dean Putney <dean@glowforge.com>
 * Doug Henderson <dhenderson@maestrodev.com>
 * Eric Johnson <erjohnso@google.com>
 * Ferran Rodenas <frodenas@gmail.com>

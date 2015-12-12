@@ -8,7 +8,7 @@ module Fog
         identity :key, :aliases => %w(Name name)
 
         def acl=(new_acl)
-          valid_acls = ["private", "public-read", "public-read-write", "authenticated-read"]
+          valid_acls = ["private", "projectPrivate", "publicRead", "publicReadWrite", "authenticatedRead"]
           unless valid_acls.include?(new_acl)
             raise ArgumentError.new("acl must be one of [#{valid_acls.join(', ')}]")
           end
@@ -34,7 +34,7 @@ module Fog
 
         def public=(new_public)
           if new_public
-            @acl = "public-read"
+            @acl = "publicRead"
           else
             @acl = "private"
           end
@@ -43,7 +43,8 @@ module Fog
 
         def public_url
           requires :key
-          if service.get_bucket_acl(key).body["AccessControlList"].detect { |entry| entry["Scope"]["type"] == "AllUsers" && entry["Permission"] == "READ" }
+          acl = service.get_bucket_acl(key).body
+          if acl["items"].detect { |entry| entry["entity"] == "allUsers" && entry["role"] == "READER" }
             if key.to_s =~ /^(?:[a-z]|\d(?!\d{0,2}(?:\.\d{1,3}){3}$))(?:[a-z0-9]|\.(?![\.\-])|\-(?![\.])){1,61}[a-z0-9]$/
               "https://#{key}.storage.googleapis.com"
             else
@@ -54,7 +55,12 @@ module Fog
 
         def save
           requires :key
-          # TODO: Write.
+          options = {}
+          options["predefinedAcl"] = @acl if @acl
+          options["LocationConstraint"] = @location if @location
+          options["StorageClass"] = attributes[:storage_class] if attributes[:storage_class]
+          service.put_bucket(key, options)
+          true
         end
       end
     end

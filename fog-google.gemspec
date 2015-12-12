@@ -28,7 +28,6 @@ Gem::Specification.new do |spec|
 
   # TODO: Upgrade to 0.9, which is not compatible.
   spec.add_development_dependency "google-api-client", "< 0.9", ">= 0.6.2"
-  spec.add_development_dependency "httpclient"
   spec.add_development_dependency "rake"
   spec.add_development_dependency "shindo"
   spec.add_development_dependency "minitest"

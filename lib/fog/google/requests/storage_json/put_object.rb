@@ -22,7 +22,7 @@ module Fog
         # * response<~Excon::Response>:
         #   * headers<~Hash>:
         #     * 'ETag'<~String> - etag of new object
-        def put_object(bucket_name, object_name, data, _options = {})
+        def put_object(bucket_name, object_name, data, options = {})
           if data.is_a? String
             data = StringIO.new(data)
             mime_type = "text/plain"
@@ -33,12 +33,14 @@ module Fog
           media = ::Google::APIClient::UploadIO.new(data, mime_type, object_name)
           api_method = @storage_json.objects.insert
           parameters = {
-            "uploadType" => "resumable",
+            "uploadType" => "multipart",
             "bucket" => bucket_name,
             "name" => object_name
           }
+          parameters.merge! options
+          
           body_object = {
-            :contentType => mime_type
+            contentType: mime_type
           }
 
           request(api_method, parameters, body_object = body_object, media = media)
