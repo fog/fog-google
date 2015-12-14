@@ -44,8 +44,8 @@ module Fog
           }
 
           result = @client.execute(client_parms)
+          object.headers = object.body
           object.body = result.body.nil? || result.body.empty? ? nil : result.body
-          
           object
 
           # params = { :headers => {} }
