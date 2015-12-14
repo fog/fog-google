@@ -51,7 +51,10 @@ class TestFiles < FogIntegrationTest
   end
 
   def test_get_https_url
-    skip
+    https_url = @directory.files.get_https_url("fog-testfile")
+    assert_match /https/, https_url
+    assert_match /fog-smoke-test/, https_url
+    assert_match /fog-testfile/, https_url
   end
 
   def test_head
@@ -98,7 +101,7 @@ class TestFiles < FogIntegrationTest
     skip
   end
 
-  def test_set_metdata
+  def test_set_metadata
     skip
   end
 
