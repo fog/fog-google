@@ -69,14 +69,9 @@ module Fog
           nil
         end
 
-        def get_http_url(key, expires)
+        def get_https_url(key)
           requires :directory
-          service.get_object_http_url(directory.key, key, expires)
-        end
-
-        def get_https_url(key, expires)
-          requires :directory
-          service.get_object_https_url(directory.key, key, expires)
+          service.get_object_https_url(directory.key, key)
         end
 
         def head(key, options = {})
