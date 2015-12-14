@@ -8,12 +8,10 @@ As of https://github.com/fog/fog-google/pull/68, Google no longer supports Ruby 
 
 ## Storage
 
-There are two ways to access [Google Cloud Storage](https://cloud.google.com/storage/). The old S3 API and the new JSON API.
+There are two ways to access [Google Cloud Storage](https://cloud.google.com/storage/). The old S3 XML API and the new JSON API.
 
  * The [XML API](https://developers.google.com/storage/docs/xml-api-overview) is almost identical to S3. It is accessed through `Fog::Storage::Google`.
  * The new [JSON API](https://developers.google.com/storage/docs/json_api/) is faster and uses auth similarly to the rest of the Google Cloud APIs. It is accessed through `Fog::Google::StorageJSON`.
-
-Eventually the XML API will be deprecated in favor of the JSON API, but we have no idea on the timeline for that.
 
 ## Compute
 
