@@ -57,6 +57,12 @@ module Fog
         end
 
         # TODO: Verify
+        remove_method :metadata=
+        def metadata=(new_metadata)
+          metadata.merge!(new_metadata)
+        end
+
+        # TODO: Verify
         remove_method :owner=
         def owner=(new_owner)
           if new_owner
@@ -106,7 +112,7 @@ module Fog
           options["contentEncoding"] = content_encoding if content_encoding
           options["md5Hash"] = content_md5 if content_md5
           options["crc32c"] = crc32c if crc32c
-          options.merge!(metadata)
+          options["metadata"] = metadata
 
           data = service.put_object(directory.key, key, body, options)
           merge_attributes(data.headers.reject { |key, _value| ["Content-Length", "Content-Type"].include?(key) })
