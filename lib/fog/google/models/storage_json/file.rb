@@ -14,6 +14,7 @@ module Fog
         attribute :content_length,      :aliases => "size", :type => :integer
         attribute :content_md5,         :aliases => "md5Hash"
         attribute :content_type,        :aliases => "contentType"
+        attribute :crc32c
         attribute :etag,                :aliases => "etag"
         attribute :time_created,        :aliases => "timeCreated"
         attribute :last_modified,       :aliases => "updated"
@@ -54,18 +55,6 @@ module Fog
           end
           true
         end
-
-        # # TODO: Verify
-        # remove_method :metadata
-        # def metadata
-        #   attributes.reject { |key, _value| !(key.to_s =~ /^x-goog-meta-/) }
-        # end
-
-        # # TODO: Verify
-        # remove_method :metadata=
-        # def metadata=(new_metadata)
-        #   merge_attributes(new_metadata)
-        # end
 
         # TODO: Verify
         remove_method :owner=
@@ -110,12 +99,13 @@ module Fog
           if options != {}
             Fog::Logger.deprecation("options param is deprecated, use acl= instead [light_black](#{caller.first})[/]")
           end
-          # options["predefinedAcl"] ||= @acl if @acl
+          options["contentType"] = content_type if content_type
+          options["acl"] ||= @acl if @acl
           options["cacheControl"] = cache_control if cache_control
           options["contentDisposition"] = content_disposition if content_disposition
           options["contentEncoding"] = content_encoding if content_encoding
           options["md5Hash"] = content_md5 if content_md5
-          options["contentType"] = content_type if content_type
+          options["crc32c"] = crc32c if crc32c
           options.merge!(metadata)
 
           data = service.put_object(directory.key, key, body, options)
