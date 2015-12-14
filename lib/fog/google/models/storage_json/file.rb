@@ -7,20 +7,25 @@ module Fog
         identity :key, :aliases => "Key"
 
         # TODO: Verify
-        attribute :cache_control,       :aliases => "Cache-Control"
-        attribute :content_disposition, :aliases => "Content-Disposition"
-        attribute :content_encoding,    :aliases => "Content-Encoding"
-        attribute :content_length,      :aliases => ["Content-Length", "Size"], :type => :integer
-        attribute :content_md5,         :aliases => "Content-MD5"
-        attribute :content_type,        :aliases => "Content-Type"
-        attribute :etag,                :aliases => %w(Etag ETag)
-        attribute :expires,             :aliases => "Expires"
-        attribute :last_modified,       :aliases => ["Last-Modified", "LastModified"]
+        attribute :cache_control,       :aliases => "cacheControl"
+        attribute :content_disposition, :aliases => "contentDisposition"
+        attribute :content_encoding,    :aliases => "contentEncoding"
+        attribute :content_length,      :aliases => "size", :type => :integer
+        attribute :content_md5,         :aliases => "md5Hash"
+        attribute :content_type,        :aliases => "contentType"
+        attribute :etag,                :aliases => "etag"
+        attribute :time_created,        :aliases => "timeCreated"
+        attribute :last_modified,       :aliases => "updated"
+        attribute :generation
+        attribute :metageneration
         attribute :metadata
-        attribute :owner,               :aliases => "Owner"
-        attribute :storage_class,       :aliases => ["x-goog-storage-class", "StorageClass"]
+        attribute :self_link,           :aliases => "selfLink"
+        attribute :media_link,          :aliases => "mediaLink"
+        attribute :owner
+        attribute :storage_class,       :aliases => "storageClass"
 
         # TODO: Verify
+        # This is completely wrong, we need a list of ACLs and not a single word.
         def acl=(new_acl)
           valid_acls = ["private", "projectPrivate", "bucketOwnerFullControl", "bucketOwnerRead", "authenticatedRead", "publicRead"]
           unless valid_acls.include?(new_acl)
@@ -59,25 +64,25 @@ module Fog
           true
         end
 
-        # TODO: Verify
-        remove_method :metadata
-        def metadata
-          attributes.reject { |key, _value| !(key.to_s =~ /^x-goog-meta-/) }
-        end
+        # # TODO: Verify
+        # remove_method :metadata
+        # def metadata
+        #   attributes.reject { |key, _value| !(key.to_s =~ /^x-goog-meta-/) }
+        # end
 
-        # TODO: Verify
-        remove_method :metadata=
-        def metadata=(new_metadata)
-          merge_attributes(new_metadata)
-        end
+        # # TODO: Verify
+        # remove_method :metadata=
+        # def metadata=(new_metadata)
+        #   merge_attributes(new_metadata)
+        # end
 
         # TODO: Verify
         remove_method :owner=
         def owner=(new_owner)
           if new_owner
             attributes[:owner] = {
-              :display_name => new_owner["DisplayName"],
-              :id           => new_owner["ID"]
+              :display_name => new_owner["entity"],
+              :id           => new_owner["entityId"]
             }
           end
         end
@@ -96,10 +101,8 @@ module Fog
         def public_url
           requires :directory, :key
 
-          acl = service.get_object_acl(directory.key, key).body["AccessControlList"]
-          access_granted = acl.detect do |entry|
-            entry["Scope"]["type"] == "AllUsers" && entry["Permission"] == "READ"
-          end
+          acl = service.get_object_acl(directory.key, key).body
+          access_granted = acl["items"].detect { |entry| entry["entity"] == "allUsers" && entry["role"] == "READER" }
 
           if access_granted
             if directory.key.to_s =~ /^(?:[a-z]|\d(?!\d{0,2}(?:\.\d{1,3}){3}$))(?:[a-z0-9]|\.(?![\.\-])|\-(?![\.])){1,61}[a-z0-9]$/
@@ -116,13 +119,12 @@ module Fog
           if options != {}
             Fog::Logger.deprecation("options param is deprecated, use acl= instead [light_black](#{caller.first})[/]")
           end
-          options["predefinedAcl"] ||= @acl if @acl
-          options["Cache-Control"] = cache_control if cache_control
-          options["Content-Disposition"] = content_disposition if content_disposition
-          options["Content-Encoding"] = content_encoding if content_encoding
-          options["Content-MD5"] = content_md5 if content_md5
-          options["Content-Type"] = content_type if content_type
-          options["Expires"] = expires if expires
+          # options["predefinedAcl"] ||= @acl if @acl
+          options["cacheControl"] = cache_control if cache_control
+          options["contentDisposition"] = content_disposition if content_disposition
+          options["contentEncoding"] = content_encoding if content_encoding
+          options["md5Hash"] = content_md5 if content_md5
+          options["contentType"] = content_type if content_type
           options.merge!(metadata)
 
           data = service.put_object(directory.key, key, body, options)
