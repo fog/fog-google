@@ -8,13 +8,16 @@ class TestFiles < FogIntegrationTest
     @@connection.put_bucket_acl("fog-smoke-test", { entity: "allUsers", role: "READER" })
   rescue Exception => e
     puts e
+    puts e.backtrace
   end
 
   begin
     @@directory = @@connection.directories.get("fog-smoke-test")
-    @@file = @@connection.put_object("fog-smoke-test", "fog-testfile", "THISISATESTFILE")
+    @@connection.put_object("fog-smoke-test", "fog-testfile", "THISISATESTFILE")
+    @@file = @@directory.files.get("fog-testfile")
   rescue Exception => e
     puts e
+    puts e.backtrace
   end
 
   Minitest.after_run do
@@ -42,7 +45,9 @@ class TestFiles < FogIntegrationTest
   end
 
   def test_get
-    skip
+    get_file = @directory.files.get("fog-testfile")
+    assert_instance_of Fog::Google::StorageJSON::File, get_file
+    assert_equal "THISISATESTFILE", get_file.body
   end
 
   def test_get_https_url
@@ -62,11 +67,19 @@ class TestFiles < FogIntegrationTest
   end
 
   def test_body
-    skip
+    assert_equal "THISISATESTFILE", @file.body
   end
 
   def test_set_body
-    skip
+    new_body = "FILEBODYCHANGED"
+    @file.body = new_body
+    assert_equal new_body, @file.body
+    @file.save
+    file_get = @directory.files.get("fog-testfile")
+    assert_instance_of Fog::Google::StorageJSON::File, file_get
+    assert_equal new_body, file_get.body
+    file_get.body = "THISISATESTFILE"
+    file_get.save
   end
 
   def test_copy
