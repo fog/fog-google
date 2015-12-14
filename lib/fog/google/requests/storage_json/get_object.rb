@@ -31,7 +31,8 @@ module Fog
           api_method = @storage_json.objects.get
           parameters = {
             "bucket" => bucket_name,
-            "object" => object_name
+            "object" => object_name,
+            "projection" => "full"
           }
 
           object = request(api_method, parameters)

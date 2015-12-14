@@ -7,6 +7,7 @@ module Fog
         identity :key, :aliases => "Key"
 
         # TODO: Verify
+        attribute :acl
         attribute :cache_control,       :aliases => "cacheControl"
         attribute :content_disposition, :aliases => "contentDisposition"
         attribute :content_encoding,    :aliases => "contentEncoding"
@@ -23,16 +24,6 @@ module Fog
         attribute :media_link,          :aliases => "mediaLink"
         attribute :owner
         attribute :storage_class,       :aliases => "storageClass"
-
-        # TODO: Verify
-        # This is completely wrong, we need a list of ACLs and not a single word.
-        def acl=(new_acl)
-          valid_acls = ["private", "projectPrivate", "bucketOwnerFullControl", "bucketOwnerRead", "authenticatedRead", "publicRead"]
-          unless valid_acls.include?(new_acl)
-            raise ArgumentError.new("acl must be one of [#{valid_acls.join(', ')}]")
-          end
-          @acl = new_acl
-        end
 
         # TODO: Verify
         def body
