@@ -26,6 +26,23 @@ module Fog
         attribute :owner
         attribute :storage_class,       :aliases => "storageClass"
 
+        @valid_predefined_acls = ["private", "projectPrivate", "bucketOwnerFullControl", "bucketOwnerRead", "authenticatedRead", "publicRead"]
+
+        def predefined_acl=(new_acl)
+          unless @valid_predefined_acls.include?(new_acl)    
+            raise ArgumentError.new("acl must be one of [#{@valid_predefined_acls.join(', ')}]")   
+          end    
+          @predefined_acl = new_acl
+        end
+
+        # def acl=(new_acl)    
+        #   valid_acls = ["private", "projectPrivate", "bucketOwnerFullControl", "bucketOwnerRead", "authenticatedRead", "publicRead"]
+        #   unless valid_acls.include?(new_acl)    
+        #     raise ArgumentError.new("acl must be one of [#{valid_acls.join(', ')}]")   
+        #   end    
+        #   @acl = new_acl   
+        # end
+
         # TODO: Verify
         def body
           attributes[:body] ||= last_modified && (file = collection.get(identity)) ? file.body : ""
@@ -67,8 +84,8 @@ module Fog
         def owner=(new_owner)
           if new_owner
             attributes[:owner] = {
-              :display_name => new_owner["entity"],
-              :id           => new_owner["entityId"]
+              :entity => new_owner["entity"],
+              :entityId  => new_owner["entityId"]
             }
           end
         end
@@ -76,9 +93,9 @@ module Fog
         # TODO: Verify
         def public=(new_public)
           if new_public
-            @acl = "publicRead"
+            @predefined_acl = "publicRead"
           else
-            @acl = "private"
+            @predefined_acl = "private"
           end
           new_public
         end
@@ -106,7 +123,8 @@ module Fog
             Fog::Logger.deprecation("options param is deprecated, use acl= instead [light_black](#{caller.first})[/]")
           end
           options["contentType"] = content_type if content_type
-          options["acl"] ||= @acl if @acl
+          options["predefinedAcl"] ||= @predefined_acl if @predefined_acl # predefinedAcl may need to be in parameters
+          options["acl"] ||= @acl if @acl # Not sure if you can provide both acl and predefinedAcl
           options["cacheControl"] = cache_control if cache_control
           options["contentDisposition"] = content_disposition if content_disposition
           options["contentEncoding"] = content_encoding if content_encoding
@@ -115,15 +133,15 @@ module Fog
           options["metadata"] = metadata
 
           data = service.put_object(directory.key, key, body, options)
-          merge_attributes(data.headers.reject { |key, _value| ["Content-Length", "Content-Type"].include?(key) })
+          merge_attributes(data.headers.reject { |key, _value| ["contentLength", "contentType"].include?(key) })
           self.content_length = Fog::Storage.get_body_size(body)
           self.content_type ||= Fog::Storage.get_content_type(body)
           true
         end
 
-        def url(expires)
+        def url()
           requires :key
-          collection.get_http_url(key, expires)
+          collection.get_https_url(key)
         end
 
         private
