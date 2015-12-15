@@ -18,6 +18,7 @@ module Fog
 
         model Fog::Google::StorageJSON::File
 
+        # TODO: Verify, probably doesn't work
         def all(options = {})
           requires :directory
           options = {
@@ -38,6 +39,7 @@ module Fog
           end
         end
 
+        # TODO: Verify
         alias_method :each_file_this_page, :each
         def each
           if !block_given?

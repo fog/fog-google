@@ -8,6 +8,7 @@ module Fog
 
         # TODO: Verify
         attribute :acl
+        attribute :predefined_acl
         attribute :cache_control,       :aliases => "cacheControl"
         attribute :content_disposition, :aliases => "contentDisposition"
         attribute :content_encoding,    :aliases => "contentEncoding"
