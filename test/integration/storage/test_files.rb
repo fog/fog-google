@@ -58,11 +58,15 @@ class TestFiles < FogIntegrationTest
   end
 
   def test_head
-    skip
+    assert_instance_of Fog::Google::StorageJSON::File, @directory.files.head("fog-testfile")
   end
 
   def test_new
-    skip
+    new_file = @directory.files.new({ 
+      :key => "fog-testfile-new",
+      :body => "TESTFILENEW"
+    })
+    assert_instance_of Fog::Google::StorageJSON::File, new_file
   end
 
   def test_acl
@@ -81,8 +85,8 @@ class TestFiles < FogIntegrationTest
     file_get = @directory.files.get("fog-testfile")
     assert_instance_of Fog::Google::StorageJSON::File, file_get
     assert_equal new_body, file_get.body
-    file_get.body = "THISISATESTFILE"
-    file_get.save
+    @file.body = "THISISATESTFILE"
+    @file.save
   end
 
   def test_copy
@@ -114,7 +118,11 @@ class TestFiles < FogIntegrationTest
   end
 
   def test_public_url
-    skip
+    public_url = @file.public_url
+    assert_match /https/, public_url
+    assert_match /storage\.googleapis\.com/, public_url
+    assert_match /fog-smoke-test/, public_url
+    assert_match /fog-testfile/, public_url
   end
 
   def test_url
