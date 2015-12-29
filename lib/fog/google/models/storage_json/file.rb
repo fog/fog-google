@@ -7,27 +7,42 @@ module Fog
         identity :key, :aliases => "Key"
 
         # TODO: Verify
-        attribute :cache_control,       :aliases => "Cache-Control"
-        attribute :content_disposition, :aliases => "Content-Disposition"
-        attribute :content_encoding,    :aliases => "Content-Encoding"
-        attribute :content_length,      :aliases => ["Content-Length", "Size"], :type => :integer
-        attribute :content_md5,         :aliases => "Content-MD5"
-        attribute :content_type,        :aliases => "Content-Type"
-        attribute :etag,                :aliases => %w(Etag ETag)
-        attribute :expires,             :aliases => "Expires"
-        attribute :last_modified,       :aliases => ["Last-Modified", "LastModified"]
+        attribute :acl
+        attribute :predefined_acl
+        attribute :cache_control,       :aliases => "cacheControl"
+        attribute :content_disposition, :aliases => "contentDisposition"
+        attribute :content_encoding,    :aliases => "contentEncoding"
+        attribute :content_length,      :aliases => "size", :type => :integer
+        attribute :content_md5,         :aliases => "md5Hash"
+        attribute :content_type,        :aliases => "contentType"
+        attribute :crc32c
+        attribute :etag,                :aliases => "etag"
+        attribute :time_created,        :aliases => "timeCreated"
+        attribute :last_modified,       :aliases => "updated"
+        attribute :generation
+        attribute :metageneration
         attribute :metadata
-        attribute :owner,               :aliases => "Owner"
-        attribute :storage_class,       :aliases => ["x-goog-storage-class", "StorageClass"]
+        attribute :self_link,           :aliases => "selfLink"
+        attribute :media_link,          :aliases => "mediaLink"
+        attribute :owner
+        attribute :storage_class,       :aliases => "storageClass"
 
-        # TODO: Verify
-        def acl=(new_acl)
-          valid_acls = ["private", "projectPrivate", "bucketOwnerFullControl", "bucketOwnerRead", "authenticatedRead", "publicRead"]
-          unless valid_acls.include?(new_acl)
-            raise ArgumentError.new("acl must be one of [#{valid_acls.join(', ')}]")
-          end
-          @acl = new_acl
+        @valid_predefined_acls = ["private", "projectPrivate", "bucketOwnerFullControl", "bucketOwnerRead", "authenticatedRead", "publicRead"]
+
+        def predefined_acl=(new_acl)
+          unless @valid_predefined_acls.include?(new_acl)    
+            raise ArgumentError.new("acl must be one of [#{@valid_predefined_acls.join(', ')}]")   
+          end    
+          @predefined_acl = new_acl
         end
+
+        # def acl=(new_acl)    
+        #   valid_acls = ["private", "projectPrivate", "bucketOwnerFullControl", "bucketOwnerRead", "authenticatedRead", "publicRead"]
+        #   unless valid_acls.include?(new_acl)    
+        #     raise ArgumentError.new("acl must be one of [#{valid_acls.join(', ')}]")   
+        #   end    
+        #   @acl = new_acl   
+        # end
 
         # TODO: Verify
         def body
@@ -60,15 +75,9 @@ module Fog
         end
 
         # TODO: Verify
-        remove_method :metadata
-        def metadata
-          attributes.reject { |key, _value| !(key.to_s =~ /^x-goog-meta-/) }
-        end
-
-        # TODO: Verify
         remove_method :metadata=
         def metadata=(new_metadata)
-          merge_attributes(new_metadata)
+          metadata.merge!(new_metadata)
         end
 
         # TODO: Verify
@@ -76,8 +85,8 @@ module Fog
         def owner=(new_owner)
           if new_owner
             attributes[:owner] = {
-              :display_name => new_owner["DisplayName"],
-              :id           => new_owner["ID"]
+              :entity => new_owner["entity"],
+              :entityId  => new_owner["entityId"]
             }
           end
         end
@@ -85,9 +94,9 @@ module Fog
         # TODO: Verify
         def public=(new_public)
           if new_public
-            @acl = "publicRead"
+            @predefined_acl = "publicRead"
           else
-            @acl = "private"
+            @predefined_acl = "private"
           end
           new_public
         end
@@ -96,10 +105,8 @@ module Fog
         def public_url
           requires :directory, :key
 
-          acl = service.get_object_acl(directory.key, key).body["AccessControlList"]
-          access_granted = acl.detect do |entry|
-            entry["Scope"]["type"] == "AllUsers" && entry["Permission"] == "READ"
-          end
+          acl = service.get_object_acl(directory.key, key).body
+          access_granted = acl["items"].detect { |entry| entry["entity"] == "allUsers" && entry["role"] == "READER" }
 
           if access_granted
             if directory.key.to_s =~ /^(?:[a-z]|\d(?!\d{0,2}(?:\.\d{1,3}){3}$))(?:[a-z0-9]|\.(?![\.\-])|\-(?![\.])){1,61}[a-z0-9]$/
@@ -116,25 +123,26 @@ module Fog
           if options != {}
             Fog::Logger.deprecation("options param is deprecated, use acl= instead [light_black](#{caller.first})[/]")
           end
-          options["predefinedAcl"] ||= @acl if @acl
-          options["Cache-Control"] = cache_control if cache_control
-          options["Content-Disposition"] = content_disposition if content_disposition
-          options["Content-Encoding"] = content_encoding if content_encoding
-          options["Content-MD5"] = content_md5 if content_md5
-          options["Content-Type"] = content_type if content_type
-          options["Expires"] = expires if expires
-          options.merge!(metadata)
+          options["contentType"] = content_type if content_type
+          options["predefinedAcl"] ||= @predefined_acl if @predefined_acl # predefinedAcl may need to be in parameters
+          options["acl"] ||= @acl if @acl # Not sure if you can provide both acl and predefinedAcl
+          options["cacheControl"] = cache_control if cache_control
+          options["contentDisposition"] = content_disposition if content_disposition
+          options["contentEncoding"] = content_encoding if content_encoding
+          options["md5Hash"] = content_md5 if content_md5
+          options["crc32c"] = crc32c if crc32c
+          options["metadata"] = metadata
 
           data = service.put_object(directory.key, key, body, options)
-          merge_attributes(data.headers.reject { |key, _value| ["Content-Length", "Content-Type"].include?(key) })
+          merge_attributes(data.headers.reject { |key, _value| ["contentLength", "contentType"].include?(key) })
           self.content_length = Fog::Storage.get_body_size(body)
           self.content_type ||= Fog::Storage.get_content_type(body)
           true
         end
 
-        def url(expires)
+        def url()
           requires :key
-          collection.get_http_url(key, expires)
+          collection.get_https_url(key)
         end
 
         private

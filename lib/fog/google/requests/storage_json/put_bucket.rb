@@ -22,8 +22,8 @@ module Fog
             "projection" => "full"
           }
           body_object = {
-            name: bucket_name,
-            location: location
+            "name" => bucket_name,
+            "location" => location
           }
           parameters.merge! options
 

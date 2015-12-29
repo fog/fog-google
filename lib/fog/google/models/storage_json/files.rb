@@ -18,6 +18,7 @@ module Fog
 
         model Fog::Google::StorageJSON::File
 
+        # TODO: Verify, probably doesn't work
         def all(options = {})
           requires :directory
           options = {
@@ -38,6 +39,7 @@ module Fog
           end
         end
 
+        # TODO: Verify
         alias_method :each_file_this_page, :each
         def each
           if !block_given?
@@ -69,14 +71,9 @@ module Fog
           nil
         end
 
-        def get_http_url(key, expires)
+        def get_https_url(key)
           requires :directory
-          service.get_object_http_url(directory.key, key, expires)
-        end
-
-        def get_https_url(key, expires)
-          requires :directory
-          service.get_object_https_url(directory.key, key, expires)
+          service.get_object_https_url(directory.key, key)
         end
 
         def head(key, options = {})

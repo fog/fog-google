@@ -24,8 +24,21 @@ module Fog
         #     * 'ETag'<~String> - Etag of object
         #     * 'Last-Modified'<~String> - Last modified timestamp for object
         def head_object(bucket_name, object_name, options = {})
-          # raise ArgumentError.new("bucket_name is required") unless bucket_name
-          # raise ArgumentError.new("object_name is required") unless object_name
+          raise ArgumentError.new("bucket_name is required") unless bucket_name
+          raise ArgumentError.new("object_name is required") unless object_name
+
+          api_method = @storage_json.objects.get
+          parameters = {
+            "bucket" => bucket_name,
+            "object" => object_name,
+            "projection" => "full"
+          }
+
+          object = request(api_method, parameters)
+          object.headers = object.body
+          object.body = nil
+          object
+
           # if version_id = options.delete("versionId")
           #   query = { "versionId" => version_id }
           # end
@@ -44,9 +57,9 @@ module Fog
 
       class Mock
         def head_object(bucket_name, object_name, options = {})
-          # response = get_object(bucket_name, object_name, options)
-          # response.body = nil
-          # response
+          response = get_object(bucket_name, object_name, options)
+          response.body = nil
+          response
         end
       end
     end

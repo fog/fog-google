@@ -8,13 +8,16 @@ class TestFiles < FogIntegrationTest
     @@connection.put_bucket_acl("fog-smoke-test", { entity: "allUsers", role: "READER" })
   rescue Exception => e
     puts e
+    puts e.backtrace
   end
 
   begin
     @@directory = @@connection.directories.get("fog-smoke-test")
-    @@file = @@connection.put_object("fog-smoke-test", "fog-testfile", "THISISATESTFILE")
+    @@connection.put_object("fog-smoke-test", "fog-testfile", "THISISATESTFILE")
+    @@file = @@directory.files.get("fog-testfile")
   rescue Exception => e
     puts e
+    puts e.backtrace
   end
 
   Minitest.after_run do
@@ -42,19 +45,28 @@ class TestFiles < FogIntegrationTest
   end
 
   def test_get
-    skip
+    get_file = @directory.files.get("fog-testfile")
+    assert_instance_of Fog::Google::StorageJSON::File, get_file
+    assert_equal "THISISATESTFILE", get_file.body
   end
 
   def test_get_https_url
-    skip
+    https_url = @directory.files.get_https_url("fog-testfile")
+    assert_match /https/, https_url
+    assert_match /fog-smoke-test/, https_url
+    assert_match /fog-testfile/, https_url
   end
 
   def test_head
-    skip
+    assert_instance_of Fog::Google::StorageJSON::File, @directory.files.head("fog-testfile")
   end
 
   def test_new
-    skip
+    new_file = @directory.files.new({ 
+      :key => "fog-testfile-new",
+      :body => "TESTFILENEW"
+    })
+    assert_instance_of Fog::Google::StorageJSON::File, new_file
   end
 
   def test_acl
@@ -62,11 +74,19 @@ class TestFiles < FogIntegrationTest
   end
 
   def test_body
-    skip
+    assert_equal "THISISATESTFILE", @file.body
   end
 
   def test_set_body
-    skip
+    new_body = "FILEBODYCHANGED"
+    @file.body = new_body
+    assert_equal new_body, @file.body
+    @file.save
+    file_get = @directory.files.get("fog-testfile")
+    assert_instance_of Fog::Google::StorageJSON::File, file_get
+    assert_equal new_body, file_get.body
+    @file.body = "THISISATESTFILE"
+    @file.save
   end
 
   def test_copy
@@ -85,7 +105,7 @@ class TestFiles < FogIntegrationTest
     skip
   end
 
-  def test_set_metdata
+  def test_set_metadata
     skip
   end
 
@@ -98,7 +118,16 @@ class TestFiles < FogIntegrationTest
   end
 
   def test_public_url
-    skip
+    assert_nil @file.public_url
+
+    # Setting an ACL still fails, but here's some tests that should work when it does.
+    # @file.acl.push({ "entity" => "allUsers", "role" => "READER" })
+    # public_url = @file.public_url
+
+    # assert_match /https/, public_url
+    # assert_match /storage\.googleapis\.com/, public_url
+    # assert_match /fog-smoke-test/, public_url
+    # assert_match /fog-testfile/, public_url
   end
 
   def test_url

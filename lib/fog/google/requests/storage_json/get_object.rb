@@ -28,13 +28,26 @@ module Fog
           raise ArgumentError.new("bucket_name is required") unless bucket_name
           raise ArgumentError.new("object_name is required") unless object_name
 
-          api_method = @storage_json.buckets.get
+          api_method = @storage_json.objects.get
           parameters = {
             "bucket" => bucket_name,
-            "object" => object_name
+            "object" => object_name,
+            "projection" => "full"
           }
 
-          request(api_method, parameters)
+          object = request(api_method, parameters)
+
+          # Get the body of the object (can't use request for this)
+          parameters["alt"] = "media"
+          client_parms = {
+            :api_method => api_method,
+            :parameters => parameters
+          }
+
+          result = @client.execute(client_parms)
+          object.headers = object.body
+          object.body = result.body.nil? || result.body.empty? ? nil : result.body
+          object
 
           # params = { :headers => {} }
           # if version_id = options.delete("versionId")
