@@ -1,6 +1,6 @@
 module Fog
-  module Google
-    class StorageJSON
+  module Storage
+    class Google
       class Mock
         def put_bucket_acl(_bucket_name, _acl)
           Fog::Mock.not_implemented

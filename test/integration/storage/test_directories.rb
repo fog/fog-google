@@ -3,7 +3,7 @@ require "helpers/integration_test_helper"
 class TestDirectories < FogIntegrationTest
   begin
     client_email = Fog.credentials[:google_client_email]
-    @@connection = Fog::Google::StorageJSON.new
+    @@connection = Fog::Storage::Google.new
     @@connection.put_bucket("fog-smoke-test", options = { "acl" => [{ entity: "user-" + client_email, role: "OWNER" }] })
     @@connection.put_bucket_acl("fog-smoke-test", { entity: "allUsers", role: "READER" })
     @@directory = @@connection.directories.get("fog-smoke-test")
@@ -13,7 +13,7 @@ class TestDirectories < FogIntegrationTest
 
   Minitest.after_run do
     begin
-      @connection = Fog::Google::StorageJSON.new
+      @connection = Fog::Storage::Google.new
       @connection.delete_bucket("fog-smoke-test")
     rescue Exception => e
       puts e
@@ -31,12 +31,12 @@ class TestDirectories < FogIntegrationTest
 
   def test_get_directory
     directory_get = @connection.directories.get("fog-smoke-test")
-    assert_instance_of Fog::Google::StorageJSON::Directory, directory_get
+    assert_instance_of Fog::Storage::Google::Directory, directory_get
   end
 
   def test_create_destroy_directory
     directory_create = @connection.directories.create(key: "fog-smoke-test-create-destroy")
-    assert_instance_of Fog::Google::StorageJSON::Directory, directory_create
+    assert_instance_of Fog::Storage::Google::Directory, directory_create
     assert directory_create.destroy
   end
 

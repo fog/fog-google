@@ -3,7 +3,7 @@ require "helpers/integration_test_helper"
 class TestFiles < FogIntegrationTest
   begin
     client_email = Fog.credentials[:google_client_email]
-    @@connection = Fog::Google::StorageJSON.new
+    @@connection = Fog::Storage::Google.new
     @@connection.put_bucket("fog-smoke-test", options = { "acl" => [{ entity: "user-" + client_email, role: "OWNER" }] })
     @@connection.put_bucket_acl("fog-smoke-test", { entity: "allUsers", role: "READER" })
   rescue Exception => e
@@ -22,7 +22,7 @@ class TestFiles < FogIntegrationTest
 
   Minitest.after_run do
     begin
-      @connection = Fog::Google::StorageJSON.new
+      @connection = Fog::Storage::Google.new
       @connection.delete_object("fog-smoke-test", "fog-testfile")
       @connection.delete_bucket("fog-smoke-test")
     rescue Exception => e
@@ -46,19 +46,19 @@ class TestFiles < FogIntegrationTest
 
   def test_get
     get_file = @directory.files.get("fog-testfile")
-    assert_instance_of Fog::Google::StorageJSON::File, get_file
+    assert_instance_of Fog::Storage::Google::File, get_file
     assert_equal "THISISATESTFILE", get_file.body
   end
 
   def test_get_https_url
-    https_url = @directory.files.get_https_url("fog-testfile")
+    https_url = @directory.files.get_https_url("fog-testfile", 1000)
     assert_match /https/, https_url
     assert_match /fog-smoke-test/, https_url
     assert_match /fog-testfile/, https_url
   end
 
   def test_head
-    assert_instance_of Fog::Google::StorageJSON::File, @directory.files.head("fog-testfile")
+    assert_instance_of Fog::Storage::Google::File, @directory.files.head("fog-testfile")
   end
 
   def test_new
@@ -66,7 +66,7 @@ class TestFiles < FogIntegrationTest
       :key => "fog-testfile-new",
       :body => "TESTFILENEW"
     })
-    assert_instance_of Fog::Google::StorageJSON::File, new_file
+    assert_instance_of Fog::Storage::Google::File, new_file
   end
 
   def test_acl
@@ -83,7 +83,7 @@ class TestFiles < FogIntegrationTest
     assert_equal new_body, @file.body
     @file.save
     file_get = @directory.files.get("fog-testfile")
-    assert_instance_of Fog::Google::StorageJSON::File, file_get
+    assert_instance_of Fog::Storage::Google::File, file_get
     assert_equal new_body, file_get.body
     @file.body = "THISISATESTFILE"
     @file.save
@@ -91,13 +91,13 @@ class TestFiles < FogIntegrationTest
 
   def test_copy
     copied_file = @file.copy("fog-smoke-test", "fog-testfile-copy")
-    assert_instance_of Fog::Google::StorageJSON::File, copied_file
+    assert_instance_of Fog::Storage::Google::File, copied_file
     assert copied_file.destroy
   end
 
   def test_create_destroy
     testfile = @directory.files.create(key: "fog-testfile-create-destroy")
-    assert_instance_of Fog::Google::StorageJSON::File, testfile
+    assert_instance_of Fog::Storage::Google::File, testfile
     assert testfile.destroy
   end
 

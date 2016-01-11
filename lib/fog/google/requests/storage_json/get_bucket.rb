@@ -1,7 +1,7 @@
 require "pp"
 module Fog
-  module Google
-    class StorageJSON
+  module Storage
+    class Google
       class Real
         require "fog/google/parsers/storage/get_bucket"
 

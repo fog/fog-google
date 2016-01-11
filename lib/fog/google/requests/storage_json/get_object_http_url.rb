@@ -1,6 +1,6 @@
 module Fog
-  module Google
-    class StorageJSON
+  module Storage
+    class Google
       module GetObjectHttpUrl
         def get_object_http_url(bucket_name, object_name, expires)
           # raise ArgumentError.new("bucket_name is required") unless bucket_name

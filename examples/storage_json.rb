@@ -11,7 +11,7 @@ WebMock.disable!
 # Storage -> Storage -> Settings -> "Interoperability" tab -> "Create a new key"
 
 def test
-  connection = Fog::Google::StorageJSON.new
+  connection = Fog::Storage::Google.new
 
   puts "Put a bucket..."
   puts "----------------"

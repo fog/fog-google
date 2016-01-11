@@ -2,8 +2,8 @@ require "fog/core/collection"
 require "fog/google/models/storage_json/file"
 
 module Fog
-  module Google
-    class StorageJSON
+  module Storage
+    class Google
       class Files < Fog::Collection
         extend Fog::Deprecation
         deprecate :get_url, :get_https_url
@@ -11,20 +11,20 @@ module Fog
         attribute :common_prefixes, :aliases => "CommonPrefixes"
         attribute :delimiter,       :aliases => "Delimiter"
         attribute :directory
-        attribute :is_truncated,    :aliases => "IsTruncated"
-        attribute :marker,          :aliases => "Marker"
-        attribute :max_keys,        :aliases => ["MaxKeys", "max-keys"]
+        # attribute :is_truncated,    :aliases => "IsTruncated"
+        attribute :page_token,      :aliases => ["pageToken", "page_token"]
+        attribute :max_results,     :aliases => ["MaxKeys", "max-keys"]
         attribute :prefix,          :aliases => "Prefix"
 
-        model Fog::Google::StorageJSON::File
+        model Fog::Storage::Google::File
 
         # TODO: Verify, probably doesn't work
         def all(options = {})
           requires :directory
           options = {
             "delimiter"   => delimiter,
-            "marker"      => marker,
-            "max-keys"    => max_keys,
+            "pageToken"   => page_token,
+            "maxResults"  => max_results,
             "prefix"      => prefix
           }.merge!(options)
           options = options.reject { |_key, value| value.nil? || value.to_s.empty? }
@@ -34,9 +34,21 @@ module Fog
             options
           )
           if parent
+            # pp parent.files
             merge_attributes(parent.files.attributes)
             load(parent.files.map(&:attributes))
           end
+          # result = service.list_objects(
+          #   directory.key,
+          #   options
+          # )
+          # pp result
+          # if result
+          #   files = result[:body]["items"]
+          #   pp files
+          #   merge_attributes(files.attributes)
+          #   load(files.map(&:attributes))
+          # end
         end
 
         # TODO: Verify
@@ -71,9 +83,9 @@ module Fog
           nil
         end
 
-        def get_https_url(key)
+        def get_https_url(key, expires)
           requires :directory
-          service.get_object_https_url(directory.key, key)
+          service.get_object_https_url(directory.key, key, expires)
         end
 
         def head(key, options = {})

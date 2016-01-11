@@ -2,13 +2,14 @@ require "fog/core/collection"
 require "fog/google/models/storage_json/directory"
 
 module Fog
-  module Google
-    class StorageJSON
+  module Storage
+    class Google
       class Directories < Fog::Collection
-        model Fog::Google::StorageJSON::Directory
+        model Fog::Storage::Google::Directory
 
         def all
-          # TODO: Write
+          data = service.get_service.body["items"]
+          load(data)
         end
 
         def get(key, options = {})

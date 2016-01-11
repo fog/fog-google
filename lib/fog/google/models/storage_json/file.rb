@@ -1,8 +1,8 @@
 require "fog/core/model"
 
 module Fog
-  module Google
-    class StorageJSON
+  module Storage
+    class Google
       class File < Fog::Model
         identity :key, :aliases => "Key"
 

@@ -1,25 +1,16 @@
 require "helpers/integration_test_helper"
 
-def before_run
-  @connection = Fog::Google::StorageJSON.new
-  @connection.put_bucket("fog-smoke-test", options = { "predefinedAcl" => "publicReadWrite" })
-rescue Exception => e
-  # puts e
-end
-before_run
-
 class TestObjects < FogIntegrationTest
-  Minitest.after_run do
-    begin
-      @connection = Fog::Google::StorageJSON.new
-      @connection.delete_bucket("fog-smoke-test")
-    rescue Exception => e
-      # puts e
-    end
-  end
-
   def setup
-    @connection = Fog::Google::StorageJSON.new
+    # Uncomment this if you want to make real requests to GCE (you _will_ be billed!)
+    # WebMock.disable!
+
+    @connection = Fog::Storage::Google.new
+
+    begin
+      @connection.put_bucket("fog-smoke-test", options={ 'x-goog-acl' => 'publicReadWrite' })
+    rescue
+    end
   end
 
   def teardown
@@ -31,6 +22,10 @@ class TestObjects < FogIntegrationTest
       @connection.delete_object("fog-smoke-test", "my file copy")
     rescue
     end
+    begin
+      @connection.delete_bucket("fog-smoke-test")
+    rescue
+    end
   end
 
   def test_put_object
@@ -39,6 +34,7 @@ class TestObjects < FogIntegrationTest
   end
 
   def test_put_object_acl
+	skip
     response = @connection.put_object("fog-smoke-test", "my file", "THISISATESTFILE")
     assert_equal response.status, 200
     acl = { entity: "domain-example.com",
@@ -70,6 +66,7 @@ class TestObjects < FogIntegrationTest
   end
 
   def test_get_object
+	skip
     response = @connection.put_object("fog-smoke-test", "my file", "THISISATESTFILE")
     assert_equal response.status, 200
     response = @connection.get_object("fog-smoke-test", "my file")
@@ -77,6 +74,7 @@ class TestObjects < FogIntegrationTest
   end
 
   def test_get_object_acl
+	skip
     response = @connection.put_object("fog-smoke-test", "my file", "THISISATESTFILE")
     assert_equal response.status, 200
     response = @connection.get_object_acl("fog-smoke-test", "my file")
@@ -89,6 +87,7 @@ class TestObjects < FogIntegrationTest
   end
 
   def test_get_object_https_url
+	skip
     response = @connection.put_object("fog-smoke-test", "my file", "THISISATESTFILE", options={ predefinedAcl: 'publicRead' })
     assert_equal response.status, 200
     https_url = @connection.get_object_https_url("fog-smoke-test", "my file")
