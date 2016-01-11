@@ -20,9 +20,6 @@ module Fog
     autoload :Monitoring, "fog/google/monitoring"
     autoload :SQL, "fog/google/sql"
 
-    # TODO: Deprecate old storage API, make JSON main API.
-    # autoload :StorageJSON, "fog/google/storage_json"
-
     extend Fog::Provider
 
     service(:compute, "Compute")
