@@ -8,10 +8,10 @@ As of https://github.com/fog/fog-google/pull/68, Google no longer supports Ruby 
 
 ## Storage
 
-There are two ways to access [Google Cloud Storage](https://cloud.google.com/storage/). The old S3 XML API and the new JSON API.
+There are two ways to access [Google Cloud Storage](https://cloud.google.com/storage/). The old S3 API and the new JSON API. `Fog::Storage::Google` will automatically direct you to the appropriate API based on the credentials you provide it.
 
- * The [XML API](https://developers.google.com/storage/docs/xml-api-overview) is almost identical to S3. It is accessed through `Fog::Storage::Google`.
- * The new [JSON API](https://developers.google.com/storage/docs/json_api/) is faster and uses auth similarly to the rest of the Google Cloud APIs. It is accessed through `Fog::Google::StorageJSON`.
+ * The [XML API](https://developers.google.com/storage/docs/xml-api-overview) is almost identical to S3. Use [Google's interoperability keys](https://cloud.google.com/storage/docs/migrating#keys) to access it.
+ * The new [JSON API](https://developers.google.com/storage/docs/json_api/) is faster and uses auth similarly to the rest of the Google Cloud APIs using a [service account private key](https://developers.google.com/identity/protocols/OAuth2ServiceAccount).
 
 ## Compute
 
@@ -66,6 +66,17 @@ my_credential:
     google_client_email: xxxxxxxxxxxx-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx@developer.gserviceaccount.com
     google_json_key_location: /path/to/my-project-xxxxxxxxxxxx.json
 ```
+
+You can also provide service account credentials with `google_json_key_string` or with `google_key_location` and `google_key_string` for P12 private keys.
+
+HMAC credentials follow a similar format:
+
+```
+my_credentials:
+	google_storage_access_key_id: GOOGXXXXXXXXXXXXXXXX
+	google_storage_secret_access_key: XXXX+XXX/XXXXXXXX+XXXXXXXXXXXXXXXXXXXXX
+```	
+
 
 #### SSH-ing into instances
 
