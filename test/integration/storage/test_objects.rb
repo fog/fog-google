@@ -8,7 +8,7 @@ class TestObjects < FogIntegrationTest
     @connection = Fog::Storage::Google.new
 
     begin
-      @connection.put_bucket("fog-smoke-test", options={ 'x-goog-acl' => 'publicReadWrite' })
+      @connection.put_bucket("fog-smoke-test", options = { "x-goog-acl" => "publicReadWrite" })
     rescue
     end
   end
@@ -34,11 +34,11 @@ class TestObjects < FogIntegrationTest
   end
 
   def test_put_object_acl
-	skip
+    skip
     response = @connection.put_object("fog-smoke-test", "my file", "THISISATESTFILE")
     assert_equal response.status, 200
-    acl = { entity: "domain-example.com",
-            role: "READER" }
+    acl = { :entity => "domain-example.com",
+            :role => "READER" }
     response = @connection.put_object_acl("fog-smoke-test", "my file", acl)
     assert_equal response.status, 200
   end
@@ -66,7 +66,7 @@ class TestObjects < FogIntegrationTest
   end
 
   def test_get_object
-	skip
+    skip
     response = @connection.put_object("fog-smoke-test", "my file", "THISISATESTFILE")
     assert_equal response.status, 200
     response = @connection.get_object("fog-smoke-test", "my file")
@@ -74,7 +74,7 @@ class TestObjects < FogIntegrationTest
   end
 
   def test_get_object_acl
-	skip
+    skip
     response = @connection.put_object("fog-smoke-test", "my file", "THISISATESTFILE")
     assert_equal response.status, 200
     response = @connection.get_object_acl("fog-smoke-test", "my file")
@@ -87,8 +87,8 @@ class TestObjects < FogIntegrationTest
   end
 
   def test_get_object_https_url
-	skip
-    response = @connection.put_object("fog-smoke-test", "my file", "THISISATESTFILE", options={ predefinedAcl: 'publicRead' })
+    skip
+    response = @connection.put_object("fog-smoke-test", "my file", "THISISATESTFILE", options = { :predefinedAcl => "publicRead" })
     assert_equal response.status, 200
     https_url = @connection.get_object_https_url("fog-smoke-test", "my file")
     assert_match /https/, https_url

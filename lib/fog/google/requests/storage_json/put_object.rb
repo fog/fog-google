@@ -38,9 +38,9 @@ module Fog
             "name" => object_name
           }
           parameters.merge! options
-          
+
           body_object = {
-            contentType: mime_type
+            :contentType => mime_type
           }
 
           request(api_method, parameters, body_object = body_object, media = media)

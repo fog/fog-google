@@ -4,8 +4,8 @@ class TestDirectories < FogIntegrationTest
   begin
     client_email = Fog.credentials[:google_client_email]
     @@connection = Fog::Storage::Google.new
-    @@connection.put_bucket("fog-smoke-test", options = { "acl" => [{ entity: "user-" + client_email, role: "OWNER" }] })
-    @@connection.put_bucket_acl("fog-smoke-test", { entity: "allUsers", role: "READER" })
+    @@connection.put_bucket("fog-smoke-test", options = { "acl" => [{ :entity => "user-" + client_email, :role => "OWNER" }] })
+    @@connection.put_bucket_acl("fog-smoke-test", :entity => "allUsers", :role => "READER")
     @@directory = @@connection.directories.get("fog-smoke-test")
   rescue Exception => e
     puts e
@@ -35,7 +35,7 @@ class TestDirectories < FogIntegrationTest
   end
 
   def test_create_destroy_directory
-    directory_create = @connection.directories.create(key: "fog-smoke-test-create-destroy")
+    directory_create = @connection.directories.create(:key => "fog-smoke-test-create-destroy")
     assert_instance_of Fog::Storage::Google::Directory, directory_create
     assert directory_create.destroy
   end

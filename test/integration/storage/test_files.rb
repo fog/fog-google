@@ -4,8 +4,8 @@ class TestFiles < FogIntegrationTest
   begin
     client_email = Fog.credentials[:google_client_email]
     @@connection = Fog::Storage::Google.new
-    @@connection.put_bucket("fog-smoke-test", options = { "acl" => [{ entity: "user-" + client_email, role: "OWNER" }] })
-    @@connection.put_bucket_acl("fog-smoke-test", { entity: "allUsers", role: "READER" })
+    @@connection.put_bucket("fog-smoke-test", options = { "acl" => [{ :entity => "user-" + client_email, :role => "OWNER" }] })
+    @@connection.put_bucket_acl("fog-smoke-test", :entity => "allUsers", :role => "READER")
   rescue Exception => e
     puts e
     puts e.backtrace
@@ -62,10 +62,8 @@ class TestFiles < FogIntegrationTest
   end
 
   def test_new
-    new_file = @directory.files.new({ 
-      :key => "fog-testfile-new",
-      :body => "TESTFILENEW"
-    })
+    new_file = @directory.files.new(:key => "fog-testfile-new",
+                                    :body => "TESTFILENEW")
     assert_instance_of Fog::Storage::Google::File, new_file
   end
 
@@ -96,7 +94,7 @@ class TestFiles < FogIntegrationTest
   end
 
   def test_create_destroy
-    testfile = @directory.files.create(key: "fog-testfile-create-destroy")
+    testfile = @directory.files.create(:key => "fog-testfile-create-destroy")
     assert_instance_of Fog::Storage::Google::File, testfile
     assert testfile.destroy
   end

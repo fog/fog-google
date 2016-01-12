@@ -22,7 +22,7 @@ module Fog
         #             * 'ID'<~String> - Id of grantee
         #           * 'Permission'<~String> - Permission, in [FULL_CONTROL, WRITE, WRITE_ACP, READ, READ_ACP]
         #
-        def get_object_torrent(bucket_name, object_name)
+        def get_object_torrent(_bucket_name, _object_name)
           Fog::Logger.deprecation("Fog::Storage::Google => ##{get_object_torrent} is deprecated.[/] [light_black](#{caller.first})")
         end
       end

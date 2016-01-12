@@ -25,23 +25,23 @@ module Fog
         attribute :self_link,           :aliases => "selfLink"
         attribute :media_link,          :aliases => "mediaLink"
         attribute :owner
-        attribute :storage_class,       :aliases => "storageClass"
+        attribute :storage_class, :aliases => "storageClass"
 
-        @valid_predefined_acls = ["private", "projectPrivate", "bucketOwnerFullControl", "bucketOwnerRead", "authenticatedRead", "publicRead"]
+        @valid_predefined_acls = %w(private projectPrivate bucketOwnerFullControl bucketOwnerRead authenticatedRead publicRead)
 
         def predefined_acl=(new_acl)
-          unless @valid_predefined_acls.include?(new_acl)    
-            raise ArgumentError.new("acl must be one of [#{@valid_predefined_acls.join(', ')}]")   
-          end    
+          unless @valid_predefined_acls.include?(new_acl)
+            raise ArgumentError.new("acl must be one of [#{@valid_predefined_acls.join(', ')}]")
+          end
           @predefined_acl = new_acl
         end
 
-        # def acl=(new_acl)    
+        # def acl=(new_acl)
         #   valid_acls = ["private", "projectPrivate", "bucketOwnerFullControl", "bucketOwnerRead", "authenticatedRead", "publicRead"]
-        #   unless valid_acls.include?(new_acl)    
-        #     raise ArgumentError.new("acl must be one of [#{valid_acls.join(', ')}]")   
-        #   end    
-        #   @acl = new_acl   
+        #   unless valid_acls.include?(new_acl)
+        #     raise ArgumentError.new("acl must be one of [#{valid_acls.join(', ')}]")
+        #   end
+        #   @acl = new_acl
         # end
 
         # TODO: Verify
@@ -134,13 +134,13 @@ module Fog
           options["metadata"] = metadata
 
           data = service.put_object(directory.key, key, body, options)
-          merge_attributes(data.headers.reject { |key, _value| ["contentLength", "contentType"].include?(key) })
+          merge_attributes(data.headers.reject { |key, _value| %w(contentLength contentType).include?(key) })
           self.content_length = Fog::Storage.get_body_size(body)
           self.content_type ||= Fog::Storage.get_content_type(body)
           true
         end
 
-        def url()
+        def url
           requires :key
           collection.get_https_url(key)
         end

@@ -8,7 +8,7 @@ module Fog
         identity :key, :aliases => %w(Name name)
 
         def acl=(new_acl)
-          valid_acls = ["private", "projectPrivate", "publicRead", "publicReadWrite", "authenticatedRead"]
+          valid_acls = %w(private projectPrivate publicRead publicReadWrite authenticatedRead)
           unless valid_acls.include?(new_acl)
             raise ArgumentError.new("acl must be one of [#{valid_acls.join(', ')}]")
           end

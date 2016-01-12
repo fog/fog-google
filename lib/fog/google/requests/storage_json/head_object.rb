@@ -23,7 +23,7 @@ module Fog
         #     * 'Content-Type'<~String> - MIME type of object
         #     * 'ETag'<~String> - Etag of object
         #     * 'Last-Modified'<~String> - Last modified timestamp for object
-        def head_object(bucket_name, object_name, options = {})
+        def head_object(bucket_name, object_name, _options = {})
           raise ArgumentError.new("bucket_name is required") unless bucket_name
           raise ArgumentError.new("object_name is required") unless object_name
 
