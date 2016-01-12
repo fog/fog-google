@@ -11,7 +11,7 @@ module Google # deviates from other bin stuff to accomodate gem
       when :storage
         Fog::Storage::Google
       when :storage_json
-        Fog::Google::StorageJSON
+        Fog::Storage::Google
       when :sql
         Fog::Google::SQL
       else

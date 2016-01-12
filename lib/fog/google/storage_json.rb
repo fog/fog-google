@@ -1,6 +1,6 @@
 module Fog
-  module Google
-    class StorageJSON < Fog::Service
+  module Storage
+    class Google < Fog::Service
       requires :google_project
       recognizes :google_client_email, :google_key_location, :google_key_string, :google_client,
                  :app_name, :app_version, :google_json_key_location, :google_json_key_string

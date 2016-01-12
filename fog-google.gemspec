@@ -6,8 +6,8 @@ require "fog/google/version"
 Gem::Specification.new do |spec|
   spec.name          = "fog-google"
   spec.version       = Fog::Google::VERSION
-  spec.authors       = ["Nat Welch", "Daniel Broudy", "Isaac Hollander McCreery"]
-  spec.email         = ["nat@natwelch.com", "broudy@google.com", "ihmccreery@google.com"]
+  spec.authors       = ["Nat Welch", "Daniel Broudy", "Isaac Hollander McCreery", "Dean Putney"]
+  spec.email         = ["nat@natwelch.com", "broudy@google.com", "ihmccreery@google.com", "dean@glowforge.com"]
   spec.summary       = "Module for the 'fog' gem to support Google."
   spec.description   = 'This library can be used as a module for `fog` or as standalone provider
                         to use the Google in applications.'

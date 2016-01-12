@@ -1,6 +1,6 @@
 module Fog
-  module Google
-    class StorageJSON
+  module Storage
+    class Google
       class Real
         require "fog/google/parsers/storage/get_service"
 
@@ -16,6 +16,14 @@ module Fog
         #       * 'DisplayName'<~String> - Display name of bucket owner
         #       * 'ID'<~String> - Id of bucket owner
         def get_service
+          # api_method = @storage_json.buckets.list
+          # parameters = {
+          #   "project" => Fog.credentials[:google_project],
+          #   "maxResults" => 9999
+          # }
+
+          # request(api_method, parameters)
+
           # request(:expects  => 200,
           #         :headers  => {},
           #         :host     => @host,
