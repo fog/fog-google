@@ -3,9 +3,9 @@ require "fog/google/models/storage/directory"
 
 module Fog
   module Storage
-    class Google
+    class GoogleXML
       class Directories < Fog::Collection
-        model Fog::Storage::Google::Directory
+        model Fog::Storage::GoogleXML::Directory
 
         def all
           data = service.get_service.body["Buckets"]

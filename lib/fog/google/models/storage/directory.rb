@@ -3,7 +3,7 @@ require "fog/google/models/storage/files"
 
 module Fog
   module Storage
-    class Google
+    class GoogleXML
       class Directory < Fog::Model
         identity :key, :aliases => %w(Name name)
 

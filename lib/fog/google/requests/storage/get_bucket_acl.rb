@@ -1,6 +1,6 @@
 module Fog
   module Storage
-    class Google
+    class GoogleXML
       class Real
         require "fog/google/parsers/storage/access_control_list"
 

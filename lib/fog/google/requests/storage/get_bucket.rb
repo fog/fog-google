@@ -1,7 +1,7 @@
 require "pp"
 module Fog
   module Storage
-    class Google
+    class GoogleXML
       class Real
         require "fog/google/parsers/storage/get_bucket"
 
