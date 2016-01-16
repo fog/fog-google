@@ -1,6 +1,6 @@
 module Fog
   module Storage
-    class Google < Fog::Service
+    class GoogleXML < Fog::Service
       requires :google_storage_access_key_id, :google_storage_secret_access_key
       recognizes :host, :port, :scheme, :persistent, :path_style
 
