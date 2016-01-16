@@ -3,7 +3,7 @@ require "fog/google/models/storage_json/file"
 
 module Fog
   module Storage
-    class Google
+    class GoogleJSON
       class Files < Fog::Collection
         extend Fog::Deprecation
         deprecate :get_url, :get_https_url
@@ -16,7 +16,7 @@ module Fog
         attribute :max_results,     :aliases => ["MaxKeys", "max-keys"]
         attribute :prefix,          :aliases => "Prefix"
 
-        model Fog::Storage::Google::File
+        model Fog::Storage::GoogleJSON::File
 
         # TODO: Verify, probably doesn't work
         def all(options = {})

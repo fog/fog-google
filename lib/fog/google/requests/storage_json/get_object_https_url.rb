@@ -1,6 +1,6 @@
 module Fog
   module Storage
-    class Google
+    class GoogleJSON
       module GetObjectHttpsUrl
         # Formerly included "expires", but no doesn't seem to exist anymore?
         def get_object_https_url(bucket_name, object_name)

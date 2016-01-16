@@ -3,9 +3,9 @@ require "fog/google/models/storage_json/directory"
 
 module Fog
   module Storage
-    class Google
+    class GoogleJSON
       class Directories < Fog::Collection
-        model Fog::Storage::Google::Directory
+        model Fog::Storage::GoogleJSON::Directory
 
         def all
           data = service.get_service.body["items"]
