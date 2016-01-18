@@ -6,10 +6,8 @@ module Fog
     class Google < Fog::Service     
       def self.new(options)
         if options.keys.include? :google_storage_access_key_id
-          puts "Loading Fog::Storage::GoogleXML"
           Fog::Storage::GoogleXML.new(options)
         else
-          puts "Loading Fog::Storage::GoogleJSON"
           Fog::Storage::GoogleJSON.new(options)
         end
       end
