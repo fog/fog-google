@@ -224,12 +224,12 @@ module Fog
 
         def signature(params)
           string_to_sign =
-      <<-DATA
-      #{params[:method]}
-      #{params[:headers]['Content-MD5']}
-      #{params[:headers]['Content-Type']}
-      #{params[:headers]['Date']}
-      DATA
+<<-DATA
+#{params[:method]}
+#{params[:headers]['Content-MD5']}
+#{params[:headers]['Content-Type']}
+#{params[:headers]['Date']}
+DATA
 
           google_headers = {}
           canonical_google_headers = ""
