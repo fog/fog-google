@@ -25,7 +25,7 @@ module Fog
 
         def files
           @files ||= begin
-            Fog::Storage::Google::Files.new(
+            Fog::Storage::GoogleJSON::Files.new(
               :directory => self,
               :service => service
             )
