@@ -74,8 +74,13 @@ module Google # deviates from other bin stuff to accomodate gem
       if availability
         for service in services
           for collection in class_for(service).collections
-            next if self.respond_to?(collection)
-class_eval <<-EOS, __FILE__, __LINE__
+            unless self.respond_to?(collection)
+              class_eval <<-EOS, __FILE__, __LINE__
+                def self.#{collection}
+                  self[:#{service}].#{collection}
+                end
+              EOS
+            end
           end
         end
       end
