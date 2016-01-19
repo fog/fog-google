@@ -5,10 +5,10 @@ module Fog
   module Storage
     class Google < Fog::Service     
       def self.new(options)
-        if options.keys.include? :google_storage_access_key_id
-          Fog::Storage::GoogleXML.new(options)
-        else
+        if options.keys.join(' ').include? "key"
           Fog::Storage::GoogleJSON.new(options)
+        else
+          Fog::Storage::GoogleXML.new(options)
         end
       end
     end
