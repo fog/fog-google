@@ -12,7 +12,7 @@ module Fog
         attribute :delimiter,       :aliases => "Delimiter"
         attribute :directory
         # attribute :is_truncated,    :aliases => "IsTruncated"
-        attribute :page_token,      :aliases => ["pageToken", "page_token"]
+        attribute :page_token,      :aliases => %w(pageToken page_token)
         attribute :max_results,     :aliases => ["MaxKeys", "max-keys"]
         attribute :prefix,          :aliases => "Prefix"
 
