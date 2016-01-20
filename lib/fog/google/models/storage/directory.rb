@@ -3,7 +3,7 @@ require "fog/google/models/storage/files"
 
 module Fog
   module Storage
-    class Google
+    class GoogleXML
       class Directory < Fog::Model
         identity :key, :aliases => %w(Name name)
 
@@ -27,7 +27,7 @@ module Fog
 
         def files
           @files ||= begin
-            Fog::Storage::Google::Files.new(
+            Fog::Storage::GoogleXML::Files.new(
               :directory => self,
               :service => service
             )

@@ -1,6 +1,6 @@
 module Fog
   module Storage
-    class Google
+    class GoogleJSON
       class Real
         # Get torrent for an Google Storage object
         #

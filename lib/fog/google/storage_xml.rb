@@ -1,6 +1,6 @@
 module Fog
   module Storage
-    class Google < Fog::Service
+    class GoogleXML < Fog::Service
       requires :google_storage_access_key_id, :google_storage_secret_access_key
       recognizes :host, :port, :scheme, :persistent, :path_style
 
@@ -224,12 +224,12 @@ module Fog
 
         def signature(params)
           string_to_sign =
-      <<-DATA
-      #{params[:method]}
-      #{params[:headers]['Content-MD5']}
-      #{params[:headers]['Content-Type']}
-      #{params[:headers]['Date']}
-      DATA
+<<-DATA
+#{params[:method]}
+#{params[:headers]['Content-MD5']}
+#{params[:headers]['Content-Type']}
+#{params[:headers]['Date']}
+DATA
 
           google_headers = {}
           canonical_google_headers = ""

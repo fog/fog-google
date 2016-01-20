@@ -1,6 +1,6 @@
 module Fog
   module Storage
-    class Google
+    class GoogleJSON
       class Real
         # Create an object in an Google Storage bucket
         #

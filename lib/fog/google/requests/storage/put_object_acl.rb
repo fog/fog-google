@@ -1,6 +1,6 @@
 module Fog
   module Storage
-    class Google
+    class GoogleXML
       class Real
         # TODO: move this methods to helper to use them with put_bucket_acl request
         def tag(name, value)

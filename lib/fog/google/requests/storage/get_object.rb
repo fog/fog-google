@@ -1,6 +1,6 @@
 module Fog
   module Storage
-    class Google
+    class GoogleXML
       class Real
         # Get an object from Google Storage
         #

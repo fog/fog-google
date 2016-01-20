@@ -1,6 +1,6 @@
 module Fog
   module Storage
-    class Google
+    class GoogleXML
       module GetObjectHttpsUrl
         def get_object_https_url(bucket_name, object_name, expires)
           raise ArgumentError.new("bucket_name is required") unless bucket_name

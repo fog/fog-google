@@ -3,7 +3,7 @@ require "fog/google/models/storage_json/files"
 
 module Fog
   module Storage
-    class Google
+    class GoogleJSON
       class Directory < Fog::Model
         identity :key, :aliases => %w(Name name)
 
@@ -25,7 +25,7 @@ module Fog
 
         def files
           @files ||= begin
-            Fog::Storage::Google::Files.new(
+            Fog::Storage::GoogleJSON::Files.new(
               :directory => self,
               :service => service
             )

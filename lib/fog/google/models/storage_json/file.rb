@@ -2,7 +2,7 @@ require "fog/core/model"
 
 module Fog
   module Storage
-    class Google
+    class GoogleJSON
       class File < Fog::Model
         identity :key, :aliases => "Key"
 
