@@ -2,25 +2,21 @@ module Fog
   module Storage
     class GoogleJSON
       module GetObjectHttpsUrl
-        # Formerly included "expires", but no doesn't seem to exist anymore?
-        def get_object_https_url(bucket_name, object_name)
+        #
+        # === See Google Docs information on signed URLs
+        # https://cloud.google.com/storage/docs/access-control#Signed-URLs
+        #
+
+        def get_object_https_url(bucket_name, object_name, expires)
           raise ArgumentError.new("bucket_name is required") unless bucket_name
           raise ArgumentError.new("object_name is required") unless object_name
 
-          api_method = @storage_json.objects.get
-          parameters = {
-            "bucket" => bucket_name,
-            "object" => object_name
-          }
-
-          response = request(api_method, parameters)
-          response.body["mediaLink"]
-          # https_url({
-          #             :headers  => {},
-          #             :host     => @host,
-          #             :method   => "GET",
-          #             :path     => "#{bucket_name}/#{object_name}"
-          #           }, expires)
+          https_url({
+                      :headers  => {},
+                      :host     => @host,
+                      :method   => "GET",
+                      :path     => "#{bucket_name}/#{object_name}"
+                    }, expires)
         end
       end
 

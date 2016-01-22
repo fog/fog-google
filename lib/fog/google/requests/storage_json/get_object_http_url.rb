@@ -3,14 +3,14 @@ module Fog
     class GoogleJSON
       module GetObjectHttpUrl
         def get_object_http_url(bucket_name, object_name, expires)
-          # raise ArgumentError.new("bucket_name is required") unless bucket_name
-          # raise ArgumentError.new("object_name is required") unless object_name
-          # http_url({
-          #            :headers  => {},
-          #            :host     => @host,
-          #            :method   => "GET",
-          #            :path     => "#{bucket_name}/#{object_name}"
-          #          }, expires)
+          raise ArgumentError.new("bucket_name is required") unless bucket_name
+          raise ArgumentError.new("object_name is required") unless object_name
+          http_url({
+                     :headers  => {},
+                     :host     => @host,
+                     :method   => "GET",
+                     :path     => "#{bucket_name}/#{object_name}"
+                   }, expires)
         end
       end
 
