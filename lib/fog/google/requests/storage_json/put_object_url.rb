@@ -13,37 +13,28 @@ module Fog
         # * response<~Excon::Response>:
         #   * body<~String> - url for object
         #
-        def put_object_url(bucket_name, object_name, _headers = {})
+        def put_object_url(bucket_name, object_name, headers = {})
           raise ArgumentError.new("bucket_name is required") unless bucket_name
           raise ArgumentError.new("object_name is required") unless object_name
-
-          api_method = @storage_json.objects.insert
-          parameters = {
-            "uploadType" => "resumable",
-            "bucket" => bucket_name,
-            "name" => object_name
-          }
-
-          request(api_method, parameters)
-          # https_url({
-          #             :headers  => headers,
-          #             :host     => @host,
-          #             :method   => "PUT",
-          #             :path     => "#{bucket_name}/#{object_name}"
-          #           }, expires)
+          https_url({
+                      :headers  => headers,
+                      :host     => @host,
+                      :method   => "PUT",
+                      :path     => "#{bucket_name}/#{object_name}"
+                    }, expires)
         end
       end
 
       class Mock
         def put_object_url(bucket_name, object_name, expires, headers = {})
-          # raise ArgumentError.new("bucket_name is required") unless bucket_name
-          # raise ArgumentError.new("object_name is required") unless object_name
-          # https_url({
-          #             :headers  => headers,
-          #             :host     => @host,
-          #             :method   => "PUT",
-          #             :path     => "#{bucket_name}/#{object_name}"
-          #           }, expires)
+          raise ArgumentError.new("bucket_name is required") unless bucket_name
+          raise ArgumentError.new("object_name is required") unless object_name
+          https_url({
+                      :headers  => headers,
+                      :host     => @host,
+                      :method   => "PUT",
+                      :path     => "#{bucket_name}/#{object_name}"
+                    }, expires)
         end
       end
     end
