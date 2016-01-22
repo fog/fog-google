@@ -39,33 +39,20 @@ module Fog
           }
 
           request(api_method, parameters)
-
-          # query = { "acl" => nil }
-          # if version_id = options.delete("versionId")
-          #   query["versionId"] = version_id
-          # end
-          # request(:expects    => 200,
-          #         :headers    => {},
-          #         :host       => "#{bucket_name}.#{@host}",
-          #         :idempotent => true,
-          #         :method     => "GET",
-          #         :parser     => Fog::Parsers::Storage::Google::AccessControlList.new,
-          #         :path       => CGI.escape(object_name),
-          #         :query      => query)
         end
       end
 
       class Mock
         def get_object_acl(bucket_name, object_name)
-          # response = Excon::Response.new
-          # if acl = data[:acls][:object][bucket_name] && data[:acls][:object][bucket_name][object_name]
-          #   response.status = 200
-          #   response.body = acl
-          # else
-          #   response.status = 404
-          #   raise(Excon::Errors.status_error({ :expects => 200 }, response))
-          # end
-          # response
+          response = Excon::Response.new
+          if acl = data[:acls][:object][bucket_name] && data[:acls][:object][bucket_name][object_name]
+            response.status = 200
+            response.body = acl
+          else
+            response.status = 404
+            raise(Excon::Errors.status_error({ :expects => 200 }, response))
+          end
+          response
         end
       end
     end

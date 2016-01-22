@@ -3,6 +3,7 @@ module Fog
     class GoogleJSON
       class Real
         # Get an object from Google Storage
+        # https://cloud.google.com/storage/docs/json_api/v1/objects/get
         #
         # ==== Parameters
         # * bucket_name<~String> - Name of bucket to read from
@@ -48,68 +49,48 @@ module Fog
           object.headers = object.body
           object.body = result.body.nil? || result.body.empty? ? nil : result.body
           object
-
-          # params = { :headers => {} }
-          # if version_id = options.delete("versionId")
-          #   params[:query] = { "versionId" => version_id }
-          # end
-          # params[:headers].merge!(options)
-          # if options["If-Modified-Since"]
-          #   params[:headers]["If-Modified-Since"] = Fog::Time.at(options["If-Modified-Since"].to_i).to_date_header
-          # end
-          # if options["If-Modified-Since"]
-          #   params[:headers]["If-Unmodified-Since"] = Fog::Time.at(options["If-Unmodified-Since"].to_i).to_date_header
-          # end
-
-          # params[:response_block] = Proc.new if block_given?
-
-          # request(params.merge!(:expects        => 200,
-          #                       :host           => "#{bucket_name}.#{@host}",
-          #                       :idempotent     => true,
-          #                       :method         => "GET",
-          #                       :path           => CGI.escape(object_name)))
         end
       end
 
       class Mock
         def get_object(bucket_name, object_name, options = {}, &block)
-          # raise ArgumentError.new("bucket_name is required") unless bucket_name
-          # raise ArgumentError.new("object_name is required") unless object_name
-          # response = Excon::Response.new
-          # if (bucket = data[:buckets][bucket_name]) && (object = bucket[:objects][object_name])
-          #   if options["If-Match"] && options["If-Match"] != object["ETag"]
-          #     response.status = 412
-          #   elsif options["If-Modified-Since"] && options["If-Modified-Since"] >= Time.parse(object["Last-Modified"])
-          #     response.status = 304
-          #   elsif options["If-None-Match"] && options["If-None-Match"] == object["ETag"]
-          #     response.status = 304
-          #   elsif options["If-Unmodified-Since"] && options["If-Unmodified-Since"] < Time.parse(object["Last-Modified"])
-          #     response.status = 412
-          #   else
-          #     response.status = 200
-          #     for key, value in object
-          #       case key
-          #       when "Cache-Control", "Content-Disposition", "Content-Encoding", "Content-Length", "Content-MD5", "Content-Type", "ETag", "Expires", "Last-Modified", /^x-goog-meta-/
-          #         response.headers[key] = value
-          #       end
-          #     end
-          #     unless block_given?
-          #       response.body = object[:body]
-          #     else
-          #       data = StringIO.new(object[:body])
-          #       remaining = data.length
-          #       while remaining > 0
-          #         chunk = data.read([remaining, Excon::CHUNK_SIZE].min)
-          #         block.call(chunk)
-          #         remaining -= Excon::CHUNK_SIZE
-          #       end
-          #     end
-          #   end
-          # else
-          #   response.status = 404
-          #   raise(Excon::Errors.status_error({ :expects => 200 }, response))
-          # end
-          # response
+          raise ArgumentError.new("bucket_name is required") unless bucket_name
+          raise ArgumentError.new("object_name is required") unless object_name
+          response = Excon::Response.new
+          if (bucket = data[:buckets][bucket_name]) && (object = bucket[:objects][object_name])
+            if options["If-Match"] && options["If-Match"] != object["ETag"]
+              response.status = 412
+            elsif options["If-Modified-Since"] && options["If-Modified-Since"] >= Time.parse(object["Last-Modified"])
+              response.status = 304
+            elsif options["If-None-Match"] && options["If-None-Match"] == object["ETag"]
+              response.status = 304
+            elsif options["If-Unmodified-Since"] && options["If-Unmodified-Since"] < Time.parse(object["Last-Modified"])
+              response.status = 412
+            else
+              response.status = 200
+              for key, value in object
+                case key
+                when "Cache-Control", "Content-Disposition", "Content-Encoding", "Content-Length", "Content-MD5", "Content-Type", "ETag", "Expires", "Last-Modified", /^x-goog-meta-/
+                  response.headers[key] = value
+                end
+              end
+              unless block_given?
+                response.body = object[:body]
+              else
+                data = StringIO.new(object[:body])
+                remaining = data.length
+                while remaining > 0
+                  chunk = data.read([remaining, Excon::CHUNK_SIZE].min)
+                  block.call(chunk)
+                  remaining -= Excon::CHUNK_SIZE
+                end
+              end
+            end
+          else
+            response.status = 404
+            raise(Excon::Errors.status_error({ :expects => 200 }, response))
+          end
+          response
         end
       end
     end
