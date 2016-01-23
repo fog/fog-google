@@ -9,6 +9,13 @@ module Fog
 
       class Real
         # Change access control list for an Google Storage bucket
+        # https://cloud.google.com/storage/docs/json_api/v1/bucketAccessControls/insert
+        #
+        # ==== Parameters
+        # * bucket_name<~String> - name of bucket to create
+        # * acl<~Hash> - ACL hash to add to bucket, see GCS documentation above
+        #    * entity
+        #    * role
         def put_bucket_acl(bucket_name, acl)
           raise ArgumentError.new("bucket_name is required") unless bucket_name
           raise ArgumentError.new("acl is required") unless acl

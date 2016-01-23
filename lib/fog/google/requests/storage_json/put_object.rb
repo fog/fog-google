@@ -3,6 +3,7 @@ module Fog
     class GoogleJSON
       class Real
         # Create an object in an Google Storage bucket
+        # https://cloud.google.com/storage/docs/json_api/v1/objects/insert
         #
         # ==== Parameters
         # * bucket_name<~String> - Name of bucket to create object in

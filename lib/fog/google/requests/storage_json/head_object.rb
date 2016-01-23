@@ -3,6 +3,7 @@ module Fog
     class GoogleJSON
       class Real
         # Get headers for an object from Google Storage
+        # https://cloud.google.com/storage/docs/json_api/v1/objects/get
         #
         # ==== Parameters
         # * bucket_name<~String> - Name of bucket to read from

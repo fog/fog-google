@@ -5,6 +5,7 @@ module Fog
         require "fog/google/parsers/storage/access_control_list"
 
         # Get access control list for an Google Storage object
+        # https://cloud.google.com/storage/docs/json_api/v1/objectAccessControls/get
         #
         # ==== Parameters
         # * bucket_name<~String> - name of bucket containing object

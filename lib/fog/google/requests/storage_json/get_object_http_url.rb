@@ -27,7 +27,7 @@ module Fog
         #   * body<~String> - url for object
         #
         # ==== See Also
-        # http://docs.amazonwebservices.com/AmazonS3/latest/dev/S3_QSAuth.html
+        # https://cloud.google.com/storage/docs/access-control#Signed-URLs
 
         include GetObjectHttpUrl
       end
