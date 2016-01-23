@@ -18,7 +18,6 @@ module Fog
 
         model Fog::Storage::GoogleJSON::File
 
-        # TODO: Verify, probably doesn't work
         def all(options = {})
           requires :directory
           options = {
@@ -34,24 +33,11 @@ module Fog
             options
           )
           if parent
-            # pp parent.files
             merge_attributes(parent.files.attributes)
             load(parent.files.map(&:attributes))
           end
-          # result = service.list_objects(
-          #   directory.key,
-          #   options
-          # )
-          # pp result
-          # if result
-          #   files = result[:body]["items"]
-          #   pp files
-          #   merge_attributes(files.attributes)
-          #   load(files.map(&:attributes))
-          # end
         end
 
-        # TODO: Verify
         alias_method :each_file_this_page, :each
         def each
           if !block_given?
