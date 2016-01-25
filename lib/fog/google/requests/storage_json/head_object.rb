@@ -3,6 +3,7 @@ module Fog
     class GoogleJSON
       class Real
         # Get headers for an object from Google Storage
+        # https://cloud.google.com/storage/docs/json_api/v1/objects/get
         #
         # ==== Parameters
         # * bucket_name<~String> - Name of bucket to read from
@@ -38,20 +39,6 @@ module Fog
           object.headers = object.body
           object.body = nil
           object
-
-          # if version_id = options.delete("versionId")
-          #   query = { "versionId" => version_id }
-          # end
-          # headers = {}
-          # headers["If-Modified-Since"] = Fog::Time.at(options["If-Modified-Since"].to_i).to_date_header if options["If-Modified-Since"]
-          # headers["If-Unmodified-Since"] = Fog::Time.at(options["If-Unmodified-Since"].to_i).to_date_header if options["If-Modified-Since"]
-          # headers.merge!(options)
-          # request(:expects  => 200,
-          #         :headers  => headers,
-          #         :host     => "#{bucket_name}.#{@host}",
-          #         :method   => "HEAD",
-          #         :path     => CGI.escape(object_name),
-          #         :query    => query)
         end
       end
 

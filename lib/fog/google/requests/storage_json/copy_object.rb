@@ -5,6 +5,7 @@ module Fog
         require "fog/google/parsers/storage/copy_object"
 
         # Copy an object from one Google Storage bucket to another
+        # https://cloud.google.com/storage/docs/json_api/v1/objects/copy
         #
         # ==== Parameters
         # * source_bucket_name<~String> - Name of source bucket

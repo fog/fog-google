@@ -5,6 +5,7 @@ module Fog
         require "fog/google/parsers/storage/access_control_list"
 
         # Get access control list for an Google Storage bucket
+        # https://cloud.google.com/storage/docs/json_api/v1/bucketAccessControls/list
         #
         # ==== Parameters
         # * bucket_name<~String> - name of bucket to get access control list for
@@ -34,13 +35,6 @@ module Fog
           }
 
           request(api_method, parameters)
-          # request(:expects    => 200,
-          #         :headers    => {},
-          #         :host       => "#{bucket_name}.#{@host}",
-          #         :idempotent => true,
-          #         :method     => "GET",
-          #         :parser     => Fog::Parsers::Storage::Google::AccessControlList.new,
-          #         :query      => { "acl" => nil })
         end
       end
 

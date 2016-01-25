@@ -3,6 +3,7 @@ module Fog
     class GoogleJSON
       class Real
         # Create an object in an Google Storage bucket
+        # https://cloud.google.com/storage/docs/json_api/v1/objects/insert
         #
         # ==== Parameters
         # * bucket_name<~String> - Name of bucket to create object in
@@ -41,25 +42,24 @@ module Fog
           }
 
           body_object = {
-            contentType: mime_type,
-            contentEncoding: options["contentEncoding"],
+            :contentType => mime_type,
+            :contentEncoding => options["contentEncoding"],
           }
           body_object.merge! options
 
           acl = []
           case options["predefinedAcl"]
           when "publicRead"
-            acl.push({'entity' => 'allUsers', 'role' => 'READER'})
+            acl.push({ "entity" => "allUsers", "role" => "READER" })
           when "publicReadWrite"
-            acl.push({'entity' => 'allUsers', 'role' => 'OWNER'})
+            acl.push({ "entity" => "allUsers", "role" => "OWNER" })
           when "authenticatedRead"
-            acl.push({'entity' => 'allAuthenticatedUsers', 'role' => 'READER'})
+            acl.push({ "entity" => "allAuthenticatedUsers", "role" => "READER" })
           end
 
-          if not acl.empty?
+          unless acl.empty?
             body_object[:acl] = acl
           end
-
 
           request(api_method, parameters, body_object = body_object, media = media)
         end

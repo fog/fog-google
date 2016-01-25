@@ -13,6 +13,9 @@ module Fog
         # * response<~Excon::Response>:
         #   * body<~String> - url for object
         #
+        # ==== See Also
+        # https://cloud.google.com/storage/docs/access-control#Signed-URLs
+        #
         def put_object_url(bucket_name, object_name, headers = {})
           raise ArgumentError.new("bucket_name is required") unless bucket_name
           raise ArgumentError.new("object_name is required") unless object_name
