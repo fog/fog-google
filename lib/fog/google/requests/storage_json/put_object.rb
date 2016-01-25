@@ -23,7 +23,9 @@ module Fog
         #   * headers<~Hash>:
         #     * 'ETag'<~String> - etag of new object
         def put_object(bucket_name, object_name, data, options = {})
-          if data.is_a? String
+          if options["contentType"]
+            mime_type = options["contentType"]
+          elsif data.is_a? String
             data = StringIO.new(data)
             mime_type = "text/plain"
           elsif data.is_a? File
@@ -37,11 +39,27 @@ module Fog
             "bucket" => bucket_name,
             "name" => object_name
           }
-          parameters.merge! options
 
           body_object = {
-            :contentType => mime_type
+            contentType: mime_type,
+            contentEncoding: options["contentEncoding"],
           }
+          body_object.merge! options
+
+          acl = []
+          case options["predefinedAcl"]
+          when "publicRead"
+            acl.push({'entity' => 'allUsers', 'role' => 'READER'})
+          when "publicReadWrite"
+            acl.push({'entity' => 'allUsers', 'role' => 'OWNER'})
+          when "authenticatedRead"
+            acl.push({'entity' => 'allAuthenticatedUsers', 'role' => 'READER'})
+          end
+
+          if not acl.empty?
+            body_object[:acl] = acl
+          end
+
 
           request(api_method, parameters, body_object = body_object, media = media)
         end
