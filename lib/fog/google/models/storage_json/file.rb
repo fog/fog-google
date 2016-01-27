@@ -68,11 +68,10 @@ module Fog
         # TODO: Verify
         def destroy
           requires :directory, :key
-          begin
-            service.delete_object(directory.key, key)
-          rescue Excon::Errors::NotFound
-          end
+          service.delete_object(directory.key, key)
           true
+        rescue Excon::Errors::NotFound
+          false
         end
 
         # TODO: Verify
