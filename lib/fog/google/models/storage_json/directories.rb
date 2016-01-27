@@ -18,16 +18,7 @@ module Fog
                                                 :max_keys   => "max-keys",
                                                 :prefix     => "prefix")
           data = service.get_bucket(key, options).body
-          directory = new(:key => data["name"])
-          # options = {}
-          # for k, v in data
-          #   if %w(commonPrefixes delimiter IsTruncated Marker MaxKeys Prefix).include?(k)
-          #     options[k] = v
-          #   end
-          # end
-          # directory.files.merge_attributes(options)
-          # directory.files.load(data["contents"])
-          directory
+          new(:key => data["name"])
         rescue Excon::Errors::NotFound
           nil
         end
