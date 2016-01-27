@@ -58,8 +58,8 @@ module Fog
           requires :directory
           data = service.get_object(directory.key, key, options, &block)
           file_data = {}
-          data.headers.each do |key, value|
-            file_data[key] = value
+          data.headers.each do |k, v|
+            file_data[k] = v
           end
           file_data.merge!(:body => data.body,
                            :key  => key)
