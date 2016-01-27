@@ -36,6 +36,7 @@ module Fog
           @predefined_acl = new_acl
         end
 
+        # TODO: Implement object ACLs
         # def acl=(new_acl)
         #   valid_acls = ["private", "projectPrivate", "bucketOwnerFullControl", "bucketOwnerRead", "authenticatedRead", "publicRead"]
         #   unless valid_acls.include?(new_acl)
