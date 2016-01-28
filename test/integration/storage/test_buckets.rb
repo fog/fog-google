@@ -10,9 +10,6 @@ class TestBuckets < FogIntegrationTest
   end
 
   def setup
-    # Uncomment this if you want to make real requests to GCE (you _will_ be billed!)
-    # WebMock.disable!
-
     @connection = @@connection
   end
 
