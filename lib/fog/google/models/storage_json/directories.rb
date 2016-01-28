@@ -7,10 +7,11 @@ module Fog
       class Directories < Fog::Collection
         model Fog::Storage::GoogleJSON::Directory
 
-        def all
-          data = service.get_service.body["items"]
-          load(data)
-        end
+        # TODO get_service does not return items like this
+        # def all
+        #   data = service.get_service.body["items"]
+        #   load(data)
+        # end
 
         def get(key, options = {})
           remap_attributes(options,             :delimiter  => "delimiter",
