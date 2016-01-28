@@ -4,6 +4,8 @@ module Fog
       class Real
         require "fog/google/parsers/storage/get_service"
 
+        # TODO: Implement in JSON API
+
         # List information about Google Storage buckets for authorized user
         #
         # ==== Returns

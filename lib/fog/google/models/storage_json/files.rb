@@ -11,7 +11,6 @@ module Fog
         attribute :common_prefixes, :aliases => "CommonPrefixes"
         attribute :delimiter,       :aliases => "Delimiter"
         attribute :directory
-        # attribute :is_truncated,    :aliases => "IsTruncated"
         attribute :page_token,      :aliases => %w(pageToken page_token)
         attribute :max_results,     :aliases => ["MaxKeys", "max-keys"]
         attribute :prefix,          :aliases => "Prefix"
@@ -59,8 +58,8 @@ module Fog
           requires :directory
           data = service.get_object(directory.key, key, options, &block)
           file_data = {}
-          data.headers.each do |key, value|
-            file_data[key] = value
+          data.headers.each do |k, v|
+            file_data[k] = v
           end
           file_data.merge!(:body => data.body,
                            :key  => key)

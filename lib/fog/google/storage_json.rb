@@ -74,7 +74,7 @@ module Fog
         include Utils
         include Fog::Google::Shared
 
-        def initialize(options)
+        def initialize(options = {})
           shared_initialize(options[:google_project], GOOGLE_STORAGE_JSON_API_VERSION, GOOGLE_STORAGE_JSON_BASE_URL)
         end
 
@@ -90,7 +90,7 @@ module Fog
         attr_accessor :client
         attr_reader :storage_json
 
-        def initialize(options)
+        def initialize(options = {})
           shared_initialize(options[:google_project], GOOGLE_STORAGE_JSON_API_VERSION, GOOGLE_STORAGE_JSON_BASE_URL)
           options.merge!(:google_api_scope_url => GOOGLE_STORAGE_JSON_API_SCOPE_URLS.join(" "))
           @host = options[:host] || "storage.googleapis.com"

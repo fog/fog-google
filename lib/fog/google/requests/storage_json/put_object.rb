@@ -26,6 +26,9 @@ module Fog
         def put_object(bucket_name, object_name, data, options = {})
           if options["contentType"]
             mime_type = options["contentType"]
+            if data.is_a? String
+              data = StringIO.new(data)
+            end
           elsif data.is_a? String
             data = StringIO.new(data)
             mime_type = "text/plain"

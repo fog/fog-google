@@ -6,7 +6,6 @@ module Fog
       class File < Fog::Model
         identity :key, :aliases => "Key"
 
-        # TODO: Verify
         attribute :acl
         attribute :predefined_acl
         attribute :cache_control,       :aliases => "cacheControl"
@@ -36,6 +35,7 @@ module Fog
           @predefined_acl = new_acl
         end
 
+        # TODO: Implement object ACLs
         # def acl=(new_acl)
         #   valid_acls = ["private", "projectPrivate", "bucketOwnerFullControl", "bucketOwnerRead", "authenticatedRead", "publicRead"]
         #   unless valid_acls.include?(new_acl)
@@ -44,19 +44,16 @@ module Fog
         #   @acl = new_acl
         # end
 
-        # TODO: Verify
         def body
           attributes[:body] ||= last_modified && (file = collection.get(identity)) ? file.body : ""
         end
 
-        # TODO: Verify
         def body=(new_body)
           attributes[:body] = new_body
         end
 
         attr_reader :directory
 
-        # TODO: Verify
         def copy(target_directory_key, target_file_key)
           requires :directory, :key
           service.copy_object(directory.key, key, target_directory_key, target_file_key)
@@ -64,23 +61,23 @@ module Fog
           target_directory.files.get(target_file_key)
         end
 
-        # TODO: Verify
         def destroy
           requires :directory, :key
-          begin
-            service.delete_object(directory.key, key)
-          rescue Excon::Errors::NotFound
-          end
+          service.delete_object(directory.key, key)
           true
+        rescue Excon::Errors::NotFound
+          false
         end
 
-        # TODO: Verify
         remove_method :metadata=
         def metadata=(new_metadata)
-          metadata.merge!(new_metadata)
+          if attributes[:metadata].nil?
+            attributes[:metadata] = {}
+          end
+          attributes[:metadata].merge!(new_metadata)
         end
 
-        # TODO: Verify
+        # TODO: Not functional
         remove_method :owner=
         def owner=(new_owner)
           if new_owner
@@ -91,7 +88,6 @@ module Fog
           end
         end
 
-        # TODO: Verify
         def public=(new_public)
           if new_public
             @predefined_acl = "publicRead"
@@ -101,7 +97,6 @@ module Fog
           new_public
         end
 
-        # TODO: Verify
         def public_url
           requires :directory, :key
 
@@ -117,7 +112,6 @@ module Fog
           end
         end
 
-        # TODO: Verify
         def save(options = {})
           requires :body, :directory, :key
           if options != {}
@@ -129,8 +123,9 @@ module Fog
           options["cacheControl"] = cache_control if cache_control
           options["contentDisposition"] = content_disposition if content_disposition
           options["contentEncoding"] = content_encoding if content_encoding
-          options["md5Hash"] = content_md5 if content_md5
-          options["crc32c"] = crc32c if crc32c
+          # TODO: Should these hashes be recomputed on changes to file contents?
+          # options["md5Hash"] = content_md5 if content_md5
+          # options["crc32c"] = crc32c if crc32c
           options["metadata"] = metadata
 
           data = service.put_object(directory.key, key, body, options)

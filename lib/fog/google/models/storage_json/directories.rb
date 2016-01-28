@@ -7,10 +7,11 @@ module Fog
       class Directories < Fog::Collection
         model Fog::Storage::GoogleJSON::Directory
 
-        def all
-          data = service.get_service.body["items"]
-          load(data)
-        end
+        # TODO get_service does not return items like this
+        # def all
+        #   data = service.get_service.body["items"]
+        #   load(data)
+        # end
 
         def get(key, options = {})
           remap_attributes(options,             :delimiter  => "delimiter",
@@ -18,16 +19,7 @@ module Fog
                                                 :max_keys   => "max-keys",
                                                 :prefix     => "prefix")
           data = service.get_bucket(key, options).body
-          directory = new(:key => data["name"])
-          # options = {}
-          # for k, v in data
-          #   if %w(commonPrefixes delimiter IsTruncated Marker MaxKeys Prefix).include?(k)
-          #     options[k] = v
-          #   end
-          # end
-          # directory.files.merge_attributes(options)
-          # directory.files.load(data["contents"])
-          directory
+          new(:key => data["name"])
         rescue Excon::Errors::NotFound
           nil
         end
