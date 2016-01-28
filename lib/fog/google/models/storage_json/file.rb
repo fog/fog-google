@@ -70,10 +70,12 @@ module Fog
           false
         end
 
-        # TODO: Verify
         remove_method :metadata=
         def metadata=(new_metadata)
-          metadata.merge!(new_metadata)
+          if attributes[:metadata].nil?
+            attributes[:metadata] = {}
+          end
+          attributes[:metadata].merge!(new_metadata)
         end
 
         # TODO: Verify
