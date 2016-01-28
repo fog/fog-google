@@ -6,7 +6,6 @@ module Fog
       class File < Fog::Model
         identity :key, :aliases => "Key"
 
-        # TODO: Verify
         attribute :acl
         attribute :predefined_acl
         attribute :cache_control,       :aliases => "cacheControl"
@@ -78,7 +77,7 @@ module Fog
           attributes[:metadata].merge!(new_metadata)
         end
 
-        # TODO: Verify
+        # TODO: Not functional
         remove_method :owner=
         def owner=(new_owner)
           if new_owner
