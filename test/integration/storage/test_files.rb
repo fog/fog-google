@@ -4,18 +4,18 @@ class TestFiles < FogIntegrationTest
   begin
     client_email = Fog.credentials[:google_client_email]
     @@connection = Fog::Storage::Google.new
-    @@connection.put_bucket("fog-smoke-test", options = { "acl" => [{ :entity => "user-" + client_email, :role => "OWNER" }] })
+    @@connection.put_bucket("fog-smoke-test", "acl" => [{ :entity => "user-" + client_email, :role => "OWNER" }])
     @@connection.put_bucket_acl("fog-smoke-test", :entity => "allUsers", :role => "READER")
-  rescue Exception => e
+  rescue StandardError => e
     puts e
     puts e.backtrace
   end
 
   begin
-    @@directory = @@connection.directories.get("fog-smoke-test")
+    @directory = @@connection.directories.get("fog-smoke-test")
     @@connection.put_object("fog-smoke-test", "fog-testfile", "THISISATESTFILE")
-    @@file = @@directory.files.get("fog-testfile")
-  rescue Exception => e
+    @file = @directory.files.get("fog-testfile")
+  rescue StandardError => e
     puts e
     puts e.backtrace
   end
@@ -25,15 +25,13 @@ class TestFiles < FogIntegrationTest
       @connection = Fog::Storage::Google.new
       @connection.delete_object("fog-smoke-test", "fog-testfile")
       @connection.delete_bucket("fog-smoke-test")
-    rescue Exception => e
+    rescue StandardError => e
       puts e
     end
   end
 
   def setup
     @connection = @@connection
-    @directory = @@directory
-    @file = @@file
   end
 
   def test_all_files
@@ -52,9 +50,9 @@ class TestFiles < FogIntegrationTest
 
   def test_get_https_url
     https_url = @directory.files.get_https_url("fog-testfile", 1000)
-    assert_match /https/, https_url
-    assert_match /fog-smoke-test/, https_url
-    assert_match /fog-testfile/, https_url
+    assert_match(/https/, https_url)
+    assert_match(/fog-smoke-test/, https_url)
+    assert_match(/fog-testfile/, https_url)
   end
 
   def test_head
