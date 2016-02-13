@@ -1,6 +1,6 @@
 module Fog
   module Storage
-    class GoogleXML
+    class GoogleJSON
       module GetObjectHttpUrl
         def get_object_http_url(bucket_name, object_name, expires)
           raise ArgumentError.new("bucket_name is required") unless bucket_name
@@ -27,7 +27,7 @@ module Fog
         #   * body<~String> - url for object
         #
         # ==== See Also
-        # http://docs.amazonwebservices.com/AmazonS3/latest/dev/S3_QSAuth.html
+        # https://cloud.google.com/storage/docs/access-control#Signed-URLs
 
         include GetObjectHttpUrl
       end

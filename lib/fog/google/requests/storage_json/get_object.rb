@@ -1,8 +1,9 @@
 module Fog
   module Storage
-    class GoogleXML
+    class GoogleJSON
       class Real
         # Get an object from Google Storage
+        # https://cloud.google.com/storage/docs/json_api/v1/objects/get
         #
         # ==== Parameters
         # * bucket_name<~String> - Name of bucket to read from
@@ -24,29 +25,30 @@ module Fog
         #     * 'ETag'<~String> - Etag of object
         #     * 'Last-Modified'<~String> - Last modified timestamp for object
         #
-        def get_object(bucket_name, object_name, options = {}, &_block)
+        def get_object(bucket_name, object_name, _options = {}, &_block)
           raise ArgumentError.new("bucket_name is required") unless bucket_name
           raise ArgumentError.new("object_name is required") unless object_name
 
-          params = { :headers => {} }
-          if version_id = options.delete("versionId")
-            params[:query] = { "versionId" => version_id }
-          end
-          params[:headers].merge!(options)
-          if options["If-Modified-Since"]
-            params[:headers]["If-Modified-Since"] = Fog::Time.at(options["If-Modified-Since"].to_i).to_date_header
-          end
-          if options["If-Modified-Since"]
-            params[:headers]["If-Unmodified-Since"] = Fog::Time.at(options["If-Unmodified-Since"].to_i).to_date_header
-          end
+          api_method = @storage_json.objects.get
+          parameters = {
+            "bucket" => bucket_name,
+            "object" => object_name,
+            "projection" => "full"
+          }
 
-          params[:response_block] = Proc.new if block_given?
+          object = request(api_method, parameters)
 
-          request(params.merge!(:expects        => 200,
-                                :host           => "#{bucket_name}.#{@host}",
-                                :idempotent     => true,
-                                :method         => "GET",
-                                :path           => CGI.escape(object_name)))
+          # Get the body of the object (can't use request for this)
+          parameters["alt"] = "media"
+          client_parms = {
+            :api_method => api_method,
+            :parameters => parameters
+          }
+
+          result = @client.execute(client_parms)
+          object.headers = object.body
+          object.body = result.body.nil? || result.body.empty? ? nil : result.body
+          object
         end
       end
 

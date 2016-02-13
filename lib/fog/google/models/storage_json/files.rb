@@ -1,9 +1,9 @@
 require "fog/core/collection"
-require "fog/google/models/storage/file"
+require "fog/google/models/storage_json/file"
 
 module Fog
   module Storage
-    class GoogleXML
+    class GoogleJSON
       class Files < Fog::Collection
         extend Fog::Deprecation
         deprecate :get_url, :get_https_url
@@ -11,19 +11,18 @@ module Fog
         attribute :common_prefixes, :aliases => "CommonPrefixes"
         attribute :delimiter,       :aliases => "Delimiter"
         attribute :directory
-        attribute :is_truncated,    :aliases => "IsTruncated"
-        attribute :marker,          :aliases => "Marker"
-        attribute :max_keys,        :aliases => ["MaxKeys", "max-keys"]
+        attribute :page_token,      :aliases => %w(pageToken page_token)
+        attribute :max_results,     :aliases => ["MaxKeys", "max-keys"]
         attribute :prefix,          :aliases => "Prefix"
 
-        model Fog::Storage::GoogleXML::File
+        model Fog::Storage::GoogleJSON::File
 
         def all(options = {})
           requires :directory
           options = {
             "delimiter"   => delimiter,
-            "marker"      => marker,
-            "max-keys"    => max_keys,
+            "pageToken"   => page_token,
+            "maxResults"  => max_results,
             "prefix"      => prefix
           }.merge!(options)
           options = options.reject { |_key, value| value.nil? || value.to_s.empty? }
@@ -67,11 +66,6 @@ module Fog
           new(file_data)
         rescue Excon::Errors::NotFound
           nil
-        end
-
-        def get_http_url(key, expires)
-          requires :directory
-          service.get_object_http_url(directory.key, key, expires)
         end
 
         def get_https_url(key, expires)

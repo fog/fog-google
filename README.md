@@ -2,42 +2,44 @@
 
 [![Gem Version](https://badge.fury.io/rb/fog-google.svg)](http://badge.fury.io/rb/fog-google) [![Build Status](https://travis-ci.org/fog/fog-google.svg?branch=master)](https://travis-ci.org/fog/fog-google) [![Dependency Status](https://gemnasium.com/fog/fog-google.svg)](https://gemnasium.com/fog/fog-google) [![Coverage Status](https://img.shields.io/coveralls/fog/fog-google.svg)](https://coveralls.io/r/fog/fog-google) [![Code Climate](https://codeclimate.com/github/fog/fog-google.png)](https://codeclimate.com/github/fog/fog-google) [![Stories in Ready](https://badge.waffle.io/fog/fog-google.png?label=ready&title=Ready)](https://waffle.io/fog/fog-google)
 
-Fog currently supports two Google Cloud services: [Google Compute Engine](https://developers.google.com/compute/) and [Google Cloud Storage](https://developers.google.com/storage/). The main maintainer for the Google sections is @icco.
+The main maintainers for the Google sections are @icco, @Temikus and @plribeiro3000. Please send pull requests to them.
 
 As of https://github.com/fog/fog-google/pull/68, Google no longer supports Ruby versions less than 2.0.0.
 
 ## Storage
 
-Google Cloud Storage originally was very similar to Amazon's S3. Because of this, Fog implements the [XML GCS API](https://developers.google.com/storage/docs/xml-api-overview). We eventually want to move to the new [JSON API](https://developers.google.com/storage/docs/json_api/), once it has similar performance characteristics to the XML API. If this migration interests you, send us a pull request!
+There are two ways to access [Google Cloud Storage](https://cloud.google.com/storage/). The old S3 API and the new JSON API. `Fog::Storage::Google` will automatically direct you to the appropriate API based on the credentials you provide it.
+
+ * The [XML API](https://developers.google.com/storage/docs/xml-api-overview) is almost identical to S3. Use [Google's interoperability keys](https://cloud.google.com/storage/docs/migrating#keys) to access it.
+ * The new [JSON API](https://developers.google.com/storage/docs/json_api/) is faster and uses auth similarly to the rest of the Google Cloud APIs using a [service account private key](https://developers.google.com/identity/protocols/OAuth2ServiceAccount).
 
 ## Compute
 
 Google Compute Engine is a Virtual Machine hosting service. Currently it is built on version [v1](https://developers.google.com/compute/docs/reference/v1/) of the GCE API.
 
-Our implementation of the API currently supports
-
- * Server creation, deletion and bootstrapping
- * Persistent Disk creation and deletion
- * Image lookup
- * Network and Firewall configuration
- * Operations
- * Snapshots
- * Instance Metadata
- * Project Metadata
-
-Features we are looking forward to implementing in the future:
-
- * Image creation
- * Load balancer configuration
+As of 2015-12-07, we believe Fog for Google Compute engine (`Fog::Compute::Google`) is feature complete.
 
 If you are using Fog to interact with GCE, please keep Fog up to date and [file issues](https://github.com/fog/fog-google/issues) for any anomalies you see or features you would like.
 
+## SQL
+
+Fog implements [v1beta3](https://cloud.google.com/sql/docs/admin-api/v1beta3/) of the Google Cloud SQL Admin API. This is a currently deprecated API. Pull Requests for updates would be greatly appreciated.
+
+## DNS
+
+Fog implements [v1](https://cloud.google.com/dns/api/v1/) of the Google Cloud DNS API. We are always looking for people to improve our code and test coverage, so please [file issues](https://github.com/fog/fog-google/issues) for any anomalies you see or features you would like.
+
+## Monitoring
+
+Fog implements [v2beta1](https://cloud.google.com/monitoring/v2beta2/) of the Google Cloud Monitoring API. This is a currently deprecated version of the API. Pull requests for updates would be greatly appreciated.
+
 ## Installation
 
-Add this line to your application's Gemfile:
+Add the following two lines to your application's `Gemfile`:
 
 ```ruby
 gem 'fog-google'
+gem 'google-api-client', '< 0.9', '>= 0.6.2'
 ```
 
 And then execute:
@@ -64,6 +66,17 @@ my_credential:
     google_client_email: xxxxxxxxxxxx-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx@developer.gserviceaccount.com
     google_json_key_location: /path/to/my-project-xxxxxxxxxxxx.json
 ```
+
+You can also provide service account credentials with `google_json_key_string` or with `google_key_location` and `google_key_string` for P12 private keys.
+
+HMAC credentials follow a similar format:
+
+```
+my_credentials:
+	google_storage_access_key_id: GOOGXXXXXXXXXXXXXXXX
+	google_storage_secret_access_key: XXXX+XXX/XXXXXXXX+XXXXXXXXXXXXXXXXXXXXX
+```	
+
 
 #### SSH-ing into instances
 

@@ -10,6 +10,8 @@ module Google # deviates from other bin stuff to accomodate gem
         Fog::Google::Monitoring
       when :storage
         Fog::Storage::Google
+      when :storage_json
+        Fog::Storage::Google
       when :sql
         Fog::Google::SQL
       else

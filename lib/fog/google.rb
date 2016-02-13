@@ -22,11 +22,11 @@ module Fog
 
     extend Fog::Provider
 
-    service(:compute,    "Compute")
-    service(:dns,        "DNS")
+    service(:compute, "Compute")
+    service(:dns, "DNS")
     service(:monitoring, "Monitoring")
-    service(:storage,    "Storage")
-    service(:sql,        "SQL")
+    service(:storage, "Storage")
+    service(:sql, "SQL")
 
     # CGI.escape, but without special treatment on spaces
     def self.escape(str, extra_exclude_chars = "")
@@ -186,7 +186,7 @@ module Fog
       # @param [Hash] parameters The parameters to send to the method
       # @param [Hash] body_object The body object of the request
       # @return [Excon::Response] The result from the API
-      def request(api_method, parameters, body_object = nil)
+      def request(api_method, parameters, body_object = nil, media = nil)
         client_parms = {
           :api_method => api_method,
           :parameters => parameters
@@ -195,6 +195,7 @@ module Fog
         # XXX It may still balk if we have a nested object, e.g.:
         #   {:a_field => "string", :a_nested_field => { :an_empty_nested_field => nil } }
         client_parms[:body_object] = body_object.reject { |_k, v| v.nil? } if body_object
+        client_parms[:media] = media if media
 
         result = @client.execute(client_parms)
 

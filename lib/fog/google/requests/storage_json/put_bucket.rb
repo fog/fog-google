@@ -1,8 +1,9 @@
 module Fog
   module Storage
-    class GoogleXML
+    class GoogleJSON
       class Real
         # Create an Google Storage bucket
+        # https://cloud.google.com/storage/docs/json_api/v1/buckets/insert
         #
         # ==== Parameters
         # * bucket_name<~String> - name of bucket to create
@@ -14,31 +15,27 @@ module Fog
         # * response<~Excon::Response>:
         #   * status<~Integer> - 200
         def put_bucket(bucket_name, options = {})
-          location_constraint = options.delete("LocationConstraint")
-          storage_class = options.delete("StorageClass")
-          if location_constraint || storage_class
-            data = "<CreateBucketConfiguration>"
+          location = options["LocationConstraint"] if options["LocationConstraint"]
 
-            data += "<LocationConstraint>#{location_constraint}</LocationConstraint>" if location_constraint
-            data += "<StorageClass>#{storage_class}</StorageClass>" if storage_class
-            data += "</CreateBucketConfiguration>"
+          api_method = @storage_json.buckets.insert
+          parameters = {
+            "project" => @project,
+            "projection" => "full"
+          }
+          body_object = {
+            "name" => bucket_name,
+            "location" => location
+          }
+          parameters.merge! options
 
-          else
-            data = nil
-          end
-          request(:expects    => 200,
-                  :body       => data,
-                  :headers    => options,
-                  :idempotent => true,
-                  :host       => "#{bucket_name}.#{@host}",
-                  :method     => "PUT")
+          request(api_method, parameters, body_object = body_object)
         end
       end
 
       class Mock
         def put_bucket(bucket_name, options = {})
           acl = options["x-goog-acl"] || "private"
-          if !["private", "public-read", "public-read-write", "authenticated-read"].include?(acl)
+          if !%w(private publicRead publicReadWrite authenticatedRead).include?(acl)
             raise Excon::Errors::BadRequest.new("invalid x-goog-acl")
           else
             data[:acls][:bucket][bucket_name] = self.class.acls(options[acl])

@@ -1,7 +1,6 @@
-require "pp"
 module Fog
   module Storage
-    class GoogleXML
+    class GoogleJSON
       class Real
         require "fog/google/parsers/storage/get_bucket"
 
@@ -10,41 +9,32 @@ module Fog
         # ==== Parameters
         # * bucket_name<~String> - name of bucket to list object keys from
         # * options<~Hash> - config arguments for list.  Defaults to {}.
-        #   * 'delimiter'<~String> - causes keys with the same string between the prefix
-        #     value and the first occurence of delimiter to be rolled up
-        #   * 'marker'<~String> - limits object keys to only those that appear
-        #     lexicographically after its value.
-        #   * 'max-keys'<~Integer> - limits number of object keys returned
-        #   * 'prefix'<~String> - limits object keys to those beginning with its value.
+        #   * 'ifMetagenerationMatch'<~Long> - Makes the return of the bucket metadata
+        #     conditional on whether the bucket's current metageneration matches the
+        #     given value.
+        #   * 'ifMetagenerationNotMatch'<~Long> - Makes the return of the bucket
+        #     metadata conditional on whether the bucket's current metageneration does
+        #     not match the given value.
+        #   * 'projection'<~String> - Set of properties to return. Defaults to 'noAcl',
+        #     also accepts 'full'.
         #
         # ==== Returns
         # * response<~Excon::Response>:
         #   * body<~Hash>:
-        #     * 'Delimeter'<~String> - Delimiter specified for query
-        #     * 'IsTruncated'<~Boolean> - Whether or not the listing is truncated
-        #     * 'Marker'<~String> - Marker specified for query
-        #     * 'MaxKeys'<~Integer> - Maximum number of keys specified for query
-        #     * 'Name'<~String> - Name of the bucket
-        #     * 'Prefix'<~String> - Prefix specified for query
-        #     * 'CommonPrefixes'<~Array> - Array of strings for common prefixes
-        #     * 'Contents'<~Array>:
-        #       * 'ETag'<~String>: Etag of object
-        #       * 'Key'<~String>: Name of object
-        #       * 'LastModified'<~String>: Timestamp of last modification of object
-        #       * 'Owner'<~Hash>:
-        #         * 'DisplayName'<~String> - Display name of object owner
-        #         * 'ID'<~String> - Id of object owner
-        #       * 'Size'<~Integer> - Size of object
+        #     See Google documentation on Bucket resource:
+        #     https://cloud.google.com/storage/docs/json_api/v1/buckets#resource
         #
+
         def get_bucket(bucket_name, options = {})
           raise ArgumentError.new("bucket_name is required") unless bucket_name
-          request(:expects  => 200,
-                  :headers  => {},
-                  :host     => "#{bucket_name}.#{@host}",
-                  :idempotent => true,
-                  :method   => "GET",
-                  :parser   => Fog::Parsers::Storage::Google::GetBucket.new,
-                  :query    => options)
+
+          api_method = @storage_json.buckets.get
+          parameters = {
+            "bucket" => bucket_name
+          }
+          parameters.merge! options
+
+          request(api_method, parameters)
         end
       end
 

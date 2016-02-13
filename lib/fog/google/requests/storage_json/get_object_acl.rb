@@ -1,13 +1,17 @@
 module Fog
   module Storage
-    class GoogleXML
+    class GoogleJSON
       class Real
         require "fog/google/parsers/storage/access_control_list"
 
-        # Get access control list for an Google Storage bucket
+        # Get access control list for an Google Storage object
+        # https://cloud.google.com/storage/docs/json_api/v1/objectAccessControls/get
         #
         # ==== Parameters
-        # * bucket_name<~String> - name of bucket to get access control list for
+        # * bucket_name<~String> - name of bucket containing object
+        # * object_name<~String> - name of object to get access control list for
+        # * options<~Hash>:
+        #   * 'versionId'<~String> - specify a particular version to retrieve
         #
         # ==== Returns
         # * response<~Excon::Response>:
@@ -25,22 +29,24 @@ module Fog
         #              * 'URI'<~String> - URI of group to grant access for
         #           * 'Permission'<~String> - Permission, in [FULL_CONTROL, WRITE, WRITE_ACP, READ, READ_ACP]
         #
-        def get_bucket_acl(bucket_name)
+        def get_object_acl(bucket_name, object_name, _options = {})
           raise ArgumentError.new("bucket_name is required") unless bucket_name
-          request(:expects    => 200,
-                  :headers    => {},
-                  :host       => "#{bucket_name}.#{@host}",
-                  :idempotent => true,
-                  :method     => "GET",
-                  :parser     => Fog::Parsers::Storage::Google::AccessControlList.new,
-                  :query      => { "acl" => nil })
+          raise ArgumentError.new("object_name is required") unless object_name
+
+          api_method = @storage_json.object_access_controls.list
+          parameters = {
+            "bucket" => bucket_name,
+            "object" => object_name
+          }
+
+          request(api_method, parameters)
         end
       end
 
       class Mock
-        def get_bucket_acl(bucket_name)
+        def get_object_acl(bucket_name, object_name)
           response = Excon::Response.new
-          if acl = data[:acls][:bucket][bucket_name]
+          if acl = data[:acls][:object][bucket_name] && data[:acls][:object][bucket_name][object_name]
             response.status = 200
             response.body = acl
           else

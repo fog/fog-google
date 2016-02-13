@@ -1,8 +1,9 @@
 module Fog
   module Storage
-    class GoogleXML
+    class GoogleJSON
       class Real
         # Delete an object from Google Storage
+        # https://cloud.google.com/storage/docs/json_api/v1/objects/delete
         #
         # ==== Parameters
         # * bucket_name<~String> - Name of bucket containing object to delete
@@ -12,12 +13,13 @@ module Fog
         # * response<~Excon::Response>:
         #   * status<~Integer> - 204
         def delete_object(bucket_name, object_name)
-          request(:expects    => 204,
-                  :headers    => {},
-                  :host       => "#{bucket_name}.#{@host}",
-                  :idempotent => true,
-                  :method     => "DELETE",
-                  :path       => Fog::Google.escape(object_name))
+          api_method = @storage_json.objects.delete
+          parameters = {
+            "bucket" => bucket_name,
+            "object" => object_name
+          }
+
+          request(api_method, parameters)
         end
       end
 

@@ -1,8 +1,9 @@
 module Fog
   module Storage
-    class GoogleXML
+    class GoogleJSON
       class Real
         # Get headers for an object from Google Storage
+        # https://cloud.google.com/storage/docs/json_api/v1/objects/get
         #
         # ==== Parameters
         # * bucket_name<~String> - Name of bucket to read from
@@ -23,22 +24,21 @@ module Fog
         #     * 'Content-Type'<~String> - MIME type of object
         #     * 'ETag'<~String> - Etag of object
         #     * 'Last-Modified'<~String> - Last modified timestamp for object
-        def head_object(bucket_name, object_name, options = {})
+        def head_object(bucket_name, object_name, _options = {})
           raise ArgumentError.new("bucket_name is required") unless bucket_name
           raise ArgumentError.new("object_name is required") unless object_name
-          if version_id = options.delete("versionId")
-            query = { "versionId" => version_id }
-          end
-          headers = {}
-          headers["If-Modified-Since"] = Fog::Time.at(options["If-Modified-Since"].to_i).to_date_header if options["If-Modified-Since"]
-          headers["If-Unmodified-Since"] = Fog::Time.at(options["If-Unmodified-Since"].to_i).to_date_header if options["If-Modified-Since"]
-          headers.merge!(options)
-          request(:expects  => 200,
-                  :headers  => headers,
-                  :host     => "#{bucket_name}.#{@host}",
-                  :method   => "HEAD",
-                  :path     => CGI.escape(object_name),
-                  :query    => query)
+
+          api_method = @storage_json.objects.get
+          parameters = {
+            "bucket" => bucket_name,
+            "object" => object_name,
+            "projection" => "full"
+          }
+
+          object = request(api_method, parameters)
+          object.headers = object.body
+          object.body = nil
+          object
         end
       end
 
