@@ -25,9 +25,10 @@ Gem::Specification.new do |spec|
   spec.add_dependency "fog-core"
   spec.add_dependency "fog-json"
   spec.add_dependency "fog-xml"
+  spec.add_dependency "google-api-client", "< 0.9", ">= 0.6.2"
+
 
   # TODO: Upgrade to 0.9, which is not compatible.
-  spec.add_development_dependency "google-api-client", "< 0.9", ">= 0.6.2"
   spec.add_development_dependency "rake"
   spec.add_development_dependency "shindo"
   spec.add_development_dependency "minitest"
