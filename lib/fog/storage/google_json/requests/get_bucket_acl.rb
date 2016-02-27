@@ -1,10 +1,9 @@
 module Fog
   module Storage
-    class GoogleXML
+    class GoogleJSON
       class Real
-        require "fog/google/parsers/storage/access_control_list"
-
         # Get access control list for an Google Storage bucket
+        # https://cloud.google.com/storage/docs/json_api/v1/bucketAccessControls/list
         #
         # ==== Parameters
         # * bucket_name<~String> - name of bucket to get access control list for
@@ -27,13 +26,13 @@ module Fog
         #
         def get_bucket_acl(bucket_name)
           raise ArgumentError.new("bucket_name is required") unless bucket_name
-          request(:expects    => 200,
-                  :headers    => {},
-                  :host       => "#{bucket_name}.#{@host}",
-                  :idempotent => true,
-                  :method     => "GET",
-                  :parser     => Fog::Parsers::Storage::Google::AccessControlList.new,
-                  :query      => { "acl" => nil })
+
+          api_method = @storage_json.bucket_access_controls.list
+          parameters = {
+            "bucket" => bucket_name
+          }
+
+          request(api_method, parameters)
         end
       end
 

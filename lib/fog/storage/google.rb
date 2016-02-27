@@ -1,6 +1,3 @@
-require "fog/google/storage_xml"
-require "fog/google/storage_json"
-
 module Fog
   module Storage
     class Google < Fog::Service

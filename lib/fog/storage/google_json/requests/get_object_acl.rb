@@ -2,8 +2,6 @@ module Fog
   module Storage
     class GoogleJSON
       class Real
-        require "fog/google/parsers/storage/access_control_list"
-
         # Get access control list for an Google Storage object
         # https://cloud.google.com/storage/docs/json_api/v1/objectAccessControls/get
         #

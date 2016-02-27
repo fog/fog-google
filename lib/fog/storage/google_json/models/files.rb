@@ -1,6 +1,3 @@
-require "fog/core/collection"
-require "fog/google/models/storage_json/file"
-
 module Fog
   module Storage
     class GoogleJSON

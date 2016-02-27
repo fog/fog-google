@@ -2,8 +2,6 @@ module Fog
   module Storage
     class GoogleJSON
       class Real
-        require "fog/google/parsers/storage/get_bucket"
-
         # List information about objects in an Google Storage bucket
         #
         # ==== Parameters

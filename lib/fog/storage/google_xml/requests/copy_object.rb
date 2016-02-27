@@ -1,11 +1,8 @@
 module Fog
   module Storage
-    class GoogleJSON
+    class GoogleXML
       class Real
-        require "fog/google/parsers/storage/copy_object"
-
         # Copy an object from one Google Storage bucket to another
-        # https://cloud.google.com/storage/docs/json_api/v1/objects/copy
         #
         # ==== Parameters
         # * source_bucket_name<~String> - Name of source bucket
@@ -26,16 +23,13 @@ module Fog
         #     * 'LastModified'<~Time> - date object was last modified
         #
         def copy_object(source_bucket_name, source_object_name, target_bucket_name, target_object_name, options = {})
-          api_method = @storage_json.objects.copy
-          parameters = {
-            "sourceBucket" => source_bucket_name,
-            "sourceObject" => source_object_name,
-            "destinationBucket" => target_bucket_name,
-            "destinationObject" => target_object_name
-          }
-          parameters.merge! options
-
-          request(api_method, parameters)
+          headers = { "x-goog-copy-source" => "/#{source_bucket_name}/#{source_object_name}" }.merge(options)
+          request(:expects  => 200,
+                  :headers  => headers,
+                  :host     => "#{target_bucket_name}.#{@host}",
+                  :method   => "PUT",
+                  :parser   => Fog::Parsers::Storage::Google::CopyObject.new,
+                  :path     => Fog::Google.escape(target_object_name))
         end
       end
 
