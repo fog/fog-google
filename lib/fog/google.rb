@@ -230,7 +230,7 @@ module Fog
   end
 
   module DNS
-    autoload :Google, "fog/google/dns"
+    autoload :Google, File.expand_path("../dns/google", __FILE__)
   end
 
   module Storage

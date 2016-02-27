@@ -11,7 +11,7 @@ module Fog
 
       ##
       # MODELS
-      model_path "fog/google/models/dns"
+      model_path "fog/dns/google/models"
 
       # Zone
       model :zone
@@ -31,7 +31,7 @@ module Fog
 
       ##
       # REQUESTS
-      request_path "fog/google/requests/dns"
+      request_path "fog/dns/google/requests"
 
       # Zone
       request :create_managed_zone

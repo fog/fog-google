@@ -1,6 +1,3 @@
-require "fog/core/collection"
-require "fog/google/models/dns/record"
-
 module Fog
   module DNS
     class Google
