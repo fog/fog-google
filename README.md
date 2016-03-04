@@ -31,7 +31,9 @@ Fog implements [v1](https://cloud.google.com/dns/api/v1/) of the Google Cloud DN
 
 ## Monitoring
 
-Fog implements [v2beta1](https://cloud.google.com/monitoring/v2beta2/) of the Google Cloud Monitoring API. This is a currently deprecated version of the API. Pull requests for updates would be greatly appreciated.
+Fog implements [v2beta2](https://cloud.google.com/monitoring/v2beta2/) of the Google Cloud Monitoring API. As of 2016-03-15, we believe Fog for Google Cloud Monitoring is feature complete. We are always looking for people to improve our code and test coverage, so please [file issues](https://github.com/fog/fog-google/issues) for any anomalies you see or features you would like.
+
+ 
 
 ## Installation
 

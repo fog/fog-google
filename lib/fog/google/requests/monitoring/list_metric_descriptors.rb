@@ -5,7 +5,7 @@ module Fog
       # List metric descriptors that match the query. If the query is not set, then all of the metric descriptors
       # will be returned.
       #
-      # @see https://developers.google.com/cloud-monitoring/v2beta1/metricDescriptors/list
+      # @see https://cloud.google.com/monitoring/v2beta2/metricDescriptors/list
       class Real
         def list_metric_descriptors(options = {})
           api_method = @monitoring.metric_descriptors.list
