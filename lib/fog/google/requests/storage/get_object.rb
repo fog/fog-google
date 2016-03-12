@@ -42,7 +42,7 @@ module Fog
 
           params[:response_block] = Proc.new if block_given?
 
-          request(params.merge!(:expects        => 200,
+          request(params.merge!(:expects        => [200, 206],
                                 :host           => "#{bucket_name}.#{@host}",
                                 :idempotent     => true,
                                 :method         => "GET",
