@@ -1,17 +1,13 @@
-require "fog/core/collection"
-require "fog/google/models/storage_json/directory"
-
 module Fog
   module Storage
-    class GoogleJSON
+    class GoogleXML
       class Directories < Fog::Collection
-        model Fog::Storage::GoogleJSON::Directory
+        model Fog::Storage::GoogleXML::Directory
 
-        # TODO get_service does not return items like this
-        # def all
-        #   data = service.get_service.body["items"]
-        #   load(data)
-        # end
+        def all
+          data = service.get_service.body["Buckets"]
+          load(data)
+        end
 
         def get(key, options = {})
           remap_attributes(options,             :delimiter  => "delimiter",
@@ -19,7 +15,16 @@ module Fog
                                                 :max_keys   => "max-keys",
                                                 :prefix     => "prefix")
           data = service.get_bucket(key, options).body
-          new(:key => data["name"])
+          directory = new(:key => data["Name"])
+          options = {}
+          for k, v in data
+            if %w(CommonPrefixes Delimiter IsTruncated Marker MaxKeys Prefix).include?(k)
+              options[k] = v
+            end
+          end
+          directory.files.merge_attributes(options)
+          directory.files.load(data["Contents"])
+          directory
         rescue Excon::Errors::NotFound
           nil
         end

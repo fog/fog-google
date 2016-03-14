@@ -15,7 +15,7 @@ module Fog
 
       ##
       # Models
-      model_path "fog/google/models/storage_json"
+      model_path "fog/storage/google_json/models"
       collection :directories
       model :directory
       collection :files
@@ -23,7 +23,7 @@ module Fog
 
       ##
       # Requests
-      request_path "fog/google/requests/storage_json"
+      request_path "fog/storage/google_json/requests"
       request :copy_object
       request :delete_bucket
       request :delete_object

@@ -2,8 +2,6 @@ module Fog
   module Storage
     class GoogleXML
       class Real
-        require "fog/google/parsers/storage/get_service"
-
         # List information about Google Storage buckets for authorized user
         #
         # ==== Returns

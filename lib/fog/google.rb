@@ -233,7 +233,15 @@ module Fog
     autoload :Google, File.expand_path("../dns/google", __FILE__)
   end
 
+  module Parsers
+    module Storage
+      autoload :Google, File.expand_path("../parsers/storage/google", __FILE__)
+    end
+  end
+
   module Storage
-    autoload :Google, "fog/google/storage"
+    autoload :Google, File.expand_path("../storage/google", __FILE__)
+    autoload :GoogleJSON, File.expand_path("../storage/google_json", __FILE__)
+    autoload :GoogleXML, File.expand_path("../storage/google_xml", __FILE__)
   end
 end

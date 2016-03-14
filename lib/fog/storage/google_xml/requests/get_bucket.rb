@@ -3,8 +3,6 @@ module Fog
   module Storage
     class GoogleXML
       class Real
-        require "fog/google/parsers/storage/get_bucket"
-
         # List information about objects in an Google Storage bucket
         #
         # ==== Parameters
