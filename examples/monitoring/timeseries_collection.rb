@@ -1,4 +1,4 @@
-require 'fog'
+require "fog"
 
 def test
   connection = Fog::Google::Monitoring.new
