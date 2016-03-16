@@ -6,7 +6,7 @@ module Fog
       ##
       # A metricDescriptor defines the name, label keys, and data type of a particular metric.
       #
-      # @see https://developers.google.com/cloud-monitoring/v2beta1/metricDescriptors
+      # @see https://cloud.google.com/monitoring/v2beta2/metricDescriptors#resource
       class MetricDescriptor < Fog::Model
         identity :name
 

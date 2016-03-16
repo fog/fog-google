@@ -5,9 +5,9 @@ module Fog
       recognizes :google_client_email, :google_key_location, :google_key_string, :google_client,
                  :app_name, :app_version, :google_json_key_location, :google_json_key_string
 
-      GOOGLE_MONITORING_API_VERSION    = "v2beta1"
+      GOOGLE_MONITORING_API_VERSION    = "v2beta2".freeze
       GOOGLE_MONITORING_BASE_URL       = "https://www.googleapis.com/cloudmonitoring/"
-      GOOGLE_MONITORING_API_SCOPE_URLS = %w(https://www.googleapis.com/auth/monitoring.readonly)
+      GOOGLE_MONITORING_API_SCOPE_URLS = %w(https://www.googleapis.com/auth/monitoring)
 
       ##
       # MODELS
