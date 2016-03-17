@@ -15,6 +15,12 @@ def test
   raise "Could not LIST the images" unless images
   puts images.inspect
 
+  puts "Listing current (non-deprecated) images in all projects..."
+  puts "---------------------------------"
+  images = connection.images.current
+  raise "Could not LIST the images" unless images
+  puts images.inspect
+
   puts "Fetching a single image from a global project..."
   puts "------------------------------------------------"
   img = connection.images.get("debian-7-wheezy-v20151104")
