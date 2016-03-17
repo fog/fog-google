@@ -6,7 +6,7 @@ matrix:
     - rvm: 2.0
     - rvm: 2.1
     - rvm: 2.2
-    - rvm: 2.3
+    - rvm: 2.3.0
     - rvm: jruby-head
   allow_failures:
     - rvm: jruby-head
