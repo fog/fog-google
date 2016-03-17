@@ -16,9 +16,9 @@ def test
   puts images.inspect
 
   puts "Listing current (non-deprecated) images in all projects..."
-  puts "---------------------------------"
+  puts "----------------------------------------------------------"
   images = connection.images.current
-  raise "Could not LIST the images" unless images
+  raise "Could not LIST current images" unless images
   puts images.inspect
 
   puts "Fetching a single image from a global project..."

@@ -43,12 +43,10 @@ module Fog
 
         # Only return the non-deprecated list of images
         def current
-            data = []
-            all_images = self.all
-            all_images.each { |img|
-                data.push(img) unless img.deprecated
-            }
-            data
+          data = []
+          all_images = all
+          all_images.each { |img| data.push(img) unless img.deprecated }
+          data
         end
 
         def get(identity)
