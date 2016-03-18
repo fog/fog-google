@@ -41,6 +41,14 @@ module Fog
           load(data)
         end
 
+        # Only return the non-deprecated list of images
+        def current
+          data = []
+          all_images = all
+          all_images.each { |img| data.push(img) unless img.deprecated }
+          data
+        end
+
         def get(identity)
           # Search own project before global projects
           all_projects = [service.project] + global_projects
