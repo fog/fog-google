@@ -44,11 +44,13 @@ module Fog
             end
 
             params[:host] = params[:host].split("#{subdomain}.")[-1]
-            if params[:path]
-              params[:path] = "#{subdomain}/#{params[:path]}"
-            else
-              params[:path] = "#{subdomain}"
-            end
+            params[:path] =
+              if params[:path]
+                "#{subdomain}/#{params[:path]}"
+              else
+                subdomain.to_s
+              end
+
             subdomain = nil
           end
 

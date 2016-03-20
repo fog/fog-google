@@ -86,11 +86,12 @@ module Fog
           options[:google_client_email] = json_key_hash["client_email"]
           ::Google::APIClient::KeyUtils.load_from_pem(json_key_hash["private_key"], "notasecret")
         elsif options[:google_key_location] || options[:google_key_string]
-          if options[:google_key_location]
-            google_key = File.expand_path(options[:google_key_location])
-          else
-            google_key = options[:google_key_string]
-          end
+          google_key =
+            if options[:google_key_location]
+              File.expand_path(options[:google_key_location])
+            else
+              options[:google_key_string]
+            end
 
           ::Google::APIClient::KeyUtils.load_from_pkcs12(google_key, "notasecret")
         else

@@ -9,7 +9,7 @@ module Fog
 
         def initialize(options)
           shared_initialize(options[:google_project], GOOGLE_COMPUTE_API_VERSION, GOOGLE_COMPUTE_BASE_URL)
-          options.merge!(:google_api_scope_url => GOOGLE_COMPUTE_API_SCOPE_URLS.join(" "))
+          options[:google_api_scope_url] = GOOGLE_COMPUTE_API_SCOPE_URLS.join(" ")
 
           @client = initialize_google_client(options)
           @compute = @client.discovered_api("compute", api_version)

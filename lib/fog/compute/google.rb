@@ -15,7 +15,7 @@ module Fog
                                           https://www.googleapis.com/auth/ndev.cloudman
                                           https://www.googleapis.com/auth/cloud-platform)
       GOOGLE_COMPUTE_DEFAULT_NETWORK = "default"
-      RUNNING = "RUNNING"
+      RUNNING = "RUNNING".freeze
 
       request_path "fog/compute/google/requests"
       request :list_servers

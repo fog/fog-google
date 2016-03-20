@@ -38,39 +38,36 @@ module Fog
         end
 
         def signature(params)
-          string_to_sign =
-            <<-DATA
-#{params[:method]}
-          #{params[:headers]['Content-MD5']}
-          #{params[:headers]['Content-Type']}
-          #{params[:headers]['Date']}
-          DATA
+          string_to_sign = "#{params[:method]}\n"
+          string_to_sign << "#{params[:headers]['Content-MD5']}\n"
+          string_to_sign << "#{params[:headers]['Content-Type']}\n"
+          string_to_sign << params[:headers]["Date"].to_s
 
           google_headers = {}
           canonical_google_headers = ""
-          for key, value in params[:headers]
+          params[:headers].each do |key, value|
             google_headers[key] = value if key[0..6] == "x-goog-"
           end
 
           google_headers = google_headers.sort { |x, y| x[0] <=> y[0] }
-          for key, value in google_headers
+          google_headers.each do |key, value|
             canonical_google_headers << "#{key}:#{value}\n"
           end
-          string_to_sign << "#{canonical_google_headers}"
+          string_to_sign << canonical_google_headers.to_s
 
           canonical_resource = "/"
           if subdomain = params.delete(:subdomain)
             canonical_resource << "#{CGI.escape(subdomain).downcase}/"
           end
-          canonical_resource << "#{params[:path]}"
+          canonical_resource << params[:path].to_s
           canonical_resource << "?"
-          for key in (params[:query] || {}).keys
+          params.fetch(:query, {}).keys.each do |key|
             if %w(acl cors location logging requestPayment torrent versions versioning).include?(key)
               canonical_resource << "#{key}&"
             end
           end
           canonical_resource.chop!
-          string_to_sign << "#{canonical_resource}"
+          string_to_sign << canonical_resource.to_s
 
           signed_string = @hmac.sign(string_to_sign)
           Base64.encode64(signed_string).chomp!

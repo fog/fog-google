@@ -9,7 +9,7 @@ module Fog
 
         def initialize(options)
           shared_initialize(options[:google_project], GOOGLE_DNS_API_VERSION, GOOGLE_DNS_BASE_URL)
-          options.merge!(:google_api_scope_url => GOOGLE_DNS_API_SCOPE_URLS.join(" "))
+          options[:google_api_scope_url] = GOOGLE_DNS_API_SCOPE_URLS.join(" ")
           @client = initialize_google_client(options)
           @dns = @client.discovered_api("dns", api_version)
         end

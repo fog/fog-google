@@ -10,7 +10,7 @@ module Fog
 
         def initialize(options = {})
           shared_initialize(options[:google_project], GOOGLE_STORAGE_JSON_API_VERSION, GOOGLE_STORAGE_JSON_BASE_URL)
-          options.merge!(:google_api_scope_url => GOOGLE_STORAGE_JSON_API_SCOPE_URLS.join(" "))
+          options[:google_api_scope_url] = GOOGLE_STORAGE_JSON_API_SCOPE_URLS.join(" ")
           @host = options[:host] || "storage.googleapis.com"
 
           @client = initialize_google_client(options)
@@ -28,21 +28,21 @@ module Fog
 
           google_headers = {}
           canonical_google_headers = ""
-          for key, value in params[:headers]
+          params[:headers].each do |key, value|
             google_headers[key] = value if key[0..6] == "x-goog-"
           end
 
           google_headers = google_headers.sort { |x, y| x[0] <=> y[0] }
-          for key, value in google_headers
+          google_headers.each do |key, value|
             canonical_google_headers << "#{key}:#{value}\n"
           end
-          string_to_sign << "#{canonical_google_headers}"
+          string_to_sign << canonical_google_headers.to_s
 
           canonical_resource = "/"
           if subdomain = params.delete(:subdomain)
             canonical_resource << "#{CGI.escape(subdomain).downcase}/"
           end
-          canonical_resource << "#{params[:path]}"
+          canonical_resource << params[:path].to_s
           canonical_resource << "?"
           for key in (params[:query] || {}).keys
             if %w(acl cors location logging requestPayment torrent versions versioning).include?(key)
@@ -50,7 +50,7 @@ module Fog
             end
           end
           canonical_resource.chop!
-          string_to_sign << "#{canonical_resource}"
+          string_to_sign << canonical_resource.to_s
 
           key = OpenSSL::PKey::RSA.new(@client.authorization.signing_key)
           digest = OpenSSL::Digest::SHA256.new
