@@ -4,7 +4,7 @@
 
 The main maintainers for the Google sections are @icco, @Temikus and @plribeiro3000. Please send pull requests to them.
 
-As of https://github.com/fog/fog-google/pull/68, Google no longer supports Ruby versions less than 2.0.0.
+**As of v0.1.1, Google no longer supports Ruby versions less than 2.0.0.**
 
 ## Storage
 
