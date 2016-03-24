@@ -50,6 +50,8 @@ module Fog
       request :list_instance_groups
       request :list_aggregated_instance_groups
       request :list_instance_group_instances
+      request :list_subnetworks
+      request :list_aggregated_subnetworks
 
       request :get_server
       request :get_address
@@ -80,6 +82,7 @@ module Fog
       request :get_region_view
       request :get_target_instance
       request :get_instance_group
+      request :get_subnetwork
 
       request :delete_address
       request :delete_disk
@@ -103,6 +106,7 @@ module Fog
       request :delete_region_view
       request :delete_target_instance
       request :delete_instance_group
+      request :delete_subnetwork
 
       request :insert_address
       request :insert_disk
@@ -123,6 +127,7 @@ module Fog
       request :insert_region_view
       request :insert_target_instance
       request :insert_instance_group
+      request :insert_subnetwork
 
       request :set_metadata
       request :set_tags
@@ -229,6 +234,9 @@ module Fog
 
       model :instance_group
       collection :instance_groups
+
+      model :subnetwork
+      collection :subnetworks
 
       class Mock
         include Fog::Google::Shared
@@ -1035,6 +1043,41 @@ module Fog
                     "selfLink" => "https://www.googleapis.com/compute/#{api_version}/projects/#{key}/zones/us-central1-a/disks/fog-1",
                     "type" => "https://www.googleapis.com/compute/#{api_version}/projects/#{key}/zones/us-central1-a/diskTypes/pd-ssd"
                   }
+                },
+                :subnetworks => {
+                  "fog-1" => {
+                    "kind" => "compute#subnetwork",
+                    "id" => "6680781458098159920",
+                    "creationTimestamp" => "2016-03-19T19:13:51.613-07:00",
+                    "gatewayAddress" => "10.1.0.1",
+                    "name" => "fog-1",
+                    "network" => "https://www.googleapis.com/compute/#{api_version}/projects/#{key}/global/networks/fog-example",
+                    "ipCidrRange" => "10.1.0.0/20",
+                    "region" => "https://www.googleapis.com/compute/#{api_version}/projects/#{key}/regions/us-central1",
+                    "selfLink" => "https://www.googleapis.com/compute/#{api_version}/projects/#{key}/regions/us-central1/subnetworks/fog-1"
+                  },
+                  "fog-2" => {
+                    "kind" => "compute#subnetwork",
+                    "id" => "6680781458098159921",
+                    "creationTimestamp" => "2016-03-19T19:13:51.613-07:00",
+                    "gatewayAddress" => "10.1.16.1",
+                    "name" => "fog-2",
+                    "network" => "https://www.googleapis.com/compute/#{api_version}/projects/#{key}/global/networks/fog-example",
+                    "ipCidrRange" => "10.1.16.0/20",
+                    "region" => "https://www.googleapis.com/compute/#{api_version}/projects/#{key}/regions/europe-west1",
+                    "selfLink" => "https://www.googleapis.com/compute/#{api_version}/projects/#{key}/regions/europe-west1/subnetworks/fog-2"
+                  },
+                  "fog-3" => {
+                    "kind" => "compute#subnetwork",
+                    "id" => "6680781458098159923",
+                    "creationTimestamp" => "2016-03-19T19:13:51.613-07:00",
+                    "gatewayAddress" => "192.168.20.1",
+                    "name" => "fog-3",
+                    "network" => "https://www.googleapis.com/compute/#{api_version}/projects/#{key}/global/networks/fog-elsewhere-example",
+                    "ipCidrRange" => "192.168.20.0/20",
+                    "region" => "https://www.googleapis.com/compute/#{api_version}/projects/#{key}/regions/us-central1",
+                    "selfLink" => "https://www.googleapis.com/compute/#{api_version}/projects/#{key}/regions/us-central1/subnetworks/fog-3"
+                  },
                 },
                 :operations => {}
               }
