@@ -49,7 +49,7 @@ class TestFiles < FogIntegrationTest
   end
 
   def test_get_https_url
-    https_url = @directory.files.get_https_url("fog-testfile", 1000)
+    https_url = @directory.files.get_https_url("fog-testfile", (Time.now + 1.minute).to_i)
     assert_match(/https/, https_url)
     assert_match(/fog-smoke-test/, https_url)
     assert_match(/fog-testfile/, https_url)

@@ -133,9 +133,10 @@ module Fog
           true
         end
 
-        def url
+        # params[:expires] : Eg: Time.now to integer value.
+        def url(expires)
           requires :key
-          collection.get_https_url(key)
+          collection.get_https_url(key, expires)
         end
 
         private
