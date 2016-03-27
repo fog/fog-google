@@ -14,6 +14,6 @@ if ENV["COVERAGE"]
   end
 end
 
-require File.join(File.dirname(__FILE__), "../../lib/fog/google.rb")
+require File.join(File.dirname(__FILE__), "../../lib/fog/google")
 
 Coveralls.wear! if ENV["COVERAGE"]

@@ -4,18 +4,6 @@ require "fog/xml"
 require "fog/google/version"
 
 module Fog
-  module Compute
-    autoload :Google, "fog/google/compute"
-  end
-
-  module DNS
-    autoload :Google, "fog/google/dns"
-  end
-
-  module Storage
-    autoload :Google, "fog/google/storage"
-  end
-
   module Google
     autoload :Monitoring, "fog/google/monitoring"
     autoload :SQL, "fog/google/sql"
@@ -235,5 +223,25 @@ module Fog
         response
       end
     end
+  end
+
+  module Compute
+    autoload :Google, File.expand_path("../compute/google", __FILE__)
+  end
+
+  module DNS
+    autoload :Google, File.expand_path("../dns/google", __FILE__)
+  end
+
+  module Parsers
+    module Storage
+      autoload :Google, File.expand_path("../parsers/storage/google", __FILE__)
+    end
+  end
+
+  module Storage
+    autoload :Google, File.expand_path("../storage/google", __FILE__)
+    autoload :GoogleJSON, File.expand_path("../storage/google_json", __FILE__)
+    autoload :GoogleXML, File.expand_path("../storage/google_xml", __FILE__)
   end
 end
