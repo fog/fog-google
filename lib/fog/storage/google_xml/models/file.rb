@@ -17,10 +17,20 @@ module Fog
         attribute :owner,               :aliases => "Owner"
         attribute :storage_class,       :aliases => ["x-goog-storage-class", "StorageClass"]
 
+        # https://cloud.google.com/storage/docs/access-control#predefined-acl
+        VALID_ACLS = [
+          "authenticated-read",
+          "bucket-owner-full-control",
+          "bucket-owner-read",
+          "private",
+          "project-private",
+          "public-read",
+          "public-read-write",
+        ].freeze
+
         def acl=(new_acl)
-          valid_acls = ["private", "public-read", "public-read-write", "authenticated-read"]
-          unless valid_acls.include?(new_acl)
-            raise ArgumentError.new("acl must be one of [#{valid_acls.join(', ')}]")
+          unless VALID_ACLS.include?(new_acl)
+            raise ArgumentError.new("acl must be one of [#{VALID_ACLS.join(', ')}]")
           end
           @acl = new_acl
         end
@@ -75,7 +85,11 @@ module Fog
           if new_public
             @acl = "public-read"
           else
+<<<<<<< HEAD:lib/fog/storage/google_xml/models/file.rb
             @acl = "private"
+=======
+            @acl = 'project-private'
+>>>>>>> 3bbe225bb257ae69499cafca8871bf8bc952626d:lib/fog/google/models/storage/file.rb
           end
           new_public
         end
