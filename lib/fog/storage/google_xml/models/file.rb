@@ -85,11 +85,7 @@ module Fog
           if new_public
             @acl = "public-read"
           else
-<<<<<<< HEAD:lib/fog/storage/google_xml/models/file.rb
-            @acl = "private"
-=======
-            @acl = 'project-private'
->>>>>>> 3bbe225bb257ae69499cafca8871bf8bc952626d:lib/fog/google/models/storage/file.rb
+            @acl = "project-private"
           end
           new_public
         end
