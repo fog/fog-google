@@ -33,15 +33,19 @@ Fog implements [v1](https://cloud.google.com/dns/api/v1/) of the Google Cloud DN
 
 Fog implements [v2beta2](https://cloud.google.com/monitoring/v2beta2/) of the Google Cloud Monitoring API. As of 2016-03-15, we believe Fog for Google Cloud Monitoring is feature complete. We are always looking for people to improve our code and test coverage, so please [file issues](https://github.com/fog/fog-google/issues) for any anomalies you see or features you would like.
 
- 
+## Pubsub
 
+Note: You **must** have a version of google-api-client > 0.8.5 to use the Pub/Sub API; previous versions will not work.
+
+Fog mostly implements [v1](https://cloud.google.com/pubsub/reference/rest/) of the Google Cloud Pub/Sub API; however some less common API methods are missing. Pull requests for additions would be greatly appreciated.
+ 
 ## Installation
 
 Add the following two lines to your application's `Gemfile`:
 
 ```ruby
 gem 'fog-google'
-gem 'google-api-client', '< 0.9', '>= 0.6.2'
+gem 'google-api-client', '~> 0.8.6'
 ```
 
 And then execute:

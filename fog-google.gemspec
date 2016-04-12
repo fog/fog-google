@@ -20,14 +20,14 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   # As of 0.1.1
-  spec.required_ruby_version = ">= 2.0"
+  spec.required_ruby_version = "~> 2.0"
 
   spec.add_dependency "fog-core"
   spec.add_dependency "fog-json"
   spec.add_dependency "fog-xml"
 
   # TODO: Upgrade to 0.9, which is not compatible.
-  spec.add_development_dependency "google-api-client", "< 0.9", ">= 0.6.2"
+  spec.add_development_dependency "google-api-client", "~> 0.8.6"
   spec.add_development_dependency "rake"
   spec.add_development_dependency "shindo"
   spec.add_development_dependency "minitest"
