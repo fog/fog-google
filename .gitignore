@@ -14,3 +14,4 @@
 mkmf.log
 .ruby-version
 .idea/
+.DS_Store
