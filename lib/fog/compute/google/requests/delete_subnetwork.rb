@@ -20,7 +20,7 @@ module Fog
             "progress" => 0,
             "insertTime" => Time.now.iso8601,
             "selfLink" => "https://www.googleapis.com/compute/#{api_version}/projects/#{@project}/regions/#{region_name}/operations/#{operation}",
-            "region" => "https://www.googleapis.com/compute/#{api_version}/projects/#{@project}/regions/#{region_name}",
+            "region" => "https://www.googleapis.com/compute/#{api_version}/projects/#{@project}/regions/#{region_name}"
           }
           data[:subnetworks].delete subnetwork_name
 

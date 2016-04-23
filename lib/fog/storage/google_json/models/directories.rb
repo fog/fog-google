@@ -4,7 +4,7 @@ module Fog
       class Directories < Fog::Collection
         model Fog::Storage::GoogleJSON::Directory
 
-        # TODO get_service does not return items like this
+        # TODO: get_service does not return items like this
         # def all
         #   data = service.get_service.body["items"]
         #   load(data)

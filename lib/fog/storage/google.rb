@@ -8,8 +8,8 @@ module Fog
           fog_creds = nil
         end
 
-        if options.keys.include? :google_storage_access_key_id or
-          (not fog_creds.nil? and fog_creds.keys.include? :google_storage_access_key_id)
+        if options.keys.include?(:google_storage_access_key_id) ||
+           (!fog_creds.nil? && fog_creds.keys.include?(:google_storage_access_key_id))
           Fog::Storage::GoogleXML.new(options)
         else
           Fog::Storage::GoogleJSON.new(options)

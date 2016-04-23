@@ -46,7 +46,7 @@ module Fog
 
           body_object = {
             :contentType => mime_type,
-            :contentEncoding => options["contentEncoding"],
+            :contentEncoding => options["contentEncoding"]
           }
           body_object.merge! options
 

@@ -841,7 +841,7 @@ module Fog
                       "ipCidrRange" => "192.168.20.0/20",
                       "region" => "https://www.googleapis.com/compute/#{api_version}/projects/#{key}/regions/us-central1",
                       "selfLink" => "https://www.googleapis.com/compute/#{api_version}/projects/#{key}/regions/us-central1/subnetworks/fog-3"
-                    },
+                    }
                   },
                   :operations => {}
                 }

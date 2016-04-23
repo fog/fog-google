@@ -25,7 +25,7 @@ module Fog
           "private",
           "project-private",
           "public-read",
-          "public-read-write",
+          "public-read-write"
         ].freeze
 
         def acl=(new_acl)
