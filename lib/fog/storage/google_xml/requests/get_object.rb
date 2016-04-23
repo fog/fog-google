@@ -51,7 +51,7 @@ module Fog
       end
 
       class Mock
-        def get_object(bucket_name, object_name, options = {}, &block)
+        def get_object(bucket_name, object_name, options = {})
           raise ArgumentError.new("bucket_name is required") unless bucket_name
           raise ArgumentError.new("object_name is required") unless object_name
           response = Excon::Response.new
@@ -72,16 +72,16 @@ module Fog
                   response.headers[key] = value
                 end
               end
-              unless block_given?
-                response.body = object[:body]
-              else
+              if block_given?
                 data = StringIO.new(object[:body])
                 remaining = data.length
                 while remaining > 0
                   chunk = data.read([remaining, Excon::CHUNK_SIZE].min)
-                  block.call(chunk)
+                  yield(chunk)
                   remaining -= Excon::CHUNK_SIZE
                 end
+              else
+                response.body = object[:body]
               end
             end
           else

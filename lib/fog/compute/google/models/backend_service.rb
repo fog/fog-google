@@ -67,18 +67,18 @@ module Fog
           requires :name
 
           return unless data =
-            begin
-              collection.get(name)
-            rescue Excon::Errors::SocketError
-              nil
-            end
+                          begin
+                            collection.get(name)
+                          rescue Excon::Errors::SocketError
+                            nil
+                          end
 
           new_attributes = data.attributes
           merge_attributes(new_attributes)
           self
         end
 
-        RUNNING_STATE = "READY"
+        RUNNING_STATE = "READY".freeze
       end
     end
   end

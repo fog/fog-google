@@ -18,8 +18,8 @@ module Fog
         attribute :status
         attribute :zones
 
-        DOWN_STATE = "DOWN"
-        UP_STATE   = "UP"
+        DOWN_STATE = "DOWN".freeze
+        UP_STATE   = "UP".freeze
 
         def up?
           status == UP_STATE

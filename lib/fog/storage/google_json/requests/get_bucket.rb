@@ -45,7 +45,7 @@ module Fog
             if bucket = data[:buckets][bucket_name]
               contents = bucket[:objects].values.sort { |x, y| x["Key"] <=> y["Key"] }.reject do |object|
                 (options["prefix"] && object["Key"][0...options["prefix"].length] != options["prefix"]) ||
-                (options["marker"] && object["Key"] <= options["marker"])
+                  (options["marker"] && object["Key"] <= options["marker"])
               end.map do |object|
                 data = object.reject { |key, _value| !%w(ETag Key).include?(key) }
                 data.merge!("LastModified" => Time.parse(object["Last-Modified"]),

@@ -1,7 +1,7 @@
 require "helpers/integration_test_helper"
 
 class TestDiskTypes < FogIntegrationTest
-  NAMES = %w(local-ssd pd-ssd pd-standard)
+  NAMES = %w(local-ssd pd-ssd pd-standard).freeze
   ZONES = %w(https://www.googleapis.com/compute/v1/projects/graphite-fog/zones/us-central1-a
              https://www.googleapis.com/compute/v1/projects/graphite-fog/zones/us-central1-b
              https://www.googleapis.com/compute/v1/projects/graphite-fog/zones/us-central1-c
@@ -11,7 +11,7 @@ class TestDiskTypes < FogIntegrationTest
              https://www.googleapis.com/compute/v1/projects/graphite-fog/zones/europe-west1-d
              https://www.googleapis.com/compute/v1/projects/graphite-fog/zones/asia-east1-a
              https://www.googleapis.com/compute/v1/projects/graphite-fog/zones/asia-east1-b
-             https://www.googleapis.com/compute/v1/projects/graphite-fog/zones/asia-east1-c)
+             https://www.googleapis.com/compute/v1/projects/graphite-fog/zones/asia-east1-c).freeze
 
   def setup
     @subject = Fog::Compute[:google].disk_types

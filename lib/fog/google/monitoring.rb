@@ -9,8 +9,8 @@ module Fog
                  :app_name, :app_version, :google_json_key_location, :google_json_key_string
 
       GOOGLE_MONITORING_API_VERSION    = "v2beta2".freeze
-      GOOGLE_MONITORING_BASE_URL       = "https://www.googleapis.com/cloudmonitoring/"
-      GOOGLE_MONITORING_API_SCOPE_URLS = %w(https://www.googleapis.com/auth/monitoring)
+      GOOGLE_MONITORING_BASE_URL       = "https://www.googleapis.com/cloudmonitoring/".freeze
+      GOOGLE_MONITORING_API_SCOPE_URLS = %w(https://www.googleapis.com/auth/monitoring).freeze
 
       ##
       # MODELS

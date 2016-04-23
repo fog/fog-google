@@ -14,8 +14,8 @@ module Fog
         attribute :additions
         attribute :deletions
 
-        DONE_STATE    = "done"
-        PENDING_STATE = "pending"
+        DONE_STATE    = "done".freeze
+        PENDING_STATE = "pending".freeze
 
         ##
         # Checks if the change operation is pending

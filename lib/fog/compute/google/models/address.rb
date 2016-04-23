@@ -18,8 +18,8 @@ module Fog
         attribute :status
         attribute :users
 
-        IN_USE_STATE   = "IN_USE"
-        RESERVED_STATE = "RESERVED"
+        IN_USE_STATE   = "IN_USE".freeze
+        RESERVED_STATE = "RESERVED".freeze
 
         def server
           return nil if !in_use? || users.nil? || users.empty?

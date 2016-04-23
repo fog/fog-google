@@ -82,11 +82,11 @@ module Fog
         end
 
         def public=(new_public)
-          if new_public
-            @acl = "public-read"
-          else
-            @acl = "project-private"
-          end
+          @acl = if new_public
+                   "public-read"
+                 else
+                   "project-private"
+                 end
           new_public
         end
 

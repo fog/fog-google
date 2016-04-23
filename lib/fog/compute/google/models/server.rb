@@ -44,7 +44,7 @@ module Fog
           "storage-full" => "devstorage.full_control",
           "storage-ro" => "devstorage.read_only",
           "storage-rw" => "devstorage.read_write"
-        }
+        }.freeze
 
         def image_name=(_args)
           Fog::Logger.deprecation("image_name= is no longer used [light_black](#{caller.first})[/]")

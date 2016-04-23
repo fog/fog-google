@@ -33,11 +33,11 @@ module Fog
         attribute :settings_version
         attribute :tier
 
-        MAINTENANCE_STATE    = "MAINTENANCE"
-        PENDING_CREATE_STATE = "PENDING_CREATE"
-        RUNNABLE_STATE       = "RUNNABLE"
-        SUSPENDED_STATE      = "SUSPENDED"
-        UNKNOWN_STATE        = "UNKNOWN_STATE"
+        MAINTENANCE_STATE    = "MAINTENANCE".freeze
+        PENDING_CREATE_STATE = "PENDING_CREATE".freeze
+        RUNNABLE_STATE       = "RUNNABLE".freeze
+        SUSPENDED_STATE      = "SUSPENDED".freeze
+        UNKNOWN_STATE        = "UNKNOWN_STATE".freeze
 
         ##
         # Returns the activation policy for this instance

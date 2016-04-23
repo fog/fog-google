@@ -23,10 +23,10 @@ module Fog
         attribute :state
         attribute :user_email_address, :aliases => "userEmailAddress"
 
-        DONE_STATE    = "DONE"
-        PENDING_STATE = "PENDING"
-        RUNNING_STATE = "RUNNING"
-        UNKNOWN_STATE = "UNKNOWN"
+        DONE_STATE    = "DONE".freeze
+        PENDING_STATE = "PENDING".freeze
+        RUNNING_STATE = "RUNNING".freeze
+        UNKNOWN_STATE = "UNKNOWN".freeze
 
         ##
         # Checks if the instance operation is pending

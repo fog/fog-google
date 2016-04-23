@@ -109,7 +109,7 @@ module Fog
           service.snapshots.get(snapshot_name)
         end
 
-        RUNNING_STATE = "READY"
+        RUNNING_STATE = "READY".freeze
       end
     end
   end

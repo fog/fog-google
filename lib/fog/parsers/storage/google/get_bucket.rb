@@ -28,11 +28,11 @@ module Fog
             when "ETag"
               @object[name] = value.delete('"')
             when "IsTruncated"
-              if value == "true"
-                @response["IsTruncated"] = true
-              else
-                @response["IsTruncated"] = false
-              end
+              @response["IsTruncated"] = if value == "true"
+                                           true
+                                         else
+                                           false
+                                         end
             when "LastModified"
               @object["LastModified"] = Time.parse(value)
             when "Marker", "Name"

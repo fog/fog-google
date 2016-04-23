@@ -1,7 +1,7 @@
 require "helpers/integration_test_helper"
 
 class TestRegions < FogIntegrationTest
-  NAMES = %w(asia-east1 europe-west1 us-central1 us-central2)
+  NAMES = %w(asia-east1 europe-west1 us-central1 us-central2).freeze
 
   def setup
     @subject = Fog::Compute[:google].regions

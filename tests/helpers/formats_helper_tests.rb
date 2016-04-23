@@ -10,7 +10,7 @@ Shindo.tests("test_helper", "meta") do
     end
 
     tests("when values within an array all match schema expectation") do
-      data_matches_schema({ "key" => [Integer] }) { { "key" => [1, 2] } }
+      data_matches_schema("key" => [Integer]) { { "key" => [1, 2] } }
     end
 
     tests("when nested values match schema expectation") do
@@ -100,7 +100,7 @@ Shindo.tests("test_helper", "meta") do
     end
 
     tests('when key is missing but value is nullable (#1477)') do
-      formats({ "key" => Fog::Nullable::String }) { {} }
+      formats("key" => Fog::Nullable::String) { {} }
     end
   end
 end

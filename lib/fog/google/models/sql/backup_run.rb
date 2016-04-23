@@ -19,7 +19,7 @@ module Fog
         attribute :start_time, :aliases => "startTime"
         attribute :status
 
-        DONE_STATE = "DONE"
+        DONE_STATE = "DONE".freeze
 
         ##
         # Checks if the instance backup run is done
