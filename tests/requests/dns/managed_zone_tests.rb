@@ -18,7 +18,7 @@ Shindo.tests("Fog::DNS[:google] | managed_zone requests", ["google"]) do
 
   tests("success") do
     zone_name = "new-zone-test"
-    DEFAULT_ZONE_DNS_NAME = "fog-test.your-own-domain.com."
+    DEFAULT_ZONE_DNS_NAME = "fog-test.your-own-domain.com.".freeze
     # Google requires confirmation of ownership for created domains in some
     # cases.  If you want to run tests in non-mocked mode, set the environment
     # variable to a domain you own.

@@ -52,11 +52,11 @@ module Fog
                                   false
               end
             when "IsTruncated"
-              if value == "true"
-                @response["IsTruncated"] = true
-              else
-                @response["IsTruncated"] = false
-              end
+              @response["IsTruncated"] = if value == "true"
+                                           true
+                                         else
+                                           false
+                                         end
             when "LastModified"
               if @in_delete_marker
                 @delete_marker

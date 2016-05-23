@@ -52,11 +52,11 @@ module Fog
             "Owner"         => { "DisplayName" => "owner", "ID" => "some_id" },
             "Payer"         => "BucketOwner"
           }
-          if options["LocationConstraint"]
-            bucket["LocationConstraint"] = options["LocationConstraint"]
-          else
-            bucket["LocationConstraint"] = ""
-          end
+          bucket["LocationConstraint"] = if options["LocationConstraint"]
+                                           options["LocationConstraint"]
+                                         else
+                                           ""
+                                         end
           if data[:buckets][bucket_name].nil?
             data[:buckets][bucket_name] = bucket
           else

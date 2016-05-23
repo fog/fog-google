@@ -20,11 +20,11 @@ module Fog
 
       class Mock
         def get_change(zone_name_or_id, identity)
-          if data[:managed_zones].key?(zone_name_or_id)
-            zone = data[:managed_zones][zone_name_or_id]
-          else
-            zone = data[:managed_zones].values.detect { |z| z["name"] = zone_name_or_id }
-          end
+          zone = if data[:managed_zones].key?(zone_name_or_id)
+                   data[:managed_zones][zone_name_or_id]
+                 else
+                   data[:managed_zones].values.detect { |z| z["name"] = zone_name_or_id }
+                 end
 
           unless zone
             raise Fog::Errors::NotFound, "The 'parameters.managedZone' resource named '#{zone_name_or_id}' does not exist."

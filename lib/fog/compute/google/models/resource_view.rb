@@ -101,7 +101,7 @@ module Fog
           merge_attributes(new_attributes)
           self
         end
-        RUNNING_STATE = "READY"
+        RUNNING_STATE = "READY".freeze
       end
     end
   end

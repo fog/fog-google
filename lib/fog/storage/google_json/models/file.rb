@@ -81,17 +81,17 @@ module Fog
           if new_owner
             attributes[:owner] = {
               :entity => new_owner["entity"],
-              :entityId  => new_owner["entityId"]
+              :entityId => new_owner["entityId"]
             }
           end
         end
 
         def public=(new_public)
-          if new_public
-            @predefined_acl = "publicRead"
-          else
-            @predefined_acl = "private"
-          end
+          @predefined_acl = if new_public
+                              "publicRead"
+                            else
+                              "private"
+                            end
           new_public
         end
 

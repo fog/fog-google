@@ -54,7 +54,7 @@ Shindo.tests("Fog::Schema::DataValidator", "meta") do
 
     tests("returns false") do
       returns(false, "when value does not match schema expectation") do
-        validator.validate({ "key" => nil }, { "key" => String })
+        validator.validate({ "key" => nil }, "key" => String)
       end
 
       returns(false, "when key formats do not match") do

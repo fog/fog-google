@@ -99,11 +99,11 @@ module Fog
           # An array of persistent disks. You must supply a boot disk as the first disk in
           # this array and mark it as a boot disk using the disks[].boot property.
           options.delete("disks").each do |disk|
-            if disk.is_a? Disk
-              disks << disk.get_object
-            else
-              disks << disk
-            end
+            disks << if disk.is_a? Disk
+                       disk.get_object
+                     else
+                       disk
+                     end
           end
           disks.first["boot"] = true
           disks
@@ -114,7 +114,7 @@ module Fog
         end
 
         def insert_server(server_name, zone_name, options = {}, *deprecated_args)
-          if deprecated_args.length > 0 || !options.is_a?(Hash)
+          if !deprecated_args.empty? || !options.is_a?(Hash)
             raise ArgumentError.new "Too many parameters specified. This may be the cause of code written for an outdated"\
                 " version of fog. Usage: server_name, zone_name, [options]"
           end
@@ -127,11 +127,11 @@ module Fog
 
           body_object["machineType"] = @api_url + @project + "/zones/#{zone_name}/machineTypes/#{options.delete 'machineType'}"
           network = nil
-          if options.key? "network"
-            network = options.delete "network"
-          else
-            network = GOOGLE_COMPUTE_DEFAULT_NETWORK
-          end
+          network = if options.key? "network"
+                      options.delete "network"
+                    else
+                      GOOGLE_COMPUTE_DEFAULT_NETWORK
+                    end
 
           # ExternalIP is default value for server creation
           access_config = { "type" => "ONE_TO_ONE_NAT", "name" => "External NAT" }
@@ -165,7 +165,7 @@ module Fog
           if options.key? "on_host_maintenance"
             ohm = options.delete "on_host_maintenance"
             scheduling["onHostMaintenance"] = (ohm.respond_to?("upcase") &&
-                    ohm.upcase == "MIGRATE" && "MIGRATE") || "TERMINATE"
+                    ohm.casecmp("MIGRATE").zero? && "MIGRATE") || "TERMINATE"
           end
           body_object["scheduling"] = scheduling
 

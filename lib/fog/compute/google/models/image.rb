@@ -39,7 +39,7 @@ module Fog
           nil
         end
 
-        READY_STATE = "READY"
+        READY_STATE = "READY".freeze
 
         def ready?
           status == READY_STATE

@@ -1,5 +1,5 @@
 class CollectionFactory
-  PREFIX = "fog-test"
+  PREFIX = "fog-test".freeze
 
   def initialize(subject, example)
     @subject = subject
@@ -22,6 +22,6 @@ class CollectionFactory
     # In prefix, convert - to _ to make sure that it doesn't get stripped by the \W strip below.
     # Then, concatenate prefix, index, and base; strip all non-alphanumerics except _;
     # convert _ to -; downcase; truncate to 62 characters; delete trailing -
-    ([prefix.tr("-", "_"), index, base].join("_")).gsub(/\W/, "").tr("_", "-").downcase[0..61].chomp("-")
+    [prefix.tr("-", "_"), index, base].join("_").gsub(/\W/, "").tr("_", "-").downcase[0..61].chomp("-")
   end
 end

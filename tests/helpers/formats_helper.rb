@@ -83,11 +83,11 @@ module Shindo
     # @deprecated #formats is deprecated. Use #data_matches_schema instead
     def formats(format, strict = true)
       test("has proper format") do
-        if strict
-          options = { :allow_extra_keys => false, :allow_optional_rules => true }
-        else
-          options = { :allow_extra_keys => true, :allow_optional_rules => true }
-        end
+        options = if strict
+                    { :allow_extra_keys => false, :allow_optional_rules => true }
+                  else
+                    { :allow_extra_keys => true, :allow_optional_rules => true }
+                  end
         validator = Fog::Schema::DataValidator.new
         valid = validator.validate(yield, format, options)
         @message = validator.message unless valid

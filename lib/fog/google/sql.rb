@@ -8,10 +8,10 @@ module Fog
       recognizes :google_client_email, :google_key_location, :google_key_string, :google_client,
                  :app_name, :app_version, :google_json_key_location, :google_json_key_string
 
-      GOOGLE_SQL_API_VERSION    = "v1beta3"
-      GOOGLE_SQL_BASE_URL       = "https://www.googleapis.com/sql/"
+      GOOGLE_SQL_API_VERSION    = "v1beta3".freeze
+      GOOGLE_SQL_BASE_URL       = "https://www.googleapis.com/sql/".freeze
       GOOGLE_SQL_API_SCOPE_URLS = %w(https://www.googleapis.com/auth/sqlservice.admin
-                                     https://www.googleapis.com/auth/cloud-platform)
+                                     https://www.googleapis.com/auth/cloud-platform).freeze
 
       ##
       # MODELS

@@ -8,13 +8,13 @@ module Fog
       recognizes :app_name, :app_version, :google_client_email, :google_key_location, :google_key_string,
                  :google_client, :google_json_key_location, :google_json_key_string, :google_extra_global_projects
 
-      GOOGLE_COMPUTE_API_VERSION     = "v1"
-      GOOGLE_COMPUTE_BASE_URL        = "https://www.googleapis.com/compute/"
+      GOOGLE_COMPUTE_API_VERSION     = "v1".freeze
+      GOOGLE_COMPUTE_BASE_URL        = "https://www.googleapis.com/compute/".freeze
       GOOGLE_COMPUTE_API_SCOPE_URLS  = %w(https://www.googleapis.com/auth/compute
                                           https://www.googleapis.com/auth/devstorage.read_write
                                           https://www.googleapis.com/auth/ndev.cloudman
-                                          https://www.googleapis.com/auth/cloud-platform)
-      GOOGLE_COMPUTE_DEFAULT_NETWORK = "default"
+                                          https://www.googleapis.com/auth/cloud-platform).freeze
+      GOOGLE_COMPUTE_DEFAULT_NETWORK = "default".freeze
       RUNNING = "RUNNING".freeze
 
       request_path "fog/compute/google/requests"

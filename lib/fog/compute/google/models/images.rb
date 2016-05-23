@@ -18,7 +18,7 @@ module Fog
           "suse-cloud",
           "ubuntu-os-cloud",
           "windows-cloud"
-        ]
+        ].freeze
 
         def all
           data = []
