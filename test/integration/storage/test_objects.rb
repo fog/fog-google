@@ -101,10 +101,6 @@ class TestObjects < FogIntegrationTest
     assert_equal https_url, "https://www.googleapis.com/storage/v1/b/fog-smoke-test/o/my%20file"
   end
 
-  def test_get_object_torrent
-    skip
-  end
-
   def test_head_object
     skip
   end
