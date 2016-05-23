@@ -41,7 +41,7 @@ DATA
                   :host     => "#{bucket_name}.#{@host}",
                   :method   => "PUT",
                   :query    => { "acl" => nil },
-                  :path     => CGI.escape(object_name))
+                  :path     => Fog::Google.escape(object_name))
         end
       end
     end
