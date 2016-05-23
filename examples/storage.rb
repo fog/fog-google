@@ -25,6 +25,18 @@ def test
   puts "---------------"
   connection.put_object("fog-smoke-test", "my file", "THISISATESTFILE")
 
+  puts "Get the test file..."
+  puts "---------------"
+  connection.get_object("fog-smoke-test", "my file")
+
+  puts "Head file..."
+  puts "---------------"
+  connection.head_object("fog-smoke-test", "my file")
+
+  puts "Get file ACL..."
+  puts "---------------"
+  connection.get_object_acl("fog-smoke-test", "my file")
+
   puts "Delete the test file..."
   puts "---------------"
   connection.delete_object("fog-smoke-test", "my file")
