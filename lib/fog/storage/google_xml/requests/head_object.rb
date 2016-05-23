@@ -37,7 +37,7 @@ module Fog
                   :headers  => headers,
                   :host     => "#{bucket_name}.#{@host}",
                   :method   => "HEAD",
-                  :path     => CGI.escape(object_name),
+                  :path     => Fog::Google.escape(object_name),
                   :query    => query)
         end
       end

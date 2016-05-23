@@ -39,7 +39,7 @@ module Fog
                   :idempotent => true,
                   :method     => "GET",
                   :parser     => Fog::Parsers::Storage::Google::AccessControlList.new,
-                  :path       => CGI.escape(object_name),
+                  :path       => Fog::Google.escape(object_name),
                   :query      => query)
         end
       end
