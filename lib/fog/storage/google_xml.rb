@@ -22,7 +22,6 @@ module Fog
       request :get_bucket_acl
       request :get_object
       request :get_object_acl
-      request :get_object_torrent
       request :get_object_http_url
       request :get_object_https_url
       request :get_object_url
