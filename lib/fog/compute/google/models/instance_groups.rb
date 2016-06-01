@@ -32,16 +32,14 @@ module Fog
           nil
         end
 
+        # TODO: This shouldn't be in this model, add deprecation warning
         def add_instance(params)
           data = service.add_instance_group_instance(params[:group], params[:zone], params[:instance])
         end
 
+        # TODO: This shouldn't be in this model, add deprecation warning
         def remove_instance(params)
           data = service.remove_instance_group_instance(params[:group], params[:zone], params[:instance])
-        end
-
-        def get_instances(params)
-          data = service.list_instance_group_instances(params[:group], params[:zone])
         end
       end
     end
