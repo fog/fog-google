@@ -14,7 +14,7 @@ module Fog
             end
           end
 
-          load(data["items"])
+          load(data)
         end
 
         def get(identity, zone = nil)
