@@ -32,14 +32,20 @@ module Fog
           nil
         end
 
-        # TODO: This shouldn't be in this model, add deprecation warning
+        # TODO: To be deprecated
         def add_instance(params)
-          data = service.add_instance_group_instance(params[:group], params[:zone], params[:instance])
+          Fog::Logger.deprecation(
+            "#{self.class}.#{__method__} is deprecated, use Fog::Compute::Google::InstanceGroup.#{__method__} instead [light_black](#{caller.first})[/]"
+          )
+          service.add_instance_group_instance(params[:group], params[:zone], params[:instance])
         end
 
-        # TODO: This shouldn't be in this model, add deprecation warning
+        # TODO: To be deprecated
         def remove_instance(params)
-          data = service.remove_instance_group_instance(params[:group], params[:zone], params[:instance])
+          Fog::Logger.deprecation(
+            "#{self.class}.#{__method__} is deprecated, use Fog::Compute::Google::InstanceGroup.#{__method__} instead [light_black](#{caller.first})[/]"
+          )
+          service.remove_instance_group_instance(params[:group], params[:zone], params[:instance])
         end
       end
     end
