@@ -39,10 +39,11 @@ module Fog
           service.remove_instance_group_instance(identity, zone_name, instance_name)
         end
 
-        def get_instances
+        def list_instances
           requires :identity, :zone
 
-          service.list_instance_group_instances(identity, zone_name)
+          data = service.list_instance_group_instances(identity, zone_name).body
+          data["items"]
         end
 
         def zone_name
