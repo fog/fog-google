@@ -19,7 +19,7 @@ module Fog
 
       request_path "fog/compute/google/requests"
       request :add_backend_service_backends
-      request :add_instance_group_instance
+      request :add_instance_group_instances
       request :add_region_view_resources
       request :add_server_access_config
       request :add_target_pool_health_checks
@@ -145,7 +145,7 @@ module Fog
       request :list_zone_views
       request :list_zones
 
-      request :remove_instance_group_instance
+      request :remove_instance_group_instances
       request :remove_target_pool_health_checks
       request :remove_target_pool_instances
 

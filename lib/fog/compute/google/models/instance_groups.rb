@@ -37,7 +37,8 @@ module Fog
           Fog::Logger.deprecation(
             "#{self.class}.#{__method__} is deprecated, use Fog::Compute::Google::InstanceGroup.#{__method__} instead [light_black](#{caller.first})[/]"
           )
-          service.add_instance_group_instance(params[:group], params[:zone], params[:instance])
+          params[:instance] = [params[:instance]] unless params[:instance] == Array
+          service.add_instance_group_instances(params[:group], params[:zone], params[:instance])
         end
 
         # TODO: To be deprecated
@@ -45,7 +46,8 @@ module Fog
           Fog::Logger.deprecation(
             "#{self.class}.#{__method__} is deprecated, use Fog::Compute::Google::InstanceGroup.#{__method__} instead [light_black](#{caller.first})[/]"
           )
-          service.remove_instance_group_instance(params[:group], params[:zone], params[:instance])
+          params[:instance] = [params[:instance]] unless params[:instance] == Array
+          service.remove_instance_group_instances(params[:group], params[:zone], params[:instance])
         end
       end
     end
