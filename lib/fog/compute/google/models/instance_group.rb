@@ -18,13 +18,13 @@ module Fog
         def save
           requires :name, :zone
 
-          data = service.insert_instance_group(name, zone)
+          service.insert_instance_group(name, zone)
         end
 
         def destroy(_async = true)
           requires :name, :zone
 
-          data = service.delete_instance_group(name, zone_name)
+          service.delete_instance_group(name, zone_name)
         end
 
         def add_instances(instances)
@@ -46,8 +46,14 @@ module Fog
         def list_instances
           requires :identity, :zone
 
+          instance_list = []
           data = service.list_instance_group_instances(identity, zone_name).body
-          data["items"]
+          if data["items"]
+            data["items"].each do |instance|
+              instance_list << service.servers.get(instance["instance"].split("/")[-1], zone_name)
+            end
+          end
+          instance_list
         end
 
         def zone_name
@@ -57,7 +63,7 @@ module Fog
         private
 
         def format_instance_list(instance_list)
-          instance_list = [instance_list] unless instance_list.class == Array
+          instance_list = Array(instance_list)
           instance_list.map { |i| i.class == String ? i : i.self_link }
         end
       end
