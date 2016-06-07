@@ -18,153 +18,153 @@ module Fog
       RUNNING = "RUNNING".freeze
 
       request_path "fog/compute/google/requests"
-      request :list_servers
-      request :list_aggregated_servers
-      request :list_addresses
-      request :list_aggregated_addresses
-      request :list_disks
-      request :list_aggregated_disks
-      request :list_disk_types
-      request :list_aggregated_disk_types
-      request :list_firewalls
-      request :list_images
-      request :list_machine_types
-      request :list_aggregated_machine_types
-      request :list_networks
-      request :list_zones
-      request :list_regions
-      request :list_global_operations
-      request :list_region_operations
-      request :list_zone_operations
-      request :list_snapshots
-      request :list_http_health_checks
-      request :list_target_pools
-      request :list_forwarding_rules
-      request :list_routes
-      request :list_backend_services
-      request :list_global_forwarding_rules
-      request :list_url_maps
-      request :list_target_http_proxies
-      request :list_zone_views
-      request :list_region_views
-      request :list_region_view_resources
-      request :list_zone_view_resources
-      request :list_target_instances
-      request :list_aggregated_target_instances
-      request :list_instance_groups
-      request :list_aggregated_instance_groups
-      request :list_instance_group_instances
-      request :list_subnetworks
-      request :list_aggregated_subnetworks
-
-      request :get_server
-      request :get_address
-      request :get_disk
-      request :get_disk_type
-      request :get_firewall
-      request :get_image
-      request :get_machine_type
-      request :get_network
-      request :get_zone
-      request :get_region
-      request :get_snapshot
-      request :get_global_operation
-      request :get_region_operation
-      request :get_zone_operation
-      request :get_http_health_check
-      request :get_target_pool
-      request :get_target_pool_health
-      request :get_forwarding_rule
-      request :get_project
-      request :get_route
-      request :get_backend_service
-      request :get_backend_service_health
-      request :get_url_map
-      request :get_global_forwarding_rule
-      request :get_target_http_proxy
-      request :get_zone_view
-      request :get_region_view
-      request :get_target_instance
-      request :get_instance_group
-      request :get_subnetwork
-
-      request :delete_address
-      request :delete_disk
-      request :delete_snapshot
-      request :delete_firewall
-      request :delete_image
-      request :delete_network
-      request :delete_server
-      request :delete_global_operation
-      request :delete_region_operation
-      request :delete_zone_operation
-      request :delete_http_health_check
-      request :delete_target_pool
-      request :delete_forwarding_rule
-      request :delete_route
-      request :delete_backend_service
-      request :delete_url_map
-      request :delete_target_http_proxy
-      request :delete_global_forwarding_rule
-      request :delete_zone_view
-      request :delete_region_view
-      request :delete_target_instance
-      request :delete_instance_group
-      request :delete_subnetwork
-
-      request :insert_address
-      request :insert_disk
-      request :insert_firewall
-      request :insert_image
-      request :insert_network
-      request :insert_server
-      request :insert_snapshot
-      request :insert_http_health_check
-      request :insert_target_pool
-      request :insert_forwarding_rule
-      request :insert_route
-      request :insert_backend_service
-      request :insert_url_map
-      request :insert_target_http_proxy
-      request :insert_global_forwarding_rule
-      request :insert_zone_view
-      request :insert_region_view
-      request :insert_target_instance
-      request :insert_instance_group
-      request :insert_subnetwork
-
-      request :set_metadata
-      request :set_tags
-      request :set_forwarding_rule_target
-      request :set_global_forwarding_rule_target
-      request :set_target_http_proxy_url_map
-
-      request :add_target_pool_instances
-      request :add_target_pool_health_checks
       request :add_backend_service_backends
+      request :add_instance_group_instances
+      request :add_region_view_resources
+      request :add_server_access_config
+      request :add_target_pool_health_checks
+      request :add_target_pool_instances
       request :add_url_map_host_rules
       request :add_url_map_path_matchers
       request :add_zone_view_resources
-      request :add_region_view_resources
-      request :add_instance_group_instance
 
-      request :remove_target_pool_instances
+      request :delete_address
+      request :delete_backend_service
+      request :delete_disk
+      request :delete_firewall
+      request :delete_forwarding_rule
+      request :delete_global_forwarding_rule
+      request :delete_global_operation
+      request :delete_http_health_check
+      request :delete_image
+      request :delete_instance_group
+      request :delete_network
+      request :delete_region_operation
+      request :delete_region_view
+      request :delete_route
+      request :delete_server
+      request :delete_server_access_config
+      request :delete_snapshot
+      request :delete_subnetwork
+      request :delete_target_http_proxy
+      request :delete_target_instance
+      request :delete_target_pool
+      request :delete_url_map
+      request :delete_zone_operation
+      request :delete_zone_view
+
+      request :get_address
+      request :get_backend_service
+      request :get_backend_service_health
+      request :get_disk
+      request :get_disk_type
+      request :get_firewall
+      request :get_forwarding_rule
+      request :get_global_forwarding_rule
+      request :get_global_operation
+      request :get_http_health_check
+      request :get_image
+      request :get_instance_group
+      request :get_machine_type
+      request :get_network
+      request :get_project
+      request :get_region
+      request :get_region_operation
+      request :get_region_view
+      request :get_route
+      request :get_server
+      request :get_server_serial_port_output
+      request :get_snapshot
+      request :get_subnetwork
+      request :get_target_http_proxy
+      request :get_target_instance
+      request :get_target_pool
+      request :get_target_pool_health
+      request :get_url_map
+      request :get_zone
+      request :get_zone_operation
+      request :get_zone_view
+
+      request :insert_address
+      request :insert_backend_service
+      request :insert_disk
+      request :insert_firewall
+      request :insert_forwarding_rule
+      request :insert_global_forwarding_rule
+      request :insert_http_health_check
+      request :insert_image
+      request :insert_instance_group
+      request :insert_network
+      request :insert_region_view
+      request :insert_route
+      request :insert_server
+      request :insert_snapshot
+      request :insert_subnetwork
+      request :insert_target_http_proxy
+      request :insert_target_instance
+      request :insert_target_pool
+      request :insert_url_map
+      request :insert_zone_view
+
+      request :list_addresses
+      request :list_aggregated_addresses
+      request :list_aggregated_disk_types
+      request :list_aggregated_disks
+      request :list_aggregated_instance_groups
+      request :list_aggregated_machine_types
+      request :list_aggregated_servers
+      request :list_aggregated_subnetworks
+      request :list_aggregated_target_instances
+      request :list_backend_services
+      request :list_disk_types
+      request :list_disks
+      request :list_firewalls
+      request :list_forwarding_rules
+      request :list_global_forwarding_rules
+      request :list_global_operations
+      request :list_http_health_checks
+      request :list_images
+      request :list_instance_group_instances
+      request :list_instance_groups
+      request :list_machine_types
+      request :list_networks
+      request :list_region_operations
+      request :list_region_view_resources
+      request :list_region_views
+      request :list_regions
+      request :list_routes
+      request :list_servers
+      request :list_snapshots
+      request :list_subnetworks
+      request :list_target_http_proxies
+      request :list_target_instances
+      request :list_target_pools
+      request :list_url_maps
+      request :list_zone_operations
+      request :list_zone_view_resources
+      request :list_zone_views
+      request :list_zones
+
+      request :remove_instance_group_instances
       request :remove_target_pool_health_checks
+      request :remove_target_pool_instances
+
       request :set_common_instance_metadata
-      request :remove_instance_group_instance
+      request :set_forwarding_rule_target
+      request :set_global_forwarding_rule_target
+      request :set_metadata
+      request :set_server_disk_auto_delete
+      request :set_server_scheduling
+      request :set_tags
+      request :set_target_http_proxy_url_map
 
       request :attach_disk
       request :detach_disk
-      request :get_server_serial_port_output
       request :reset_server
-      request :set_server_disk_auto_delete
-      request :set_server_scheduling
-      request :add_server_access_config
-      request :delete_server_access_config
-      request :update_url_map
-      request :validate_url_map
       request :start_server
       request :stop_server
+      request :update_url_map
+      request :validate_url_map
 
       model_path "fog/compute/google/models"
       model :server

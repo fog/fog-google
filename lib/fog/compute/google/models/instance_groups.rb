@@ -14,7 +14,7 @@ module Fog
             end
           end
 
-          load(data["items"])
+          load(data)
         end
 
         def get(identity, zone = nil)
@@ -32,16 +32,22 @@ module Fog
           nil
         end
 
+        # TODO: To be deprecated
         def add_instance(params)
-          data = service.add_instance_group_instance(params[:group], params[:zone], params[:instance])
+          Fog::Logger.deprecation(
+            "#{self.class}.#{__method__} is deprecated, use Fog::Compute::Google::InstanceGroup.#{__method__} instead [light_black](#{caller.first})[/]"
+          )
+          params[:instance] = [params[:instance]] unless params[:instance] == Array
+          service.add_instance_group_instances(params[:group], params[:zone], params[:instance])
         end
 
+        # TODO: To be deprecated
         def remove_instance(params)
-          data = service.remove_instance_group_instance(params[:group], params[:zone], params[:instance])
-        end
-
-        def get_instances(params)
-          data = service.list_instance_group_instances(params[:group], params[:zone])
+          Fog::Logger.deprecation(
+            "#{self.class}.#{__method__} is deprecated, use Fog::Compute::Google::InstanceGroup.#{__method__} instead [light_black](#{caller.first})[/]"
+          )
+          params[:instance] = [params[:instance]] unless params[:instance] == Array
+          service.remove_instance_group_instances(params[:group], params[:zone], params[:instance])
         end
       end
     end

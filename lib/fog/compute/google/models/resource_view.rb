@@ -76,7 +76,7 @@ module Fog
           resources = [resources] unless resources.class == Array
           resources.map { |resource| resource.class == String ? resource : resource.self_link }
           service.add_zone_view_resources(self, resources, @zone) if @zone
-          service.add_region_view_resources(self, reources, @region) if @region
+          service.add_region_view_resources(self, resources, @region) if @region
           reload
         end
 
