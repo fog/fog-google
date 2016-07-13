@@ -13,7 +13,7 @@ class UrlMapsFactory < CollectionFactory
   end
 
   def params
-    params = { :name => resource_name,
-               :default_service => @backend_services.create.self_link }
+    { :name => resource_name,
+      :default_service => @backend_services.create.self_link }
   end
 end

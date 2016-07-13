@@ -13,7 +13,7 @@ class TargetHttpProxiesFactory < CollectionFactory
   end
 
   def params
-    params = { :name => resource_name,
-               :url_map => @url_maps.create.self_link }
+    { :name => resource_name,
+      :url_map => @url_maps.create.self_link }
   end
 end

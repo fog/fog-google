@@ -6,7 +6,7 @@ class ImagesFactory < CollectionFactory
   end
 
   def params
-    params = { :name => resource_name,
-               :raw_disk => { :source => TEST_RAW_DISK_SOURCE } }
+    { :name => resource_name,
+      :raw_disk => { :source => TEST_RAW_DISK_SOURCE } }
   end
 end
