@@ -2,7 +2,6 @@ require "helpers/integration_test_helper"
 
 class TestBuckets < FogIntegrationTest
   begin
-    client_email = Fog.credentials[:google_client_email]
     @@connection = Fog::Storage::Google.new
     @@connection.delete_bucket("fog-smoke-test")
   rescue Exception => e
