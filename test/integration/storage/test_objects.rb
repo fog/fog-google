@@ -88,9 +88,9 @@ class TestObjects < FogIntegrationTest
     response = @connection.put_object("fog-smoke-test", "my file", "THISISATESTFILE", options = { :predefinedAcl => "publicRead" })
     assert_equal response.status, 200
     https_url = @connection.get_object_https_url("fog-smoke-test", "my file")
-    assert_match /https/, https_url
-    assert_match /fog-smoke-test/, https_url
-    assert_match /my%20file/, https_url
+    assert_match(/https/, https_url)
+    assert_match(/fog-smoke-test/, https_url)
+    assert_match(/my%20file/, https_url)
   end
 
   def test_get_object_url

@@ -42,8 +42,8 @@ class TestDirectories < FogIntegrationTest
 
   def test_public_url
     public_url = @directory.public_url
-    assert_match /storage\.googleapis\.com/, public_url
-    assert_match /fog-smoke-test/, public_url
+    assert_match(/storage\.googleapis\.com/, public_url)
+    assert_match(/fog-smoke-test/, public_url)
   end
 
   def test_public

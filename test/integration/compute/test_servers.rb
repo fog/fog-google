@@ -14,7 +14,7 @@ class TestServers < FogIntegrationTest
     instance = @subject.bootstrap(:name => resource_name)
     assert instance.ready?
     instance.wait_for { sshable? }
-    assert_match /Linux/, instance.ssh("uname").first.stdout
+    assert_match(/Linux/, instance.ssh("uname").first.stdout)
     assert_equal instance.destroy.operation_type, "delete"
     Fog.wait_for { !@subject.all.map(&:identity).include? instance.identity }
     # XXX clean up after bootstrap's automatic creation of disks
