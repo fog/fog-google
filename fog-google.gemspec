@@ -28,6 +28,11 @@ Gem::Specification.new do |spec|
 
   # TODO: Upgrade to 0.9, which is not compatible.
   spec.add_development_dependency "google-api-client", "~> 0.8.6"
+  # ActiveSupport dependency is not used by fog; instead google-api-client
+  # 0.8.6 requires it. We lock it to 4.2.7 so as to avoid using 5.0, which is
+  # not compatible with older versions of Ruby. Once google-api-client is
+  # upgraded to 0.9 this should be removed.
+  spec.add_development_dependency "activesupport", "~> 4.2.7"
   spec.add_development_dependency "rake"
   spec.add_development_dependency "shindo"
   spec.add_development_dependency "minitest"
