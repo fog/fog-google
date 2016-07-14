@@ -13,7 +13,7 @@ class BackendServicesFactory < CollectionFactory
   end
 
   def params
-    params = { :name => resource_name,
-               :health_checks => [@http_health_checks.create.self_link] }
+    { :name => resource_name,
+      :health_checks => [@http_health_checks.create.self_link] }
   end
 end
