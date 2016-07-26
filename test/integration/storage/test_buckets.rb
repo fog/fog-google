@@ -2,7 +2,6 @@ require "helpers/integration_test_helper"
 
 class TestBuckets < FogIntegrationTest
   begin
-    client_email = Fog.credentials[:google_client_email]
     @@connection = Fog::Storage::Google.new
     @@connection.delete_bucket("fog-smoke-test")
   rescue Exception => e
@@ -24,7 +23,7 @@ class TestBuckets < FogIntegrationTest
   end
 
   def test_put_bucket_acl
-    response = @connection.put_bucket("fog-smoke-test", options = { "x-goog-acl" => "publicReadWrite" })
+    response = @connection.put_bucket("fog-smoke-test", options: { "x-goog-acl" => "publicReadWrite" })
     assert_equal response.status, 200
     acl = { :entity => "domain-google.com",
             :role => "READER" }
@@ -48,7 +47,7 @@ class TestBuckets < FogIntegrationTest
 
   def test_get_bucket_acl
     response = @connection.put_bucket("fog-smoke-test",
-                                      options = { "acl" => [{ :entity => "user-fake@developer.gserviceaccount.com", :role => "OWNER" }] })
+                                      options: { "acl" => [{ :entity => "user-fake@developer.gserviceaccount.com", :role => "OWNER" }] })
     assert_equal response.status, 200
     response = @connection.get_bucket_acl("fog-smoke-test")
     assert_equal response.status, 200

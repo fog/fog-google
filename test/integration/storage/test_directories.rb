@@ -4,7 +4,7 @@ class TestDirectories < FogIntegrationTest
   begin
     client_email = Fog.credentials[:google_client_email]
     @@connection = Fog::Storage::Google.new
-    @@connection.put_bucket("fog-smoke-test", options = { "acl" => [{ :entity => "user-" + client_email, :role => "OWNER" }] })
+    @@connection.put_bucket("fog-smoke-test", options: { "acl" => [{ :entity => "user-" + client_email, :role => "OWNER" }] })
     @@connection.put_bucket_acl("fog-smoke-test", :entity => "allUsers", :role => "READER")
     @@directory = @@connection.directories.get("fog-smoke-test")
   rescue Exception => e
@@ -42,8 +42,8 @@ class TestDirectories < FogIntegrationTest
 
   def test_public_url
     public_url = @directory.public_url
-    assert_match /storage\.googleapis\.com/, public_url
-    assert_match /fog-smoke-test/, public_url
+    assert_match(/storage\.googleapis\.com/, public_url)
+    assert_match(/fog-smoke-test/, public_url)
   end
 
   def test_public
