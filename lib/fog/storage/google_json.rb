@@ -38,8 +38,8 @@ module Fog
       request :get_object_http_url
       request :get_object_https_url
       request :get_object_url
-      # request :get_service
       request :head_object
+      request :list_buckets
       request :put_bucket
       request :put_bucket_acl
       request :put_object
