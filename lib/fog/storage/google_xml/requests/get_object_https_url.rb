@@ -25,9 +25,6 @@ module Fog
         # ==== Returns
         # * response<~Excon::Response>:
         #   * body<~String> - url for object
-        #
-        # ==== See Also
-        # http://docs.amazonwebservices.com/AmazonS3/latest/dev/S3_QSAuth.html
 
         include GetObjectHttpsUrl
       end

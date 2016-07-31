@@ -2,7 +2,7 @@ module Fog
   module Storage
     class GoogleJSON
       class Real
-        # Get an expiring object url from Google Storage
+        # Get an expiring object url from GCS
         # Deprecated, redirects to get_object_https_url.rb
 
         def get_object_url(bucket_name, object_name, expires)

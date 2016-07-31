@@ -15,7 +15,7 @@ module Fog
       end
 
       class Real
-        # Get an expiring object http url from S3
+        # Get an expiring object http url from GCS
         #
         # ==== Parameters
         # * bucket_name<~String> - Name of bucket containing object
@@ -25,9 +25,6 @@ module Fog
         # ==== Returns
         # * response<~Excon::Response>:
         #   * body<~String> - url for object
-        #
-        # ==== See Also
-        # http://docs.amazonwebservices.com/AmazonS3/latest/dev/S3_QSAuth.html
 
         include GetObjectHttpUrl
       end

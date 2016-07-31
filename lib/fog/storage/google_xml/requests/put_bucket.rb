@@ -8,7 +8,7 @@ module Fog
         # * bucket_name<~String> - name of bucket to create
         # * options<~Hash> - config arguments for bucket.  Defaults to {}.
         #   * 'LocationConstraint'<~Symbol> - sets the location for the bucket
-        #   * 'x-amz-acl'<~String> - Permissions, must be in ['private', 'public-read', 'public-read-write', 'authenticated-read']
+        #   * 'x-goog-acl'<~String> - The predefined access control list (ACL) that you want to apply to the bucket.
         #
         # ==== Returns
         # * response<~Excon::Response>:
