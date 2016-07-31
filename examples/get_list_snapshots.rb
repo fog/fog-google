@@ -16,7 +16,7 @@ def test
   puts snapshots.inspect
 
   puts "Fetching a single snapshot..."
-  puts "------------------------------------------------"
+  puts "---------------------------------"
   snap = snapshots.first
   unless snap.nil?
     snap = connection.snapshots.get(snap)
