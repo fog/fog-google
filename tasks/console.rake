@@ -3,10 +3,8 @@
 
 desc "Project IRB console"
 task :console do
-  require "irb"
-  require "irb/completion"
-  require "fog/google"
-  Fog.credential = :test
+  require "bundler"
+  Bundler.require(:default, :development)
   ARGV.clear
-  IRB.start
+  Pry.start
 end
