@@ -10,11 +10,12 @@ module Fog
         # * options<~Hash> - config arguments for bucket.  Defaults to {}.
         #   * 'LocationConstraint'<~Symbol> - sets the location for the bucket
         #   * 'x-amz-acl'<~String> - Permissions, must be in ['private', 'public-read', 'public-read-write', 'authenticated-read']
+        # * body_options<~Hash> - body arguments for bucket creation
         #
         # ==== Returns
         # * response<~Excon::Response>:
         #   * status<~Integer> - 200
-        def put_bucket(bucket_name, options = {})
+        def put_bucket(bucket_name, options = {}, body_options = {})
           location = options["LocationConstraint"] if options["LocationConstraint"]
 
           api_method = @storage_json.buckets.insert
@@ -22,18 +23,19 @@ module Fog
             "project" => @project,
             "projection" => "full"
           }
+          parameters.merge! options
           body_object = {
             "name" => bucket_name,
             "location" => location
           }
-          parameters.merge! options
+          body_object.merge! body_options
 
           request(api_method, parameters, body_object = body_object)
         end
       end
 
       class Mock
-        def put_bucket(bucket_name, options = {})
+        def put_bucket(bucket_name, options = {}, _body_options = {})
           acl = options["x-goog-acl"] || "private"
           if !%w(private publicRead publicReadWrite authenticatedRead).include?(acl)
             raise Excon::Errors::BadRequest.new("invalid x-goog-acl")
