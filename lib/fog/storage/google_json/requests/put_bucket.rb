@@ -2,19 +2,23 @@ module Fog
   module Storage
     class GoogleJSON
       class Real
-        # Create an Google Storage bucket
-        # https://cloud.google.com/storage/docs/json_api/v1/buckets/insert
+        # Create a Google Storage bucket
         #
         # ==== Parameters
         # * bucket_name<~String> - name of bucket to create
         # * options<~Hash> - config arguments for bucket.  Defaults to {}.
         #   * 'LocationConstraint'<~Symbol> - sets the location for the bucket
-        #   * 'x-amz-acl'<~String> - Permissions, must be in ['private', 'public-read', 'public-read-write', 'authenticated-read']
-        # * body_options<~Hash> - body arguments for bucket creation
+        #   * 'predefinedAcl'<~String> - Apply a predefined set of access controls to this bucket.
+        #   * 'predefinedDefaultObjectAcl'<~String> - Apply a predefined set of default object access controls to this bucket.
+        # * body_options<~Hash> - body arguments for bucket creation.
+        #   See https://cloud.google.com/storage/docs/json_api/v1/buckets/insert#request-body
         #
         # ==== Returns
         # * response<~Excon::Response>:
         #   * status<~Integer> - 200
+        #
+        # ==== See also
+        # https://cloud.google.com/storage/docs/json_api/v1/buckets/insert
         def put_bucket(bucket_name, options = {}, body_options = {})
           location = options["LocationConstraint"] if options["LocationConstraint"]
 

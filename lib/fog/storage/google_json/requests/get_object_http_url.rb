@@ -15,7 +15,7 @@ module Fog
       end
 
       class Real
-        # Get an expiring object http url from S3
+        # Get an expiring object http url from GCS
         #
         # ==== Parameters
         # * bucket_name<~String> - Name of bucket containing object
