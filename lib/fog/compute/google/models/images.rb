@@ -68,6 +68,25 @@ module Fog
           new(data)
         end
 
+        def get_from_family(family)
+          # Search own project before global projects
+          all_projects = [service.project] + global_projects
+
+          data = nil
+          all_projects.each do |project|
+            begin
+              data = service.get_image_from_family(family, project).body
+              data[:project] = project
+            rescue Fog::Errors::NotFound
+              next
+            else
+              break
+            end
+          end
+          return nil if data.nil?
+          new(data)
+        end
+
         private
 
         def global_projects

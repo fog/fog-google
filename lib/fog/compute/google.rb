@@ -64,6 +64,7 @@ module Fog
       request :get_global_operation
       request :get_http_health_check
       request :get_image
+      request :get_image_from_family
       request :get_instance_group
       request :get_machine_type
       request :get_network
