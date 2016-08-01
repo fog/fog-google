@@ -1,21 +1,30 @@
+# All examples presume that you have a ~/.fog credentials file set up.
+# More info on it can be found here: http://fog.io/about/getting_started.html
+
+require "bundler"
+Bundler.require(:default, :development)
+# Uncomment this if you want to make real requests to GCE (you _will_ be billed!)
+# WebMock.disable!
 
 def test
   # Config
   name = "fog-lb-test-#{Time.now.to_i}"
-  zone = "us-central1-b"
-  region = "us-central1"
+  zone = "europe-west1-d"
+  region = "europe-west1"
 
   # Setup
   gce = Fog::Compute.new :provider => "Google"
   servers = []
 
+  puts "Creating instances..."
+  puts "--------------------------------"
   (1..3).each do |i|
     begin
       disk = gce.disks.create(
         :name => "#{name}-#{i}",
         :size_gb => 10,
         :zone_name => zone,
-        :source_image => "debian-7-wheezy-v20131120"
+        :source_image => "debian-8-jessie-v20160718"
       )
       disk.wait_for { disk.ready? }
     rescue
@@ -35,6 +44,8 @@ def test
     end
   end
 
+  puts "Creating health checks..."
+  puts "--------------------------------"
   begin
     health = gce.http_health_checks.new(:name => name)
     health.save
@@ -42,11 +53,13 @@ def test
     puts "Failed to create health check #{name}"
   end
 
+  puts "Creating a target pool..."
+  puts "--------------------------------"
   begin
     pool = gce.target_pools.new(
       :name => name,
       :region => region,
-      :health_checks => health.self_link,
+      :health_checks => [health.self_link],
       :instances => servers.map(&:self_link)
     )
     pool.save
@@ -54,6 +67,8 @@ def test
     puts "Failed to create target pool #{name}"
   end
 
+  puts "Creating forwarding rules..."
+  puts "--------------------------------"
   begin
     rule = gce.forwarding_rules.new(
       :name => name,
@@ -71,6 +86,8 @@ def test
   #                actual requests through the load balancer.
 
   # Cleanup
+  puts "Cleaning up..."
+  puts "--------------------------------"
   begin
     rule.destroy
   rescue
@@ -95,3 +112,5 @@ def test
     puts "Failed to clean up instances."
   end
 end
+
+test
