@@ -161,6 +161,10 @@ module Fog
           if options.key? "preemptible"
             scheduling["preemptible"] = options.delete "preemptible"
             scheduling["preemptible"] = scheduling["preemptible"].class == TrueClass
+            # If we don't have an explicit value for "on_host_maintenance, then
+            # force the value to be 'TERMINATE' as it's the default and
+            # only-accepted value for preemptible vms
+            scheduling["onHostMaintenance"] = "TERMINATE" unless options.key? "on_host_maintenance"
           end
           if options.key? "on_host_maintenance"
             ohm = options.delete "on_host_maintenance"
