@@ -22,7 +22,6 @@ module Fog
 
         def all
           data = []
-          all_projects = [service.project] + global_projects
 
           all_projects.each do |project|
             begin
@@ -50,10 +49,8 @@ module Fog
         end
 
         def get(identity)
-          # Search own project before global projects
-          all_projects = [service.project] + global_projects
-
           data = nil
+
           all_projects.each do |project|
             begin
               data = service.get_image(identity, project).body
@@ -68,10 +65,28 @@ module Fog
           new(data)
         end
 
+        def get_from_family(family)
+          data = nil
+          
+          all_projects.each do |project|
+            begin
+              data = service.get_image_from_family(family, project).body
+              data[:project] = project
+            rescue Fog::Errors::NotFound
+              next
+            else
+              break
+            end
+          end
+          return nil if data.nil?
+          new(data)
+        end
+
         private
 
-        def global_projects
-          GLOBAL_PROJECTS + service.extra_global_projects
+        def all_projects
+          # Search own project before global projects
+          [service.project] + GLOBAL_PROJECTS + service.extra_global_projects
         end
       end
     end
