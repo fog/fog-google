@@ -52,9 +52,9 @@ module Fog
 
         attr_reader :directory
 
-        def copy(target_directory_key, target_file_key)
+        def copy(target_directory_key, target_file_key, options = {})
           requires :directory, :key
-          service.copy_object(directory.key, key, target_directory_key, target_file_key)
+          service.copy_object(directory.key, key, target_directory_key, target_file_key, options)
           target_directory = service.directories.new(:key => target_directory_key)
           target_directory.files.get(target_file_key)
         end
