@@ -32,7 +32,7 @@ module Fog
           elsif data.is_a? String
             data = StringIO.new(data)
             mime_type = "text/plain"
-          elsif data.is_a? File
+          elsif data.is_a? ::File
             mime_type = Fog::Storage.parse_data(data)[:headers]["Content-Type"]
           end
 
