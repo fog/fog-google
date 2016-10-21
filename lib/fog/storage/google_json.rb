@@ -40,6 +40,7 @@ module Fog
       request :get_object_url
       request :head_object
       request :list_buckets
+      request :list_objects
       request :put_bucket
       request :put_bucket_acl
       request :put_object
