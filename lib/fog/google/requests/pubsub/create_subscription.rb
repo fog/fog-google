@@ -26,9 +26,8 @@ module Fog
             "topic" => (topic.is_a?(Topic) ? topic.name : topic.to_s)
           }
 
-          if !push_config.nil? && push_config.key?("push_endpoint")
-            body["pushConfig"] = push_config["push_endpoint"].clone
-            body["pushConfig"]["attributes"] = push_config["attributes"] if push_config.key?("attributes")
+          unless push_config.empty?
+            body["pushConfig"] = push_config
           end
 
           body["ackDeadlineSeconds"] = ack_deadline_seconds unless ack_deadline_seconds.nil?
