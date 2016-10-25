@@ -16,22 +16,8 @@ module Fog
 
         def all(options = {})
           requires :directory
-          options = {
-            "delimiter"   => delimiter,
-            "pageToken"   => page_token,
-            "maxResults"  => max_results,
-            "prefix"      => prefix
-          }.merge!(options)
-          options = options.reject { |_key, value| value.nil? || value.to_s.empty? }
-          merge_attributes(options)
-          parent = directory.collection.get(
-            directory.key,
-            options
-          )
-          if parent
-            merge_attributes(parent.files.attributes)
-            load(parent.files.map(&:attributes))
-          end
+
+          load(service.list_objects(directory.key, options)[:body]["items"])
         end
 
         alias_method :each_file_this_page, :each

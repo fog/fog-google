@@ -2,7 +2,7 @@ module Fog
   module Storage
     class GoogleJSON
       class File < Fog::Model
-        identity :key, :aliases => "Key"
+        identity :key, :aliases => %w{Key name}
 
         attribute :acl
         attribute :predefined_acl
