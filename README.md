@@ -60,7 +60,7 @@ Or install it yourself as:
 $ gem install fog-google
 ```
 
-### Setup
+## Setup
 
 #### Credentials
 
@@ -83,10 +83,23 @@ my_credentials:
 	google_storage_secret_access_key: XXXX+XXX/XXXXXXXX+XXXXXXXXXXXXXXXXXXXXX
 ```	
 
-
 #### SSH-ing into instances
 
-If you want to be able to bootstrap SSH-able instances, (using `servers.bootstrap`,) be sure you have a key in `~/.ssh/id_rsa` and `~/.ssh/id_rsa.pub`.
+If you want to be able to bootstrap SSH-able instances, (using `servers.bootstrap`,) be sure you have a key in `~/.ssh/id_rsa` and `~/.ssh/id_rsa.pub`
+
+## Quickstart
+
+Once you've specified your credentials, you should be good to go!
+```
+λ bundle exec pry
+[1] pry(main)> require 'fog/google'
+=> true
+[2] pry(main)> connection = Fog::Compute::Google.new
+[3] pry(main)> connection.servers
+=> [  <Fog::Compute::Google::Server
+    name="xxxxxxx",
+    kind="compute#instance",
+```
 
 ## Contributing
 
