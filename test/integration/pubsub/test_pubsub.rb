@@ -10,14 +10,21 @@ class TestPubsubService < FogIntegrationTest
 
   # Ensure any resources we create with test prefixes are removed
   Minitest.after_run do
-    @@client.list_topics[:body]["topics"].
-      map { |t| t["name"] }.
-      select { |t| t.start_with?(TOPIC_RESOURCE_PREFIX) }.
-      each { |t| @@client.delete_topic(t) }
-    @@client.list_subscriptions[:body]["subscriptions"].
-      map { |s| s["name"] }.
-      select { |s| s.start_with?(SUBSCRIPTION_RESOURCE_PREFIX) }.
-      each { |s| @@client.delete_subscription(s) }
+    topics = @@client.list_topics[:body]["topics"]
+    unless topics.nil?
+      topics.
+        map { |t| t["name"] }.
+        select { |t| t.start_with?(TOPIC_RESOURCE_PREFIX) }.
+        each { |t| @@client.delete_topic(t) }
+    end
+
+    subscriptions = @@client.list_subscriptions[:body]["subscriptions"]
+    unless subscriptions.nil?
+      subscriptions.
+        map { |s| s["name"] }.
+        select { |s| s.start_with?(SUBSCRIPTION_RESOURCE_PREFIX) }.
+        each { |s| @@client.delete_subscription(s) }
+    end
   end
 
   def new_topic_name
