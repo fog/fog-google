@@ -3,67 +3,73 @@ require "securerandom"
 require "base64"
 
 class TestPubsubService < FogIntegrationTest
-  @@client = Fog::Google::Pubsub.new
+  def setup
+    @client = Fog::Google::Pubsub.new
+    # Ensure any resources we create with test prefixes are removed
+    Minitest.after_run do
+      delete_test_resources
+    end
+  end
 
-  TOPIC_RESOURCE_PREFIX = "projects/#{@@client.project}/topics/fog-integration-test".freeze
-  SUBSCRIPTION_RESOURCE_PREFIX = "projects/#{@@client.project}/subscriptions/fog-integration-test".freeze
-
-  # Ensure any resources we create with test prefixes are removed
-  Minitest.after_run do
-    topics = @@client.list_topics[:body]["topics"]
+  def delete_test_resources
+    topics = @client.list_topics[:body]["topics"]
     unless topics.nil?
       topics.
         map { |t| t["name"] }.
-        select { |t| t.start_with?(TOPIC_RESOURCE_PREFIX) }.
-        each { |t| @@client.delete_topic(t) }
+        select { |t| t.start_with?(topic_resource_prefix) }.
+        each { |t| @client.delete_topic(t) }
     end
 
-    subscriptions = @@client.list_subscriptions[:body]["subscriptions"]
+    subscriptions = @client.list_subscriptions[:body]["subscriptions"]
     unless subscriptions.nil?
       subscriptions.
         map { |s| s["name"] }.
-        select { |s| s.start_with?(SUBSCRIPTION_RESOURCE_PREFIX) }.
-        each { |s| @@client.delete_subscription(s) }
+        select { |s| s.start_with?(subscription_resource_prefix) }.
+        each { |s| @client.delete_subscription(s) }
     end
   end
 
+  def topic_resource_prefix
+    "projects/#{@client.project}/topics/fog-integration-test"
+  end
+
+  def subscription_resource_prefix
+    "projects/#{@client.project}/subscriptions/fog-integration-test"
+  end
+
   def new_topic_name
-    "#{TOPIC_RESOURCE_PREFIX}-#{SecureRandom.uuid}"
+    "#{topic_resource_prefix}-#{SecureRandom.uuid}"
   end
 
   def new_subscription_name
-    "#{SUBSCRIPTION_RESOURCE_PREFIX}-#{SecureRandom.uuid}"
+    "#{subscription_resource_prefix}-#{SecureRandom.uuid}"
   end
 
   def some_topic_name
     # create lazily to speed tests up
-    @some_topic ||= begin
-                      topic_name = new_topic_name
-                      @@client.create_topic(topic_name)
-                      topic_name
-                    end
+    @some_topic ||= new_topic_name.tap do |t|
+      @client.create_topic(t)
+    end
     @some_topic
   end
 
   def some_subscription_name
     # create lazily to speed tests up
-    @some_subscription ||= begin
-                      subscription_name = new_subscription_name
-                      @@client.create_subscription(subscription_name, some_topic_name)
-                      subscription_name
-                    end
+    @some_subscription ||= new_subscription_name.tap do |s|
+      @client.create_subscription(s, some_topic_name)
+    end
     @some_subscription
   end
 
   def test_create_topic
-    result = @@client.create_topic(new_topic_name)
+    result = @client.create_topic(new_topic_name)
 
     assert_equal(200, result.status, "request should be successful")
     assert_includes(result[:body].keys, "name", "resulting body should contain expected keys")
   end
 
   def test_get_topic
-    result = @@client.get_topic(some_topic_name)
+    result = @client.get_topic(some_topic_name)
 
     assert_equal(200, result.status, "request should be successful")
     assert_includes(result[:body].keys, "name", "resulting body should contain expected keys")
@@ -71,8 +77,8 @@ class TestPubsubService < FogIntegrationTest
 
   def test_list_topics
     # Force a topic to be created just so we have at least 1 to list
-    @@client.create_topic(new_topic_name)
-    result = @@client.list_topics
+    @client.create_topic(new_topic_name)
+    result = @client.list_topics
 
     assert_equal(200, result.status, "request should be successful")
     assert_includes(result[:body].keys, "topics", "resulting body should contain expected keys")
@@ -81,14 +87,14 @@ class TestPubsubService < FogIntegrationTest
 
   def test_delete_topic
     topic_to_delete = new_topic_name
-    @@client.create_topic(topic_to_delete)
+    @client.create_topic(topic_to_delete)
 
-    result = @@client.delete_topic(topic_to_delete)
+    result = @client.delete_topic(topic_to_delete)
     assert_equal(200, result.status, "request should be successful")
   end
 
   def test_publish_topic
-    result = @@client.publish_topic(some_topic_name, [:data => Base64.strict_encode64("some message")])
+    result = @client.publish_topic(some_topic_name, [:data => Base64.strict_encode64("some message")])
 
     assert_equal(200, result.status, "request should be successful")
     assert_includes(result[:body].keys, "messageIds", "resulting body should contain expected keys")
@@ -98,7 +104,7 @@ class TestPubsubService < FogIntegrationTest
     push_config = {}
     ack_deadline_seconds = 18
 
-    result = @@client.create_subscription(new_subscription_name, some_topic_name, push_config, ack_deadline_seconds)
+    result = @client.create_subscription(new_subscription_name, some_topic_name, push_config, ack_deadline_seconds)
 
     assert_equal(200, result.status, "request should be successful")
     assert((%w{name topic pushConfig ackDeadlineSeconds} - result[:body].keys).empty?,
@@ -107,7 +113,7 @@ class TestPubsubService < FogIntegrationTest
   end
 
   def test_get_subscription
-    result = @@client.get_subscription(some_subscription_name)
+    result = @client.get_subscription(some_subscription_name)
 
     assert_equal(200, result.status, "request should be successful")
     assert(%w{name topic pushConfig ackDeadlineSeconds} - result[:body].keys,
@@ -116,8 +122,8 @@ class TestPubsubService < FogIntegrationTest
 
   def test_list_subscriptions
     # Force a subscription to be created just so we have at least 1 to list
-    @@client.create_subscription(new_subscription_name, some_topic_name)
-    result = @@client.list_subscriptions
+    @client.create_subscription(new_subscription_name, some_topic_name)
+    result = @client.list_subscriptions
 
     assert_equal(200, result.status, "request should be successful")
     assert_includes(result[:body].keys, "subscriptions", "resulting body should contain expected keys")
@@ -126,18 +132,18 @@ class TestPubsubService < FogIntegrationTest
 
   def test_delete_subscription
     subscription_to_delete = new_subscription_name
-    @@client.create_subscription(subscription_to_delete, some_topic_name)
+    @client.create_subscription(subscription_to_delete, some_topic_name)
 
-    result = @@client.delete_subscription(subscription_to_delete)
+    result = @client.delete_subscription(subscription_to_delete)
     assert_equal(200, result.status, "request should be successful")
   end
 
   def test_pull_subscription
     subscription = new_subscription_name
-    @@client.create_subscription(subscription, some_topic_name)
-    @@client.publish_topic(some_topic_name, [:data => Base64.strict_encode64("some message")])
+    @client.create_subscription(subscription, some_topic_name)
+    @client.publish_topic(some_topic_name, [:data => Base64.strict_encode64("some message")])
 
-    result = @@client.pull_subscription(subscription)
+    result = @client.pull_subscription(subscription)
 
     assert_equal(200, result.status, "request should be successful")
     assert_includes(result[:body].keys, "receivedMessages", "resulting body should contain expected keys")
@@ -149,11 +155,11 @@ class TestPubsubService < FogIntegrationTest
 
   def test_acknowledge_subscription
     subscription = new_subscription_name
-    @@client.create_subscription(subscription, some_topic_name)
-    @@client.publish_topic(some_topic_name, [:data => Base64.strict_encode64("some message")])
-    pull_result = @@client.pull_subscription(subscription)
+    @client.create_subscription(subscription, some_topic_name)
+    @client.publish_topic(some_topic_name, [:data => Base64.strict_encode64("some message")])
+    pull_result = @client.pull_subscription(subscription)
 
-    result = @@client.acknowledge_subscription(subscription, pull_result[:body]["receivedMessages"][0]["ackId"])
+    result = @client.acknowledge_subscription(subscription, pull_result[:body]["receivedMessages"][0]["ackId"])
 
     assert_equal(200, result.status, "request should be successful")
   end
