@@ -63,7 +63,7 @@ module Fog
           requires :directory, :key
           service.delete_object(directory.key, key)
           true
-        rescue Excon::Errors::NotFound
+        rescue Fog::Errors::NotFound
           false
         end
 

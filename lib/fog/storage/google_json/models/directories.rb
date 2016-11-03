@@ -16,7 +16,7 @@ module Fog
                                                 :prefix     => "prefix")
           data = service.get_bucket(key, options).body
           new(:key => data["name"])
-        rescue Excon::Errors::NotFound
+        rescue Fog::Errors::NotFound
           nil
         end
       end
