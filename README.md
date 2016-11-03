@@ -6,6 +6,9 @@ The main maintainers for the Google sections are @icco, @Temikus and @plribeiro3
 
 **As of v0.1.1, Google no longer supports Ruby versions less than 2.0.0.**
 
+**Currently, `fog-google` does not support versions of `google-api-client` >= 0.9 or <= 0.8.5.**
+
+
 ## Storage
 
 There are two ways to access [Google Cloud Storage](https://cloud.google.com/storage/). The old S3 API and the new JSON API. `Fog::Storage::Google` will automatically direct you to the appropriate API based on the credentials you provide it.
