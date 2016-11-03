@@ -47,7 +47,7 @@ module Fog
           file_data.merge!(:body => data.body,
                            :key  => key)
           new(file_data)
-        rescue Excon::Errors::NotFound
+        rescue Fog::Errors::NotFound
           nil
         end
 
@@ -61,7 +61,7 @@ module Fog
           data = service.head_object(directory.key, key, options)
           file_data = data.headers.merge(:key => key)
           new(file_data)
-        rescue Excon::Errors::NotFound
+        rescue Fog::Errors::NotFound
           nil
         end
 

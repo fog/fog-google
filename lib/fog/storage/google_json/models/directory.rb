@@ -16,7 +16,7 @@ module Fog
           requires :key
           service.delete_bucket(key)
           true
-        rescue Excon::Errors::NotFound
+        rescue Fog::Errors::NotFound
           false
         end
 
