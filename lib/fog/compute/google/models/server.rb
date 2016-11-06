@@ -162,12 +162,12 @@ module Fog
           data.body["contents"]
         end
 
-        def set_disk_auto_delete(auto_delete, device_name=nil)
+        def set_disk_auto_delete(auto_delete, device_name = nil)
           requires :identity, :zone
 
           unless device_name
-            if self.disks.count <= 1
-              device_name = self.disks[0]['deviceName']
+            if disks.count <= 1
+              device_name = disks[0]["deviceName"]
             else
               raise ArgumentError.new("Device name required if multiple disks are attached")
             end
