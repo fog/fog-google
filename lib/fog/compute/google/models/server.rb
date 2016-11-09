@@ -162,8 +162,16 @@ module Fog
           data.body["contents"]
         end
 
-        def set_disk_auto_delete(auto_delete, device_name)
+        def set_disk_auto_delete(auto_delete, device_name = nil)
           requires :identity, :zone
+
+          unless device_name
+            if disks.count <= 1
+              device_name = disks[0]["deviceName"]
+            else
+              raise ArgumentError.new("Device name required if multiple disks are attached")
+            end
+          end
 
           data = service.set_server_disk_auto_delete(identity, zone_name, auto_delete, device_name)
           Fog::Compute::Google::Operations.new(:service => service).get(data.body["name"], data.body["zone"])
