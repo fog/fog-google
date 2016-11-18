@@ -1,9 +1,12 @@
 require "helpers/integration_test_helper"
+require "helpers/client_helper"
 require "securerandom"
 
 class TestComputeAddresses < FogIntegrationTest
   DEFAULT_REGION = "us-central1".freeze
   ADDRESS_RESOURCE_PREFIX = "fog-test-address".freeze
+
+  include ClientHelper
 
   # Ensure we clean up any created resources
   Minitest.after_run do
@@ -17,6 +20,8 @@ class TestComputeAddresses < FogIntegrationTest
     end
   end
 
+  attr_reader :client
+
   def setup
     @client = Fog::Compute::Google.new
   end
@@ -29,22 +34,8 @@ class TestComputeAddresses < FogIntegrationTest
     # created lazily to speed tests up
     @some_address ||= new_address_name.tap do |a|
       result = @client.insert_address(a, DEFAULT_REGION)
-      Fog.wait_for { operation_finished?(result[:body]["name"]) }
+      Fog.wait_for { operation_finished?(result) }
     end
-  end
-
-  def operation_finished?(name)
-    operation = @client.get_region_operation(DEFAULT_REGION, name)
-    !%w(PENDING RUNNING).include?(operation[:body]["status"])
-  end
-
-  def wait_until_complete
-    result = yield
-    return result unless result[:body]["kind"] == "compute#operation"
-
-    operation_name = result[:body]["name"]
-    Fog.wait_for { operation_finished?(operation_name) }
-    @client.get_region_operation(DEFAULT_REGION, operation_name)
   end
 
   def test_insert_address
