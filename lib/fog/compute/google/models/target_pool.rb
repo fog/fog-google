@@ -73,8 +73,16 @@ module Fog
           reload
         end
 
-        def get_health
-          service.get_target_pool_health self
+        def get_health(instance_name = nil)
+          if instance_name
+            instance = service.servers.get(instance_name)
+            health_results = [service.get_target_pool_health(self, instance.self_link)]
+          else
+            health_results = instances.map do |instance_selflink|
+              service.get_target_pool_health(self, instance_selflink)
+            end
+          end
+          Hash[health_results]
         end
 
         def ready?
