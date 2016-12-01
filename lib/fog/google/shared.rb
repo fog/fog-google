@@ -29,6 +29,7 @@ module Fog
       # @option options [String] :app_name The app name to set in the user agent
       # @option options [String] :app_version The app version to set in the user agent
       # @option options [Google::APIClient] :google_client Existing Google API Client
+      # @option options [Hash] :google_client_options A hash to send adition options to Google API Client
       # @return [Google::APIClient] Google API Client
       # @raises [ArgumentError] If there is any missing argument
       def initialize_google_client(options)
@@ -62,7 +63,8 @@ module Fog
           signing_key,
           options[:google_api_scope_url],
           options[:app_name],
-          options[:app_version]
+          options[:app_version],
+          options[:google_client_options]
         )
       end
 
@@ -109,7 +111,7 @@ module Fog
       # @param [String] app_name The app name to set in the user agent
       # @param [String] app_version The app version to set in the user agent
       # @return [Google::APIClient] Google API Client
-      def new_pk12_google_client(google_client_email, signing_key, google_api_scope_url, app_name = nil, app_version = nil)
+      def new_pk12_google_client(google_client_email, signing_key, google_api_scope_url, app_name = nil, app_version = nil, google_client_options = [])
         application_name = app_name.nil? ? "fog" : "#{app_name}/#{app_version || '0.0.0'} fog"
         api_client_options = {
           :application_name => application_name,
@@ -124,7 +126,8 @@ module Fog
           :issuer => google_client_email,
           :scope => google_api_scope_url,
           :signing_key => signing_key,
-          :token_credential_uri => "https://accounts.google.com/o/oauth2/token"
+          :token_credential_uri => "https://accounts.google.com/o/oauth2/token",
+          :google_client_options => google_client_options
         )
         client.authorization.fetch_access_token!
 
