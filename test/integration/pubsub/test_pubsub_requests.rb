@@ -2,7 +2,7 @@ require "helpers/integration_test_helper"
 require "securerandom"
 require "base64"
 
-class TestPubsubService < FogIntegrationTest
+class TestPubsubRequests < FogIntegrationTest
   def setup
     @client = Fog::Google::Pubsub.new
     # Ensure any resources we create with test prefixes are removed
