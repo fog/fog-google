@@ -209,13 +209,17 @@ module Fog
         def add_ssh_key(username, key)
           self.metadata = Hash.new("") if metadata.nil?
 
+          # The key "sshKeys" is deprecated and will be unsupported in the
+          # future - for now defer to using 'ssh-keys' unless the user is
+          # already using the deprecated version
+          # https://cloud.google.com/compute/docs/instances/adding-removing-ssh-keys#deprecated
+          metadata_key = metadata.key?("sshKeys") ? "sshKeys" : "ssh-keys"
+
           # You can have multiple SSH keys, seperated by newlines.
           # https://developers.google.com/compute/docs/console?hl=en#sshkeys
-          metadata["sshKeys"] = "" unless metadata["sshKeys"]
-
-          metadata["sshKeys"] += "\n" unless metadata["sshKeys"].empty?
-
-          metadata["sshKeys"] += "#{username}:#{key.strip}"
+          metadata[metadata_key] = "" unless metadata[metadata_key]
+          metadata[metadata_key] += "\n" unless metadata[metadata_key].empty?
+          metadata[metadata_key] += "#{username}:#{key.strip}"
 
           metadata
         end
