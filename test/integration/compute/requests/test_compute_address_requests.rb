@@ -2,7 +2,7 @@ require "helpers/integration_test_helper"
 require "helpers/client_helper"
 require "securerandom"
 
-class TestComputeAddresses < FogIntegrationTest
+class TestComputeAddressRequests < FogIntegrationTest
   DEFAULT_REGION = "us-central1".freeze
   ADDRESS_RESOURCE_PREFIX = "fog-test-address".freeze
 
