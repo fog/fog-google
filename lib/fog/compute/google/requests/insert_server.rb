@@ -23,6 +23,7 @@ module Fog
           disks
         end
 
+        # (see Fog::Compute::Google::Real#insert_server)
         def insert_server(server_name, zone_name, options = {}, *_deprecated_args)
           # check that zone exists
           get_zone(zone_name)
@@ -113,6 +114,61 @@ module Fog
           { "items" => metadata.map { |k, v| { "key" => k, "value" => v } } }
         end
 
+        ##
+        # Create a new instance (virtual machine). You can provision a server
+        # using low-level request options via this method (if you don't need to
+        # modify low-level request options, consider using the 'servers'
+        # collection object instead - see Fog::Compute::Google::Servers).
+        # This method should directly take any of the API parameters/options for
+        # the GCP endpoint (passed through the +options+ parameter).
+        #
+        # @see https://cloud.google.com/compute/docs/reference/latest/instances/insert
+        # @example minimal server creation
+        #   require 'fog/google'
+        #   client = Fog::Compute::Google.new
+        #   my_result = client.insert_server('my-server',
+        #                                    'us-central1-b',
+        #                                    'machineType' => 'f1-micro',
+        #                                     'disks' => [
+        #                                       'initializeParams' => {
+        #                                         'sourceImage' => 'projects/debian-cloud/global/images/family/debian-8'
+        #                                       }
+        #                                     ])
+        #
+        # @param server_name [String] Name to assign to the created server. Must
+        #   be unique within the specified zone.
+        # @param zone_name [String] Name of zone containing the created server.
+        #   See Fog::Compute::Google#zones for a list of available zones.
+        # @param options [Hash] options to use when creating a server. You can
+        #  use any of the options documented at
+        #  https://cloud.google.com/compute/docs/reference/latest/instances/insert.
+        #  Additionally accepts some nonstandard parameters documented below.
+        # @option options [String] 'machineType' Required: the machine type to use - see
+        #   https://cloud.google.com/compute/docs/machine-types for a list.
+        # @option options [String] 'externalIp' An IP address to assign to the
+        #   server. See
+        #   https://cloud.google.com/compute/docs/configure-instance-ip-addresses
+        #   for more information about assigning instance ip addresses.
+        # @option options [Boolean] 'auto_restart' (false) if true, then the
+        #   server will be automatically restarted if terminated by Google Compute
+        #   Engine. Note that this value cannot be set to true if the VM is
+        #   preemptible.
+        # @option options [Boolean] 'preemptible' (false) if true, then the
+        #   created server will be preemptible and therefore only run for at
+        #   most 24 hours. See
+        #   https://cloud.google.com/compute/docs/instances/preemptible for more
+        #   information about preemptible instances.
+        # @option options ["MIGRATE", "TERMINATE"] 'on_host_maintenance' if
+        #   "MIGRATE", then the VM will be migrated to different hardware during
+        #   a maintenance event. If "TERMINATE", then the VM will be terminated.
+        #   Note that if the VM is preemptible, then this option MUST be
+        #   "TERMINATE".
+        # @option options [Boolean] 'can_ip_forward' (false) if true, then the
+        #   created instance will allow forwarding packets that don't originate
+        #   with the assigned host ip address. See
+        #   https://cloud.google.com/compute/docs/networking#canipforward for
+        #   more information.
+        # @return [Excon::Response] response object that represents the result.
         def insert_server(server_name, zone_name, options = {}, *deprecated_args)
           if deprecated_args.length > 0 || !options.is_a?(Hash)
             raise ArgumentError.new "Too many parameters specified. This may be the cause of code written for an outdated"\
