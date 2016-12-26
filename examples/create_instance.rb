@@ -9,13 +9,12 @@ Bundler.require(:default, :development)
 def test
   connection = Fog::Compute.new(:provider => "Google")
 
-  name = "fog-smoke-test-#{Time.now.to_i}"
-
   disk = connection.disks.create(
-    :name => name,
+    :name => "fog-smoke-test-#{Time.now.to_i}",
     :size_gb => 10,
     :zone_name => "us-central1-f",
-    :source_image => "debian-7-wheezy-v20151104")
+    :source_image => "debian-8-jessie-v20161215"
+  )
 
   disk.wait_for { disk.ready? }
 
@@ -28,7 +27,8 @@ def test
     :zone_name => "us-central1-f",
     :user => ENV["USER"],
     :tags => ["fog"],
-    :service_accounts => %w(sql-admin bigquery https://www.googleapis.com/auth/compute))
+    :service_accounts => %w(sql-admin bigquery https://www.googleapis.com/auth/compute)
+  )
 
   # Wait_for routine copied here to show errors, if necessary.
   duration = 0

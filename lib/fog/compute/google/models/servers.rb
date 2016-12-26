@@ -45,7 +45,7 @@ module Fog
               :name => name,
               :size_gb => 10,
               :zone_name => zone,
-              :source_image => "debian-7-wheezy-v20151104"
+              :source_image => "debian-8-jessie-v20161215"
             }
 
             # backwards compatibility to pre-v1

@@ -34,7 +34,7 @@ def create_test_disk(connection, zone)
                                    :name => "fog-test-disk-#{random_string}",
                                    :size_gb => "10",
                                    :zone => zone,
-                                   :source_image => "debian-7-wheezy-v20140408"
+                                   :source_image => "debian-8-jessie-v20161215"
                                  })
   disk.wait_for { ready? }
   disk
