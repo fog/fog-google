@@ -221,7 +221,7 @@ module Fog
           metadata[metadata_key] += "\n" unless metadata[metadata_key].empty?
           metadata[metadata_key] += "#{username}:#{key.strip}"
 
-          metadata
+          set_metadata(metadata)
         end
 
         def map_service_accounts(scope_array)
