@@ -11,6 +11,8 @@ module Fog
         attribute :deprecated
         attribute :description
         attribute :disk_size_gb, :aliases => "diskSizeGb"
+        attribute :family
+        attribute :licenses
         attribute :self_link, :aliases => "selfLink"
         attribute :source_type, :aliases => "sourceType"
         attribute :status

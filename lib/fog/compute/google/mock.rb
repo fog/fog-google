@@ -17,80 +17,69 @@ module Fog
               when "debian-cloud"
                 {
                   :images => {
-                    "debian-6-squeeze-v20130816" => {
+                    "debian-8-jessie-v20161215" => {
+                      "archiveSizeBytes" => "3436783050",
+                      "creationTimestamp" => "2016-12-15T12 =>53 =>12.508-08 =>00",
+                      "description" => "Debian, Debian GNU/Linux, 8 (jessie), amd64 built on 2016-12-15",
+                      "diskSizeGb" => "10",
+                      "family" => "debian-8",
+                      "id" => "7187216073735715927",
                       "kind" => "compute#image",
-                      "selfLink" => "https://www.googleapis.com/compute/#{api_version}/projects/debian-cloud/global/images/debian-6-squeeze-v20130816",
-                      "id" => "14841592146580482051",
-                      "creationTimestamp" => "2013-09-04T13:21:53.292-07:00",
-                      "name" => "debian-6-squeeze-v20130816",
-                      "description" => "Debian GNU/Linux 6.0.7 (squeeze) built on 2013-08-16",
-                      "sourceType" => "RAW",
+                      "licenses" => [
+                        "https://www.googleapis.com/compute/#{api_version}/projects/debian-cloud/global/licenses/debian-8-jessie"
+                      ],
+                      "name" => "debian-8-jessie-v20161215",
                       "rawDisk" => {
                         "containerType" => "TAR",
                         "source" => ""
                       },
+                      "selfLink" => "https://www.googleapis.com/compute/#{api_version}/projects/debian-cloud/global/images/debian-8-jessie-v20161215",
+                      "sourceType" => "RAW",
                       "status" => "READY"
-                    },
-                    "debian-7-wheezy-v20130816" => {
-                      "kind" => "compute#image",
-                      "selfLink" => "https://www.googleapis.com/compute/#{api_version}/projects/debian-cloud/global/images/debian-7-wheezy-v20130816",
-                      "id" => "4213305957435180899",
-                      "creationTimestamp" => "2013-09-04T13:24:30.479-07:00",
-                      "name" => "debian-7-wheezy-v20130816",
-                      "description" => "Debian GNU/Linux 7.1 (wheezy) built on 2013-08-16",
-                      "sourceType" => "RAW",
-                      "rawDisk" => {
-                        "containerType" => "TAR",
-                        "source" => ""
-                      },
-                      "status" => "READY"
-                    },
-                    "debian-7-wheezy-v20131014" => {
-                      "kind" => "compute#image",
-                      "selfLink" => "https://www.googleapis.com/compute/#{api_version}/projects/debian-cloud/global/images/debian-7-wheezy-v20131014",
-                      "id" => "4213305957435180899",
-                      "creationTimestamp" => "2013-09-04T13:24:30.479-07:00",
-                      "name" => "debian-7-wheezy-v20131014",
-                      "description" => "Debian GNU/Linux 7.1 (wheezy) built on 2013-10-14",
-                      "sourceType" => "RAW",
-                      "rawDisk" => {
-                        "containerType" => "TAR",
-                        "source" => ""
-                      },
-                      "status" => "READY"
-                    },
-                    "debian-7-wheezy-v20140408" => {
-                      "kind" => "compute#image",
-                      "selfLink" => "https://www.googleapis.com/compute/#{api_version}/projects/debian-cloud/global/images/debian-7-wheezy-v20140408",
-                      "id" => "17312518942796567788",
-                      "creationTimestamp" => "2013-11-25T15:17:00.436-08:00",
-                      "name" => "debian-7-wheezy-v20131120",
-                      "description" => "Debian GNU/Linux 7.2 (wheezy) built on 2013-11-20",
-                      "sourceType" => "RAW",
-                      "rawDisk" => {
-                        "containerType" => "TAR",
-                        "source" => ""
-                      },
-                      "status" => "READY",
-                      "archiveSizeBytes" => "341857472"
                     }
                   }
                 }
               when "centos-cloud"
                 {
                   :images => {
-                    "centos-6-v20130813" => {
+                    "centos-6-v20161212" => {
+                      "archiveSizeBytes" => "3942360630",
+                      "creationTimestamp" => "2016-12-14T10 =>30 =>52.053-08 =>00",
+                      "description" => "CentOS, CentOS, 6, x86_64 built on 2016-12-12",
+                      "diskSizeGb" => "10",
+                      "family" => "centos-6",
+                      "id" => "5262726857160929587",
                       "kind" => "compute#image",
-                      "selfLink" => "https://www.googleapis.com/compute/#{api_version}/projects/centos-cloud/global/images/centos-6-v20130813",
-                      "id" => "4670523370938782739",
-                      "creationTimestamp" => "2013-08-19T11:56:47.004-07:00",
-                      "name" => "centos-6-v20130813",
-                      "description" => "SCSI-enabled CentOS 6; Created Tue, 13 Aug 2013 00:00:00 +0000",
-                      "sourceType" => "RAW",
+                      "licenses" => [
+                        "https://www.googleapis.com/compute/#{api_version}/projects/centos-cloud/global/licenses/centos-6"
+                      ],
+                      "name" => "centos-6-v20161212",
                       "rawDisk" => {
                         "containerType" => "TAR",
                         "source" => ""
                       },
+                      "selfLink" => "https://www.googleapis.com/compute/#{api_version}/projects/centos-cloud/global/images/centos-6-v20161212",
+                      "sourceType" => "RAW",
+                      "status" => "READY"
+                    },
+                    "centos-7-v20161212" => {
+                      "archiveSizeBytes" => "4491098988",
+                      "creationTimestamp" => "2016-12-14T10 =>29 =>44.741-08 =>00",
+                      "description" => "CentOS, CentOS, 7, x86_64 built on 2016-12-12",
+                      "diskSizeGb" => "10",
+                      "family" => "centos-7",
+                      "id" => "8650499281020268919",
+                      "kind" => "compute#image",
+                      "licenses" => [
+                        "https://www.googleapis.com/compute/#{api_version}/projects/centos-cloud/global/licenses/centos-7"
+                      ],
+                      "name" => "centos-7-v20161212",
+                      "rawDisk" => {
+                        "containerType" => "TAR",
+                        "source" => ""
+                      },
+                      "selfLink" => "https://www.googleapis.com/compute/#{api_version}/projects/centos-cloud/global/images/centos-7-v20161212",
+                      "sourceType" => "RAW",
                       "status" => "READY"
                     }
                   }
