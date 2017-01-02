@@ -207,21 +207,7 @@ module Fog
         end
 
         def add_ssh_key(username, key)
-          self.metadata = Hash.new("") if metadata.nil?
-
-          # The key "sshKeys" is deprecated and will be unsupported in the
-          # future - for now defer to using 'ssh-keys' unless the user is
-          # already using the deprecated version
-          # https://cloud.google.com/compute/docs/instances/adding-removing-ssh-keys#deprecated
-          metadata_key = metadata.key?("sshKeys") ? "sshKeys" : "ssh-keys"
-
-          # You can have multiple SSH keys, seperated by newlines.
-          # https://developers.google.com/compute/docs/console?hl=en#sshkeys
-          metadata[metadata_key] = "" unless metadata[metadata_key]
-          metadata[metadata_key] += "\n" unless metadata[metadata_key].empty?
-          metadata[metadata_key] += "#{username}:#{key.strip}"
-
-          set_metadata(metadata)
+          set_metadata(generate_ssh_key_metadata(username, key))
         end
 
         def map_service_accounts(scope_array)
@@ -259,7 +245,7 @@ module Fog
             raise ArgumentError.new "#{zone_name.inspect} is either down or you don't have permission to use it."
           end
 
-          add_ssh_key(username, public_key) if public_key
+          generate_ssh_key_metadata(username, public_key) if public_key
 
           options = {
             "machineType" => machine_type,
@@ -288,6 +274,26 @@ module Fog
           operation = Fog::Compute::Google::Operations.new(:service => service).get(data.body["name"], data.body["zone"])
           operation.wait_for { !pending? }
           reload
+        end
+
+        private
+
+        def generate_ssh_key_metadata(username, key)
+          self.metadata = Hash.new("") if metadata.nil?
+
+          # The key "sshKeys" is deprecated and will be unsupported in the
+          # future - for now defer to using 'ssh-keys' unless the user is
+          # already using the deprecated version
+          # https://cloud.google.com/compute/docs/instances/adding-removing-ssh-keys#deprecated
+          metadata_key = metadata.key?("sshKeys") ? "sshKeys" : "ssh-keys"
+
+          # You can have multiple SSH keys, seperated by newlines.
+          # https://developers.google.com/compute/docs/console?hl=en#sshkeys
+          metadata[metadata_key] = "" unless metadata[metadata_key]
+          metadata[metadata_key] += "\n" unless metadata[metadata_key].empty?
+          metadata[metadata_key] += "#{username}:#{key.strip}"
+
+          metadata
         end
       end
     end
