@@ -25,7 +25,7 @@ def test
     :private_key_path => File.expand_path("~/.ssh/id_rsa"),
     :public_key_path => File.expand_path("~/.ssh/id_rsa.pub"),
     :zone_name => "us-central1-f",
-    :user => ENV["USER"],
+    :username => ENV["USER"],
     :tags => ["fog"],
     :service_accounts => %w(sql-admin bigquery https://www.googleapis.com/auth/compute)
   )
