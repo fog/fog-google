@@ -105,18 +105,21 @@ module Fog
       ##
       # Create a Google API Client with a user email and a pkcs12 key
       #
-      # @param [String] google_client_email A @developer.gserviceaccount.com email address to use
-      # @param [OpenSSL::PKey] signing_key The private key for signing
-      # @param [String] google_api_scope_url Access scope URLs
-      # @param [String] app_name The app name to set in the user agent
-      # @param [String] app_version The app version to set in the user agent
-      # @return [Google::APIClient] Google API Client
-      def new_pk12_google_client(google_client_email, signing_key, google_api_scope_url, app_name = nil, app_version = nil, google_client_options = [])
+      # @param google_client_email [String] A @developer.gserviceaccount.com.
+      #   email address to use
+      # @param signing_key [OpenSSL::PKey] The private key for signing
+      # @param google_api_scope_url [String] Access scope URLs
+      # @param app_name [String] The app name to set in the user agent
+      # @param app_version [String] The app version to set in the user agent
+      # @param google_client_options [Hash] additional options to pass to the
+      #   underlying google client
+      # @return [Google::APIClient] a newly-constructed Google API Client
+      def new_pk12_google_client(google_client_email, signing_key, google_api_scope_url, app_name = nil, app_version = nil, google_client_options = {})
         application_name = app_name.nil? ? "fog" : "#{app_name}/#{app_version || '0.0.0'} fog"
         api_client_options = {
           :application_name => application_name,
           :application_version => Fog::Google::VERSION
-        }
+        }.merge(google_client_options)
         client = ::Google::APIClient.new(api_client_options)
 
         client.authorization = Signet::OAuth2::Client.new(
@@ -126,8 +129,7 @@ module Fog
           :issuer => google_client_email,
           :scope => google_api_scope_url,
           :signing_key => signing_key,
-          :token_credential_uri => "https://accounts.google.com/o/oauth2/token",
-          :google_client_options => google_client_options
+          :token_credential_uri => "https://accounts.google.com/o/oauth2/token"
         )
         client.authorization.fetch_access_token!
 
