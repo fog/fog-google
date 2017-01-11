@@ -64,7 +64,7 @@ module Fog
           options[:google_api_scope_url],
           options[:app_name],
           options[:app_version],
-          options[:google_client_options]
+          options[:google_client_options] || {}
         )
       end
 
