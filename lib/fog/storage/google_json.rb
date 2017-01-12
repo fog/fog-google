@@ -6,8 +6,16 @@ module Fog
       autoload :Utils, File.expand_path("../google_json/utils", __FILE__)
 
       requires :google_project
-      recognizes :google_client_email, :google_key_location, :google_key_string, :google_client,
-                 :app_name, :app_version, :google_json_key_location, :google_json_key_string
+      recognizes(
+        :google_client_email,
+        :google_key_location,
+        :google_key_string,
+        :google_client,
+        :app_name,
+        :app_version,
+        :google_json_key_location,
+        :google_json_key_string
+      )
 
       # https://cloud.google.com/storage/docs/json_api/v1/
       GOOGLE_STORAGE_JSON_API_VERSION = "v1"
