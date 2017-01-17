@@ -7,13 +7,13 @@ module Fog
 
       requires :google_project
       recognizes(
-        :google_client_email,
-        :google_key_location,
-        :google_key_string,
-        :google_client,
-        :google_client_options,
         :app_name,
         :app_version,
+        :google_client,
+        :google_client_email,
+        :google_client_options,
+        :google_key_location,
+        :google_key_string,
         :google_json_key_location,
         :google_json_key_string
       )
