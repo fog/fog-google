@@ -9,7 +9,8 @@ Bundler.require(:default, :development)
 def test
   connection = Fog::Compute.new(:provider => "Google")
 
-  # Creating a new private network
+  puts "Creating a new private network..."
+  puts "---------------------------------"
   network = connection.networks.create(
       :name => "test-private-network",
       :ipv4_range => "10.240.0.0/16"
@@ -17,6 +18,8 @@ def test
 
   name = "fog-smoke-test-#{Time.now.to_i}"
 
+  puts "Creating a disk for an instance..."
+  puts "---------------------------------"
   disk = connection.disks.create(
     :name => name,
     :size_gb => 10,
@@ -26,6 +29,8 @@ def test
 
   disk.wait_for { disk.ready? }
 
+  puts "Spinning up an instance with private network config..."
+  puts "------------------------------------------------------"
   server = connection.servers.create(
       :name => name,
       :disks => [disk],
@@ -46,3 +51,5 @@ def test
 rescue StandardError => e
   p e.message
 end
+
+test
