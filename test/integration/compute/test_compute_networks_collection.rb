@@ -19,8 +19,8 @@ class TestComputeNetworksCollection < FogIntegrationTest
     my_network_name = new_resource_name
     # An address can be created by specifying a name and a region
     my_network = client.networks.create(
-        :name => my_network_name,
-        :ipv4_range => "10.240.#{rand(255)}.0/24"
+      :name => my_network_name,
+      :ipv4_range => "10.240.#{rand(255)}.0/24"
     )
 
     assert_equal(my_network_name, my_network.name, "My network should have the provided name")
@@ -66,9 +66,9 @@ class TestComputeNetworksCollection < FogIntegrationTest
     )
 
     assert_equal(
-        "External NAT",
-        my_server.network_interfaces[0]["accessConfigs"][0]["name"],
-        "Address should now be in use"
+      "External NAT",
+      my_server.network_interfaces[0]["accessConfigs"][0]["name"],
+      "Address should now be in use"
     )
   end
 

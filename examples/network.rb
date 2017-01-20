@@ -12,8 +12,8 @@ def test
   puts "Creating a new private network..."
   puts "---------------------------------"
   network = connection.networks.create(
-      :name => "test-private-network",
-      :ipv4_range => "10.240.0.0/16"
+    :name => "test-private-network",
+    :ipv4_range => "10.240.0.0/16"
   )
 
   name = "fog-smoke-test-#{Time.now.to_i}"
@@ -32,15 +32,15 @@ def test
   puts "Spinning up an instance with private network config..."
   puts "------------------------------------------------------"
   server = connection.servers.create(
-      :name => name,
-      :disks => [disk],
-      :machine_type => "n1-standard-1",
-      :zone_name => "us-central1-a",
-      :private_key_path => File.expand_path("~/.ssh/id_rsa"),
-      :public_key_path => File.expand_path("~/.ssh/id_rsa.pub"),
-      :network => network,
-      :external_ip => false,
-      :username => ENV["USER"]
+    :name => name,
+    :disks => [disk],
+    :machine_type => "n1-standard-1",
+    :zone_name => "us-central1-a",
+    :private_key_path => File.expand_path("~/.ssh/id_rsa"),
+    :public_key_path => File.expand_path("~/.ssh/id_rsa.pub"),
+    :network => network,
+    :external_ip => false,
+    :username => ENV["USER"]
   )
 
   # The network won't have any firewall rules, so we won't be able to ssh in.
