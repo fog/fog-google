@@ -111,37 +111,30 @@ module Fog
         end
 
         def handle_networks(options)
-          network = GOOGLE_COMPUTE_DEFAULT_NETWORK unless options.key? "network"
-
-          #TODO this needs to be better documented _and_ abstracted
-          # ExternalIP is default value for server creation
+          # Only one access config, ONE_TO_ONE_NAT, is supported per instance.
+          # If there are no accessConfigs specified, then this instance will have no external internet access.
           access_config = { "type" => "ONE_TO_ONE_NAT", "name" => "External NAT" }
-          # leave natIP undefined to use an IP from a shared ephemeral IP address pool
+          # If natIP is undefined VM will get an IP from a shared ephemeral IP address pool
           if options.key? "externalIp"
             access_config["natIP"] = options.delete "externalIp"
-            # If set to 'false', that would mean user does no want to allocate an external IP
+            # If :external_ip is set to 'false', do not allow _any_ external networking
             access_config = nil if access_config["natIP"] == false
           end
 
+          # If no networking options are specified, assume default network
           if options.key? "network"
             network = options.delete "network"
-
-            if network.is_a? Network
-              network_name = network.name
-            else
-              network_name = network
-            end
+          else
+            network = GOOGLE_COMPUTE_DEFAULT_NETWORK
           end
 
-          #TODO(temikus) This needs to be abstracted into the model
-          networkInterfaces = []
-          unless network.nil?
-            networkInterface = { "network" => @api_url + @project + "/global/networks/#{network_name}" }
-            networkInterface["accessConfigs"] = [access_config] if access_config
-            networkInterfaces << networkInterface
+          # Objectify the network if needed
+          unless network.is_a? Network
+            network = networks.get(network)
           end
 
-          networkInterfaces
+          # Return a networkInterfaces array
+          [network.get_as_interface_config(access_config)]
         end
 
         def format_metadata(metadata)
