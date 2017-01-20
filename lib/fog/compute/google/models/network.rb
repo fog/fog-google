@@ -21,7 +21,9 @@ module Fog
 
           data = service.insert_network(identity, ipv4_range, attributes)
           operation = Fog::Compute::Google::Operations.new(:service => service).get(data.body["name"])
-          operation.wait_for { !pending? }
+          # Since network has no "state" we can query, we have to wait for the operation to finish
+          # TODO: change back to async when
+          operation.wait_for { ready? }
           reload
         end
 
