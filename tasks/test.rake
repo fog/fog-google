@@ -3,6 +3,7 @@ require "rake/testtask"
 Rake::TestTask.new do |t|
   t.libs << "test"
   t.pattern = File.join("test", "**", "test_*.rb")
+  t.warning = false
 end
 
 namespace :test do

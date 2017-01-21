@@ -110,6 +110,33 @@ module Fog
           disks
         end
 
+        def handle_networks(options)
+          # Only one access config, ONE_TO_ONE_NAT, is supported per instance.
+          # If there are no accessConfigs specified, then this instance will have no external internet access.
+          access_config = { "type" => "ONE_TO_ONE_NAT", "name" => "External NAT" }
+          # If natIP is undefined VM will get an IP from a shared ephemeral IP address pool
+          if options.key? "externalIp"
+            access_config["natIP"] = options.delete "externalIp"
+            # If :external_ip is set to 'false', do not allow _any_ external networking
+            access_config = nil if access_config["natIP"] == false
+          end
+
+          # If no networking options are specified, assume default network
+          if options.key? "network"
+            network = options.delete "network"
+          else
+            network = GOOGLE_COMPUTE_DEFAULT_NETWORK
+          end
+
+          # Objectify the network if needed
+          unless network.is_a? Network
+            network = networks.get(network)
+          end
+
+          # Return a networkInterfaces array
+          [network.get_as_interface_config(access_config)]
+        end
+
         def format_metadata(metadata)
           { "items" => metadata.map { |k, v| { "key" => k, "value" => v } } }
         end
@@ -182,28 +209,6 @@ module Fog
           body_object = { :name => server_name }
 
           body_object["machineType"] = @api_url + @project + "/zones/#{zone_name}/machineTypes/#{options.delete 'machineType'}"
-          network = nil
-          if options.key? "network"
-            network = options.delete "network"
-          else
-            network = GOOGLE_COMPUTE_DEFAULT_NETWORK
-          end
-
-          # ExternalIP is default value for server creation
-          access_config = { "type" => "ONE_TO_ONE_NAT", "name" => "External NAT" }
-          # leave natIP undefined to use an IP from a shared ephemeral IP address pool
-          if options.key? "externalIp"
-            access_config["natIP"] = options.delete "externalIp"
-            # If set to 'false', that would mean user does no want to allocate an external IP
-            access_config = nil if access_config["natIP"] == false
-          end
-
-          networkInterfaces = []
-          unless network.nil?
-            networkInterface = { "network" => @api_url + @project + "/global/networks/#{network}" }
-            networkInterface["accessConfigs"] = [access_config] if access_config
-            networkInterfaces << networkInterface
-          end
 
           scheduling = {
             "automaticRestart" => false,
@@ -235,7 +240,7 @@ module Fog
           end
 
           # TODO: add other networks
-          body_object["networkInterfaces"] = networkInterfaces
+          body_object["networkInterfaces"] = handle_networks(options)
 
           if options["disks"].nil? || options["disks"].empty?
             raise ArgumentError.new "Empty value for field 'disks'. Boot disk must be specified"

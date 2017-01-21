@@ -26,6 +26,7 @@ module Fog
                                           https://www.googleapis.com/auth/cloud-platform)
       GOOGLE_COMPUTE_DEFAULT_NETWORK = "default"
       RUNNING = "RUNNING".freeze
+      PROVISIONING = "PROVISIONING".freeze
 
       request_path "fog/compute/google/requests"
       request :add_backend_service_backends

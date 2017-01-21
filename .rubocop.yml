@@ -2,10 +2,20 @@
 Metrics/LineLength:
   Enabled: false
 
+Style/ConditionalAssignment:
+  SingleLineConditionsOnly: true
+
 Style/Encoding:
   EnforcedStyle: when_needed
 
 Style/FormatString:
+  Enabled: false
+
+Style/RegexpLiteral:
+  Enabled: false
+
+#TODO: this needs to be adressed not through the linter
+Style/FrozenStringLiteralComment:
   Enabled: false
 
 Style/HashSyntax:
