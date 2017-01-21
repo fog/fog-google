@@ -49,7 +49,7 @@ class TestComputeNetworksCollection < FogIntegrationTest
       ],
       :network => my_network
     )
-    my_server.wait_for { my_server.state != "PROVISIONING" }
+    my_server.wait_for { provisioning? }
 
     # We need to verify that the network has been correctly assigned
     assert_equal(

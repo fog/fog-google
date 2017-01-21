@@ -198,6 +198,10 @@ module Fog
           Fog::Compute::Google::Operations.new(:service => service).get(data.body["name"], data.body["zone"])
         end
 
+        def provisioning?
+          state == PROVISIONING
+        end
+
         def ready?
           state == RUNNING
         end
