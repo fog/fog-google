@@ -62,13 +62,13 @@ class TestComputeNetworksCollection < FogIntegrationTest
     assert_equal(
       "ONE_TO_ONE_NAT",
       my_server.network_interfaces[0]["accessConfigs"][0]["type"],
-      "Address should now be in use"
+      "Access config type matches the correct default"
     )
 
     assert_equal(
       "External NAT",
       my_server.network_interfaces[0]["accessConfigs"][0]["name"],
-      "Address should now be in use"
+      "Access config name matches the correct default"
     )
   end
 
