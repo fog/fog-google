@@ -22,7 +22,7 @@ module Fog
           }
           body["description"] = options["description"] if options["description"]
           network_name = options["network"] ? options["network"].split("/")[-1] : GOOGLE_COMPUTE_DEFAULT_NETWORK
-          body["network"] = "https://www.googleapis.com/compute/#{api_version}/projects/#{@project}/global/networks/#{ network_name }"
+          body["network"] = "https://www.googleapis.com/compute/#{api_version}/projects/#{@project}/global/networks/#{network_name}"
 
           request(api_method, parameters, body)
         end
