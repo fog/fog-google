@@ -18,7 +18,11 @@ module Fog
         def save
           requires :name, :zone
 
-          service.insert_instance_group(name, zone)
+          options = {
+            "network" => network_name
+          }
+
+          service.insert_instance_group(name, zone, options)
         end
 
         def destroy(_async = true)
@@ -58,6 +62,10 @@ module Fog
 
         def zone_name
           zone.nil? ? nil : zone.split("/")[-1]
+        end
+
+        def network_name
+          network.nil? ? nil : network.split("/")[-1]
         end
 
         private
