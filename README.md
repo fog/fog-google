@@ -76,6 +76,8 @@ my_credential:
     google_json_key_location: /path/to/my-project-xxxxxxxxxxxx.json
 ```
 
+Or simply `cat .fog.example >> ~.fog` and edit parameters in the file.
+
 You can also provide service account credentials with `google_json_key_string` or with `google_key_location` and `google_key_string` for P12 private keys.
 
 HMAC credentials follow a similar format:
@@ -94,7 +96,7 @@ If you want to be able to bootstrap SSH-able instances, (using `servers.bootstra
 
 Once you've specified your credentials, you should be good to go!
 ```
-λ bundle exec pry
+$ bundle exec pry
 [1] pry(main)> require 'fog/google'
 => true
 [2] pry(main)> connection = Fog::Compute::Google.new

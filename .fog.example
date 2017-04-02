@@ -1,0 +1,12 @@
+#####################################################
+# This is configuration snippet to configure Google Cloud Platform
+# for fig library.
+#
+# 1. Copy this file into your home dir: "~/.fog"
+# 2. Follow instructions to generate a private key: 
+#   https://cloud.google.com/storage/docs/authentication#generating-a-private-key
+
+my_credential:
+    google_project: my-project
+    google_client_email: xxxxxxxxxxxx-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx@developer.gserviceaccount.com
+    google_json_key_location: /path/to/my-project-xxxxxxxxxxxx.json
