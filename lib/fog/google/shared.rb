@@ -35,15 +35,33 @@ module Fog
       def initialize_google_client(options)
         # NOTE: loaded here to avoid requiring this as a core Fog dependency
         begin
-          require "google/api_client"
+          # Because of how Google API gem was rewritten, we get to do all sorts
+          # of funky things, like this nonsense.
+          require "google/apis/cloudmonitoring_#{Fog::Google::Monitoring::GOOGLE_MONITORING_API_VERSION}"
+          require "google/apis/compute_#{Fog::Compute::Google::GOOGLE_COMPUTE_API_VERSION}"
+          require "google/apis/dns_#{Fog::DNS::Google::GOOGLE_DNS_API_VERSION}"
+          require "google/apis/pubsub_#{Fog::Google::Pubsub::GOOGLE_PUBSUB_API_VERSION}"
+          require "google/apis/sql_#{Fog::Google::SQL::GOOGLE_SQL_API_VERSION}"
+          require "google/apis/storage_#{Fog::Storage::GoogleJSON::GOOGLE_STORAGE_JSON_API_VERSION}"
         rescue LoadError => error
-          Fog::Logger.warning("Please install the google-api-client gem before using this provider")
+          Fog::Logger.warning("Please install the google-api-client (>= 0.9) gem before using this provider")
           raise error
         end
 
-        # User can provide an existing Google API Client
-        client = options[:google_client]
-        return client unless client.nil?
+        # Users can no longer provide their own clients due to rewrite of auth
+        # in https://github.com/google/google-api-ruby-client/ version 0.9.
+        if options[:google_client]
+          raise ArgumentError.new("Deprecated argument no longer works: google_client")
+        end
+
+        # They can also no longer use pkcs12 files, because Google's new auth
+        # library doesn't support them either.
+        if options[:google_key_location]
+          raise ArgumentError.new("Deprecated argument no longer works: google_key_location")
+        end
+        if options[:google_key_string]
+          raise ArgumentError.new("Deprecated argument no longer works: google_key_string")
+        end
 
         # Create a signing key
         signing_key = create_signing_key(options)
