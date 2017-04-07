@@ -8,18 +8,12 @@ module Fog
       # @see https://developers.google.com/cloud-dns/api/v1/managedZones/create
       class Real
         def create_managed_zone(name, dns_name, description)
-          api_method = @dns.managed_zones.create
-          parameters = {
-            "project" => @project
-          }
+          mngd_zone = ::Google::Apis::DnsV1::ManagedZone.new
+          mngd_zone.name = name
+          mngd_zone.dns_name = dns_name
+          mngd_zone.description = description
 
-          body_object = {
-            "name" => name,
-            "dnsName" => dns_name,
-            "description" => description
-          }
-
-          request(api_method, parameters, body_object)
+          @dns.create_managed_zone(@project, mngd_zone).to_h
         end
       end
 
