@@ -15,11 +15,11 @@ module Fog
       class Mock
         def get_project(identity)
           body = {
-            "kind" => 'dns#project',
+            "kind" => "dns#project",
             "number" => Fog::Mock.random_numbers(12).to_s,
             "id" => identity,
             "quota" => {
-              "kind" => 'dns#quota',
+              "kind" => "dns#quota",
               "managedZones" => 100,
               "rrsetsPerManagedZone" => 10_000,
               "rrsetAdditionsPerChange" => 100,
@@ -29,7 +29,7 @@ module Fog
             }
           }
 
-          build_excon_response(body)
+          body
         end
       end
     end

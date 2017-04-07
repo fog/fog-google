@@ -19,8 +19,8 @@ Shindo.tests("Fog::DNS[:google] | project requests", ["google"]) do
   }
 
   tests("success") do
-    tests('#get_project').formats(@get_project_format) do
-      @dns.get_project(@dns.project).body
+    tests("#get_project").formats(@get_project_format) do
+      @dns.get_project(@dns.project)
     end
   end
 end

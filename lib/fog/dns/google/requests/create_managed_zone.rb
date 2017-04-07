@@ -21,7 +21,7 @@ module Fog
         def create_managed_zone(name, dns_name, description)
           id = Fog::Mock.random_numbers(19).to_s
           data = {
-            "kind" => 'dns#managedZone',
+            "kind" => "dns#managedZone",
             "id" => id,
             "creationTime" => DateTime.now.strftime("%FT%T.%LZ"),
             "name" => name,
@@ -37,7 +37,7 @@ module Fog
           self.data[:managed_zones][id] = data
           self.data[:resource_record_sets][id] = [
             {
-              "kind" => 'dns#resourceRecordSet',
+              "kind" => "dns#resourceRecordSet",
               "name" => dns_name,
               "type" => "NS",
               "ttl" => 21_600,
@@ -49,7 +49,7 @@ module Fog
               ]
             },
             {
-              "kind" => 'dns#resourceRecordSet',
+              "kind" => "dns#resourceRecordSet",
               "name" => dns_name,
               "type" => "SOA",
               "ttl" => 21_600,
@@ -60,7 +60,7 @@ module Fog
           ]
           self.data[:changes][id] = [
             {
-              "kind" => 'dns#change',
+              "kind" => "dns#change",
               "id" => "0",
               "startTime" => DateTime.now.strftime("%FT%T.%LZ"),
               "status" => "done",
@@ -68,7 +68,7 @@ module Fog
             }
           ]
 
-          build_excon_response(data)
+          data
         end
       end
     end
