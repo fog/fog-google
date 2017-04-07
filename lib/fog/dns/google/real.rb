@@ -12,7 +12,6 @@ module Fog
           options[:google_api_scope_url] = GOOGLE_DNS_API_SCOPE_URLS.join(" ")
           @auth = initialize_google_client(options)
           @dns = ::Google::Apis::DnsV1::DnsService.new
-          @dns.authorization = @auth
         end
       end
     end

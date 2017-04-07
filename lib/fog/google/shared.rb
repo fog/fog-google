@@ -69,20 +69,11 @@ module Fog
           raise ArgumentError.new("Missing required arguments: google_api_scope_url")
         end
 
-        # Create a new Google API Client
-        new_google_client(options)
-      end
-
-      ##
-      #
-      # @return [Google::APIClient] a newly-constructed Google API Client
-      def new_google_client(options = {})
         application_name = options[:app_name].nil? ? "fog" : "#{options[:app_name]}/#{options[:app_version] || '0.0.0'} fog"
-        api_client_options = {
-          :application_name => application_name,
-          :application_version => Fog::Google::VERSION
-        }
+        ::Google::Apis::ClientOptions.default.application_name = application_name
+        ::Google::Apis::ClientOptions.default.application_version = Fog::Google::VERSION
 
+        auth = nil
         if options[:google_json_key_location] || options[:google_json_key_string]
           if options[:google_json_key_location]
             json_key_location = File.expand_path(options[:google_json_key_location])
@@ -100,11 +91,17 @@ module Fog
           unless options[:google_client_email]
             raise ArgumentError.new("Missing required arguments: google_client_email")
           end
-          ::Google::Auth::ServiceAccountCredentials.make_creds(:json_key_io => StringIO.new(json_key_hash.to_json),
-                                                               :scope => options[:google_api_scope_url])
+
+          auth = ::Google::Auth::ServiceAccountCredentials.make_creds(
+            :json_key_io => StringIO.new(json_key_hash.to_json),
+            :scope => options[:google_api_scope_url]
+          )
+          ::Google::Apis::RequestOptions.default.authorization = auth
         else
           raise ArgumentError.new("Missing required arguments: google_json_key_location or google_json_key_string")
         end
+
+        auth
       end
 
       ##
