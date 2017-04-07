@@ -100,10 +100,8 @@ module Fog
           unless options[:google_client_email]
             raise ArgumentError.new("Missing required arguments: google_client_email")
           end
-          ::Google::Auth::ServiceAccountCredentials.make_creds({
-            json_key_io: StringIO.new(json_key_hash.to_json),
-            scope: options[:google_api_scope_url]
-          })
+          ::Google::Auth::ServiceAccountCredentials.make_creds(:json_key_io => StringIO.new(json_key_hash.to_json),
+                                                               :scope => options[:google_api_scope_url])
         else
           raise ArgumentError.new("Missing required arguments: google_json_key_location or google_json_key_string")
         end

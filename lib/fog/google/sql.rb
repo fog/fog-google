@@ -17,10 +17,10 @@ module Fog
         :google_json_key_string
       )
 
-      GOOGLE_SQL_API_VERSION    = "v1beta4"
-      GOOGLE_SQL_BASE_URL       = "https://www.googleapis.com/sql/"
+      GOOGLE_SQL_API_VERSION    = "v1beta4".freeze
+      GOOGLE_SQL_BASE_URL       = "https://www.googleapis.com/sql/".freeze
       GOOGLE_SQL_API_SCOPE_URLS = %w(https://www.googleapis.com/auth/sqlservice.admin
-                                     https://www.googleapis.com/auth/cloud-platform)
+                                     https://www.googleapis.com/auth/cloud-platform).freeze
 
       ##
       # MODELS
