@@ -10,7 +10,7 @@ module Fog
         # @param [String] identity Project identity
         # @return [Fog::DNS::Google::Project] Project resource
         def get(identity)
-          if project = service.get_project(identity).body
+          if project = service.get_project(identity).to_h
             new(project)
           end
         rescue Fog::Errors::NotFound

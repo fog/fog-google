@@ -8,12 +8,7 @@ module Fog
       # @see https://developers.google.com/cloud-dns/api/v1/projects/get
       class Real
         def get_project(identity)
-          api_method = @dns.projects.get
-          parameters = {
-            :project => identity
-          }
-
-          request(api_method, parameters)
+          @dns.get_project(identity)
         end
       end
 
