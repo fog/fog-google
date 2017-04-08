@@ -67,26 +67,12 @@ $ gem install fog-google
 
 #### Credentials
 
-Follow the [instructions to generate a private key](https://cloud.google.com/storage/docs/authentication#generating-a-private-key).  You can then create a fog credentials file at `~/.fog`, which will look something like this:
+Follow the [instructions to generate a private key](https://cloud.google.com/storage/docs/authentication#generating-a-private-key). A sample credentials file can be found in `.fog.example` in this directory:
 
-```
-my_credential:
-    google_project: my-project
-    google_client_email: xxxxxxxxxxxx-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx@developer.gserviceaccount.com
-    google_json_key_location: /path/to/my-project-xxxxxxxxxxxx.json
-```
+    cat .fog.example >> ~/.fog # appends the sample configuration
+    vim ~/.fog                 # edit file with yout config
+    
 
-Or simply `cat .fog.example >> ~.fog` and edit parameters in the file.
-
-You can also provide service account credentials with `google_json_key_string` or with `google_key_location` and `google_key_string` for P12 private keys.
-
-HMAC credentials follow a similar format:
-
-```
-my_credentials:
-	google_storage_access_key_id: GOOGXXXXXXXXXXXXXXXX
-	google_storage_secret_access_key: XXXX+XXX/XXXXXXXX+XXXXXXXXXXXXXXXXXXXXX
-```	
 
 #### SSH-ing into instances
 
