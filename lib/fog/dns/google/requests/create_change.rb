@@ -7,18 +7,11 @@ module Fog
       # @see https://cloud.google.com/dns/api/v1/changes/create
       class Real
         def create_change(zone_name_or_id, additions = [], deletions = [])
-          api_method = @dns.changes.create
-          parameters = {
-            "project" => @project,
-            "managedZone" => zone_name_or_id
-          }
-
           body = {
             "additions" => additions,
             "deletions" => deletions
           }
-
-          request(api_method, parameters, body)
+          @dns.create_change(@project, zone_name_or_id, body)
         end
       end
 

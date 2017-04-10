@@ -7,13 +7,7 @@ module Fog
       # @see https://developers.google.com/cloud-dns/api/v1/managedZones/get
       class Real
         def get_managed_zone(name_or_id)
-          api_method = @dns.managed_zones.get
-          parameters = {
-            "project" => @project,
-            "managedZone" => name_or_id
-          }
-
-          request(api_method, parameters)
+          @dns.get_managed_zone(@project, name_or_id)
         end
       end
 
@@ -29,7 +23,7 @@ module Fog
             raise Fog::Errors::NotFound, "The 'parameters.managedZone' resource named '#{name_or_id}' does not exist."
           end
 
-          build_excon_response(data)
+          build_excon_response(data).body
         end
       end
     end

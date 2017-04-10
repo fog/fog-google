@@ -7,12 +7,7 @@ module Fog
       # @see hhttps://developers.google.com/cloud-dns/api/v1/managedZones/list
       class Real
         def list_managed_zones
-          api_method = @dns.managed_zones.list
-          parameters = {
-            "project" => @project
-          }
-
-          request(api_method, parameters)
+          @dns.list_managed_zones(@project)
         end
       end
 
@@ -23,7 +18,7 @@ module Fog
             "managedZones" => data[:managed_zones].values
           }
 
-          build_excon_response(body)
+          build_excon_response(body).body
         end
       end
     end
