@@ -102,11 +102,16 @@ module Fog
             :json_key_io => StringIO.new(json_key_hash.to_json),
             :scope => options[:google_api_scope_url]
           )
-          ::Google::Apis::RequestOptions.default.authorization = auth
+        elsif options[:google_auth]
+          auth = options[:google_auth]
         else
-          raise ArgumentError.new("Missing required arguments: google_json_key_location or google_json_key_string")
+          raise ArgumentError.new(
+            "Missing required arguments: google_json_key_location, "\
+            "google_json_key_string or google_auth"
+          )
         end
 
+        ::Google::Apis::RequestOptions.default.authorization = auth
         auth
       end
 
