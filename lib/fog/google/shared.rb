@@ -104,7 +104,7 @@ module Fog
           )
           ::Google::Apis::RequestOptions.default.authorization = auth
         elsif options[:google_auth]
-          auth = options[:google_auth]
+          ::Google::Apis::RequestOptions.default.authorization = options[:google_auth]
         else
           raise ArgumentError.new(
             "Missing required arguments: google_json_key_location, "\
