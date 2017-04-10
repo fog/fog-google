@@ -7,14 +7,7 @@ module Fog
       # @see https://developers.google.com/cloud-dns/api/v1/changes/get
       class Real
         def get_change(zone_name_or_id, identity)
-          api_method = @dns.changes.get
-          parameters = {
-            "project" => @project,
-            "managedZone" => zone_name_or_id,
-            "changeId" => identity
-          }
-
-          request(api_method, parameters)
+          @dns.get_change @project, zone_name_or_id, identity
         end
       end
 
@@ -34,7 +27,7 @@ module Fog
             raise Fog::Errors::NotFound, "The 'parameters.changeId' resource named '#{identity}' does not exist."
           end
 
-          build_excon_response(data)
+          build_excon_response(data).body
         end
       end
     end
