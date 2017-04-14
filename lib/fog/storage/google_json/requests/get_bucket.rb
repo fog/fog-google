@@ -61,13 +61,11 @@ module Fog
               response.body = {
                 "CommonPrefixes"  => [],
                 "Contents"        => truncated_contents,
-                "IsTruncated"     => truncated_contents.size != contents.size,
                 "Marker"          => options["marker"],
                 "Name"            => bucket["Name"],
                 "Prefix"          => options["prefix"]
               }
               if options["max-keys"] && options["max-keys"] < response.body["Contents"].length
-                response.body["IsTruncated"] = true
                 response.body["Contents"] = response.body["Contents"][0...options["max-keys"]]
               end
             else

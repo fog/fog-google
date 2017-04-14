@@ -28,10 +28,6 @@ module Fog
             subset = dup.all
 
             subset.each_file_this_page { |f| yield f }
-            while subset.is_truncated
-              subset = subset.all(:marker => subset.last.key)
-              subset.each_file_this_page { |f| yield f }
-            end
 
             self
           end
