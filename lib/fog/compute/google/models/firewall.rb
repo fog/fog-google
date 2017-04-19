@@ -35,7 +35,7 @@ module Fog
           operation = Fog::Compute::Google::Operations.new(:service => service).get(data.body["name"])
           operation.wait_for { !pending? }
           reload
-	end
+        end
 
         def destroy(async = true)
           requires :identity
