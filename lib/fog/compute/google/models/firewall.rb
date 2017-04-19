@@ -28,6 +28,15 @@ module Fog
           reload
         end
 
+	def update
+          requires :identity, :allowed, :network
+
+          data = service.update_firewall(identity, allowed, network, attributes)
+          operation = Fog::Compute::Google::Operations.new(:service => service).get(data.body["name"])
+          operation.wait_for { !pending? }
+          reload
+	end
+
         def destroy(async = true)
           requires :identity
 
