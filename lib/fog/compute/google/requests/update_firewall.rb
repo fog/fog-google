@@ -16,11 +16,11 @@ module Fog
           api_method = @compute.firewalls.update
           parameters = {
             "project" => @project,
-	    "firewall" => firewall_name
+            "firewall" => firewall_name
           }
           body_object = {
             "allowed" => allowed,
-	    "network" => network
+            "network" => network
           }
           unless options[:description].nil?
             body_object["description"] = options[:description]

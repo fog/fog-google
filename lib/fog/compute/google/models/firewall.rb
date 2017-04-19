@@ -28,7 +28,7 @@ module Fog
           reload
         end
 
-	def update
+        def update
           requires :identity, :allowed, :network
 
           data = service.update_firewall(identity, allowed, network, attributes)
