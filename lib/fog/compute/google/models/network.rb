@@ -37,7 +37,7 @@ module Fog
         end
 
         def get_self_link_attr
-          return [self_link]
+          [self_link]
         end
 
       end
