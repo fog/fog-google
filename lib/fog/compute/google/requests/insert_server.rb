@@ -140,9 +140,9 @@ module Fog
             
             # Objectify the subnetwork if needed
             unless subnetwork.is_a? Subnetwork
-          	  # Extract region_name from zone_name	
-          	  l = zone_name.split(/-/)
-          	  region_name = l[0] + "-" + l[1]
+              # Extract region_name from zone_name	
+              l = zone_name.split(/-/)
+              region_name = l[0] + "-" + l[1]
               subnetwork = subnetworks.get(subnetwork, region_name) 
             end
 
