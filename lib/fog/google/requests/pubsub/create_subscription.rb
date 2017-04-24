@@ -26,7 +26,7 @@ module Fog
             "topic" => (topic.is_a?(Topic) ? topic.name : topic.to_s)
           }
 
-          unless push_config.empty?
+          if push_config && push_config.any?
             body["pushConfig"] = push_config
           end
 
