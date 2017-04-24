@@ -133,11 +133,10 @@ module Fog
             network = networks.get(network)
           end
 
-          network_interface = { "network" => network.get_self_link_attr() }
+          network_interface = { "network" => network.get_self_link_attr }
 
           if options.key? "subnetwork"
             subnetwork = options.delete "subnetwork"
-            
             # Objectify the subnetwork if needed
             unless subnetwork.is_a? Subnetwork
               # Extract region_name from zone_name	
@@ -145,14 +144,10 @@ module Fog
               region_name = l[0] + "-" + l[1]
               subnetwork = subnetworks.get(subnetwork, region_name) 
             end
-
-            network_interface["subnetwork"] = subnetwork.get_self_link_attr() 
+            network_interface["subnetwork"] = subnetwork.get_self_link_attr 
           end
-
-          network_interface["accessConfigs"] = [access_config] if access_config
-      
           # Return a networkInterfaces array
-          [network_interface]
+          network_interface["accessConfigs"] = [access_config] if access_config
         end
 
         def format_metadata(metadata)
