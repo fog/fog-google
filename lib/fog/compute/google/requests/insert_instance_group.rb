@@ -20,9 +20,16 @@ module Fog
           body = {
             "name" => group_name
           }
+
           body["description"] = options["description"] if options["description"]
           network_name = options["network"] ? options["network"].split("/")[-1] : GOOGLE_COMPUTE_DEFAULT_NETWORK
           body["network"] = "https://www.googleapis.com/compute/#{api_version}/projects/#{@project}/global/networks/#{network_name}"
+
+          unless options["subnetwork"].nil?
+            subnetwork_name = options["subnetwork"].split("/")[-1] 
+            puts subnetwork_name 
+            body["subnetwork"] = "https://www.googleapis.com/compute/#{api_version}/projects/#{@project}/regions/#{@region}/subnetworks/#{subnetwork_name}"
+          end
 
           request(api_method, parameters, body)
         end

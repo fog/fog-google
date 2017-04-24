@@ -110,7 +110,7 @@ module Fog
           disks
         end
 
-        def handle_networks(options)
+        def handle_networks(options, zone_name)
           # Only one access config, ONE_TO_ONE_NAT, is supported per instance.
           # If there are no accessConfigs specified, then this instance will have no external internet access.
           access_config = { "type" => "ONE_TO_ONE_NAT", "name" => "External NAT" }
@@ -133,8 +133,23 @@ module Fog
             network = networks.get(network)
           end
 
+          network_interface = { "network" => network.get_self_link_attr() }
+
+          if options.key? "subnetwork"
+            subnetwork = options.delete "subnetwork"
+            
+            # Objectify the subnetwork if needed
+          	unless subnetwork.is_a? Subnetwork
+              subnetwork = subnetworks.get(subnetwork, "europe-west1") #todo zone_name split
+            end
+
+            network_interface["subnetwork"] = subnetwork.get_self_link_attr() 
+          end
+
+          network_interface["accessConfigs"] = [access_config] if access_config
+      
           # Return a networkInterfaces array
-          [network.get_as_interface_config(access_config)]
+          [network_interface]
         end
 
         def format_metadata(metadata)
@@ -227,6 +242,7 @@ module Fog
             # only-accepted value for preemptible vms
             scheduling["onHostMaintenance"] = "TERMINATE" unless options.key? "on_host_maintenance"
           end
+
           if options.key? "on_host_maintenance"
             ohm = options.delete "on_host_maintenance"
             scheduling["onHostMaintenance"] = (ohm.respond_to?("upcase") &&
@@ -240,7 +256,7 @@ module Fog
           end
 
           # TODO: add other networks
-          body_object["networkInterfaces"] = handle_networks(options)
+          body_object["networkInterfaces"] = handle_networks(options, zone_name)
 
           if options["disks"].nil? || options["disks"].empty?
             raise ArgumentError.new "Empty value for field 'disks'. Boot disk must be specified"

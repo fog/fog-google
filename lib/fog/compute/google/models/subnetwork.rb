@@ -36,6 +36,10 @@ module Fog
           operation
         end
 
+        def get_self_link_attr
+          return [self_link]
+        end
+
         def reload
           requires :identity, :region
 
