@@ -36,8 +36,9 @@ module Fog
           operation
         end
 
-        def get_self_link_attr
-          return [self_link]
+        def update_interface_config(network_interface)
+          network_interface["subnetwork"] = self_link if network_interface
+          network_interface
         end
 
         def reload

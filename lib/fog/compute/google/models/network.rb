@@ -36,8 +36,10 @@ module Fog
           operation
         end
 
-        def get_self_link_attr
-          return [self_link]
+        def get_as_interface_config(access_config = nil)
+          network_interface = { "network" => self_link }
+          network_interface["accessConfigs"] = [access_config] if access_config
+          network_interface
         end
 
       end

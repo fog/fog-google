@@ -26,7 +26,7 @@ module Fog
           body["network"] = "https://www.googleapis.com/compute/#{api_version}/projects/#{@project}/global/networks/#{network_name}"
 
           unless options["subnetwork"].nil?
-            subnetwork_name = options["subnetwork"].split("/")[-1] 
+            subnetwork_name = options["subnetwork"].split("/")[-1]
             body["subnetwork"] = "https://www.googleapis.com/compute/#{api_version}/projects/#{@project}/regions/#{@region}/subnetworks/#{subnetwork_name}"
           end
 
