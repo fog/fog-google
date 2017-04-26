@@ -237,13 +237,13 @@ module Fog
             # only-accepted value for preemptible vms
             scheduling["onHostMaintenance"] = "TERMINATE" unless options.key? "on_host_maintenance"
           end
-
           if options.key? "on_host_maintenance"
             ohm = options.delete "on_host_maintenance"
             scheduling["onHostMaintenance"] = (ohm.respond_to?("upcase") &&
                     ohm.upcase == "MIGRATE" && "MIGRATE") || "TERMINATE"
           end
           body_object["scheduling"] = scheduling
+          
           # @see https://developers.google.com/compute/docs/networking#canipforward
           if options.key? "can_ip_forward"
             body_object["canIpForward"] = options.delete "can_ip_forward"
