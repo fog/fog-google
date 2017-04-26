@@ -244,7 +244,6 @@ module Fog
                     ohm.upcase == "MIGRATE" && "MIGRATE") || "TERMINATE"
           end
           body_object["scheduling"] = scheduling
-
           # @see https://developers.google.com/compute/docs/networking#canipforward
           if options.key? "can_ip_forward"
             body_object["canIpForward"] = options.delete "can_ip_forward"
