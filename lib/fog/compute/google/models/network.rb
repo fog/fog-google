@@ -35,7 +35,7 @@ module Fog
           operation.wait_for { ready? } unless async
           operation
         end
-        
+
         # Returns a ready API structure for insert_instance, used in insert_server request.
         def get_as_interface_config(access_config = nil)
           network_interface = { "network" => self_link }
