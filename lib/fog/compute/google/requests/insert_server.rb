@@ -131,16 +131,17 @@ module Fog
           # Objectify the network if needed
           unless network.is_a?(Network)
             network = networks.get(network)
-            network_interfaces = network.get_as_interface_config(access_config)
           end
+
+          network_interfaces = network.get_as_interface_config(access_config)
 
           if options.key? "subnetwork"
             subnetwork = options.delete "subnetwork"
             # Objectify the subnetwork if needed
             unless subnetwork.is_a?(Subnetwork)
               subnetwork = subnetworks.get(subnetwork, region_name)
-              network_interfaces = subnetwork.update_interface_config(network_interfaces)
             end
+            network_interfaces = subnetwork.update_interface_config(network_interfaces)
           end
 
           # Return a networkInterfaces array
