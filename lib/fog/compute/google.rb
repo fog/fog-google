@@ -101,6 +101,7 @@ module Fog
       request :insert_backend_service
       request :insert_disk
       request :insert_firewall
+      request :update_firewall
       request :insert_forwarding_rule
       request :insert_global_forwarding_rule
       request :insert_http_health_check
