@@ -16,8 +16,9 @@ module Fog
 
         def all(options = {})
           requires :directory
-
-          load(service.list_objects(directory.key, options)[:body]["items"])
+          
+          body = service.list_objects(directory.key, options).body
+          load(body["items"] || [])
         end
 
         alias_method :each_file_this_page, :each
