@@ -47,7 +47,7 @@ module Fog
           if source_object && target_bucket
             response.status = 200
             target_object = source_object.dup
-            target_object.merge!("Name" => target_object_name)
+            target_object["Name"] = target_object_name
             target_bucket[:objects][target_object_name] = target_object
             response.body = {
               "ETag"          => target_object["ETag"],
