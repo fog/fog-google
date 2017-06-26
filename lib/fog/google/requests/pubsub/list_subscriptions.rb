@@ -9,29 +9,14 @@ module Fog
         #   the project configured on the client is used.
         # @see https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/list
         def list_subscriptions(project = nil)
-          api_method = @pubsub.projects.subscriptions.list
-          parameters = {
-            "project" => (project.nil? ? "projects/#{@project}" : project.to_s)
-          }
-
-          request(api_method, parameters)
+          project = (project.nil? ? "projects/#{@project}" : project.to_s)
+          @pubsub.list_subscriptions(project)
         end
       end
 
       class Mock
         def list_subscriptions(_project = nil)
-          subs = data[:subscriptions].values.map do |sub|
-            # Filter out any keys that aren't part of the response object
-            sub.select do |k, _|
-              %w(name topic pushConfig ackDeadlineSeconds).include?(k)
-            end
-          end
-
-          body = {
-            "subscriptions" => subs
-          }
-          status = 200
-          build_excon_response(body, status)
+          raise Fog::Errors::MockNotImplemented
         end
       end
     end

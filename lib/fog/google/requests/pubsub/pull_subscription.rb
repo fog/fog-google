@@ -17,59 +17,18 @@ module Fog
         #   retrieve (defaults to 10)
         # @see https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/pull
         def pull_subscription(subscription, options = { :return_immediately => true, :max_messages => 10 })
-          api_method = @pubsub.projects.subscriptions.pull
+          pull_request = ::Google::Apis::PubsubV1::PullRequest.new(
+            :return_immediately => options[:return_immediately],
+            :max_messages => options[:max_messages]
+          )
 
-          parameters = {
-            "subscription" => Fog::Google::Pubsub.subscription_name(subscription)
-          }
-
-          body = {
-            "returnImmediately" => options[:return_immediately],
-            "maxMessages" => options[:max_messages]
-          }
-
-          request(api_method, parameters, body)
+          @pubsub.pull_subscription(subscription, pull_request)
         end
       end
 
       class Mock
         def pull_subscription(subscription, options = { :return_immediately => true, :max_messages => 10 })
-          # We're going to ignore return_immediately; feel free to add support
-          # if you need it for testing
-          subscription_name = Fog::Google::Pubsub.subscription_name(subscription)
-          sub = data[:subscriptions][subscription_name]
-
-          if sub.nil?
-            subscription_resource = subscription_name.split("/")[-1]
-            body = {
-              "error" => {
-                "code"    => 404,
-                "message" => "Resource not found (resource=#{subscription_resource}).",
-                "status"  => "NOT_FOUND"
-              }
-            }
-            return build_excon_response(body, 404)
-          end
-
-          # This implementation is a bit weak; instead of "hiding" messages for
-          # some period of time after they are pulled, instead we always return
-          # them until acknowledged. This might cause issues with clients that
-          # refuse to acknowledge.
-          #
-          # Also, note that here we use the message id as the ack id - again,
-          # this might cause problems with some strange-behaving clients.
-          msgs = sub[:messages].take(options[:max_messages]).map do |msg|
-            {
-              "ackId"   => msg["messageId"],
-              "message" => msg
-            }
-          end
-
-          body = {
-            "receivedMessages" => msgs
-          }
-          status = 200
-          build_excon_response(body, status)
+          raise Fog::Errors::MockNotImplemented
         end
       end
     end

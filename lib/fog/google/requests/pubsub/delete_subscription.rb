@@ -7,20 +7,13 @@ module Fog
         # @param subscription_name [#to_s] name of subscription to delete
         # @see https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/delete
         def delete_subscription(subscription_name)
-          api_method = @pubsub.projects.subscriptions.delete
-          parameters = {
-            "subscription" => subscription_name.to_s
-          }
-
-          request(api_method, parameters)
+          @pubsub.delete_subscription(subscription_name)
         end
       end
 
       class Mock
         def delete_subscription(subscription_name)
-          data[:subscriptions].delete(subscription_name)
-
-          build_excon_response(nil, 200)
+          raise Fog::Errors::MockNotImplemented
         end
       end
     end
