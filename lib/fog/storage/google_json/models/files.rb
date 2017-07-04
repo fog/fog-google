@@ -17,7 +17,8 @@ module Fog
         def all(options = {})
           requires :directory
 
-          load(service.list_objects(directory.key, options)[:body]["items"])
+          body = service.list_objects(directory.key, options).body
+          load(body["items"] || [])
         end
 
         alias_method :each_file_this_page, :each
@@ -40,8 +41,8 @@ module Fog
           data.headers.each do |k, v|
             file_data[k] = v
           end
-          file_data.merge!(:body => data.body,
-                           :key  => key)
+          file_data[:body] = data.body
+          file_data[:key] = key
           new(file_data)
         rescue Fog::Errors::NotFound
           nil
