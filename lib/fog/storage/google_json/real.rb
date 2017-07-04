@@ -18,11 +18,11 @@ module Fog
         end
 
         def signature(params)
-          string_to_sign = <<-DATA
-#{params[:method]}
-#{params[:headers]['Content-MD5']}
-#{params[:headers]['Content-Type']}
-#{params[:headers]['Date']}
+          string_to_sign = <<-DATA.unindent
+            #{params[:method]}
+            #{params[:headers]['Content-MD5']}
+            #{params[:headers]['Content-Type']}
+            #{params[:headers]['Date']}
 DATA
 
           google_headers = {}
@@ -31,7 +31,7 @@ DATA
             google_headers[key] = value if key[0..6] == "x-goog-"
           end
 
-          google_headers = google_headers.sort { |x, y| x[0] <=> y[0] }
+          google_headers = google_headers.sort_by { |a| a[0] }
           google_headers.each do |key, value|
             canonical_google_headers << "#{key}:#{value}\n"
           end

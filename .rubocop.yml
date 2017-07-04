@@ -4,6 +4,7 @@ Metrics/LineLength:
 
 Style/ConditionalAssignment:
   SingleLineConditionsOnly: true
+  EnforcedStyle: assign_inside_condition
 
 Style/Encoding:
   EnforcedStyle: when_needed
@@ -20,6 +21,15 @@ Style/FrozenStringLiteralComment:
 
 Style/HashSyntax:
   EnforcedStyle: hash_rockets
+
+Layout/IndentHeredoc:
+  EnforcedStyle: unindent
+  SupportedStyles:
+    - auto_detection
+    - squiggly
+    - active_support
+    - powerpack
+    - unindent
 
 # HoundCI config
 

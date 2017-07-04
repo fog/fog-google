@@ -26,6 +26,9 @@ Gem::Specification.new do |spec|
   spec.add_dependency "fog-json"
   spec.add_dependency "fog-xml"
 
+  # Needed for Ruby < 2.3 which doesn't support squiggly
+  spec.add_dependency "unindent"
+
   # TODO: Upgrade to 0.9, which is not compatible.
   spec.add_development_dependency "google-api-client", "~> 0.8.7"
   spec.add_development_dependency "rake"

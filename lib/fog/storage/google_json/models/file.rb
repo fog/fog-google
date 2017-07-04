@@ -43,7 +43,7 @@ module Fog
         # end
 
         def body
-          attributes[:body] ||= last_modified && (file = collection.get(identity)) ? file.body : ""
+          last_modified && (file = collection.get(identity)) ? attributes[:body] ||= file.body : attributes[:body] ||= ""
         end
 
         def body=(new_body)
@@ -81,7 +81,7 @@ module Fog
           if new_owner
             attributes[:owner] = {
               :entity => new_owner["entity"],
-              :entityId  => new_owner["entityId"]
+              :entityId => new_owner["entityId"]
             }
           end
         end

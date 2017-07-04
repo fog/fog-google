@@ -53,11 +53,11 @@ module Fog
           acl = []
           case options["predefinedAcl"]
           when "publicRead"
-            acl.push({ "entity" => "allUsers", "role" => "READER" })
+            acl.push("entity" => "allUsers", "role" => "READER")
           when "publicReadWrite"
-            acl.push({ "entity" => "allUsers", "role" => "OWNER" })
+            acl.push("entity" => "allUsers", "role" => "OWNER")
           when "authenticatedRead"
-            acl.push({ "entity" => "allAuthenticatedUsers", "role" => "READER" })
+            acl.push("entity" => "allAuthenticatedUsers", "role" => "READER")
           end
 
           unless acl.empty?
