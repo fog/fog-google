@@ -6,6 +6,7 @@ Rake::TestTask.new do |t|
   t.warning = false
 end
 
+# Travis CI runs on legacy Shindo tests (using mocks)
 namespace :test do
   mock = ENV["FOG_MOCK"] || "true"
   task :travis do
