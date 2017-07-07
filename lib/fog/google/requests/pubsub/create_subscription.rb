@@ -17,38 +17,19 @@ module Fog
         #   service default of 10 is used
         # @see https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/create
         def create_subscription(subscription_name, topic, push_config = {}, ack_deadline_seconds = nil)
-          api_method = @pubsub.projects.subscriptions.create
+          subscription = ::Google::Apis::PubsubV1::Subscription.new(
+            :topic => topic,
+            :ack_deadline_seconds => ack_deadline_seconds,
+            :push_config => push_config
+          )
 
-          parameters = {}
-          parameters["name"] = subscription_name.to_s unless subscription_name.nil?
-
-          body = {
-            "topic" => (topic.is_a?(Topic) ? topic.name : topic.to_s)
-          }
-
-          unless push_config.empty?
-            body["pushConfig"] = push_config
-          end
-
-          body["ackDeadlineSeconds"] = ack_deadline_seconds unless ack_deadline_seconds.nil?
-
-          request(api_method, parameters, body)
+          @pubsub.create_subscription(subscription_name, subscription)
         end
       end
 
       class Mock
         def create_subscription(subscription_name, topic, push_config = {}, ack_deadline_seconds = nil)
-          subscription = {
-            "name"               => subscription_name,
-            "topic"              => topic,
-            "pushConfig"         => push_config,
-            "ackDeadlineSeconds" => ack_deadline_seconds
-          }
-
-          # We also track pending messages
-          data[:subscriptions][subscription_name] = subscription.merge(:messages => [])
-
-          build_excon_response(subscription, 200)
+          raise Fog::Errors::MockNotImplemented
         end
       end
     end

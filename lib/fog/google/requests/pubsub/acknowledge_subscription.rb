@@ -6,39 +6,22 @@ module Fog
         #
         # @see https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/acknowledge
         def acknowledge_subscription(subscription, ack_ids)
-          api_method = @pubsub.projects.subscriptions.acknowledge
+          # Previous behavior allowed passing a single ack_id without being wrapped in an Array,
+          # this is for backwards compatibility.
+          unless ack_ids.is_a?(Array)
+            ack_ids = [ack_ids]
+          end
+          ack_request = ::Google::Apis::PubsubV1::AcknowledgeRequest.new(
+            :ack_ids => ack_ids
+          )
 
-          parameters = {
-            "subscription" => subscription.to_s
-          }
-
-          body = {
-            "ackIds" => ack_ids
-          }
-
-          request(api_method, parameters, body)
+          @pubsub.acknowledge_subscription(subscription, ack_request)
         end
       end
 
       class Mock
         def acknowledge_subscription(subscription, ack_ids)
-          unless data[:subscriptions].key?(subscription)
-            subscription_resource = subscription.to_s.split("/")[-1]
-            body = {
-              "error" => {
-                "code"    => 404,
-                "message" => "Resource not found (resource=#{subscription_resource}).",
-                "status"  => "NOT_FOUND"
-              }
-            }
-            status = 404
-            return build_excon_response(body, status)
-          end
-
-          sub = data[:subscriptions][subscription]
-          sub[:messages].delete_if { |msg| ack_ids.member?(msg["messageId"]) }
-
-          build_excon_response(nil, 200)
+          raise Fog::Errors::MockNotImplemented
         end
       end
     end
