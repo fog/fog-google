@@ -30,17 +30,17 @@ module Fog
         def pull(options = { :return_immediately => true, :max_messages => 10 })
           requires :name
 
-          data = service.pull_subscription(name, options).body
+          data = service.pull_subscription(name, options).to_h
 
-          return [] unless data.key?("receivedMessages")
+          return [] unless data.key?(:received_messages)
           # Turn into a list of ReceivedMessage, but ensure we perform a base64 decode first
-          data["receivedMessages"].map do |recv_message|
+          data[:received_messages].map do |recv_message|
             attrs = {
               :service => service,
               :subscription_name => name
             }.merge(recv_message)
 
-            attrs["message"]["data"] = Base64.decode64(recv_message["message"]["data"]) if recv_message["message"].key?("data")
+            attrs[:message][:data] = Base64.decode64(recv_message[:message][:data]) if recv_message[:message].key?(:data)
             ReceivedMessage.new(attrs)
           end
         end
@@ -68,7 +68,7 @@ module Fog
         def save
           requires :name, :topic
 
-          data = service.create_subscription(name, topic, push_config, ack_deadline_seconds).body
+          data = service.create_subscription(name, topic, push_config, ack_deadline_seconds).to_h
           merge_attributes(data)
         end
 

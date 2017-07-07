@@ -11,7 +11,7 @@ module Fog
         #
         # @return [Array<Fog::Google::Pubsub::Topic>] list of topics
         def all
-          data = service.list_topics.body["topics"] || []
+          data = service.list_topics.to_h[:topics] || []
           load(data)
         end
 
@@ -20,7 +20,7 @@ module Fog
         # @param topic_name [String] name of topic to retrieve
         # @return [Fog::Google::Pubsub::Topic] topic found, or nil if not found
         def get(topic_name)
-          topic = service.get_topic(topic_name).body
+          topic = service.get_topic(topic_name).to_h
           new(topic)
         rescue Fog::Errors::NotFound
           nil
