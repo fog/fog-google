@@ -110,7 +110,7 @@ module Fog
           disks
         end
 
-        def handle_networks(options)
+        def handle_networks(options, region_name)
           # Only one access config, ONE_TO_ONE_NAT, is supported per instance.
           # If there are no accessConfigs specified, then this instance will have no external internet access.
           access_config = { "type" => "ONE_TO_ONE_NAT", "name" => "External NAT" }
@@ -129,12 +129,23 @@ module Fog
           end
 
           # Objectify the network if needed
-          unless network.is_a? Network
+          unless network.is_a?(Network)
             network = networks.get(network)
           end
 
+          network_interfaces = network.get_as_interface_config(access_config)
+
+          if options.key? "subnetwork"
+            subnetwork = options.delete "subnetwork"
+            # Objectify the subnetwork if needed
+            unless subnetwork.is_a?(Subnetwork)
+              subnetwork = subnetworks.get(subnetwork, region_name)
+            end
+            network_interfaces = subnetwork.update_interface_config(network_interfaces)
+          end
+
           # Return a networkInterfaces array
-          [network.get_as_interface_config(access_config)]
+          [network_interfaces]
         end
 
         def format_metadata(metadata)
@@ -197,7 +208,7 @@ module Fog
         #   more information.
         # @return [Excon::Response] response object that represents the result.
         def insert_server(server_name, zone_name, options = {}, *deprecated_args)
-          if deprecated_args.length > 0 || !options.is_a?(Hash)
+          if !deprecated_args.empty? || !options.is_a?(Hash)
             raise ArgumentError.new "Too many parameters specified. This may be the cause of code written for an outdated"\
                 " version of fog. Usage: server_name, zone_name, [options]"
           end
@@ -240,7 +251,7 @@ module Fog
           end
 
           # TODO: add other networks
-          body_object["networkInterfaces"] = handle_networks(options)
+          body_object["networkInterfaces"] = handle_networks(options, get_zone(zone_name).body["region"].split("/")[-1])
 
           if options["disks"].nil? || options["disks"].empty?
             raise ArgumentError.new "Empty value for field 'disks'. Boot disk must be specified"

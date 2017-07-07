@@ -36,6 +36,11 @@ module Fog
           operation
         end
 
+        def update_interface_config(network_interface)
+          network_interface["subnetwork"] = self_link if network_interface
+          network_interface
+        end
+
         def reload
           requires :identity, :region
 
