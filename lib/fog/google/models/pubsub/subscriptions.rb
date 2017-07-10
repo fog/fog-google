@@ -12,7 +12,7 @@ module Fog
         # @return [Array<Fog::Google::Pubsub::Subscription>] list of
         #   subscriptions
         def all
-          data = service.list_subscriptions.body["subscriptions"] || []
+          data = service.list_subscriptions.to_h[:subscriptions] || []
           load(data)
         end
 
@@ -21,7 +21,7 @@ module Fog
         # @param subscription_name [String] name of subscription to retrieve
         # @return [Fog::Google::Pubsub::Topic] topic found, or nil if not found
         def get(subscription_name)
-          subscription = service.get_subscription(subscription_name).body
+          subscription = service.get_subscription(subscription_name).to_h
           new(subscription)
         rescue Fog::Errors::NotFound
           nil

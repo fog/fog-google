@@ -47,18 +47,17 @@ module Fog
           messages.each do |message|
             encoded_message = {}
             if message.is_a?(Hash)
-              encoded_message["attributes"] = message["attributes"]
               if message.key?("data")
-                encoded_message["data"] = Base64.strict_encode64(message["data"])
+                encoded_message[:data] = Base64.strict_encode64(message["data"])
               end
             else
-              encoded_message["data"] = Base64.strict_encode64(message.to_s)
+              encoded_message[:data] = Base64.strict_encode64(message.to_s)
             end
 
             encoded_messages << encoded_message
           end
 
-          service.publish_topic(name, encoded_messages).body["messageIds"]
+          service.publish_topic(name, encoded_messages).to_h[:message_ids]
         end
 
         # Save the instance (does the same thing as #create)
