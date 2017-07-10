@@ -5,36 +5,15 @@ module Fog
         # Delete an Google Storage bucket
         # https://cloud.google.com/storage/docs/json_api/v1/buckets/delete
         #
-        # ==== Parameters
-        # * bucket_name<~String> - name of bucket to delete
-        #
-        # ==== Returns
-        # * response<~Excon::Response>:
-        #   * status<~Integer> - 204
+        # @param bucket_name [String] Name of bucket to delete
         def delete_bucket(bucket_name)
-          api_method = @storage_json.buckets.delete
-          parameters = {
-            "bucket" => bucket_name
-          }
-
-          request(api_method, parameters)
+          @storage_json.delete_bucket(bucket_name)
         end
       end
 
       class Mock
-        def delete_bucket(bucket_name)
-          response = Excon::Response.new
-          if data[:buckets][bucket_name].nil?
-            response.status = 404
-            raise(Excon::Errors.status_error({ :expects => 204 }, response))
-          elsif data[:buckets][bucket_name] && !data[:buckets][bucket_name][:objects].empty?
-            response.status = 409
-            raise(Excon::Errors.status_error({ :expects => 204 }, response))
-          else
-            data[:buckets].delete(bucket_name)
-            response.status = 204
-          end
-          response
+        def delete_bucket(_bucket_name)
+          raise Fog::Errors::MockNotImplemented
         end
       end
     end

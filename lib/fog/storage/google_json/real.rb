@@ -14,7 +14,7 @@ module Fog
           @host = options[:host] || "storage.googleapis.com"
 
           @client = initialize_google_client(options)
-          @storage_json = @client.discovered_api("storage", api_version)
+          @storage_json = ::Google::Apis::StorageV1::StorageService.new
         end
 
         def signature(params)
@@ -51,11 +51,32 @@ DATA
           canonical_resource.chop!
           string_to_sign << canonical_resource.to_s
 
-          key = OpenSSL::PKey::RSA.new(@client.authorization.signing_key)
+          key = OpenSSL::PKey::RSA.new(@client.signing_key)
           digest = OpenSSL::Digest::SHA256.new
           signed_string = key.sign(digest, string_to_sign)
 
           Base64.encode64(signed_string).chomp!
+        end
+      end
+    end
+  end
+end
+
+module Fog
+  module Google
+    class Pubsub
+      class Real
+        include Fog::Google::Shared
+
+        attr_accessor :client
+        attr_reader :pubsub
+
+        def initialize(options)
+          shared_initialize(options[:google_project], GOOGLE_PUBSUB_API_VERSION, GOOGLE_PUBSUB_BASE_URL)
+          options[:google_api_scope_url] = GOOGLE_PUBSUB_API_SCOPE_URLS.join(" ")
+
+          @client = initialize_google_client(options)
+          @pubsub = ::Google::Apis::PubsubV1::PubsubService.new
         end
       end
     end

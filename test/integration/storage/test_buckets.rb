@@ -1,55 +1,89 @@
 require "helpers/integration_test_helper"
+require "integration/storage/storage_shared"
+require "securerandom"
+require "base64"
+require "tempfile"
 
-class TestBuckets < FogIntegrationTest
-  begin
-    @@connection = Fog::Storage::Google.new
-    @@connection.delete_bucket("fog-smoke-test")
-  rescue Exception => e
-    # puts e
-  end
-
-  def setup
-    @connection = @@connection
-  end
-
-  def teardown
-    @connection.delete_bucket("fog-smoke-test")
-  rescue
-  end
-
+class TestStorageRequests < StorageShared
   def test_put_bucket
-    response = @connection.put_bucket("fog-smoke-test")
-    assert_equal response.status, 200
-  end
+    sleep(1)
 
-  def test_put_bucket_acl
-    response = @connection.put_bucket("fog-smoke-test", options: { "x-goog-acl" => "publicReadWrite" })
-    assert_equal response.status, 200
-    acl = { :entity => "domain-google.com",
-            :role => "READER" }
-    response = @connection.put_bucket_acl("fog-smoke-test", acl)
-    assert_equal response.status, 200
-  end
+    bucket_name = new_bucket_name
+    bucket = @client.put_bucket(bucket_name)
 
-  def test_delete_bucket
-    response = @connection.put_bucket("fog-smoke-test")
-    assert_equal response.status, 200
-    response = @connection.delete_bucket("fog-smoke-test")
-    assert_equal response.status, 204
+    assert_equal(bucket.name, bucket_name)
   end
 
   def test_get_bucket
-    response = @connection.put_bucket("fog-smoke-test")
-    assert_equal response.status, 200
-    response = @connection.get_bucket("fog-smoke-test")
-    assert_equal response.status, 200
+    sleep(1)
+
+    bucket = @client.get_bucket(some_bucket_name)
+    assert_equal(bucket.name, some_bucket_name)
+  end
+
+  def test_delete_bucket
+    sleep(1)
+
+    # Create a new bucket to delete it
+    bucket_to_delete = new_bucket_name
+    @client.put_bucket(bucket_to_delete)
+
+    @client.delete_bucket(bucket_to_delete)
+
+    assert_raises(Google::Apis::ClientError) do
+      @client.get_bucket(bucket_to_delete)
+    end
+  end
+
+  def test_list_buckets
+    sleep(1)
+
+    # Create a new bucket to ensure at least one exists to find
+    bucket_name = new_bucket_name
+    @client.put_bucket(bucket_name)
+
+    result = @client.list_buckets
+    if result.items.nil?
+      raise StandardError.new("no buckets found")
+    end
+
+    contained = result.items.any? { |bucket| bucket.name == bucket_name }
+    assert_equal(true, contained, "expected bucket not present")
+  end
+
+  def test_put_bucket_acl
+    sleep(1)
+
+    bucket_name = new_bucket_name
+    @client.put_bucket(bucket_name)
+
+    acl = {
+      :entity => "allUsers",
+      :role => "READER"
+    }
+    @client.put_bucket_acl(bucket_name, acl)
   end
 
   def test_get_bucket_acl
-    response = @connection.put_bucket("fog-smoke-test",
-                                      options: { "acl" => [{ :entity => "user-fake@developer.gserviceaccount.com", :role => "OWNER" }] })
-    assert_equal response.status, 200
-    response = @connection.get_bucket_acl("fog-smoke-test")
-    assert_equal response.status, 200
+    sleep(1)
+
+    bucket_name = new_bucket_name
+    @client.put_bucket(bucket_name)
+
+    acl = {
+      :entity => "allUsers",
+      :role => "READER"
+    }
+    @client.put_bucket_acl(bucket_name, acl)
+
+    result = @client.get_bucket_acl(bucket_name)
+    if result.items.nil?
+      raise StandardError.new("no bucket access controls found")
+    end
+
+    contained = result.items.any? do |control|
+      control.entity == acl[:entity] && control.role == acl[:role]
+    end
+    assert_equal(true, contained, "expected bucket access control not present")
   end
 end
