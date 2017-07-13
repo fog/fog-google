@@ -11,6 +11,7 @@ module Fog
         attribute :fingerprint
         attribute :namedPorts
         attribute :network
+        attribute :subnetwork
         attribute :self_link, :aliases => "selfLink"
         attribute :size
         attribute :zone, :aliases => :zone_name
@@ -19,7 +20,8 @@ module Fog
           requires :name, :zone
 
           options = {
-            "network" => network_name
+            "network" => network_name,
+            "subnetwork" => subnetwork_name
           }
 
           service.insert_instance_group(name, zone, options)
@@ -66,6 +68,10 @@ module Fog
 
         def network_name
           network.nil? ? nil : network.split("/")[-1]
+        end
+
+        def subnetwork_name
+          subnetwork.nil? ? nil : subnetwork.split("/")[-1]
         end
 
         private

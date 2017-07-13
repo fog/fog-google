@@ -26,6 +26,7 @@ module Fog
         # These attributes are not available in the representation of an 'instance' returned by the GCE API.
         # They are useful only for the create process
         attribute :network, :aliases => "network"
+        attribute :subnetwork, :aliases => "subnetwork"
         attribute :external_ip, :aliases => "externalIP"
         attribute :auto_restart
         attribute :on_host_maintenance
@@ -255,6 +256,7 @@ module Fog
             "machineType" => machine_type,
             "networkInterfaces" => network_interfaces,
             "network" => network,
+            "subnetwork" => subnetwork,
             "externalIp" => external_ip,
             "disks" => disks,
             "metadata" => metadata,

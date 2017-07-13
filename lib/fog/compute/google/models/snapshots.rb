@@ -5,9 +5,15 @@ module Fog
         model Fog::Compute::Google::Snapshot
 
         def all
-          data = service.list_snapshots
-          snapshots = data.body["items"] || []
-          load(snapshots)
+          items = []
+          next_page_token = nil
+          loop do
+            data = service.list_snapshots(nil, next_page_token)
+            items.concat(data.body["items"])
+            next_page_token = data.body["nextPageToken"]
+            break if next_page_token.nil? || next_page_token.empty?
+          end
+          load(items)
         end
 
         def get(snap_id)
