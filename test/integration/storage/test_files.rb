@@ -6,8 +6,6 @@ require "tempfile"
 
 class TestStorageRequests < StorageShared
   def test_files_create
-    sleep(1)
-
     @client.directories.get(some_bucket_name).files.create(
       :key => new_object_name,
       :body => some_temp_file_name
@@ -34,23 +32,17 @@ class TestStorageRequests < StorageShared
   end
 
   def test_files_get
-    sleep(1)
-
     content = @client.directories.get(some_bucket_name).files.get(some_object_name)
     assert_equal(content.body, temp_file_content)
   end
 
   def test_files_head
-    sleep(1)
-
     content = @client.directories.get(some_bucket_name).files.head(some_object_name)
     assert_equal(content.content_length, temp_file_content.length)
     assert_equal(content.key, some_object_name)
   end
 
   def test_files_destroy
-    sleep(1)
-
     file_name = new_object_name
     @client.directories.get(some_bucket_name).files.create(
       :key => file_name,
@@ -65,8 +57,6 @@ class TestStorageRequests < StorageShared
   end
 
   def test_files_all
-    sleep(1)
-
     file_name = new_object_name
     @client.directories.get(some_bucket_name).files.create(
       :key => file_name,
@@ -100,8 +90,6 @@ class TestStorageRequests < StorageShared
   end
 
   def test_files_copy
-    sleep(1)
-
     target_object_name = new_object_name
     @client.directories.get(some_bucket_name).files.get(some_object_name).copy(some_bucket_name,
                                                                                target_object_name)
@@ -111,8 +99,6 @@ class TestStorageRequests < StorageShared
   end
 
   def test_files_public_url
-    sleep(1)
-
     url = @client.directories.get(some_bucket_name).files.get(some_object_name).public_url
     assert_match(/storage.googleapis.com/, url)
   end

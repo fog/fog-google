@@ -6,8 +6,6 @@ require "tempfile"
 
 class TestStorageRequests < StorageShared
   def test_put_bucket
-    sleep(1)
-
     bucket_name = new_bucket_name
     bucket = @client.put_bucket(bucket_name)
 
@@ -33,15 +31,11 @@ class TestStorageRequests < StorageShared
   end
 
   def test_get_bucket
-    sleep(1)
-
     bucket = @client.get_bucket(some_bucket_name)
     assert_equal(bucket.name, some_bucket_name)
   end
 
   def test_delete_bucket
-    sleep(1)
-
     # Create a new bucket to delete it
     bucket_to_delete = new_bucket_name
     @client.put_bucket(bucket_to_delete)
@@ -54,8 +48,6 @@ class TestStorageRequests < StorageShared
   end
 
   def test_list_buckets
-    sleep(1)
-
     # Create a new bucket to ensure at least one exists to find
     bucket_name = new_bucket_name
     @client.put_bucket(bucket_name)
@@ -70,8 +62,6 @@ class TestStorageRequests < StorageShared
   end
 
   def test_put_bucket_acl
-    sleep(1)
-
     bucket_name = new_bucket_name
     @client.put_bucket(bucket_name)
 
@@ -83,8 +73,6 @@ class TestStorageRequests < StorageShared
   end
 
   def test_get_bucket_acl
-    sleep(1)
-
     bucket_name = new_bucket_name
     @client.put_bucket(bucket_name)
 

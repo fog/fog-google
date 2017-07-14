@@ -6,8 +6,6 @@ require "tempfile"
 
 class TestStorageRequests < StorageShared
   def test_directories_put
-    sleep(1)
-
     dir_name = new_bucket_name
     directory = @client.directories.create(:key => dir_name)
     assert_equal(directory.key, dir_name)
@@ -30,29 +28,21 @@ class TestStorageRequests < StorageShared
   end
 
   def test_directories_get
-    sleep(1)
-
     directory = @client.directories.get(some_bucket_name)
     assert_equal(directory.key, some_bucket_name)
   end
 
   def test_directory_files
-    sleep(1)
-
     file = @client.directories.get(some_bucket_name).files.get(some_object_name)
     assert_equal(some_object_name, file.key)
   end
 
   def test_directory_public_url
-    sleep(1)
-
     url = @client.directories.get(some_bucket_name).public_url
     assert_match(/storage.googleapis.com/, url)
   end
 
   def test_directories_destroy
-    sleep(1)
-
     dir_name = new_bucket_name
     @client.directories.create(:key => dir_name)
 
@@ -64,7 +54,6 @@ class TestStorageRequests < StorageShared
   end
 
   def test_directories_all
-    sleep(1)
     dir_name = new_bucket_name
     @client.directories.create(:key => dir_name)
 

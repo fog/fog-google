@@ -7,9 +7,13 @@ require "tempfile"
 class StorageShared < FogIntegrationTest
   def setup
     @client = Fog::Storage::Google.new
+    # Enable retries during the suite. This prevents us from
+    # having to manually rate limit our requests.
+    ::Google::Apis::RequestOptions.default.retries = 5
     # Ensure any resources we create with test prefixes are removed
     Minitest.after_run do
       delete_test_resources
+      ::Google::Apis::RequestOptions.default.retries = 0
     end
   end
 
@@ -32,7 +36,6 @@ class StorageShared < FogIntegrationTest
             end
 
             begin
-              sleep(2)
               @client.delete_bucket(t)
             # Given that bucket operations are specifically rate-limited, we handle that
             # by waiting a significant amount of time and trying.
@@ -68,7 +71,6 @@ class StorageShared < FogIntegrationTest
   def some_bucket_name
     # create lazily to speed tests up
     @some_bucket ||= new_bucket_name.tap do |t|
-      sleep(1.5)
       @client.put_bucket(t)
     end
   end
