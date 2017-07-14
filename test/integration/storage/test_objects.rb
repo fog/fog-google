@@ -1,107 +1,118 @@
 require "helpers/integration_test_helper"
+require "integration/storage/storage_shared"
+require "securerandom"
+require "base64"
+require "tempfile"
 
-class TestObjects < FogIntegrationTest
-  def setup
-    @connection = Fog::Storage::Google.new
-
-    begin
-      @connection.put_bucket("fog-smoke-test", options: { "x-goog-acl" => "publicReadWrite" })
-    rescue
-    end
-  end
-
-  def teardown
-    begin
-      @connection.delete_object("fog-smoke-test", "my file")
-    rescue
-    end
-    begin
-      @connection.delete_object("fog-smoke-test", "my file copy")
-    rescue
-    end
-    begin
-      @connection.delete_bucket("fog-smoke-test")
-    rescue
-    end
-  end
-
+class TestStorageRequests < StorageShared
   def test_put_object
-    response = @connection.put_object("fog-smoke-test", "my file", "THISISATESTFILE")
-    assert_equal response.status, 200
-  end
+    sleep(1)
 
-  def test_put_object_acl
-    skip
-    response = @connection.put_object("fog-smoke-test", "my file", "THISISATESTFILE")
-    assert_equal response.status, 200
-    acl = { :entity => "domain-example.com",
-            :role => "READER" }
-    response = @connection.put_object_acl("fog-smoke-test", "my file", acl)
-    assert_equal response.status, 200
-  end
-
-  def test_put_object_url
-    skip
-    # Doesn't actually work
-    response = @connection.put_object_url("fog-smoke-test", "my file url")
-    puts response.inspect
-    assert_equal response.status, 200
-  end
-
-  def test_copy_object
-    response = @connection.put_object("fog-smoke-test", "my file", "THISISATESTFILE")
-    assert_equal response.status, 200
-    response = @connection.copy_object("fog-smoke-test", "my file", "fog-smoke-test", "my file copy")
-    assert_equal response.status, 200
-  end
-
-  def test_delete_object
-    response = @connection.put_object("fog-smoke-test", "my file", "THISISATESTFILE")
-    assert_equal response.status, 200
-    response = @connection.delete_object("fog-smoke-test", "my file")
-    assert_equal response.status, 204
+    object_name = new_object_name
+    object = @client.put_object(some_bucket_name, object_name, some_temp_file_name)
+    assert_equal(object_name, object.name)
   end
 
   def test_get_object
-    skip
-    response = @connection.put_object("fog-smoke-test", "my file", "THISISATESTFILE")
-    assert_equal response.status, 200
-    response = @connection.get_object("fog-smoke-test", "my file")
-    assert_equal response.status, 200
+    sleep(1)
+
+    object = @client.get_object(some_bucket_name, some_object_name)
+    assert_equal(temp_file_content, object[:body])
   end
 
-  def test_get_object_acl
-    skip
-    response = @connection.put_object("fog-smoke-test", "my file", "THISISATESTFILE")
-    assert_equal response.status, 200
-    response = @connection.get_object_acl("fog-smoke-test", "my file")
-    assert_equal response.status, 200
-    assert_equal response.body["kind"], "storage#objectAccessControls"
-  end
+  def test_delete_object
+    sleep(1)
 
-  def test_get_object_http_url
-    skip
-  end
+    object_name = new_object_name
+    @client.put_object(some_bucket_name, object_name, some_temp_file_name)
+    @client.delete_object(some_bucket_name, object_name)
 
-  def test_get_object_https_url
-    skip
-    response = @connection.put_object("fog-smoke-test", "my file", "THISISATESTFILE", options: { :predefinedAcl => "publicRead" })
-    assert_equal response.status, 200
-    https_url = @connection.get_object_https_url("fog-smoke-test", "my file")
-    assert_match(/https/, https_url)
-    assert_match(/fog-smoke-test/, https_url)
-    assert_match(/my%20file/, https_url)
-  end
-
-  def test_get_object_url
-    skip
-    response = @connection.put_object("fog-smoke-test", "my file", "THISISATESTFILE")
-    assert_equal response.status, 200
-    https_url = @connection.get_object_url("fog-smoke-test", "my file")
-    assert_equal https_url, "https://www.googleapis.com/storage/v1/b/fog-smoke-test/o/my%20file"
+    assert_raises(Google::Apis::ClientError) do
+      @client.get_object(some_bucket_name, object_name)
+    end
   end
 
   def test_head_object
-    skip
+    sleep(1)
+
+    object = @client.head_object(some_bucket_name, some_object_name)
+    assert_equal(temp_file_content.length, object.size)
+    assert_equal(some_bucket_name, object.bucket)
+  end
+
+  def test_copy_object
+    sleep(1)
+
+    target_object_name = new_object_name
+
+    @client.copy_object(some_bucket_name, some_object_name,
+                        some_bucket_name, target_object_name)
+    object = @client.get_object(some_bucket_name, target_object_name)
+    assert_equal(temp_file_content, object[:body])
+  end
+
+  def test_list_objects
+    sleep(1)
+
+    expected_object = some_object_name
+
+    result = @client.list_objects(some_bucket_name)
+    if result.items.nil?
+      raise StandardError.new("no objects found")
+    end
+
+    contained = result.items.any? { |object| object.name == expected_object }
+    assert_equal(true, contained, "expected object not present")
+  end
+
+  def test_put_object_acl
+    sleep(1)
+
+    object_name = new_object_name
+    @client.put_object(some_bucket_name, object_name, some_temp_file_name)
+
+    acl = {
+      :entity => "allUsers",
+      :role => "READER"
+    }
+    @client.put_object_acl(some_bucket_name, object_name, acl)
+  end
+
+  def test_get_object_acl
+    sleep(1)
+
+    object_name = new_object_name
+    @client.put_object(some_bucket_name, object_name, some_temp_file_name)
+
+    acl = {
+      :entity => "allUsers",
+      :role => "READER"
+    }
+    @client.put_object_acl(some_bucket_name, object_name, acl)
+
+    result = @client.get_object_acl(some_bucket_name, object_name)
+    if result.items.nil?
+      raise StandardError.new("no object access controls found")
+    end
+
+    contained = result.items.any? do |control|
+      control.entity == acl[:entity] && control.role == acl[:role]
+    end
+    assert_equal(true, contained, "expected object access control not present")
+  end
+
+  def test_get_object_https_url
+    result = @client.get_object_https_url(some_bucket_name, some_object_name, 0)
+    assert_operator(result.length, :>, 0)
+  end
+
+  def test_get_object_http_url
+    result = @client.get_object_http_url(some_bucket_name, some_object_name, 0)
+    assert_operator(result.length, :>, 0)
+  end
+
+  def test_put_object_url
+    result = @client.put_object_url(some_bucket_name, new_object_name, 0)
+    assert_operator(result.length, :>, 0)
   end
 end

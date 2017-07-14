@@ -21,7 +21,7 @@ module Fog
           params[:headers]["Date"] = expires.to_i
           params[:path] = CGI.escape(params[:path]).gsub("%2F", "/")
           query = [params[:query]].compact
-          query << "GoogleAccessId=#{@client.authorization.issuer}"
+          query << "GoogleAccessId=#{@client.issuer}"
           query << "Signature=#{CGI.escape(signature(params))}"
           query << "Expires=#{params[:headers]['Date']}"
           "#{params[:host]}/#{params[:path]}?#{query.join('&')}"
