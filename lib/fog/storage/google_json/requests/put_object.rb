@@ -8,6 +8,7 @@ module Fog
         # @param bucket_name [String] Name of bucket to create object in
         # @param object_name [String] Name of object to create
         # @param data [File|String] File or String to create object from
+        # @option options [String] "predefinedAcl" Applies a predefined set of access controls to this bucket.
         # @option options [String] "Cache-Control" Caching behaviour
         # @option options [DateTime] "Content-Disposition" Presentational information for the object
         # @option options [String] "Content-Encoding" Encoding of object data
@@ -31,6 +32,7 @@ module Fog
           request_options = ::Google::Apis::RequestOptions.default.merge(options)
           @storage_json.insert_object(bucket_name, object_config,
                                       :upload_source => data,
+                                      :predefined_acl => options["predefinedAcl"],
                                       :options => request_options)
         end
       end

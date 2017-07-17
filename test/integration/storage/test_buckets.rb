@@ -14,6 +14,24 @@ class TestStorageRequests < StorageShared
     assert_equal(bucket.name, bucket_name)
   end
 
+  # We cannot test the state of the ACL as there are two cases to consider
+  # * The authenticated service account has Owner permisions, which allows
+  # it to read the ACLs after the predefined ACL is applied.
+  # * The authenticated service account does not have Owner  permissions,
+  # then, we cannot read the ACLs after the predefined ACL is applied.
+  #
+  # As we cannot control the service account used for testing, we'll
+  # just ensure that a valid operation succeeds and an invalid operation fails.
+  def test_put_bucket_predefined_acl
+    @client.put_bucket(new_bucket_name, "predefinedAcl" => "publicRead")
+  end
+
+  def test_put_bucket_invalid_predefined_acl
+    assert_raises(Google::Apis::ClientError) do
+      @client.put_bucket(new_bucket_name, "predefinedAcl" => "invalidAcl")
+    end
+  end
+
   def test_get_bucket
     sleep(1)
 

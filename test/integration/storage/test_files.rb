@@ -1,129 +1,128 @@
 require "helpers/integration_test_helper"
+require "integration/storage/storage_shared"
+require "securerandom"
+require "base64"
+require "tempfile"
 
-class TestFiles < FogIntegrationTest
-  begin
-    client_email = Fog.credentials[:google_client_email]
-    @@connection = Fog::Storage::Google.new
-    @@connection.put_bucket("fog-smoke-test", "acl" => [{ :entity => "user-" + client_email, :role => "OWNER" }])
-    @@connection.put_bucket_acl("fog-smoke-test", :entity => "allUsers", :role => "READER")
-  rescue StandardError => e
-    puts e
-    puts e.backtrace
+class TestStorageRequests < StorageShared
+  def test_files_create
+    sleep(1)
+
+    @client.directories.get(some_bucket_name).files.create(
+      :key => new_object_name,
+      :body => some_temp_file_name
+    )
   end
 
-  begin
-    @directory = @@connection.directories.get("fog-smoke-test")
-    @@connection.put_object("fog-smoke-test", "fog-testfile", "THISISATESTFILE")
-    @file = @directory.files.get("fog-testfile")
-  rescue StandardError => e
-    puts e
-    puts e.backtrace
+  def test_files_create_predefined_acl
+    @client.directories.get(some_bucket_name).files.create(
+      :key => new_object_name,
+      :body => some_temp_file_name,
+      :predefined_acl => "publicRead"
+    )
   end
 
-  Minitest.after_run do
-    begin
-      @connection = Fog::Storage::Google.new
-      @connection.delete_object("fog-smoke-test", "fog-testfile")
-      @connection.delete_bucket("fog-smoke-test")
-    rescue StandardError => e
-      puts e
+
+  def test_files_create_invalid_predefined_acl
+    assert_raises(Google::Apis::ClientError) do
+      @client.directories.get(some_bucket_name).files.create(
+        :key => new_object_name,
+        :body => some_temp_file_name,
+        :predefined_acl => "invalidAcl"
+      )
     end
   end
 
-  def setup
-    @connection = @@connection
+  def test_files_get
+    sleep(1)
+
+    content = @client.directories.get(some_bucket_name).files.get(some_object_name)
+    assert_equal(content.body, temp_file_content)
   end
 
-  def test_all_files
-    skip
+  def test_files_head
+    sleep(1)
+
+    content = @client.directories.get(some_bucket_name).files.head(some_object_name)
+    assert_equal(content.content_length, temp_file_content.length)
+    assert_equal(content.key, some_object_name)
   end
 
-  def test_each_files
-    skip
+  def test_files_destroy
+    sleep(1)
+
+    file_name = new_object_name
+    @client.directories.get(some_bucket_name).files.create(
+      :key => file_name,
+      :body => some_temp_file_name
+    )
+
+    @client.directories.get(some_bucket_name).files.destroy(file_name)
+
+    assert_raises(Google::Apis::ClientError) do
+      @client.directories.get(some_bucket_name).files.get(file_name)
+    end
   end
 
-  def test_get
-    get_file = @directory.files.get("fog-testfile")
-    assert_instance_of Fog::Storage::Google::File, get_file
-    assert_equal "THISISATESTFILE", get_file.body
+  def test_files_all
+    sleep(1)
+
+    file_name = new_object_name
+    @client.directories.get(some_bucket_name).files.create(
+      :key => file_name,
+      :body => some_temp_file_name
+    )
+
+    result = @client.directories.get(some_bucket_name).files.all
+    if result.nil?
+      raise StandardError.new("no files found")
+    end
+
+    unless result.any? { |file| file.key == file_name  }
+      raise StandardError.new("failed to find expected file")
+    end
   end
 
-  def test_get_https_url
-    https_url = @directory.files.get_https_url("fog-testfile", (Time.now + 1.minute).to_i)
+  def test_files_each
+    file_name = new_object_name
+    @client.directories.get(some_bucket_name).files.create(
+      :key => file_name,
+      :body => some_temp_file_name
+    )
+
+    found_file = false
+    @client.directories.get(some_bucket_name).files.each do |file|
+      if file.key == file_name
+        found_file = true
+      end
+    end
+    assert_equal(true, found_file, "failed to find expected file while iterating")
+  end
+
+  def test_files_copy
+    sleep(1)
+
+    target_object_name = new_object_name
+    @client.directories.get(some_bucket_name).files.get(some_object_name).copy(some_bucket_name,
+                                                                               target_object_name)
+
+    content = @client.directories.get(some_bucket_name).files.get(target_object_name)
+    assert_equal(content.body, temp_file_content)
+  end
+
+  def test_files_public_url
+    sleep(1)
+
+    url = @client.directories.get(some_bucket_name).files.get(some_object_name).public_url
+    assert_match(/storage.googleapis.com/, url)
+  end
+
+  def test_files_get_https_url
+    directory = @client.directories.get(some_bucket_name)
+    https_url = directory.files.get_https_url("fog-testfile", (Time.now + 60).to_i)
     assert_match(/https/, https_url)
-    assert_match(/fog-smoke-test/, https_url)
+    assert_match(/#{bucket_prefix}/, https_url)
     assert_match(/fog-testfile/, https_url)
-  end
-
-  def test_head
-    assert_instance_of Fog::Storage::Google::File, @directory.files.head("fog-testfile")
-  end
-
-  def test_new
-    new_file = @directory.files.new(:key => "fog-testfile-new",
-                                    :body => "TESTFILENEW")
-    assert_instance_of Fog::Storage::Google::File, new_file
-  end
-
-  def test_acl
-    skip
-  end
-
-  def test_body
-    assert_equal "THISISATESTFILE", @file.body
-  end
-
-  def test_set_body
-    new_body = "FILEBODYCHANGED"
-    @file.body = new_body
-    assert_equal new_body, @file.body
-    @file.save
-    file_get = @directory.files.get("fog-testfile")
-    assert_instance_of Fog::Storage::Google::File, file_get
-    assert_equal new_body, file_get.body
-    @file.body = "THISISATESTFILE"
-    @file.save
-  end
-
-  def test_copy
-    copied_file = @file.copy("fog-smoke-test", "fog-testfile-copy")
-    assert_instance_of Fog::Storage::Google::File, copied_file
-    assert copied_file.destroy
-  end
-
-  def test_create_destroy
-    testfile = @directory.files.create(:key => "fog-testfile-create-destroy")
-    assert_instance_of Fog::Storage::Google::File, testfile
-    assert testfile.destroy
-  end
-
-  def test_metadata
-    skip
-  end
-
-  def test_set_metadata
-    skip
-  end
-
-  def test_set_owner
-    skip
-  end
-
-  def test_set_public
-    skip
-  end
-
-  def test_public_url
-    assert_nil @file.public_url
-
-    # Setting an ACL still fails, but here's some tests that should work when it does.
-    # @file.acl.push({ "entity" => "allUsers", "role" => "READER" })
-    # public_url = @file.public_url
-
-    # assert_match /https/, public_url
-    # assert_match /storage\.googleapis\.com/, public_url
-    # assert_match /fog-smoke-test/, public_url
-    # assert_match /fog-testfile/, public_url
   end
 
   def test_url

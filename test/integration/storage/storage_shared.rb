@@ -43,8 +43,6 @@ class StorageShared < FogIntegrationTest
             end
           end
       # We ignore errors here as list operations may not represent changes applied recently.
-      # Hence, list operations can return a topic which has already been deleted but which we
-      # will attempt to delete again.
       rescue Google::Apis::Error
         Fog::Logger.warning("ignoring Google Api error during delete_test_resources")
       end

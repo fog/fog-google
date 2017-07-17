@@ -13,6 +13,18 @@ class TestStorageRequests < StorageShared
     assert_equal(object_name, object.name)
   end
 
+  def test_put_object_predefined_acl
+    @client.put_object(some_bucket_name, new_object_name, some_temp_file_name,
+                       "predefinedAcl" => "publicRead")
+  end
+
+  def test_put_object_invalid_predefined_acl
+    assert_raises(Google::Apis::ClientError) do
+      @client.put_object(some_bucket_name, new_object_name, some_temp_file_name,
+                         "predefinedAcl" => "invalidAcl")
+    end
+  end
+
   def test_get_object
     sleep(1)
 
