@@ -20,6 +20,7 @@ module Fog
         def put_object(bucket_name, object_name, data, options = {})
           unless options["Content-Type"]
             if data.is_a? String
+              data = StringIO.new(data)
               options["Content-Type"] = "text/plain"
             elsif data.is_a? ::File
               options["Content-Type"] = Fog::Storage.parse_data(data)[:headers]["Content-Type"]

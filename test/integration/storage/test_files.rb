@@ -5,27 +5,42 @@ require "base64"
 require "tempfile"
 
 class TestStorageRequests < StorageShared
-  def test_files_create
+  def test_files_create_file
+    file_name = new_object_name
     @client.directories.get(some_bucket_name).files.create(
-      :key => new_object_name,
-      :body => some_temp_file_name
+      :key => file_name,
+      :body => some_temp_file
     )
+
+    object = @client.get_object(some_bucket_name, file_name)
+    assert_equal(object[:body], temp_file_content)
+  end
+
+  def test_files_create_string
+    expected_body = "A file body"
+    file_name = new_object_name
+    @client.directories.get(some_bucket_name).files.create(
+      :key => file_name,
+      :body => expected_body
+    )
+
+    object = @client.get_object(some_bucket_name, file_name)
+    assert_equal(object[:body], expected_body)
   end
 
   def test_files_create_predefined_acl
     @client.directories.get(some_bucket_name).files.create(
       :key => new_object_name,
-      :body => some_temp_file_name,
+      :body => some_temp_file,
       :predefined_acl => "publicRead"
     )
   end
-
 
   def test_files_create_invalid_predefined_acl
     assert_raises(Google::Apis::ClientError) do
       @client.directories.get(some_bucket_name).files.create(
         :key => new_object_name,
-        :body => some_temp_file_name,
+        :body => some_temp_file,
         :predefined_acl => "invalidAcl"
       )
     end
@@ -34,6 +49,40 @@ class TestStorageRequests < StorageShared
   def test_files_get
     content = @client.directories.get(some_bucket_name).files.get(some_object_name)
     assert_equal(content.body, temp_file_content)
+  end
+
+  def test_files_set_body_string
+    file_name = new_object_name
+    directory = @client.directories.get(some_bucket_name)
+    file = directory.files.create(
+      :key => file_name,
+      :body => temp_file_content
+    )
+
+    assert_equal(file.body, temp_file_content)
+
+    new_body = "Changed file body"
+    file.body = new_body
+    file.save
+
+    updated_file = directory.files.get(file_name)
+    assert_equal(updated_file.body, new_body)
+  end
+
+  def test_files_set_body_file
+    file_name = new_object_name
+    directory = @client.directories.get(some_bucket_name)
+    file = directory.files.create(
+      :key => file_name,
+      :body => some_temp_file
+    )
+
+    new_body = "Changed file body"
+    file.body = new_body
+    file.save
+
+    updated_file = directory.files.get(file_name)
+    assert_equal(updated_file.body, new_body)
   end
 
   def test_files_head
@@ -46,7 +95,7 @@ class TestStorageRequests < StorageShared
     file_name = new_object_name
     @client.directories.get(some_bucket_name).files.create(
       :key => file_name,
-      :body => some_temp_file_name
+      :body => some_temp_file
     )
 
     @client.directories.get(some_bucket_name).files.destroy(file_name)
@@ -60,7 +109,7 @@ class TestStorageRequests < StorageShared
     file_name = new_object_name
     @client.directories.get(some_bucket_name).files.create(
       :key => file_name,
-      :body => some_temp_file_name
+      :body => some_temp_file
     )
 
     result = @client.directories.get(some_bucket_name).files.all
@@ -77,7 +126,7 @@ class TestStorageRequests < StorageShared
     file_name = new_object_name
     @client.directories.get(some_bucket_name).files.create(
       :key => file_name,
-      :body => some_temp_file_name
+      :body => some_temp_file
     )
 
     found_file = false

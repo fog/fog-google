@@ -78,7 +78,7 @@ class StorageShared < FogIntegrationTest
   def some_object_name
     # create lazily to speed tests up
     @some_object ||= new_object_name.tap do |t|
-      @client.put_object(some_bucket_name, t, some_temp_file_name)
+      @client.put_object(some_bucket_name, t, some_temp_file)
     end
   end
 
@@ -86,11 +86,11 @@ class StorageShared < FogIntegrationTest
     "hello world"
   end
 
-  def some_temp_file_name
+  def some_temp_file
     @some_temp_file ||= Tempfile.new("fog-google-storage").tap do |t|
       t.write(temp_file_content)
       t.close
     end
-    @some_temp_file.path
+    File.open(@some_temp_file.path, "r")
   end
 end

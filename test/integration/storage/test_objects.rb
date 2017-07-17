@@ -5,20 +5,34 @@ require "base64"
 require "tempfile"
 
 class TestStorageRequests < StorageShared
-  def test_put_object
+  def test_put_object_string
     object_name = new_object_name
-    object = @client.put_object(some_bucket_name, object_name, some_temp_file_name)
-    assert_equal(object_name, object.name)
+    @client.put_object(some_bucket_name, object_name, some_temp_file)
+
+    object = @client.get_object(some_bucket_name, object_name)
+
+    assert_equal(object_name, object[:name])
+    assert_equal(temp_file_content, object[:body])
+  end
+
+  def test_put_object_file
+    object_name = new_object_name
+    expected_body = "A file body"
+    @client.put_object(some_bucket_name, object_name, expected_body)
+
+    object = @client.get_object(some_bucket_name, object_name)
+    assert_equal(object_name, object[:name])
+    assert_equal(expected_body, object[:body])
   end
 
   def test_put_object_predefined_acl
-    @client.put_object(some_bucket_name, new_object_name, some_temp_file_name,
+    @client.put_object(some_bucket_name, new_object_name, some_temp_file,
                        "predefinedAcl" => "publicRead")
   end
 
   def test_put_object_invalid_predefined_acl
     assert_raises(Google::Apis::ClientError) do
-      @client.put_object(some_bucket_name, new_object_name, some_temp_file_name,
+      @client.put_object(some_bucket_name, new_object_name, some_temp_file,
                          "predefinedAcl" => "invalidAcl")
     end
   end
@@ -30,7 +44,7 @@ class TestStorageRequests < StorageShared
 
   def test_delete_object
     object_name = new_object_name
-    @client.put_object(some_bucket_name, object_name, some_temp_file_name)
+    @client.put_object(some_bucket_name, object_name, some_temp_file)
     @client.delete_object(some_bucket_name, object_name)
 
     assert_raises(Google::Apis::ClientError) do
@@ -67,7 +81,7 @@ class TestStorageRequests < StorageShared
 
   def test_put_object_acl
     object_name = new_object_name
-    @client.put_object(some_bucket_name, object_name, some_temp_file_name)
+    @client.put_object(some_bucket_name, object_name, some_temp_file)
 
     acl = {
       :entity => "allUsers",
@@ -78,7 +92,7 @@ class TestStorageRequests < StorageShared
 
   def test_get_object_acl
     object_name = new_object_name
-    @client.put_object(some_bucket_name, object_name, some_temp_file_name)
+    @client.put_object(some_bucket_name, object_name, some_temp_file)
 
     acl = {
       :entity => "allUsers",
