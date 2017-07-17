@@ -125,7 +125,11 @@ class TestStorageRequests < StorageShared
     assert_match(/fog-testfile/, https_url)
   end
 
-  def test_url
-    skip
+  def test_files_get_https_url_whitespace
+    directory = @client.directories.get(some_bucket_name)
+    https_url = directory.files.get_https_url("fog -testfile", (Time.now + 60).to_i)
+    assert_match(/https/, https_url)
+    assert_match(/#{bucket_prefix}/, https_url)
+    assert_match(/fog\%20-testfile/, https_url)
   end
 end

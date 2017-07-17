@@ -19,7 +19,7 @@ module Fog
 
         def host_path_query(params, expires)
           params[:headers]["Date"] = expires.to_i
-          params[:path] = CGI.escape(params[:path]).gsub("%2F", "/")
+          params[:path] = URI.encode(params[:path]).gsub("%2F", "/")
           query = [params[:query]].compact
           query << "GoogleAccessId=#{@client.issuer}"
           query << "Signature=#{CGI.escape(signature(params))}"
