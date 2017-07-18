@@ -1,0 +1,63 @@
+jobs:
+  - name: base-int
+    plan:
+      - aggregate:
+        - {
+            get: fog-google-src, resource: fog-google-src-in, trigger: true
+          }
+
+      - task: full-integration-tests
+        file: fog-google-src/ci/tasks/run-int.yml
+        params:
+          google_project: {{google_project}}
+          google_json_key_data: {{google_json_key_data}}
+          google_client_email: {{google_client_email}}
+
+  - name: pr-int
+    plan:
+      - get: fog-google-src
+        resource: pull-request
+        version: every
+        trigger: true
+      - put: pull-request
+        params: {path: fog-google-src, status: pending}
+
+      - task: full-integration-tests
+        file: fog-google-src/ci/tasks/run-int.yml
+        params:
+          google_project: {{google_project}}
+          google_json_key_data: {{google_json_key_data}}
+          google_client_email: {{google_client_email}}
+        on_success:
+          put: pull-request
+          params:
+            path: fog-google-src
+            status: success
+        on_failure:
+          put: pull-request
+          params:
+            path: fog-google-src
+            status: failure
+
+resources:
+  - name: fog-google-src-in
+    type: git
+    source:
+      uri: https://github.com/fog/fog-google.git
+      branch: upgrade-google-client
+  - name: pull-request
+    type: pull-request
+    source:
+      access_token: {{github_access_token}}
+      private_key: {{github_private_key}}
+      label: integrate
+      repo: fog/fog-google
+
+resource_types:
+  # This is a third party resource.
+  # The referenced docker-image is maintained externally
+  # https://github.com/jtarchie/pullrequest-resource
+  - name: pull-request
+    type: docker-image
+    source:
+      repository: jtarchie/pr
