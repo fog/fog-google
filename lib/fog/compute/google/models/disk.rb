@@ -35,8 +35,8 @@ module Fog
           options["description"] = description || my_description
           options["type"] = type
 
-          data = service.insert_disk(name, zone, source_image, options)
-          operation = Fog::Compute::Google::Operations.new(:service => service).get(data.body["name"], data.body["zone"])
+          data = service.insert_disk(name, zone, source_image, options).to_h
+          operation = Fog::Compute::Google::Operations.new(:service => service).get(data[:name], data[:zone])
           operation.wait_for { !pending? }
           reload
         end
@@ -44,8 +44,8 @@ module Fog
         def destroy(async = true)
           requires :name, :zone
 
-          data = service.delete_disk(name, zone_name)
-          operation = Fog::Compute::Google::Operations.new(:service => service).get(data.body["name"], data.body["zone"])
+          data = service.delete_disk(name, zone_name).to_h
+          operation = Fog::Compute::Google::Operations.new(:service => service).get(data[:name], data[:zone])
           operation.wait_for { ready? } unless async
           operation
         end
@@ -57,7 +57,11 @@ module Fog
         # auto_delete can only be applied to disks created before instance creation.
         # auto_delete = true will automatically delete disk upon instance termination.
         def get_object(writable = true, boot = false, device_name = nil, auto_delete = false)
-          mode = writable ? "READ_WRITE" : "READ_ONLY"
+          if writable
+            mode = "READ_WRITE"
+          else
+            mode = "READ_ONLY"
+          end
           value = {
             "autoDelete" => auto_delete,
             "boot" => boot,
@@ -65,7 +69,7 @@ module Fog
             "mode" => mode,
             "deviceName" => device_name,
             "type" => "PERSISTENT"
-          }.select { |_k, v| !v.nil? }
+          }.reject { |_k, v| v.nil? }
           Hash[value]
         end
 
@@ -82,7 +86,7 @@ module Fog
 
           return unless data = begin
             collection.get(identity, zone_name)
-          rescue Excon::Errors::SocketError
+          rescue Google::Apis::TransmissionError
             nil
           end
 
@@ -103,13 +107,13 @@ module Fog
             "description" => snapshot_description
           }
 
-          data = service.insert_snapshot(name, zone_name, service.project, options)
-          operation = Fog::Compute::Google::Operations.new(:service => service).get(data.body["name"], data.body["zone"])
+          data = service.insert_snapshot(name, zone_name, service.project, options).to_h
+          operation = Fog::Compute::Google::Operations.new(:service => service).get(data[:name], data[:zone])
           operation.wait_for { !pending? }
           service.snapshots.get(snapshot_name)
         end
 
-        RUNNING_STATE = "READY"
+        RUNNING_STATE = "READY".freeze
       end
     end
   end
