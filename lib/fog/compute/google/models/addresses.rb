@@ -6,18 +6,18 @@ module Fog
 
         def all(filters = {})
           if filters[:region]
-            data = service.list_addresses(filters[:region]).body["items"] || []
+            data = service.list_addresses(filters[:region]).items || []
           else
             data = []
-            service.list_aggregated_addresses.body["items"].each_value do |region|
-              data.concat(region["addresses"]) if region["addresses"]
+            service.list_aggregated_addresses.items.each_value do |region|
+              data.concat(region.addresses) if region.addresses
             end
           end
-          load(data)
+          load(data.map(&:to_h))
         end
 
         def get(identity, region)
-          if address = service.get_address(identity, region).body
+          if address = service.get_address(identity, region).to_h
             new(address)
           end
         rescue Fog::Errors::NotFound
@@ -25,19 +25,19 @@ module Fog
         end
 
         def get_by_ip_address(ip_address)
-          addresses = service.list_aggregated_addresses(:filter => "address eq .*#{ip_address}").body["items"]
-          address = addresses.each_value.select { |region| region.key?("addresses") }
+          addresses = service.list_aggregated_addresses(:filter => "address eq .*#{ip_address}").items
+          address = addresses.each_value.select(&:addresses)
 
           return nil if address.empty?
-          new(address.first["addresses"].first)
+          new(address.first.addresses.first.to_h)
         end
 
         def get_by_name(ip_name)
-          names = service.list_aggregated_addresses(:filter => "name eq .*#{ip_name}").body["items"]
-          name = names.each_value.select { |region| region.key?("addresses") }
+          names = service.list_aggregated_addresses(:filter => "name eq .*#{ip_name}").items
+          name = names.each_value.select(&:addresses)
 
           return nil if name.empty?
-          new(name.first["addresses"].first)
+          new(name.first.addresses.first.to_h)
         end
 
         def get_by_ip_address_or_name(ip_address_or_name)
