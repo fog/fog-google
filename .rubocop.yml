@@ -40,7 +40,7 @@ Style/CollectionMethods:
     find: detect
     find_all: select
     reduce: inject
-Style/DotPosition:
+Layout/DotPosition:
   Description: Checks the position of the dot in multi-line method calls.
   StyleGuide: https://github.com/bbatsov/ruby-style-guide#consistent-multi-line-chains
   Enabled: true
