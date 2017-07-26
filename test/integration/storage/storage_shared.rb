@@ -35,15 +35,14 @@ class StorageShared < FogIntegrationTest
             object_result.items.each { |object| @client.delete_object(t, object.name) }
           end
 
-            begin
-              @client.delete_bucket(t)
-            # Given that bucket operations are specifically rate-limited, we handle that
-            # by waiting a significant amount of time and trying.
-            rescue Google::Apis::RateLimitError
-              Fog::Logger.warning("encountered rate limit, backing off")
-              sleep(10)
-              @client.delete_bucket(t)
-            end
+          begin
+            @client.delete_bucket(t)
+          # Given that bucket operations are specifically rate-limited, we handle that
+          # by waiting a significant amount of time and trying.
+          rescue Google::Apis::RateLimitError
+            Fog::Logger.warning("encountered rate limit, backing off")
+            sleep(10)
+            @client.delete_bucket(t)
           end
         end
       # We ignore errors here as list operations may not represent changes applied recently.
