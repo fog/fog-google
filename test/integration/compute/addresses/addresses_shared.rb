@@ -12,10 +12,10 @@ class TestComputeAddressShared < FogIntegrationTest
     client = Fog::Compute::Google.new
     addresses = client.list_addresses(DEFAULT_REGION).items
     unless addresses.nil?
-      addresses.
-        map(&:name).
-        select { |a| a.start_with?(ADDRESS_RESOURCE_PREFIX) }.
-        each { |a| client.delete_address(a, DEFAULT_REGION) }
+      addresses
+        .map(&:name)
+        .select { |a| a.start_with?(ADDRESS_RESOURCE_PREFIX) }
+        .each { |a| client.delete_address(a, DEFAULT_REGION) }
     end
   end
 

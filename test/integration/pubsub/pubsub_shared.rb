@@ -15,10 +15,10 @@ class PubSubShared < FogIntegrationTest
     topics_result = @client.list_topics
     unless topics_result.topics.nil?
       begin
-        topics_result.topics.
-          map(&:name).
-          select { |t| t.start_with?(topic_resource_prefix) }.
-          each { |t| @client.delete_topic(t) }
+        topics_result.topics
+                     .map(&:name)
+                     .select { |t| t.start_with?(topic_resource_prefix) }
+                     .each { |t| @client.delete_topic(t) }
       # We ignore errors here as list operations may not represent changes applied recently.
       # Hence, list operations can return a topic which has already been deleted but which we
       # will attempt to delete again.
@@ -30,10 +30,10 @@ class PubSubShared < FogIntegrationTest
     subscriptions_result = @client.list_subscriptions
     unless subscriptions_result.subscriptions.nil?
       begin
-        subscriptions_result.subscriptions.
-          map(&:name).
-          select { |s| s.start_with?(subscription_resource_prefix) }.
-          each { |s| @client.delete_subscription(s) }
+        subscriptions_result.subscriptions
+                            .map(&:name)
+                            .select { |s| s.start_with?(subscription_resource_prefix) }
+                            .each { |s| @client.delete_subscription(s) }
       # We ignore errors here as list operations may not represent changes applied recently.
       # Hence, list operations can return a topic which has already been deleted but which we
       # will attempt to delete again.
