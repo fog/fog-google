@@ -7,9 +7,13 @@ require "tempfile"
 class StorageShared < FogIntegrationTest
   def setup
     @client = Fog::Storage::Google.new
+    # Enable retries during the suite. This prevents us from
+    # having to manually rate limit our requests.
+    ::Google::Apis::RequestOptions.default.retries = 5
     # Ensure any resources we create with test prefixes are removed
     Minitest.after_run do
       delete_test_resources
+      ::Google::Apis::RequestOptions.default.retries = 0
     end
   end
 
@@ -31,20 +35,18 @@ class StorageShared < FogIntegrationTest
             object_result.items.each { |object| @client.delete_object(t, object.name) }
           end
 
-          begin
-            sleep(2)
-            @client.delete_bucket(t)
-          # Given that bucket operations are specifically rate-limited, we handle that
-          # by waiting a significant amount of time and trying.
-          rescue Google::Apis::RateLimitError
-            Fog::Logger.warning("encountered rate limit, backing off")
-            sleep(10)
-            @client.delete_bucket(t)
+            begin
+              @client.delete_bucket(t)
+            # Given that bucket operations are specifically rate-limited, we handle that
+            # by waiting a significant amount of time and trying.
+            rescue Google::Apis::RateLimitError
+              Fog::Logger.warning("encountered rate limit, backing off")
+              sleep(10)
+              @client.delete_bucket(t)
+            end
           end
         end
       # We ignore errors here as list operations may not represent changes applied recently.
-      # Hence, list operations can return a topic which has already been deleted but which we
-      # will attempt to delete again.
       rescue Google::Apis::Error
         Fog::Logger.warning("ignoring Google Api error during delete_test_resources")
       end
@@ -70,7 +72,6 @@ class StorageShared < FogIntegrationTest
   def some_bucket_name
     # create lazily to speed tests up
     @some_bucket ||= new_bucket_name.tap do |t|
-      sleep(1.5)
       @client.put_bucket(t)
     end
   end
@@ -78,7 +79,7 @@ class StorageShared < FogIntegrationTest
   def some_object_name
     # create lazily to speed tests up
     @some_object ||= new_object_name.tap do |t|
-      @client.put_object(some_bucket_name, t, some_temp_file_name)
+      @client.put_object(some_bucket_name, t, some_temp_file)
     end
   end
 
@@ -86,11 +87,11 @@ class StorageShared < FogIntegrationTest
     "hello world"
   end
 
-  def some_temp_file_name
+  def some_temp_file
     @some_temp_file ||= Tempfile.new("fog-google-storage").tap do |t|
       t.write(temp_file_content)
       t.close
     end
-    @some_temp_file.path
+    File.open(@some_temp_file.path, "r")
   end
 end

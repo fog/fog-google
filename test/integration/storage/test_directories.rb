@@ -1,60 +1,69 @@
 require "helpers/integration_test_helper"
+require "integration/storage/storage_shared"
+require "securerandom"
+require "base64"
+require "tempfile"
 
-class TestDirectories < FogIntegrationTest
-  begin
-    client_email = Fog.credentials[:google_client_email]
-    @@connection = Fog::Storage::Google.new
-    @@connection.put_bucket("fog-smoke-test", options: { "acl" => [{ :entity => "user-" + client_email, :role => "OWNER" }] })
-    @@connection.put_bucket_acl("fog-smoke-test", :entity => "allUsers", :role => "READER")
-    @@directory = @@connection.directories.get("fog-smoke-test")
-  rescue Exception => e
-    puts e
+class TestStorageRequests < StorageShared
+  def test_directories_put
+    dir_name = new_bucket_name
+    directory = @client.directories.create(:key => dir_name)
+    assert_equal(directory.key, dir_name)
   end
 
-  Minitest.after_run do
-    begin
-      @connection = Fog::Storage::Google.new
-      @connection.delete_bucket("fog-smoke-test")
-    rescue Exception => e
-      puts e
+  def test_directories_put_predefined_acl
+    @client.directories.create(
+      :key => new_bucket_name,
+      :predefined_acl => "publicRead"
+    )
+  end
+
+  def test_directories_put_invalid_predefined_acl
+    assert_raises(Google::Apis::ClientError) do
+      @client.directories.create(
+        :key => new_bucket_name,
+        :predefined_acl => "invalidAcl"
+      )
     end
   end
 
-  def setup
-    @connection = @@connection
-    @directory = @@directory
+  def test_directories_get
+    directory = @client.directories.get(some_bucket_name)
+    assert_equal(directory.key, some_bucket_name)
   end
 
-  def test_all_directories
-    skip
+  def test_directory_files
+    file = @client.directories.get(some_bucket_name).files.get(some_object_name)
+    assert_equal(some_object_name, file.key)
   end
 
-  def test_get_directory
-    directory_get = @connection.directories.get("fog-smoke-test")
-    assert_instance_of Fog::Storage::Google::Directory, directory_get
+  def test_directory_public_url
+    url = @client.directories.get(some_bucket_name).public_url
+    assert_match(/storage.googleapis.com/, url)
   end
 
-  def test_create_destroy_directory
-    directory_create = @connection.directories.create(:key => "fog-smoke-test-create-destroy")
-    assert_instance_of Fog::Storage::Google::Directory, directory_create
-    assert directory_create.destroy
+  def test_directories_destroy
+    dir_name = new_bucket_name
+    @client.directories.create(:key => dir_name)
+
+    @client.directories.destroy(dir_name)
+
+    assert_raises(Google::Apis::ClientError) do
+      @client.directories.get(dir_name)
+    end
   end
 
-  def test_public_url
-    public_url = @directory.public_url
-    assert_match(/storage\.googleapis\.com/, public_url)
-    assert_match(/fog-smoke-test/, public_url)
-  end
+  def test_directories_all
+    dir_name = new_bucket_name
+    @client.directories.create(:key => dir_name)
 
-  def test_public
-    skip
-  end
+    result = @client.directories.all
+    if result.nil?
+      raise StandardError.new("no directories found")
+    end
 
-  def test_files
-    skip
-  end
-
-  def test_acl
-    skip
+    unless result.any? { |directory| directory.key == dir_name }
+      raise StandardError.new("failed to find expected directory")
+    end
   end
 end

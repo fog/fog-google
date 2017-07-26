@@ -5,26 +5,46 @@ require "base64"
 require "tempfile"
 
 class TestStorageRequests < StorageShared
-  def test_put_object
-    sleep(1)
-
+  def test_put_object_string
     object_name = new_object_name
-    object = @client.put_object(some_bucket_name, object_name, some_temp_file_name)
-    assert_equal(object_name, object.name)
+    @client.put_object(some_bucket_name, object_name, some_temp_file)
+
+    object = @client.get_object(some_bucket_name, object_name)
+
+    assert_equal(object_name, object[:name])
+    assert_equal(temp_file_content, object[:body])
+  end
+
+  def test_put_object_file
+    object_name = new_object_name
+    expected_body = "A file body"
+    @client.put_object(some_bucket_name, object_name, expected_body)
+
+    object = @client.get_object(some_bucket_name, object_name)
+    assert_equal(object_name, object[:name])
+    assert_equal(expected_body, object[:body])
+  end
+
+  def test_put_object_predefined_acl
+    @client.put_object(some_bucket_name, new_object_name, some_temp_file,
+                       "predefinedAcl" => "publicRead")
+  end
+
+  def test_put_object_invalid_predefined_acl
+    assert_raises(Google::Apis::ClientError) do
+      @client.put_object(some_bucket_name, new_object_name, some_temp_file,
+                         "predefinedAcl" => "invalidAcl")
+    end
   end
 
   def test_get_object
-    sleep(1)
-
     object = @client.get_object(some_bucket_name, some_object_name)
     assert_equal(temp_file_content, object[:body])
   end
 
   def test_delete_object
-    sleep(1)
-
     object_name = new_object_name
-    @client.put_object(some_bucket_name, object_name, some_temp_file_name)
+    @client.put_object(some_bucket_name, object_name, some_temp_file)
     @client.delete_object(some_bucket_name, object_name)
 
     assert_raises(Google::Apis::ClientError) do
@@ -33,16 +53,12 @@ class TestStorageRequests < StorageShared
   end
 
   def test_head_object
-    sleep(1)
-
     object = @client.head_object(some_bucket_name, some_object_name)
     assert_equal(temp_file_content.length, object.size)
     assert_equal(some_bucket_name, object.bucket)
   end
 
   def test_copy_object
-    sleep(1)
-
     target_object_name = new_object_name
 
     @client.copy_object(some_bucket_name, some_object_name,
@@ -52,8 +68,6 @@ class TestStorageRequests < StorageShared
   end
 
   def test_list_objects
-    sleep(1)
-
     expected_object = some_object_name
 
     result = @client.list_objects(some_bucket_name)
@@ -66,10 +80,8 @@ class TestStorageRequests < StorageShared
   end
 
   def test_put_object_acl
-    sleep(1)
-
     object_name = new_object_name
-    @client.put_object(some_bucket_name, object_name, some_temp_file_name)
+    @client.put_object(some_bucket_name, object_name, some_temp_file)
 
     acl = {
       :entity => "allUsers",
@@ -79,10 +91,8 @@ class TestStorageRequests < StorageShared
   end
 
   def test_get_object_acl
-    sleep(1)
-
     object_name = new_object_name
-    @client.put_object(some_bucket_name, object_name, some_temp_file_name)
+    @client.put_object(some_bucket_name, object_name, some_temp_file)
 
     acl = {
       :entity => "allUsers",

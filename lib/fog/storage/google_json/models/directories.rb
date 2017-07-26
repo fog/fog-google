@@ -5,7 +5,7 @@ module Fog
         model Fog::Storage::GoogleJSON::Directory
 
         def all
-          data = service.list_buckets.body["items"] || []
+          data = service.list_buckets.to_h[:items] || []
           load(data)
         end
 
@@ -14,8 +14,8 @@ module Fog
                                                 :marker     => "marker",
                                                 :max_keys   => "max-keys",
                                                 :prefix     => "prefix")
-          data = service.get_bucket(key, options).body
-          new(:key => data["name"])
+          data = service.get_bucket(key, options).to_h
+          new(data)
         rescue Fog::Errors::NotFound
           nil
         end
