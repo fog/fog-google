@@ -26,14 +26,14 @@ class StorageShared < FogIntegrationTest
 
     unless buckets_result.items.nil?
       begin
-        buckets_result.items.
-          map(&:name).
-          select { |t| t.start_with?(bucket_prefix) }.
-          each do |t|
-            object_result = @client.list_objects(t)
-            unless object_result.items.nil?
-              object_result.items.each { |object| @client.delete_object(t, object.name) }
-            end
+        buckets_result.items
+                      .map(&:name)
+                      .select { |t| t.start_with?(bucket_prefix) }
+                      .each do |t|
+          object_result = @client.list_objects(t)
+          unless object_result.items.nil?
+            object_result.items.each { |object| @client.delete_object(t, object.name) }
+          end
 
             begin
               @client.delete_bucket(t)
@@ -45,6 +45,7 @@ class StorageShared < FogIntegrationTest
               @client.delete_bucket(t)
             end
           end
+        end
       # We ignore errors here as list operations may not represent changes applied recently.
       rescue Google::Apis::Error
         Fog::Logger.warning("ignoring Google Api error during delete_test_resources")

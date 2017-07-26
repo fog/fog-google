@@ -9,7 +9,12 @@ module Fog
         #   the project configured on the client is used.
         # @see https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/list
         def list_subscriptions(project = nil)
-          project = (project.nil? ? "projects/#{@project}" : project.to_s)
+          if project.nil?
+            project = "projects/#{@project}"
+          else
+            project = project.to_s
+          end
+
           @pubsub.list_subscriptions(project)
         end
       end

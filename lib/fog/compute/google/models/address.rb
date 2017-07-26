@@ -18,8 +18,8 @@ module Fog
         attribute :status
         attribute :users
 
-        IN_USE_STATE   = "IN_USE"
-        RESERVED_STATE = "RESERVED"
+        IN_USE_STATE   = "IN_USE".freeze
+        RESERVED_STATE = "RESERVED".freeze
 
         def server
           return nil if !in_use? || users.nil? || users.empty?
@@ -36,7 +36,9 @@ module Fog
           requires :identity, :region
 
           data = service.insert_address(identity, region, attributes)
-          operation = Fog::Compute::Google::Operations.new(:service => service).get(data.body["name"], nil, data.body["region"])
+          operation = Fog::Compute::Google::Operations
+                      .new(:service => service)
+                      .get(data.name, nil, data.region)
           operation.wait_for { !pending? }
           reload
         end
@@ -45,7 +47,10 @@ module Fog
           requires :identity, :region
 
           data = service.delete_address(identity, region.split("/")[-1])
-          operation = Fog::Compute::Google::Operations.new(:service => service).get(data.body["name"], nil, data.body["region"])
+          operation = Fog::Compute::Google::Operations
+                      .new(:service => service)
+                      .get(data.name, nil, data.region)
+
           operation.wait_for { ready? } unless async
           operation
         end
@@ -65,12 +70,14 @@ module Fog
         private
 
         def associate(server)
+          # TODO: implement when servers are implemented @everlag
           nic = server.network_interfaces.first["name"]
           data = service.add_server_access_config(server.name, server.zone_name, nic, :address => address)
           Fog::Compute::Google::Operations.new(:service => service).get(data.body["name"], data.body["zone"])
         end
 
         def disassociate
+          # TODO: implement when servers are implemented @everlag
           return nil if !in_use? || users.nil? || users.empty?
 
           # An address can only be associated with one server at a time

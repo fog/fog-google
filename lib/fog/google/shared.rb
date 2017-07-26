@@ -70,7 +70,11 @@ module Fog
           raise ArgumentError.new("Missing required arguments: google_api_scope_url")
         end
 
-        application_name = options[:app_name].nil? ? "fog" : "#{options[:app_name]}/#{options[:app_version] || '0.0.0'} fog"
+        application_name = "fog"
+        unless options[:app_name].nil?
+          application_name = "#{options[:app_name]}/#{options[:app_version] || '0.0.0'} fog"
+        end
+
         ::Google::Apis::ClientOptions.default.application_name = application_name
         ::Google::Apis::ClientOptions.default.application_version = Fog::Google::VERSION
 

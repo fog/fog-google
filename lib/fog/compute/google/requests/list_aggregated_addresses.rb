@@ -8,14 +8,12 @@ module Fog
       end
 
       class Real
+        # Retrieves an aggregated list of addresses
+        # https://cloud.google.com/compute/docs/reference/latest/addresses/aggregatedList
+        # @param options [Hash] Optional hash of options
+        # @option options [String] :filter Filter expression for filtering listed resources
         def list_aggregated_addresses(options = {})
-          api_method = @compute.addresses.aggregated_list
-          parameters = {
-            "project" => @project
-          }
-          parameters["filter"] = options[:filter] if options[:filter]
-
-          request(api_method, parameters)
+          @compute.list_aggregated_addresses(@project, :filter => options[:filter])
         end
       end
     end

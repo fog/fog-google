@@ -5,26 +5,26 @@ module Fog
         model Fog::Compute::Google::Operation
 
         def all(filters = {})
-          if filters["zone"]
-            data = service.list_zone_operations(filters["zone"]).body
-          elsif filters["region"]
-            data = service.list_region_operations(filters["region"]).body
-          else
-            data = service.list_global_operations.body
+          data = service.list_global_operations.body
+          if filters.zone
+            data = service.list_zone_operations(filters.zone).body
+          elsif filters.region
+            data = service.list_region_operations(filters.region).body
           end
-          load(data["items"] || [])
+
+          load(data.items || [])
         end
 
         def get(identity, zone = nil, region = nil)
+          response = service.get_global_operation(identity)
           if !zone.nil?
             response = service.get_zone_operation(zone, identity)
           elsif !region.nil?
             response = service.get_region_operation(region, identity)
-          else
-            response = service.get_global_operation(identity)
           end
+
           return nil if response.nil?
-          new(response.body)
+          new(response.to_h)
         rescue Fog::Errors::NotFound
           nil
         end
