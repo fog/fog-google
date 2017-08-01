@@ -3,33 +3,18 @@ module Fog
     class Google
       class Mock
         def list_aggregated_disks(options = {})
-          # Create a Hash of unique zones from the disks Array previously filled when disks are created
-          zones = Hash[data[:disks].values.map { |disk| ["zones/#{disk['zone'].split('/')[-1]}", { "disks" => [] }] }]
-          if options[:filter]
-            # Look up for the disk name
-            disk = data[:disks][options[:filter].gsub(/name eq \.\*/, "")]
-            # Fill the zones Hash with the disk (if it's found)
-            zones["zones/#{disk['zone'].split('/')[-1]}"]["disks"].concat([disk]) if disk
-          else
-            # Fill the zones Hash with the disks attached to each zone
-            data[:disks].values.each { |disk| zones["zones/#{disk['zone'].split('/')[-1]}"]["disks"].concat([disk]) }
-          end
-          build_excon_response("kind" => "compute#diskAggregatedList",
-                               "selfLink" => "https://www.googleapis.com/compute/#{api_version}/projects/#{@project}/aggregated/disks",
-                               "id" => "projects/#{@project}/aggregated/disks",
-                               "items" => zones)
+          Fog::Mock.not_implemented
         end
       end
 
       class Real
+        # Retrieves an aggregated list of disks
+        # https://cloud.google.com/compute/docs/reference/latest/disks/aggregatedList
+        #
+        # @param options [Hash] Optional hash of options
+        # @option options [String] :filter Filter expression for filtering listed resources
         def list_aggregated_disks(options = {})
-          api_method = @compute.disks.aggregated_list
-          parameters = {
-            "project" => @project
-          }
-          parameters["filter"] = options[:filter] if options[:filter]
-
-          request(api_method, parameters)
+          @compute.list_aggregated_disk(@project, :filter => options[:filter])
         end
       end
     end
