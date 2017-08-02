@@ -9,11 +9,15 @@ module ClientHelper
   # @return [Boolean] true if the operation is no longer executing, false
   #   otherwise
   def operation_finished?(op)
-    # TODO: support both zone and region operations
     region = op.region
+    zone = op.zone
     name = op.name
 
-    result = client.get_region_operation(region, name)
+    if zone.nil?
+      result = client.get_region_operation(region, name)
+    else
+      result = client.get_zone_operation(zone, name)
+    end
     !%w(PENDING RUNNING).include?(result.status)
   end
 
@@ -27,9 +31,13 @@ module ClientHelper
     result = yield
     return result unless result.kind == "compute#operation"
 
-    # TODO: support both zone and region operations
     region = result.region
+    zone = result.zone
     Fog.wait_for { operation_finished?(result) }
-    client.get_region_operation(region, result.name)
+    if zone.nil?
+      client.get_region_operation(region, result.name)
+    else
+      client.get_zone_operation(zone, result.name)
+    end
   end
 end

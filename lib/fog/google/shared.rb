@@ -20,6 +20,7 @@ module Fog
       # Initializes the Google API Client
       #
       # @param [Hash] options Google API options
+      # @option options [Google::Auth|Signet] :google_auth Manually created authorization to use
       # @option options [String] :google_client_email A @developer.gserviceaccount.com email address to use
       # @option options [String] :google_key_location The location of a pkcs12 key file
       # @option options [String] :google_key_string The content of the pkcs12 key file

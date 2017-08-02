@@ -3,46 +3,17 @@ module Fog
     class Google
       class Mock
         def get_global_operation(operation)
-          operation = data[:operations][operation]
-          if operation
-            case operation["status"]
-            when Fog::Compute::Google::Operation::PENDING_STATE
-              operation["status"] = Fog::Compute::Google::Operation::RUNNING_STATE
-              operation["progress"] = 50
-            else
-              operation["status"] = Fog::Compute::Google::Operation::DONE_STATE
-              operation["progress"] = 100
-            end
-          else
-            operation = {
-              "error" => {
-                "errors" => [
-                  {
-                    "domain" => "global",
-                    "reason" => "notFound",
-                    "message" => "The resource 'projects/#{project}/global/operations/#{operation}' was not found"
-                  }
-                ],
-                "code" => 404,
-                "message" => "The resource 'projects/#{project}/global/operations/#{operation}' was not found"
-              }
-            }
-          end
-          build_excon_response(operation)
+          Fog::Mock.not_implemented
         end
       end
 
       class Real
+        # Get the updated status of a global operation
         # https://developers.google.com/compute/docs/reference/latest/globalOperations
-
+        #
+        # @param operation [Google::Apis::ComputeV1::Operation] Return value from asynchronous act
         def get_global_operation(operation)
-          api_method = @compute.global_operations.get
-          parameters = {
-            "project" => @project,
-            "operation" => operation
-          }
-
-          request(api_method, parameters)
+          @compute.get_global_operation(@project, operation)
         end
       end
     end

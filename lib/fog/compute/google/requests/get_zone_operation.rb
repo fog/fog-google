@@ -3,49 +3,19 @@ module Fog
     class Google
       class Mock
         def get_zone_operation(zone_name, operation)
-          operation = data[:operations][operation]
-          if operation
-            case operation["status"]
-            when Fog::Compute::Google::Operation::PENDING_STATE
-              operation["status"] = Fog::Compute::Google::Operation::RUNNING_STATE
-              operation["progress"] = 50
-            else
-              operation["status"] = Fog::Compute::Google::Operation::DONE_STATE
-              operation["progress"] = 100
-            end
-          else
-            operation = {
-              "error" => {
-                "errors" => [
-                  {
-                    "domain" => "global",
-                    "reason" => "notFound",
-                    "message" => "The resource 'projects/#{project}/zones/#{zone_name}/operations/#{operation}' was not found"
-                  }
-                ],
-                "code" => 404,
-                "message" => "The resource 'projects/#{project}/zones/#{zone_name}/operations/#{operation}' was not found"
-              }
-            }
-          end
-          build_excon_response(operation)
+          Fog::Mock.not_implemented
         end
       end
 
       class Real
+        # Get the updated status of a zone operation
         # https://developers.google.com/compute/docs/reference/latest/zoneOperations
-
+        #
+        # @param zone_name [String] Zone the operation was peformed in
+        # @param operation [Google::Apis::ComputeV1::Operation] Return value from asynchronous actions
         def get_zone_operation(zone_name, operation)
           zone_name = zone_name.split("/")[-1] if zone_name.start_with? "http"
-
-          api_method = @compute.zone_operations.get
-          parameters = {
-            "project" => @project,
-            "zone" => zone_name,
-            "operation" => operation
-          }
-
-          request(api_method, parameters)
+          @compute.get_zone_operation(@project, zone_name, operation)
         end
       end
     end
