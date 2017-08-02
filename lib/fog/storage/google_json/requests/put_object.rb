@@ -24,7 +24,7 @@ module Fog
               options["Content-Type"] = "text/plain"
             elsif data.is_a?(::File)
               options["Content-Type"] = Fog::Storage.parse_data(data)[:headers]["Content-Type"]
-            elsif data.responds_to?(:content_type) && data.responds_to?(:path)
+            elsif data.respond_to?(:content_type) && data.respond_to?(:path)
               options["Content-Type"] = data.content_type
               data = data.path
             end
