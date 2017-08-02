@@ -25,6 +25,18 @@ class TestStorageRequests < StorageShared
     assert_equal(expected_body, object[:body])
   end
 
+  def test_put_object_paperclip
+    object_name = new_object_name
+    paperclip_file = OpenStruct.new(path: '/tmp/fog-google-storage',
+                                    content_type: 'image/png')
+    @cliient.put_object(some_bucket_name, object_name, paperclip_file)
+
+    object = @client.get_object(some_bucket_name, object_name)
+
+    assert_equal(object_name, object[:name])
+    assert_equal('image/png', object[:content_type])
+  end
+
   def test_put_object_predefined_acl
     @client.put_object(some_bucket_name, new_object_name, some_temp_file,
                        "predefinedAcl" => "publicRead")
