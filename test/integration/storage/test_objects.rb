@@ -29,7 +29,7 @@ class TestStorageRequests < StorageShared
     object_name = new_object_name
     paperclip_file = OpenStruct.new(:path => "/tmp/fog-google-storage",
                                     :content_type => "image/png")
-    @cliient.put_object(some_bucket_name, object_name, paperclip_file)
+    @client.put_object(some_bucket_name, object_name, paperclip_file)
 
     object = @client.get_object(some_bucket_name, object_name)
 
