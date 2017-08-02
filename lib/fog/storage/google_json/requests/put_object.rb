@@ -7,7 +7,7 @@ module Fog
         #
         # @param bucket_name [String] Name of bucket to create object in
         # @param object_name [String] Name of object to create
-        # @param data [File|String] File or String to create object from
+        # @param data [File|String|Paperclip::AbstractAdapter] File, String or Paperclip adapter to create object from
         # @option options [String] "predefinedAcl" Applies a predefined set of access controls to this bucket.
         # @option options [String] "Cache-Control" Caching behaviour
         # @option options [DateTime] "Content-Disposition" Presentational information for the object
@@ -19,11 +19,14 @@ module Fog
         # @return [Google::Apis::StorageV1::Object]
         def put_object(bucket_name, object_name, data, options = {})
           unless options["Content-Type"]
-            if data.is_a? String
+            if data.is_a?(String)
               data = StringIO.new(data)
               options["Content-Type"] = "text/plain"
-            elsif data.is_a? ::File
+            elsif data.is_a?(::File)
               options["Content-Type"] = Fog::Storage.parse_data(data)[:headers]["Content-Type"]
+            elsif data.respond_to?(:content_type) && data.respond_to?(:path)
+              options["Content-Type"] = data.content_type
+              data = data.path
             end
           end
 
@@ -31,7 +34,8 @@ module Fog
             :name => object_name
           )
           request_options = ::Google::Apis::RequestOptions.default.merge(options)
-          @storage_json.insert_object(bucket_name, object_config,
+          @storage_json.insert_object(bucket_name,
+                                      object_config,
                                       :upload_source => data,
                                       :predefined_acl => options["predefinedAcl"],
                                       :options => request_options)
