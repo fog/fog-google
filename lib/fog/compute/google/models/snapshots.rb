@@ -9,7 +9,7 @@ module Fog
           next_page_token = nil
           loop do
             data = service.list_snapshots(nil, next_page_token)
-            items.concat(data.body["items"])
+            items.concat(data.body["items"]) unless data.body["items"].nil?
             next_page_token = data.body["nextPageToken"]
             break if next_page_token.nil? || next_page_token.empty?
           end
