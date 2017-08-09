@@ -8,16 +8,11 @@ module Fog
       # @see https://cloud.google.com/monitoring/v2beta2/metricDescriptors/list
       class Real
         def list_metric_descriptors(options = {})
-          api_method = @monitoring.metric_descriptors.list
-          parameters = {
-            "project" => @project
-          }
-
-          parameters["count"] = options[:count] if options.key?(:count)
-          parameters["pageToken"] = options[:page_token] if options.key?(:page_token)
-          parameters["query"] = options[:query] if options.key?(:query)
-
-          request(api_method, parameters)
+          @monitoring.list_metric_descriptors(@project,
+                                              nil,
+                                              :count => options[:count],
+                                              :page_token => options[:page_token],
+                                              :query => options[:query])
         end
       end
 
