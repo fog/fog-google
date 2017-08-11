@@ -8,20 +8,16 @@ module Fog
       # https://developers.google.com/cloud-monitoring/v2beta1/timeseries
       class Real
         def list_timeseries(metric, youngest, options = {})
-          api_method = @monitoring.timeseries.list
-          parameters = {
-            "project" => @project,
-            "metric" => metric,
-            "youngest" => youngest
-          }
-
-          parameters["count"] = options[:count] if options.key?(:count)
-          parameters["labels"] = options[:labels] if options.key?(:labels)
-          parameters["oldest"] = options[:oldest] if options.key?(:oldest)
-          parameters["pageToken"] = options[:page_token] if options.key?(:page_token)
-          parameters["timespan"] = options[:timespan] if options.key?(:timespan)
-
-          request(api_method, parameters)
+          @monitoring.list_timeseries(@project,
+                                      metric,
+                                      youngest,
+                                      nil,
+                                      nil,
+                                      options[:count],
+                                      options[:labels],
+                                      options[:oldest],
+                                      options[:page_token],
+                                      options[:timespan])
         end
       end
 
