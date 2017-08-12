@@ -22,7 +22,7 @@ module Fog
         #   declare the interval.
         # @return [Array<Fog::Google::Monitoring::Timeseries>] List of Timeseries.
         def all(metric, youngest, options = {})
-          data = service.list_timeseries(metric, youngest, options).body["timeseries"] || []
+          data = service.list_timeseries(metric, youngest, options).timeseries || []
           load(data)
         end
       end
