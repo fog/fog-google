@@ -19,7 +19,7 @@ module Fog
         #   no metrics are returned.
         # @return [Array<Fog::Google::Monitoring::MetricDescriptor>] List of Metric Descriptors.
         def all(options = {})
-          data = service.list_metric_descriptors(options).body["metrics"] || []
+          data = service.list_metric_descriptors(options).metrics || []
           load(data)
         end
       end
