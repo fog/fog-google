@@ -23,59 +23,7 @@ module Fog
 
       class Mock
         def list_timeseries_descriptors(metric, youngest, _options = {})
-          body = {
-            "kind" => 'cloudmonitoring#listTimeseriesDescriptorsResponse',
-            "youngest" => youngest,
-            "oldest" => youngest,
-            "timeseries" => [
-              {
-                "project" => @project,
-                "metric" => metric,
-                "labels" => {
-                  "cloud.googleapis.com/service" => "compute.googleapis.com",
-                  "compute.googleapis.com/resource_type" => "instance",
-                  "cloud.googleapis.com/location" => "us-central1-a",
-                  "compute.googleapis.com/resource_id" => Fog::Mock.random_numbers(20).to_s,
-                  "compute.googleapis.com/instance_name" => Fog::Mock.random_hex(40)
-                }
-              },
-              {
-                "project" => @project,
-                "metric" => metric,
-                "labels" => {
-                  "cloud.googleapis.com/service" => "compute.googleapis.com",
-                  "compute.googleapis.com/resource_type" => "instance",
-                  "cloud.googleapis.com/location" => "us-central1-a",
-                  "compute.googleapis.com/resource_id" => Fog::Mock.random_numbers(20).to_s,
-                  "compute.googleapis.com/instance_name" => Fog::Mock.random_hex(40)
-                }
-              },
-              {
-                "project" => @project,
-                "metric" => metric,
-                "labels" => {
-                  "cloud.googleapis.com/service" => "compute.googleapis.com",
-                  "compute.googleapis.com/resource_type" => "instance",
-                  "cloud.googleapis.com/location" => "us-central1-a",
-                  "compute.googleapis.com/resource_id" => Fog::Mock.random_numbers(20).to_s,
-                  "compute.googleapis.com/instance_name" => Fog::Mock.random_hex(40)
-                }
-              },
-              {
-                "project" => @project,
-                "metric" => metric,
-                "labels" => {
-                  "cloud.googleapis.com/service" => "compute.googleapis.com",
-                  "compute.googleapis.com/resource_type" => "instance",
-                  "cloud.googleapis.com/location" => "us-central1-a",
-                  "compute.googleapis.com/resource_id" => Fog::Mock.random_numbers(20).to_s,
-                  "compute.googleapis.com/instance_name" => Fog::Mock.random_hex(40)
-                }
-              }
-            ]
-          }
-
-          build_excon_response(body)
+          raise Fog::Errors::MockNotImplemented
         end
       end
     end
