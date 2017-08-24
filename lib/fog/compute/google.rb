@@ -65,6 +65,7 @@ module Fog
       request :delete_url_map
       request :delete_zone_operation
       request :delete_zone_view
+      request :delete_ssl_certificate
 
       request :get_address
       request :get_global_address
@@ -124,6 +125,7 @@ module Fog
       request :insert_target_pool
       request :insert_url_map
       request :insert_zone_view
+      request :insert_ssl_certificate
 
       request :list_addresses
       request :list_aggregated_addresses
@@ -269,6 +271,10 @@ module Fog
 
       model :subnetwork
       collection :subnetworks
+
+      model :ssl_certificate
+      collection :ssl_certificates
+
     end
   end
 end
