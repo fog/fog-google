@@ -10,7 +10,7 @@ module Fog
       class Real
         def insert_ssl_certificate(certificate_name, certificate, private_key, options = {})
 
-          api_method = @compute.ssl_certificate.insert
+          api_method = @compute.ssl_certificates.insert
           parameters = {
             "project" => @project
           }

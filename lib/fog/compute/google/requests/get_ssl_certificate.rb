@@ -9,7 +9,7 @@ module Fog
 
       class Real
         def get_ssl_certificate(certificate_name)
-          api_method = @compute.ssl_certificate.get
+          api_method = @compute.ssl_certificates.get
           parameters = {
             "project" => @project,
             "sslCertificate" => certificate_name

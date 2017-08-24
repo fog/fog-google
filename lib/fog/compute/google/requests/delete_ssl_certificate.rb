@@ -10,7 +10,7 @@ module Fog
       class Real
         def delete_ssl_certificate(certificate_name)
 
-          api_method = @compute.ssl_certificate.delete
+          api_method = @compute.ssl_certificates.delete
           parameters = {
             "project"    => @project,
             "sslCertificate"     => certificate_name
