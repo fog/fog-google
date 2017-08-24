@@ -101,6 +101,7 @@ module Fog
       request :get_zone
       request :get_zone_operation
       request :get_zone_view
+      request :get_ssl_certificate
 
       request :insert_address
       request :insert_global_address
