@@ -59,6 +59,7 @@ module Fog
       request :delete_snapshot
       request :delete_subnetwork
       request :delete_target_http_proxy
+      request :delete_target_https_proxy
       request :delete_target_instance
       request :delete_target_pool
       request :delete_url_map
@@ -91,6 +92,7 @@ module Fog
       request :get_snapshot
       request :get_subnetwork
       request :get_target_http_proxy
+      request :get_target_https_proxy
       request :get_target_instance
       request :get_target_pool
       request :get_target_pool_health
@@ -117,6 +119,7 @@ module Fog
       request :insert_snapshot
       request :insert_subnetwork
       request :insert_target_http_proxy
+      request :insert_target_https_proxy
       request :insert_target_instance
       request :insert_target_pool
       request :insert_url_map
@@ -153,6 +156,7 @@ module Fog
       request :list_snapshots
       request :list_subnetworks
       request :list_target_http_proxies
+      request :list_target_https_proxies
       request :list_target_instances
       request :list_target_pools
       request :list_url_maps
@@ -173,6 +177,8 @@ module Fog
       request :set_server_scheduling
       request :set_tags
       request :set_target_http_proxy_url_map
+      request :set_target_https_proxy_url_map
+
 
       request :attach_disk
       request :detach_disk
@@ -242,6 +248,9 @@ module Fog
 
       model :target_http_proxy
       collection :target_http_proxies
+
+      model :target_https_proxy
+      collection :target_https_proxies
 
       model :url_map
       collection :url_maps
