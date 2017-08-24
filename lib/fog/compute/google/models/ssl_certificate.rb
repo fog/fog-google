@@ -5,7 +5,7 @@ module Fog
       # Represents a Subnetwork resource
       #
       # @see https://cloud.google.com/compute/docs/reference/latest/sslCertificates
-      class SSLCertificate < Fog::Model
+      class SslCertificate < Fog::Model
         identity :name
         attribute :id
         attribute :creation_timestamp, :aliases => "creationTimestamp"

@@ -1,8 +1,8 @@
 module Fog
   module Compute
     class Google
-      class SSLCertificates < Fog::Collection
-        model Fog::Compute::Google::SSLCertificate
+      class SslCertificates < Fog::Collection
+        model Fog::Compute::Google::SslCertificate
 
         def get(certificate_name)
           if certificate = service.get_ssl_certificate(certificate_name).body
