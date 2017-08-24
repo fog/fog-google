@@ -4,8 +4,8 @@ module Fog
       class SSLCertificates < Fog::Collection
         model Fog::Compute::Google::SSLCertificate
 
-        def get(identity)
-          if certificate = service.get_ssl_certificate(identity).body
+        def get(certificate_name)
+          if certificate = service.get_ssl_certificate(certificate_name).body
             new(certificate)
           end
         rescue Fog::Errors::NotFound
