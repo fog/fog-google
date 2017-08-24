@@ -40,6 +40,7 @@ module Fog
       request :add_zone_view_resources
 
       request :delete_address
+      request :delete_global_address
       request :delete_backend_service
       request :delete_disk
       request :delete_firewall
@@ -65,6 +66,7 @@ module Fog
       request :delete_zone_view
 
       request :get_address
+      request :get_global_address
       request :get_backend_service
       request :get_backend_service_health
       request :get_disk
@@ -98,6 +100,7 @@ module Fog
       request :get_zone_view
 
       request :insert_address
+      request :insert_global_address
       request :insert_backend_service
       request :insert_disk
       request :insert_firewall
@@ -120,6 +123,7 @@ module Fog
       request :insert_zone_view
 
       request :list_addresses
+      request :lis_global_address
       request :list_aggregated_addresses
       request :list_aggregated_disk_types
       request :list_aggregated_disks
@@ -197,6 +201,9 @@ module Fog
 
       model :address
       collection :addresses
+
+      model :global_address
+      collection :global_addresses
 
       model :operation
       collection :operations
