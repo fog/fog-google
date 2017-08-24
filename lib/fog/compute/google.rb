@@ -123,7 +123,6 @@ module Fog
       request :insert_zone_view
 
       request :list_addresses
-      request :list_global_addresses
       request :list_aggregated_addresses
       request :list_aggregated_disk_types
       request :list_aggregated_disks
