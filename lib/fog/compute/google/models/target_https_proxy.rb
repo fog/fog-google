@@ -10,17 +10,19 @@ module Fog
         attribute :creation_timestamp, :aliases => "creationTimestamp"
         attribute :description, :aliases => "description"
         attribute :url_map, :aliases => "urlMap"
+        attribute :ssl_certificates, :aliases => "sslCertificates"
 
         def save
           requires :name
 
           options = {
-              "description" => description,
-              "urlMap"      => url_map
+              "description"     => description,
+              "urlMap"          => url_map,
+              "sslCertificates" => ssl_certificates
           }
 
           data = service.insert_target_https_proxy(name, options).body
-          operation = Fog::Compute::Google::Operations.new(:service => service).get(data["name"], data["zone"])
+          operation = Fog::Compute::Google::Operations.new(:service => service).get(data["name"])
           operation.wait_for { !pending? }
           reload
         end
