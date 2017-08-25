@@ -167,6 +167,7 @@ module Fog
       request :list_zone_view_resources
       request :list_zone_views
       request :list_zones
+      request :list_ssl_certificates
 
       request :remove_instance_group_instances
       request :remove_target_pool_health_checks
