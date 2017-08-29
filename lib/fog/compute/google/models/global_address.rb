@@ -75,8 +75,7 @@ module Fog
           # An address can only be associated with one server at a time
           server = service.servers.get(users.first.split("/")[-1])
           nic = server.network_interfaces.first["name"]
-          unless server.network_interfaces.first["accessConfigs"].nil? ||
-              server.network_interfaces.first["accessConfigs"].empty?
+          unless server.network_interfaces.first["accessConfigs"].nil? || server.network_interfaces.first["accessConfigs"].empty?
             access_config = server.network_interfaces.first["accessConfigs"].first["name"]
             data = service.delete_server_access_config(server.name, server.zone_name, nic,
                                                        :access_config => access_config)

@@ -11,7 +11,7 @@ module Fog
         def insert_global_address(address_name, options = {})
           api_method = @compute.global_addresses.insert
           parameters = {
-              "project" => @project
+            "project" => @project
           }
           body_object = { "name" => address_name }
           body_object["description"] = options[:description] if options[:description]

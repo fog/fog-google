@@ -276,7 +276,6 @@ module Fog
 
       model :ssl_certificate
       collection :ssl_certificates
-
     end
   end
 end
