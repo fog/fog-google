@@ -11,8 +11,8 @@ module Fog
         def delete_target_https_proxy(name)
           api_method = @compute.target_https_proxies.delete
           parameters = {
-            'project' => @project,
-            'targetHttpsProxy' => name
+            "project" => @project,
+            "targetHttpsProxy" => name
           }
 
           request(api_method, parameters)
