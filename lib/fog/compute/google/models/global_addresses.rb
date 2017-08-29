@@ -4,7 +4,7 @@ module Fog
       class GlobalAddresses < Fog::Collection
         model Fog::Compute::Google::GlobalAddress
 
-        def all(filters = {})
+        def all(_filters = {})
           data = []
           service.list_aggregated_addresses.body["items"].each_value do |region|
               data.concat(region["addresses"]) if region["addresses"]
