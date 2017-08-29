@@ -12,7 +12,7 @@ module Fog
           nil
         end
 
-        def all(filters = {})
+        def all(_filters = {})
           data = service.list_ssl_certificates.body["items"] || []
           load(data)
         end

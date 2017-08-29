@@ -29,7 +29,6 @@ module Fog
           operation.wait_for { ready? } unless async
           operation
         end
-
       end
     end
   end

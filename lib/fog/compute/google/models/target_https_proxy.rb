@@ -16,9 +16,9 @@ module Fog
           requires :name
 
           options = {
-              "description"     => description,
-              "urlMap"          => url_map,
-              "sslCertificates" => ssl_certificates
+            "description" => description,
+            "urlMap" => url_map,
+            "sslCertificates" => ssl_certificates
           }
 
           data = service.insert_target_https_proxy(name, options).body
@@ -40,8 +40,8 @@ module Fog
           operation
         end
 
-        def set_url_map(urlMap)
-          operation = service.set_target_https_proxy_url_map(self, urlMap)
+        def set_url_map(url_map)
+          service.set_target_https_proxy_url_map(self, url_map)
           reload
         end
 
