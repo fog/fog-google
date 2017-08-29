@@ -2,7 +2,7 @@ module Fog
   module Compute
     class Google
       class Mock
-        def get_target_https_proxy(name)
+        def get_target_https_proxy(_name)
           Fog::Mock.not_implemented
         end
       end
@@ -11,8 +11,8 @@ module Fog
         def get_target_https_proxy(name)
           api_method = @compute.target_https_proxies.get
           parameters = {
-            "project" => @project,
-            "targetHttpsProxy" => name
+            'project' => @project,
+            'targetHttpsProxy' => name
           }
 
           request(api_method, parameters)

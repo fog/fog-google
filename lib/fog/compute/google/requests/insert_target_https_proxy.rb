@@ -2,7 +2,7 @@ module Fog
   module Compute
     class Google
       class Mock
-        def insert_target_https_proxy(name, options = {})
+        def insert_target_https_proxy(_name, _options = {})
           Fog::Mock.not_implemented
         end
       end

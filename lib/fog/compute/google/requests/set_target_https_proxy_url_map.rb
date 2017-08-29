@@ -19,7 +19,7 @@ module Fog
             "urlMap" => url_map
           }
 
-          request(api_method, parameters, body_object = body)
+          request(api_method, parameters, body)
         end
       end
     end
