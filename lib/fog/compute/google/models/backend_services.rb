@@ -5,8 +5,8 @@ module Fog
         model Fog::Compute::Google::BackendService
 
         def all(_filters = {})
-          data = service.list_backend_services.body["items"] || []
-          load(data)
+          data = service.list_backend_services.items || []
+          load(data.map(&:to_h))
         end
 
         def get(identity)
