@@ -45,7 +45,7 @@ module Fog
         end
 
         def get_health
-          service.get_backend_service_health self
+          service.get_backend_service_health(self)
         end
 
         def add_backend(backend)
