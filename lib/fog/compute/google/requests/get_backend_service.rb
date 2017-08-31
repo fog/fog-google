@@ -11,12 +11,7 @@ module Fog
 
       class Real
         def get_backend_service(service_name)
-          api_method = @compute.backend_services.get
-          parameters = {
-            "project" => @project,
-            "backendService" => service_name
-          }
-          request(api_method, parameters)
+          @compute.get_backend_service(@project, service_name)
         end
       end
     end
