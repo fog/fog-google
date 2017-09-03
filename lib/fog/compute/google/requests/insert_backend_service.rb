@@ -49,7 +49,7 @@ module Fog
       class Real
         def insert_backend_service(backend_service_name, opts = {})
           service_object = ::Google::Apis::ComputeV1::BackendService.new(:name => backend_service_name)
-          @compute.insert_backend_service(@project, service_object, options: opts)
+          @compute.insert_backend_service(@project, service_object, :options => opts)
         end
       end
     end
