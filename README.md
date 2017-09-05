@@ -4,6 +4,8 @@
 
 The main maintainers for the Google sections are @icco, @Temikus and @plribeiro3000. Please send pull requests to them.
 
+**Note: This is a testing note**
+
 **As of v0.1.1, Google no longer supports Ruby versions less than 2.0.0.**
 
 **Currently, `fog-google` does not support versions of `google-api-client` >= 0.9 or <= 0.8.5.**
