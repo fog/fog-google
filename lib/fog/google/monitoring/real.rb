@@ -12,7 +12,7 @@ module Fog
           options[:google_api_scope_url] = GOOGLE_MONITORING_API_SCOPE_URLS.join(" ")
 
           @client = initialize_google_client(options)
-          @monitoring = @client.discovered_api("cloudmonitoring", api_version)
+          @monitoring = @client.discovered_api("monitoring", api_version)
         end
       end
     end
