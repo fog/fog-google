@@ -17,7 +17,7 @@ def test
 
   puts "\nListing all MetricDescriptors related to Google Compute Engine..."
   puts "-----------------------------------------------------------------"
-  md = connection.metric_descriptors.all(:query => "compute")
+  md = connection.metric_descriptors.all(:filter => 'metric.type = starts_with("compute.googleapis.com")')
   puts "Number of compute metric descriptors: #{md.length}"
 end
 
