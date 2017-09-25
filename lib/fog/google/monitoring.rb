@@ -33,6 +33,10 @@ module Fog
       model :metric_descriptor
       collection :metric_descriptors
 
+      # MonitoredResourceDescriptors
+      model :monitored_resource_descriptor
+      collection :monitored_resource_descriptors
+
       ##
       # REQUESTS
       request_path "fog/google/requests/monitoring"
@@ -42,6 +46,9 @@ module Fog
 
       # MetricDescriptors
       request :list_metric_descriptors
+
+      # MonitoredResourceDescriptors
+      request :list_monitored_resource_descriptors
     end
   end
 end
