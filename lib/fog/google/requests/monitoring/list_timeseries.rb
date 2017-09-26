@@ -5,55 +5,74 @@ module Fog
       # List the data points of the time series that match the metric and labels values and that have data points
       # in the interval
       #
-      # https://developers.google.com/cloud-monitoring/v2beta1/timeseries
+      # @see https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.timeSeries/list
       class Real
-        def list_timeseries(metric, youngest, options = {})
-          api_method = @monitoring.timeseries.list
+        def list_timeseries(options = {})
+          api_method = @monitoring.projects.time_series.list
           parameters = {
-            "project" => @project,
-            "metric" => metric,
-            "youngest" => youngest
+            "name" => "projects/#{@project}"
           }
+          if options.key?(:interval)
+            interval = options[:interval]
+            parameters["interval.endTime"] = interval[:end_time] if interval.key?(:end_time)
+            parameters["interval.startTime"] = interval[:start_time] if interval.key?(:start_time)
+          end
 
-          parameters["count"] = options[:count] if options.key?(:count)
-          parameters["labels"] = options[:labels] if options.key?(:labels)
-          parameters["oldest"] = options[:oldest] if options.key?(:oldest)
+          if options.key?(:aggregation)
+            aggregation = options[:aggregation]
+            parameters["aggregation.alignmentPeriod"] = aggregation[:alignment_period] if aggregation.key?(:alignment_period)
+            parameters["aggregation.crossSeriesReducer"] = aggregation[:cross_series_reducer] if aggregation.key?(:cross_series_reducer)
+            parameters["aggregation.groupByFields"] = aggregation[:group_by_fields] if aggregation.key?(:group_by_fields)
+            parameters["aggregation.perSeriesAligner"] = aggregation[:per_series_aligner] if aggregation.key?(:per_series_aligner)
+          end
+
+          parameters["filter"] = options[:filter] if options.key?(:filter)
+          parameters["orderBy"] = options[:order_by] if options.key?(:order_by)
+          parameters["pageSize"] = options[:page_size] if options.key?(:page_size)
           parameters["pageToken"] = options[:page_token] if options.key?(:page_token)
-          parameters["timespan"] = options[:timespan] if options.key?(:timespan)
+          parameters["view"] = options[:view] if options.key?(:view)
+
+          unless parameters.key?("interval.startTime")
+            raise ArgumentError.new("option :interval must have :start_time value for listing timeseries")
+          end
+
+          unless parameters.key?("interval.endTime")
+            raise ArgumentError.new("option :interval must have :end_time value for listing timeseries")
+          end
+
+          unless parameters.key?("filter")
+            raise ArgumentError.new("options[:filter] value is required to list timeseries")
+          end
 
           request(api_method, parameters)
         end
       end
 
       class Mock
-        def list_timeseries(metric, youngest, _options = {})
+        def list_timeseries(interval, _options = {})
           body = {
-            "kind" => 'cloudmonitoring#listTimeseriesResponse',
-            "youngest" => youngest,
-            "oldest" => youngest,
-            "timeseries" => [
+            "timeSeries" => [
               {
-                "timeseriesDesc" => {
-                  "project" => @project,
-                  "metric" => metric,
+                "metric" => {
+                  "labels" => { "instance_name" => "emilyye-dev" },
+                  "type" => "compute.googleapis.com/instance/cpu/usage_time"
+                },
+                "resource" => {
+                  "type" => "gce_instance",
                   "labels" => {
-                    "cloud.googleapis.com/service" => "compute.googleapis.com",
-                    "compute.googleapis.com/resource_type" => "instance",
-                    "cloud.googleapis.com/location" => "us-central1-a",
-                    "compute.googleapis.com/resource_id" => Fog::Mock.random_numbers(20).to_s,
-                    "compute.googleapis.com/instance_name" => Fog::Mock.random_hex(40)
+                    "instance_id" => "3959348537894302241",
+                    "zone" => "us-central1-c",
+                    "project_id" => @project
                   }
                 },
+                "metricKind" => "DELTA",
+                "valueType" => "DOUBLE",
                 "points" => [
                   {
-                    "start" => "2014-07-17T20:06:58.000Z",
-                    "end" => "2014-07-17T20:07:58.000Z",
-                    "doubleValue" => 60.0
-                  },
-                  {
-                    "start" => "2014-07-17T20:05:58.000Z",
-                    "end" => "2014-07-17T20:06:58.000Z",
-                    "doubleValue" => 60.0
+                    "interval" => interval,
+                    "value" => {
+                      "doubleValue" => 1.8277230720141233
+                    }
                   }
                 ]
               }

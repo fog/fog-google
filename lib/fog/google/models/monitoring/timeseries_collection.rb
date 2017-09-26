@@ -10,19 +10,26 @@ module Fog
         ##
         # Lists all Timeseries.
         #
-        # @param [String] metric The name of the metric (Metric names are protocol-free URLs).
-        # @param [String] youngest End of the time interval (inclusive), which is expressed as an RFC 3339 timestamp.
-        # @param [Hash] options Optional query parameters.
-        # @option options [String] count Maximum number of time series descriptors per page. Used for pagination.
-        # @option options [String] labels A collection of labels for the matching time series.
-        # @option options [String] oldest Start of the time interval (exclusive), which is expressed as an RFC 3339
-        #   timestamp.
-        # @options options [String] page_token The pagination token, which is used to page through large result sets.
-        # @options options [String] timespan Length of the time interval to query, which is an alternative way to
-        #   declare the interval.
+        # @param [Hash] options Query parameters.
+        # @option [String] filter  A monitoring filter that specifies which time series should be returned.
+        #   The filter must specify a single metric type, and can additionally specify metric labels and other
+        #   information.
+        # @option options [Hash] interval Required. The time interval for which results should be returned.
+        # @option interval [String] end_time Required RFC3339 timestamp marking the end of interval
+        # @option interval [String] start_time Optional RFC3339 timestamp marking start of interval.
+        # @option options [Hash] aggregation
+        # @option aggregation [String] alignment_period
+        # @option aggregation [String] cross_series_reducer
+        # @option aggregation [String] group_by_fields
+        # @option aggregation [String] per_series_aligner
+        # @option options [String] order_by
+        # @option options [String] page_size
+        # @option options [String] page_token
+        # @option options [String] view
+        #
         # @return [Array<Fog::Google::Monitoring::Timeseries>] List of Timeseries.
-        def all(metric, youngest, options = {})
-          data = service.list_timeseries(metric, youngest, options).body["timeseries"] || []
+        def all(options = {})
+          data = service.list_timeseries(options).body["timeSeries"] || []
           load(data)
         end
       end

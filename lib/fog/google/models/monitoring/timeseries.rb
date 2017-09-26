@@ -6,10 +6,12 @@ module Fog
       ##
       # A time series is a collection of data points that represents the value of a metric of a project over time.
       #
-      # @see https://developers.google.com/cloud-monitoring/v2beta1/timeseries
+      # https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.timeSeries/list
       class Timeseries < Fog::Model
-        identity :time_series_desc, :aliases => "timeseriesDesc"
-
+        attribute :metric
+        attribute :resource
+        attribute :metric_kind, :aliases => "metricKind"
+        attribute :value_type, :aliases => "valueType"
         attribute :points
       end
     end
