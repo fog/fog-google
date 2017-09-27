@@ -13,17 +13,7 @@ module Fog
 
       class Mock
         def get_managed_zone(name_or_id)
-          if data[:managed_zones].key?(name_or_id)
-            data = self.data[:managed_zones][name_or_id]
-          else
-            data = self.data[:managed_zones].values.detect { |zone| zone["name"] = name_or_id }
-          end
-
-          unless data
-            raise Fog::Errors::NotFound, "The 'parameters.managedZone' resource named '#{name_or_id}' does not exist."
-          end
-
-          build_excon_response(data).body
+          raise Fog::Errors::MockNotImplemented
         end
       end
     end

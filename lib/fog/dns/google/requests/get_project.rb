@@ -14,22 +14,7 @@ module Fog
 
       class Mock
         def get_project(identity)
-          body = {
-            "kind" => "dns#project",
-            "number" => Fog::Mock.random_numbers(12).to_s,
-            "id" => identity,
-            "quota" => {
-              "kind" => "dns#quota",
-              "managedZones" => 100,
-              "rrsetsPerManagedZone" => 10_000,
-              "rrsetAdditionsPerChange" => 100,
-              "rrsetDeletionsPerChange" => 100,
-              "totalRrdataSizePerChange" => 10_000,
-              "resourceRecordsPerRrset" => 20
-            }
-          }
-
-          body
+          raise Fog::Errors::MockNotImplemented
         end
       end
     end

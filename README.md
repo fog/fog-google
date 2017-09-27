@@ -6,7 +6,7 @@ The main maintainers for the Google sections are @icco, @Temikus and @plribeiro3
 
 **As of v0.1.1, Google no longer supports Ruby versions less than 2.0.0.**
 
-**Currently, `fog-google` does not support versions of `google-api-client` >= 0.9 or <= 0.8.5.**
+**As of v1.0.0, fog-google includes google-api-client as a dependency**
 
 
 ## Storage
@@ -41,7 +41,7 @@ Fog implements [v2beta2](https://cloud.google.com/monitoring/v2beta2/) of the Go
 Note: You **must** have a version of google-api-client > 0.8.5 to use the Pub/Sub API; previous versions will not work.
 
 Fog mostly implements [v1](https://cloud.google.com/pubsub/reference/rest/) of the Google Cloud Pub/Sub API; however some less common API methods are missing. Pull requests for additions would be greatly appreciated.
- 
+
 ## Installation
 
 Add the following two lines to your application's `Gemfile`:
@@ -63,16 +63,22 @@ Or install it yourself as:
 $ gem install fog-google
 ```
 
+## Testing
+
+The tests in `tests` are deprecated. We are currently working on a migration of tests to `minitest`.
+
+For your test to be tested with real credentials, a repo maintainer may add the label `integrate` to your PR to run integration tests.
+
 ## Setup
 
 #### Credentials
 
 Follow the [instructions to generate a private key](https://cloud.google.com/storage/docs/authentication#generating-a-private-key). A sample credentials file can be found in `.fog.example` in this directory:
 
-    cat .fog.example >> ~/.fog # appends the sample configuration
-    vim ~/.fog                 # edit file with yout config
-    
-
+```
+cat .fog.example >> ~/.fog # appends the sample configuration
+vim ~/.fog                 # edit file with yout config
+```
 
 #### SSH-ing into instances
 
