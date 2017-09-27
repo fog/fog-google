@@ -5,13 +5,13 @@ module Fog
         model Fog::Compute::Google::BackendService
 
         def all(_filters = {})
-          data = service.list_backend_services.body["items"] || []
-          load(data)
+          data = service.list_backend_services.items || []
+          load(data.map(&:to_h))
         end
 
         def get(identity)
-          if backend_service = service.get_backend_service(identity).body
-            new(backend_service)
+          if backend_service = service.get_backend_service(identity)
+            new(backend_service.to_h)
           end
         rescue Fog::Errors::NotFound
           nil

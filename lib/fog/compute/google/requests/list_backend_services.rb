@@ -14,12 +14,7 @@ module Fog
 
       class Real
         def list_backend_services
-          api_method = @compute.backend_services.list
-          parameters = {
-            "project" => @project
-          }
-
-          request(api_method, parameters)
+          @compute.list_backend_services(@project)
         end
       end
     end

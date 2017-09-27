@@ -30,7 +30,7 @@ module Fog
           }
 
           data = service.insert_backend_service(name, options).body
-          operation = Fog::Compute::Google::Operations.new(:service => service).get(data["name"])
+          operation = Fog::Compute::Google::Operations.new(:service => service).get(data.name)
           operation.wait_for { !pending? }
           reload
         end
@@ -39,13 +39,13 @@ module Fog
           requires :name
 
           data = service.delete_backend_service(name)
-          operation = Fog::Compute::Google::Operations.new(:service => service).get(data.body["name"])
+          operation = Fog::Compute::Google::Operations.new(:service => service).get(data.name)
           operation.wait_for { ready? } unless async
           operation
         end
 
         def get_health
-          service.get_backend_service_health self
+          service.get_backend_service_health(self)
         end
 
         def add_backend(backend)

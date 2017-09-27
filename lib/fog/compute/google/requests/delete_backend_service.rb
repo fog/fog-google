@@ -29,13 +29,7 @@ module Fog
 
       class Real
         def delete_backend_service(backend_service_name)
-          api_method = @compute.backend_services.delete
-          parameters = {
-            "project" => @project,
-            "backendService" => backend_service_name
-          }
-
-          request(api_method, parameters)
+          @compute.delete_backend_service(@project, backend_service_name)
         end
       end
     end
