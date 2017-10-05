@@ -10,19 +10,35 @@ module Fog
         ##
         # Lists all Timeseries.
         #
-        # @param [String] metric The name of the metric (Metric names are protocol-free URLs).
-        # @param [String] youngest End of the time interval (inclusive), which is expressed as an RFC 3339 timestamp.
-        # @param [Hash] options Optional query parameters.
-        # @option options [String] count Maximum number of time series descriptors per page. Used for pagination.
-        # @option options [String] labels A collection of labels for the matching time series.
-        # @option options [String] oldest Start of the time interval (exclusive), which is expressed as an RFC 3339
-        #   timestamp.
-        # @options options [String] page_token The pagination token, which is used to page through large result sets.
-        # @options options [String] timespan Length of the time interval to query, which is an alternative way to
-        #   declare the interval.
+        # @param filter [String] A monitoring filter that specifies which time series should be returned.
+        #   The filter must specify a single metric type, and can additionally specify metric labels and other
+        #   information.
+        # @param interval [Hash] Required. The time interval for which results should be returned.
+        # @option interval [String] end_time Required RFC3339 timestamp marking the end of interval
+        # @option interval [String] start_time Required RFC3339 timestamp marking start of interval.
+        # @param aggregation [Hash] Optional object describing how to combine multiple time series to provide
+        #   different views of the data. By default, the raw time series data is returned.
+        # @option aggregation [String] alignment_period The alignment period for per-time series alignment.
+        # @option aggregation [String] cross_series_reducer The approach to be used to align individual time series.
+        # @option aggregation [String] group_by_fields The set of fields to preserve when crossSeriesReducer is specified.
+        # @option aggregation [String] per_series_aligner The approach to be used to combine time series.
+        # @param order_by [String] Specifies the order in which the points of the time series should be returned.
+        #   By default, results are not ordered. Currently, this field must be left blank.
+        # @param page_size [String]
+        # @param page_token [String]
+        # @param view [String] Specifies which information is returned about the time series.
+        #
         # @return [Array<Fog::Google::Monitoring::Timeseries>] List of Timeseries.
-        def all(metric, youngest, options = {})
-          data = service.list_timeseries(metric, youngest, options).timeseries || []
+        def all(filter: nil, interval: nil, aggregation: nil, order_by: nil, page_size: nil, page_token: nil, view: nil)
+          data = service.list_timeseries(
+            :filter => filter,
+            :interval => interval,
+            :aggregation => aggregation,
+            :order_by => order_by,
+            :page_size => page_size,
+            :page_token => page_token,
+            :view => view
+          ).to_h[:time_series] || []
           load(data)
         end
       end

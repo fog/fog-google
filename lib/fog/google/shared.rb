@@ -38,7 +38,7 @@ module Fog
         begin
           # Because of how Google API gem was rewritten, we get to do all sorts
           # of funky things, like this nonsense.
-          require "google/apis/cloudmonitoring_#{Fog::Google::Monitoring::GOOGLE_MONITORING_API_VERSION}"
+          require "google/apis/monitoring_#{Fog::Google::Monitoring::GOOGLE_MONITORING_API_VERSION}"
           require "google/apis/compute_#{Fog::Compute::Google::GOOGLE_COMPUTE_API_VERSION}"
           require "google/apis/dns_#{Fog::DNS::Google::GOOGLE_DNS_API_VERSION}"
           require "google/apis/pubsub_#{Fog::Google::Pubsub::GOOGLE_PUBSUB_API_VERSION}"
