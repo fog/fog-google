@@ -9,13 +9,8 @@ module Fog
 
       class Real
         def list_aggregated_instance_groups(options = {})
-          api_method = @compute.instance_groups.aggregated_list
-          parameters = {
-            "project" => @project
-          }
-          parameters["filter"] = options[:filter] if options[:filter]
-
-          request(api_method, parameters)
+          @compute.list_aggregated_instance_groups(@project,
+                                                   :filter => options[:filter])
         end
       end
     end

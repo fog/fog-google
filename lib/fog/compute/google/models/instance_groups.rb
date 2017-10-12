@@ -9,8 +9,8 @@ module Fog
             data = Array(service.list_instance_groups(filters[:zone]))
           else
             data = []
-            service.list_aggregated_instance_groups.body["items"].each_value do |group|
-              data.concat(group["instanceGroups"]) if group["instanceGroups"]
+            service.list_aggregated_instance_groups.items.each_value do |group|
+              data.concat(group.instance_groups) if group.instance_groups
             end
           end
 
