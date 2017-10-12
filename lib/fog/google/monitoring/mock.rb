@@ -12,7 +12,7 @@ module Fog
           @data ||= Hash.new do |hash, key|
             hash[key] = {
               :timeseries => {},
-              :timeseries_descriptors => {},
+              :monitored_resource_descriptor => {},
               :metric_descriptors => {}
             }
           end
