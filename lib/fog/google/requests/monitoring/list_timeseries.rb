@@ -25,6 +25,11 @@ module Fog
             :page_token => page_token,
             :view => view
           }
+          if options.key?(:interval)
+            interval = options[:interval]
+            parameters["interval.endTime"] = interval[:end_time] if interval.key?(:end_time)
+            parameters["interval.startTime"] = interval[:start_time] if interval.key?(:start_time)
+          end
 
           unless aggregation.nil?
             %i(alignment_period cross_series_reducer group_by_fields per_series_aligner).each do |k|

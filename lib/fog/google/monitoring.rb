@@ -45,6 +45,7 @@ module Fog
       request :list_timeseries
       request :create_timeseries
 
+
       # MetricDescriptors
       request :get_metric_descriptor
       request :list_metric_descriptors
@@ -54,6 +55,7 @@ module Fog
       # MonitoredResourceDescriptors
       request :list_monitored_resource_descriptors
       request :get_monitored_resource_descriptor
+
     end
   end
 end

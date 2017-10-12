@@ -41,6 +41,7 @@ module Fog
       request :add_zone_view_resources
 
       request :delete_address
+      request :delete_global_address
       request :delete_backend_service
       request :delete_disk
       request :delete_firewall
@@ -59,13 +60,16 @@ module Fog
       request :delete_snapshot
       request :delete_subnetwork
       request :delete_target_http_proxy
+      request :delete_target_https_proxy
       request :delete_target_instance
       request :delete_target_pool
       request :delete_url_map
       request :delete_zone_operation
       request :delete_zone_view
+      request :delete_ssl_certificate
 
       request :get_address
+      request :get_global_address
       request :get_backend_service
       request :get_backend_service_health
       request :get_disk
@@ -90,6 +94,7 @@ module Fog
       request :get_snapshot
       request :get_subnetwork
       request :get_target_http_proxy
+      request :get_target_https_proxy
       request :get_target_instance
       request :get_target_pool
       request :get_target_pool_health
@@ -97,8 +102,10 @@ module Fog
       request :get_zone
       request :get_zone_operation
       request :get_zone_view
+      request :get_ssl_certificate
 
       request :insert_address
+      request :insert_global_address
       request :insert_backend_service
       request :insert_disk
       request :insert_firewall
@@ -115,10 +122,12 @@ module Fog
       request :insert_snapshot
       request :insert_subnetwork
       request :insert_target_http_proxy
+      request :insert_target_https_proxy
       request :insert_target_instance
       request :insert_target_pool
       request :insert_url_map
       request :insert_zone_view
+      request :insert_ssl_certificate
 
       request :list_addresses
       request :list_aggregated_addresses
@@ -151,6 +160,7 @@ module Fog
       request :list_snapshots
       request :list_subnetworks
       request :list_target_http_proxies
+      request :list_target_https_proxies
       request :list_target_instances
       request :list_target_pools
       request :list_url_maps
@@ -158,6 +168,7 @@ module Fog
       request :list_zone_view_resources
       request :list_zone_views
       request :list_zones
+      request :list_ssl_certificates
 
       request :remove_instance_group_instances
       request :remove_target_pool_health_checks
@@ -171,6 +182,8 @@ module Fog
       request :set_server_scheduling
       request :set_tags
       request :set_target_http_proxy_url_map
+      request :set_target_https_proxy_url_map
+
 
       request :attach_disk
       request :detach_disk
@@ -198,6 +211,9 @@ module Fog
 
       model :address
       collection :addresses
+
+      model :global_address
+      collection :global_addresses
 
       model :operation
       collection :operations
@@ -238,6 +254,9 @@ module Fog
       model :target_http_proxy
       collection :target_http_proxies
 
+      model :target_https_proxy
+      collection :target_https_proxies
+
       model :url_map
       collection :url_maps
 
@@ -255,6 +274,9 @@ module Fog
 
       model :subnetwork
       collection :subnetworks
+
+      model :ssl_certificate
+      collection :ssl_certificates
     end
   end
 end

@@ -10,15 +10,15 @@ Bundler.require(:default, :development)
 def test
   connection = Fog::Google::Monitoring.new
 
-  puts "Listing all MetricDescriptors..."
+  puts "Listing all MonitoredResourceDescriptors..."
   puts "--------------------------------"
-  md = connection.metric_descriptors
-  puts "Number of all metric descriptors: #{md.length}"
+  md = connection.monitored_resource_descriptors
+  puts "Number of all monitored resource descriptors: #{md.length}"
 
-  puts "\nListing all MetricDescriptors related to Google Compute Engine..."
+  puts "\nListing MonitoredResourceDescriptors related to Google Compute Engine..."
   puts "-----------------------------------------------------------------"
-  md = connection.metric_descriptors.all(:filter => 'metric.type = starts_with("compute.googleapis.com")')
-  puts "Number of compute metric descriptors: #{md.length}"
+  md = connection.monitored_resource_descriptors.all(:filter => 'resource.type = starts_with("gce_")')
+  puts "Number of compute monitored resource : #{md.length}"
 end
 
 test

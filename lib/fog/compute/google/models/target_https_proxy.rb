@@ -1,7 +1,7 @@
 module Fog
   module Compute
     class Google
-      class TargetHttpProxy < Fog::Model
+      class TargetHttpsProxy < Fog::Model
         identity :name
 
         attribute :kind, :aliases => "kind"
@@ -10,24 +10,26 @@ module Fog
         attribute :creation_timestamp, :aliases => "creationTimestamp"
         attribute :description, :aliases => "description"
         attribute :url_map, :aliases => "urlMap"
+        attribute :ssl_certificates, :aliases => "sslCertificates"
 
         def save
           requires :name
 
           options = {
             "description" => description,
-            "urlMap" => url_map
+            "urlMap" => url_map,
+            "sslCertificates" => ssl_certificates
           }
 
-          data = service.insert_target_http_proxy(name, options).body
-          operation = Fog::Compute::Google::Operations.new(:service => service).get(data["name"], data["zone"])
+          data = service.insert_target_https_proxy(name, options).body
+          operation = Fog::Compute::Google::Operations.new(:service => service).get(data["name"])
           operation.wait_for { !pending? }
           reload
         end
 
         def destroy(async = true)
           requires :name
-          operation = service.delete_target_http_proxy(name)
+          operation = service.delete_target_https_proxy(name)
           unless async
             # wait until "DONE" to ensure the operation doesn't fail, raises
             # exception on error
@@ -39,12 +41,12 @@ module Fog
         end
 
         def set_url_map(url_map)
-          service.set_target_http_proxy_url_map(self, url_map)
+          service.set_target_https_proxy_url_map(self, url_map)
           reload
         end
 
         def ready?
-          service.get_target_http_proxy(name)
+          service.get_target_https_proxy(name)
           true
         rescue Fog::Errors::NotFound
           false

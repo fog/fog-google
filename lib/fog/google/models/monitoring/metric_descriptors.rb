@@ -21,6 +21,7 @@ module Fog
             :page_size => page_size,
             :page_token => page_token
           ).to_h[:metric_descriptors] || []
+
           load(data)
         end
 

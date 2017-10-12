@@ -8,19 +8,24 @@ Bundler.require(:default, :development)
 
 def test
   connection = Fog::Google::Monitoring.new
-
-  puts "Listing all Timeseries for the metric compute.googleapis.com/instance/uptime..."
+  interval = {
+    :start_time => (DateTime.now - 1).rfc3339,
+    :end_time => DateTime.now.rfc3339
+  }
+  puts "Listing Timeseries from the last hour for metric compute.googleapis.com/instance/uptime..."
   puts "-------------------------------------------------------------------------------"
-  tc = connection.timeseries_collection.all("compute.googleapis.com/instance/uptime",
-                                            DateTime.now.rfc3339)
+  tc = connection.timeseries_collection.all(:filter => 'metric.type = "compute.googleapis.com/instance/uptime"',
+                                            :interval => interval)
   puts "Number of matches: #{tc.length}"
 
-  puts "\nListing all Timeseries for the metric compute.googleapis.com/instance/uptime &"
+  puts "\nListing all Timeseries for metric compute.googleapis.com/instance/uptime &"
   puts "the region us-central1..."
   puts "------------------------------------------------------------------------------"
-  tc = connection.timeseries_collection.all("compute.googleapis.com/instance/uptime",
-                                            DateTime.now.rfc3339,
-                                            :labels => "cloud.googleapis.com/location=~us-central1.*")
+  filter = [
+    'metric.type = "compute.googleapis.com/instance/uptime"',
+    'resource.label.zone = "us-central1-c"'
+  ].join(" AND ")
+  tc = connection.timeseries_collection.all(:filter => filter, :interval => interval)
   puts "Number of matches: #{tc.length}"
 end
 
