@@ -9,28 +9,25 @@ module Fog
 
       class Real
         def insert_instance_group(group_name, zone, options = {})
-          api_method = @compute.instance_groups.insert
-          parameters = {
-            "project" => @project,
-            "zone" => zone
-          }
+          network_name = if options["network"]
+                           last_url_segment(options["network"])
+                         else
+                           GOOGLE_COMPUTE_DEFAULT_NETWORK
+                         end
 
-          id = Fog::Mock.random_numbers(19).to_s
+          instance_group = ::Google::Apis::ComputeV1::InstanceGroup.new(
+            :description => options["description"],
+            :name => group_name,
+            :network => "https://www.googleapis.com/compute/#{api_version}/projects/#{@project}/global/networks/#{network_name}",
+          )
 
-          body = {
-            "name" => group_name
-          }
+          @compute.insert_instance_group(@project,
+                                         last_url_segment(zone),
+                                         instance_group)
+        end
 
-          body["description"] = options["description"] if options["description"]
-          network_name = options["network"] ? options["network"].split("/")[-1] : GOOGLE_COMPUTE_DEFAULT_NETWORK
-          body["network"] = "https://www.googleapis.com/compute/#{api_version}/projects/#{@project}/global/networks/#{network_name}"
-
-          unless options["subnetwork"].nil?
-            subnetwork_name = options["subnetwork"].split("/")[-1]
-            body["subnetwork"] = "https://www.googleapis.com/compute/#{api_version}/projects/#{@project}/regions/#{@region}/subnetworks/#{subnetwork_name}"
-          end
-
-          request(api_method, parameters, body)
+        def last_url_segment(network)
+          network.split("/")[-1]
         end
       end
     end
