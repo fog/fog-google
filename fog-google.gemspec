@@ -26,7 +26,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "fog-xml"
 
   # Hard Requirement as of 1.0
-  spec.add_dependency "google-api-client", "~> 0.13"
+  spec.add_dependency "google-api-client", "~> 0.15"
 
   spec.add_development_dependency "rake"
   spec.add_development_dependency "shindo"
