@@ -6,7 +6,7 @@ module Fog
 
         def all(filters = {})
           if filters[:zone]
-            data = service.list_instance_groups(filters[:zone]).body
+            data = Array(service.list_instance_groups(filters[:zone]))
           else
             data = []
             service.list_aggregated_instance_groups.body["items"].each_value do |group|
@@ -14,7 +14,7 @@ module Fog
             end
           end
 
-          load(data)
+          load(data.map(&:to_h))
         end
 
         def get(identity, zone = nil)
