@@ -19,14 +19,15 @@ module Fog
 
         def get(identity, zone = nil)
           if zone.nil?
-            zones = service.list_aggregated_instance_groups(:filter => "name eq .*#{identity}").body["items"]
-            target_zone = zones.each_value.select { |zone| zone.key?("instanceGroups") }
-            response = target_zone.first["instanceGroups"].first unless target_zone.empty?
-            zone = response["zone"].split("/")[-1]
+            zones = service.list_aggregated_instance_groups(:filter => "name eq .*#{identity}").items
+            instance_groups = zones.each_value.map(&:instance_groups).compact.first
+            if instance_groups
+              zone = instance_groups.first.zone.split("/")[-1]
+            end
           end
 
-          if instance_group = service.get_instance_group(identity, zone).body
-            new(instance_group)
+          if instance_group = service.get_instance_group(identity, zone)
+            new(instance_group.to_h)
           end
         rescue Fog::Errors::NotFound
           nil
