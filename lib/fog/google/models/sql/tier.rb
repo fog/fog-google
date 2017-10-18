@@ -6,7 +6,7 @@ module Fog
       ##
       # A Google Cloud SQL service tier resource
       #
-      # @see https://developers.google.com/cloud-sql/docs/admin-api/v1beta3/tiers
+      # @see https://cloud.google.com/sql/docs/mysql/admin-api/v1beta4/tiers
       class Tier < Fog::Model
         identity :tier
 
