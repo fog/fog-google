@@ -26,7 +26,7 @@ module Fog
             @project,
             zone,
             group_name,
-            request 
+            request
           )
         end
       end
