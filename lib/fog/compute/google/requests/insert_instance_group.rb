@@ -9,11 +9,11 @@ module Fog
 
       class Real
         def insert_instance_group(group_name, zone, options = {})
-          network_name = if options["network"]
-                           last_url_segment(options["network"])
-                         else
-                           GOOGLE_COMPUTE_DEFAULT_NETWORK
-                         end
+          if options["network"]
+            network_name = last_url_segment(options["network"])
+          else
+            network_name = GOOGLE_COMPUTE_DEFAULT_NETWORK
+          end
 
           instance_group = ::Google::Apis::ComputeV1::InstanceGroup.new(
             :description => options["description"],
