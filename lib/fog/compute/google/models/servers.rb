@@ -19,7 +19,7 @@ module Fog
         def get(identity, zone = nil)
           response = nil
           if zone
-            response = service.get_server(identity, zone).body
+            response = service.get_server(identity, zone)
           else
             servers = service.list_aggregated_servers(:filter => "name eq .*#{identity}").body["items"]
             server = servers.each_value.select { |zone| zone.key?("instances") }
@@ -28,7 +28,7 @@ module Fog
             response = server.first["instances"].first unless server.empty?
           end
           return nil if response.nil?
-          new(response)
+          new(response.to_h)
         rescue Fog::Errors::NotFound
           nil
         end

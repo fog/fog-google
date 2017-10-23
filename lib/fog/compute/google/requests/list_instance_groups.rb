@@ -9,13 +9,7 @@ module Fog
 
       class Real
         def list_instance_groups(zone)
-          api_method = @compute.instance_groups.list
-          parameters = {
-            "project" => @project,
-            "zone" => zone
-          }
-
-          request(api_method, parameters)
+          @compute.list_instance_groups(@project, zone)
         end
       end
     end

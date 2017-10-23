@@ -9,14 +9,7 @@ module Fog
 
       class Real
         def delete_instance_group(group_name, zone)
-          api_method = @compute.instance_groups.delete
-          parameters = {
-            "instanceGroup" => group_name,
-            "project" => @project,
-            "zone" => zone
-          }
-
-          request(api_method, parameters)
+          @compute.delete_instance_group(@project, zone, group_name)
         end
       end
     end

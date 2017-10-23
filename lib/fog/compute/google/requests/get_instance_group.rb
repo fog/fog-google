@@ -9,14 +9,7 @@ module Fog
 
       class Real
         def get_instance_group(group_name, zone, project = @project)
-          api_method = @compute.instance_groups.get
-          parameters = {
-            "instanceGroup" => group_name,
-            "project" => project,
-            "zone" => zone
-          }
-
-          request(api_method, parameters)
+          @compute.get_instance_group(project, zone, group_name)
         end
       end
     end
