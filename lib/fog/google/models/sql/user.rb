@@ -14,24 +14,24 @@ module Fog
         attribute :instance
         attribute :kind
         attribute :project
-      end
 
-      def destroy
-        requires :instance, :name, :host
+        def destroy(async: true)
+          requires :instance, :name, :host
 
-        resp = service.delete_user(instance, name, host)
-        operation = Fog::Google::SQL::Operations.new(:service => service).get(resp.name)
-        operation.wait_for { ready? } unless options.fetch(:async, true)
-        operation
-      end
+          resp = service.delete_user(instance, host, name)
+          operation = Fog::Google::SQL::Operations.new(:service => service).get(resp.name)
+          operation.wait_for { ready? } unless async
+          operation
+        end
 
-      def save(password: nil)
-        requires :instance, :name
+        def save(password: nil)
+          requires :instance, :name
 
-        data = to_h
-        data[:password] = password unless password.nil?
-        service.insert_user(instance, data)
-        self
+          data = to_h
+          data[:password] = password unless password.nil?
+          service.insert_user(instance, data)
+          self
+        end
       end
     end
   end
