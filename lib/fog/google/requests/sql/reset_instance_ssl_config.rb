@@ -6,42 +6,17 @@ module Fog
       # The changes will not take effect until the instance is restarted. Existing instances without
       # a server certificate will need to call this once to set a server certificate
       #
-      # @see https://developers.google.com/cloud-sql/docs/admin-api/v1beta3/instances/resetSslConfig
+      # @see https://cloud.google.com/sql/docs/mysql/admin-api/v1beta4/instances/resetSslConfig
 
       class Real
         def reset_instance_ssl_config(instance_id)
-          api_method = @sql.instances.reset_ssl_config
-          parameters = {
-            "project" => @project,
-            "instance" => instance_id
-          }
-
-          request(api_method, parameters)
+          @sql.reset_instance_ssl_config(@project, instance_id)
         end
       end
 
       class Mock
-        def reset_instance_ssl_config(instance_id)
-          operation = random_operation
-          data[:operations][instance_id] ||= {}
-          data[:operations][instance_id][operation] = {
-            "kind" => 'sql#instanceOperation',
-            "instance" => instance_id,
-            "operation" => operation,
-            "operationType" => "UPDATE",
-            "state" => Fog::Google::SQL::Operation::DONE_STATE,
-            "userEmailAddress" => "google_client_email@developer.gserviceaccount.com",
-            "enqueuedTime" => Time.now.iso8601,
-            "startTime" => Time.now.iso8601,
-            "endTime" => Time.now.iso8601
-          }
-
-          body = {
-            "kind" => 'sql#instancesResetSslConfig',
-            "operation" => operation
-          }
-
-          build_excon_response(body)
+        def reset_instance_ssl_config(_instance_id)
+          Fog::Mock.not_implemented
         end
       end
     end
