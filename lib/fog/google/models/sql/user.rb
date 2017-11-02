@@ -27,10 +27,17 @@ module Fog
         def save(password: nil)
           requires :instance, :name
 
-          data = to_h
+          data = attributes
           data[:password] = password unless password.nil?
-          service.insert_user(instance, data)
-          self
+          if etag.nil?
+            resp = service.update_user(instance, data)
+          else
+            resp = service.insert_user(instance, data)
+          end
+
+          operation = Fog::Google::SQL::Operations.new(:service => service).get(resp.name)
+          operation.wait_for { !pending? }
+          reload
         end
       end
     end
