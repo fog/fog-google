@@ -37,7 +37,6 @@ module Fog
 
           operation = Fog::Google::SQL::Operations.new(:service => service).get(resp.name)
           operation.wait_for { !pending? }
-          reload
         end
       end
     end
