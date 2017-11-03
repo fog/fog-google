@@ -67,17 +67,20 @@ module Fog
         # Creates a Cloud SQL instance as a clone of the source instance
         #
         # @param [String] destination_name Name of the Cloud SQL instance to be created as a clone
-        # @param [Hash] options Method options
-        # @option options [String] :log_filename Name of the binary log file for a Cloud SQL instance
-        # @option options [Integer] :log_position Position (offset) within the binary log file
-        # @option options [Boolean] :async If the operation must be performed asynchronously (true by default)
+        # @param [Boolean] async If the operation must be performed asynchronously (true by default)
+        # @param [String] log_filename Name of the binary log file for a Cloud SQL instance
+        # @param [Integer] log_position Position (offset) within the binary log file
         # @return [Fog::Google::SQL::Operation] A Operation resource
-        def clone(destination_name, options: {})
+        def clone(destination_name, async: true, log_filename: nil, log_position: nil)
           requires :identity
 
-          data = service.clone_instance(identity, destination_name, options)
+          data = service.clone_instance(
+            identity, destination_name,
+            :log_filename => log_filename,
+            :log_position => log_position
+          )
           operation = Fog::Google::SQL::Operations.new(:service => service).get(data.name)
-          operation.tap { |o| o.wait_for { ready? } unless options.fetch(:async, true) }
+          operation.tap { |o| o.wait_for { ready? } unless async }
         end
 
         ##
@@ -296,12 +299,24 @@ module Fog
         #
         # @return [Fog::Google::SQL::Instance] Instance resource
         def update
-          requires :identity
+          requires :identity, :settings_version, :tier
 
-          data = service.update_instance(identity, settings_version, tier, attributes)
+          data = service.update_instance(identity, settings_version, tier, settings)
           operation = Fog::Google::SQL::Operations.new(:service => service).get(data.name)
           operation.wait_for { !pending? }
           reload
+        end
+
+        ##
+        # Reload a Cloud SQL instance
+        #
+        # @return [Fog::Google::SQL::Instance] Instance resource
+        def reload
+          requires :identity
+
+          data = collection.get(identity)
+          merge_attributes(data.attributes)
+          self
         end
       end
     end
