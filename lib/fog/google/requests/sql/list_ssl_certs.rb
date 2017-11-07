@@ -4,46 +4,17 @@ module Fog
       ##
       # Lists all of the current SSL certificates for the instance
       #
-      # @see https://developers.google.com/cloud-sql/docs/admin-api/v1beta3/sslCerts/list
+      # @see https://cloud.google.com/sql/docs/mysql/admin-api/v1beta4/sslCerts/list
 
       class Real
         def list_ssl_certs(instance_id)
-          api_method = @sql.ssl_certs.list
-          parameters = {
-            "project" => @project,
-            "instance" => instance_id
-          }
-
-          request(api_method, parameters)
+          @sql.list_ssl_certs(@project, instance_id)
         end
       end
 
       class Mock
-        def list_ssl_certs(instance_id)
-          if data[:ssl_certs].key?(instance_id)
-            body = {
-              "kind" => 'sql#sslCertsList',
-              "items" => data[:ssl_certs][instance_id].values
-            }
-            status = 200
-          else
-            body = {
-              "error" => {
-                "errors" => [
-                  {
-                    "domain" => "global",
-                    "reason" => "notAuthorized",
-                    "message" => "The client is not authorized to make this request."
-                  }
-                ],
-                "code" => 403,
-                "message" => "The client is not authorized to make this request."
-              }
-            }
-            status = 403
-          end
-
-          build_excon_response(body, status)
+        def list_ssl_certs(_instance_id)
+          Fog::Mock.not_implemented
         end
       end
     end

@@ -39,7 +39,7 @@ module Fog
             :page_token => page_token,
             :view => view
           ).to_h[:time_series] || []
-          
+
           load(data)
         end
       end

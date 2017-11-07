@@ -4,79 +4,35 @@ module Fog
       ##
       # Creates a Cloud SQL instance as a clone of the source instance
       #
-      # @see https://developers.google.com/cloud-sql/docs/admin-api/v1beta3/instances/clone
-
+      # @see https://cloud.google.com/sql/docs/mysql/admin-api/v1beta4/instances/clone
       class Real
-        def clone_instance(instance_id, destination_name, options = {})
-          # The @sql.instances.clone method is overrided by the standard Ruby clone method
-          # so we cannot call it because it will just clone the @sql.instances instance.
-          # Instead we need to find the proper method trough the discovered_methods.
-          api_method = @sql.instances.discovered_methods.detect { |x| x.id == "sql.instances.clone" }
-          parameters = {
-            "project" => @project
+        def clone_instance(instance_id, destination_name,
+                           log_filename: nil, log_position: nil)
+          context = {
+            :kind => "sql#cloneContext",
+            :destination_instance_name => destination_name
           }
 
-          body = {
-            "cloneContext" => {
-              "kind" => 'sql#cloneContext',
-              "sourceInstanceName" => instance_id,
-              "destinationInstanceName" => destination_name
-            }
-          }
-
-          if options[:log_position]
-            body["cloneContext"]["binLogCoordinates"] = {
-              "kind" => 'sql#binLogCoordinates',
-              "binLogFileName" => options[:log_filename],
-              "binLogPosition" => options[:log_position]
-            }
+          unless log_filename.nil? || log_position.nil?
+            context[:bin_log_coordinates] = ::Google::Apis::SqladminV1beta4::BinLogCoordinates.new(
+              :kind => "sql#binLogCoordinates",
+              :log_filename => log_filename,
+              :log_position => log_position
+            )
           end
 
-          request(api_method, parameters, body)
+          clone_request = ::Google::Apis::SqladminV1beta4::CloneInstancesRequest.new(
+            :clone_context => ::Google::Apis::SqladminV1beta4::CloneContext.new(context)
+          )
+
+          @sql.clone_instance(@project, instance_id, clone_request)
         end
       end
 
       class Mock
-        def clone_instance(instance_id, destination_name, _options = {})
-          data[:instances][destination_name] = data[:instances][instance_id]
-          data[:instances][destination_name]["instance"] = destination_name
-          data[:ssl_certs][destination_name] = {}
-          data[:backup_runs][destination_name] = {}
-
-          operation = random_operation
-          data[:operations][destination_name] ||= {}
-          data[:operations][destination_name][operation] = {
-            "kind" => 'sql#instanceOperation',
-            "instance" => destination_name,
-            "operation" => operation,
-            "operationType" => "CREATE",
-            "state" => Fog::Google::SQL::Operation::DONE_STATE,
-            "userEmailAddress" => "google_client_email@developer.gserviceaccount.com",
-            "enqueuedTime" => Time.now.iso8601,
-            "startTime" => Time.now.iso8601,
-            "endTime" => Time.now.iso8601
-          }
-
-          operation = random_operation
-          data[:operations][instance_id] ||= {}
-          data[:operations][instance_id][operation] = {
-            "kind" => 'sql#instanceOperation',
-            "instance" => instance_id,
-            "operation" => operation,
-            "operationType" => "CLONE",
-            "state" => Fog::Google::SQL::Operation::DONE_STATE,
-            "userEmailAddress" => "google_client_email@developer.gserviceaccount.com",
-            "enqueuedTime" => Time.now.iso8601,
-            "startTime" => Time.now.iso8601,
-            "endTime" => Time.now.iso8601
-          }
-
-          body = {
-            "kind" => 'sql#instancesClone',
-            "operation" => operation
-          }
-
-          build_excon_response(body)
+        def clone_instance(_instance_id, _destination_name,
+                           _log_filename: nil, _log_position: nil)
+          Fog::Mock.not_implemented
         end
       end
     end

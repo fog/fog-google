@@ -4,50 +4,37 @@ module Fog
       ##
       # Imports data into a Cloud SQL instance from a MySQL dump file in Google Cloud Storage
       #
-      # @see https://developers.google.com/cloud-sql/docs/admin-api/v1beta3/instances/import
+      # @see https://cloud.google.com/sql/docs/mysql/admin-api/v1beta4/instances/import
 
       class Real
-        def import_instance(instance_id, uri, options = {})
-          api_method = @sql.instances.import
-          parameters = {
-            "project" => @project,
-            "instance" => instance_id
+        def import_instance(instance_id, uri, database: nil,
+                            csv_import_options: nil, file_type: nil,
+                            import_user: nil)
+          data = {
+            :kind => "sql#importContext",
+            :uri => uri
           }
+          data[:database] = database unless database.nil?
+          data[:file_type] = file_type unless file_type.nil?
+          data[:import_user] = import_user unless import_user.nil?
+          unless csv_import_options.nil?
+            data[:csv_import_options] =
+              ::Google::Apis::SqladminV1beta4::ImportContext::CsvImportOptions.new(csv_import_options)
+          end
 
-          body = {
-            "importContext" => {
-              "kind" => 'sql#importContext',
-              "uri" => Array(uri),
-              "database" => options[:database]
-            }
-          }
-
-          request(api_method, parameters, body)
+          @sql.import_instance(
+            @project,
+            instance_id,
+            ::Google::Apis::SqladminV1beta4::ImportInstancesRequest.new(
+              :import_context => ::Google::Apis::SqladminV1beta4::ImportContext.new(data)
+            )
+          )
         end
       end
 
       class Mock
-        def import_instance(instance_id, _uri, _options = {})
-          operation = random_operation
-          data[:operations][instance_id] ||= {}
-          data[:operations][instance_id][operation] = {
-            "kind" => 'sql#instanceOperation',
-            "instance" => instance_id,
-            "operation" => operation,
-            "operationType" => "IMPORT",
-            "state" => Fog::Google::SQL::Operation::DONE_STATE,
-            "userEmailAddress" => "google_client_email@developer.gserviceaccount.com",
-            "enqueuedTime" => Time.now.iso8601,
-            "startTime" => Time.now.iso8601,
-            "endTime" => Time.now.iso8601
-          }
-
-          body = {
-            "kind" => 'sql#instancesImport',
-            "operation" => operation
-          }
-
-          build_excon_response(body)
+        def import_instance(_instance_id, _uri, _options = {})
+          Fog::Mock.not_implemented
         end
       end
     end

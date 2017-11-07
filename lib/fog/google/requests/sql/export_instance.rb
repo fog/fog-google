@@ -2,53 +2,50 @@ module Fog
   module Google
     class SQL
       ##
-      # Exports data from a Cloud SQL instance to a Google Cloud Storage bucket as a MySQL dump file
+      # Exports data from a Cloud SQL instance to a Google Cloud Storage
+      # bucket as a MySQL dump or CSV file.
       #
-      # @see https://developers.google.com/cloud-sql/docs/admin-api/v1beta3/instances/export
-
+      # @see https://cloud.google.com/sql/docs/mysql/admin-api/v1beta4/instances/export
       class Real
-        def export_instance(instance_id, uri, options = {})
-          api_method = @sql.instances.export
-          parameters = {
-            "project" => @project,
-            "instance" => instance_id
+        def export_instance(instance_id, uri,
+                            databases: [],
+                            sql_export_options: {},
+                            csv_export_options: {},
+                            file_type: nil)
+          data = {
+            :kind => "sql#exportContext",
+            :uri => uri,
+            :databases => databases
           }
 
-          body = {
-            "exportContext" => {
-              "kind" => 'sql#exportContext',
-              "uri" => uri,
-              "database" => Array(options[:databases]),
-              "table" => Array(options[:tables])
-            }
-          }
+          unless file_type.nil?
+            data[:file_type] = file_type
+          end
 
-          request(api_method, parameters, body)
+          unless csv_export_options.empty?
+            data[:csv_export_options] =
+              ::Google::Apis::SqladminV1beta4::ExportContext::CsvExportOptions.new(csv_export_options)
+          end
+
+          unless sql_export_options.nil?
+            data[:sql_export_options] =
+              ::Google::Apis::SqladminV1beta4::ExportContext::SqlExportOptions.new(sql_export_options)
+          end
+
+          export_context = ::Google::Apis::SqladminV1beta4::ExportContext.new(export_context)
+          @sql.export_instance(
+            @project,
+            instance_id,
+            ::Google::Apis::SqladminV1beta4::ExportInstancesRequest.new(
+              :export_context => export_context
+            )
+          )
         end
       end
 
       class Mock
-        def export_instance(instance_id, _uri, _options = {})
-          operation = random_operation
-          data[:operations][instance_id] ||= {}
-          data[:operations][instance_id][operation] = {
-            "kind" => 'sql#instanceOperation',
-            "instance" => instance_id,
-            "operation" => operation,
-            "operationType" => "EXPORT",
-            "state" => Fog::Google::SQL::Operation::DONE_STATE,
-            "userEmailAddress" => "google_client_email@developer.gserviceaccount.com",
-            "enqueuedTime" => Time.now.iso8601,
-            "startTime" => Time.now.iso8601,
-            "endTime" => Time.now.iso8601
-          }
-
-          body = {
-            "kind" => 'sql#instancesExport',
-            "operation" => operation
-          }
-
-          build_excon_response(body)
+        def export_instance(_instance_id, _uri, _options: {})
+          Fog::Mock.not_implemented
         end
       end
     end

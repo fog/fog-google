@@ -12,7 +12,7 @@ module Fog
         #
         # @return [Array<Fog::Google::SQL::Instance>] List of instance resources
         def all
-          data = service.list_instances.body["items"] || []
+          data = service.list_instances.to_h[:items] || []
           load(data)
         end
 
@@ -22,7 +22,8 @@ module Fog
         # @param [String] instance_id Instance ID
         # @return [Fog::Google::SQL::Instance] Instance resource
         def get(instance_id)
-          if instance = service.get_instance(instance_id).body
+          instance = service.get_instance(instance_id).to_h
+          if instance
             new(instance)
           end
         rescue Fog::Errors::NotFound

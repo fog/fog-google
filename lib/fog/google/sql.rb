@@ -51,12 +51,18 @@ module Fog
       model :tier
       collection :tiers
 
+      # User
+      model :user
+      collection :users
+
       ##
       # REQUESTS
       request_path "fog/google/requests/sql"
 
       # Backup Run
+      request :delete_backup_run
       request :get_backup_run
+      request :insert_backup_run
       request :list_backup_runs
 
       # Flag
@@ -73,7 +79,6 @@ module Fog
       request :reset_instance_ssl_config
       request :restart_instance
       request :restore_instance_backup
-      request :set_instance_root_password
       request :update_instance
 
       # Operation
@@ -88,6 +93,12 @@ module Fog
 
       # Tier
       request :list_tiers
+
+      # User
+      request :insert_user
+      request :update_user
+      request :list_users
+      request :delete_user
     end
   end
 end

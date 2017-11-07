@@ -5,18 +5,13 @@ module Fog
       # Lists all backup runs associated with a given instance and configuration in the
       # reverse chronological order of the enqueued time
       #
-      # @see https://developers.google.com/cloud-sql/docs/admin-api/v1beta3/backupRuns/list
+      # @see https://cloud.google.com/sql/docs/mysql/admin-api/v1beta4/backupRuns/list
 
       class Real
-        def list_backup_runs(instance_id, backup_configuration_id)
-          api_method = @sql.backup_runs.list
-          parameters = {
-            "project" => @project,
-            "instance" => instance_id,
-            "backupConfiguration" => backup_configuration_id
-          }
-
-          request(api_method, parameters)
+        def list_backup_runs(instance_id, max_results: nil, page_token: nil)
+          @sql.list_backup_runs(@project, instance_id,
+                                :max_results => max_results,
+                                :page_token => page_token)
         end
       end
 
