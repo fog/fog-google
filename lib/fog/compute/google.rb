@@ -32,13 +32,11 @@ module Fog
       request_path "fog/compute/google/requests"
       request :add_backend_service_backends
       request :add_instance_group_instances
-      request :add_region_view_resources
       request :add_server_access_config
       request :add_target_pool_health_checks
       request :add_target_pool_instances
       request :add_url_map_host_rules
       request :add_url_map_path_matchers
-      request :add_zone_view_resources
 
       request :delete_address
       request :delete_global_address
@@ -53,7 +51,6 @@ module Fog
       request :delete_instance_group
       request :delete_network
       request :delete_region_operation
-      request :delete_region_view
       request :delete_route
       request :delete_server
       request :delete_server_access_config
@@ -65,7 +62,6 @@ module Fog
       request :delete_target_pool
       request :delete_url_map
       request :delete_zone_operation
-      request :delete_zone_view
       request :delete_ssl_certificate
 
       request :get_address
@@ -87,7 +83,6 @@ module Fog
       request :get_project
       request :get_region
       request :get_region_operation
-      request :get_region_view
       request :get_route
       request :get_server
       request :get_server_serial_port_output
@@ -101,7 +96,6 @@ module Fog
       request :get_url_map
       request :get_zone
       request :get_zone_operation
-      request :get_zone_view
       request :get_ssl_certificate
 
       request :insert_address
@@ -116,7 +110,6 @@ module Fog
       request :insert_image
       request :insert_instance_group
       request :insert_network
-      request :insert_region_view
       request :insert_route
       request :insert_server
       request :insert_snapshot
@@ -126,7 +119,6 @@ module Fog
       request :insert_target_instance
       request :insert_target_pool
       request :insert_url_map
-      request :insert_zone_view
       request :insert_ssl_certificate
 
       request :list_addresses
@@ -152,8 +144,6 @@ module Fog
       request :list_machine_types
       request :list_networks
       request :list_region_operations
-      request :list_region_view_resources
-      request :list_region_views
       request :list_regions
       request :list_routes
       request :list_servers
@@ -165,8 +155,6 @@ module Fog
       request :list_target_pools
       request :list_url_maps
       request :list_zone_operations
-      request :list_zone_view_resources
-      request :list_zone_views
       request :list_zones
       request :list_ssl_certificates
 
@@ -261,9 +249,6 @@ module Fog
 
       model :global_forwarding_rule
       collection :global_forwarding_rules
-
-      model :resource_view
-      collection :resource_views
 
       model :target_instance
       collection :target_instances
