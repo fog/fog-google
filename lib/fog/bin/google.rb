@@ -54,10 +54,13 @@ module Google # deviates from other bin stuff to accomodate gem
     def available?
       # Make sure the gem we use is enabled.
       if Gem::Specification.respond_to?(:find_all_by_name)
-        availability = !Gem::Specification.find_all_by_name("google-api-client").empty? # newest rubygems
+        # newest rubygems
+        availability = !Gem::Specification.find_all_by_name("google-api-client").empty?
       else
-        availability = !Gem.source_index.find_name("google-api-client").empty? # legacy
+        # legacy
+        availability = !Gem.source_index.find_name("google-api-client").empty?
       end
+
       # Then make sure we have all of the requirements
       for service in services
         begin
