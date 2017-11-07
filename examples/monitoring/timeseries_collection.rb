@@ -9,8 +9,8 @@ Bundler.require(:default, :development)
 def test
   connection = Fog::Google::Monitoring.new
   interval = {
-    :start_time => (DateTime.now - 1).rfc3339,
-    :end_time => DateTime.now.rfc3339
+    :start_time => (Time.now - 1).rfc3339,
+    :end_time => Time.now.to_datetime.rfc3339
   }
   puts "Listing Timeseries from the last hour for metric compute.googleapis.com/instance/uptime..."
   puts "-------------------------------------------------------------------------------"

@@ -33,7 +33,7 @@ class TestMetricDescriptors < FogIntegrationTest
     metric_type = "#{TEST_METRIC_PREFIX}/test_requests"
     _some_custom_metric_descriptor(metric_type)
 
-    start_time = DateTime.now
+    start_time = Time.now
     labels = {
       :test_string_label => "foo",
       :test_bool_label => "false",
@@ -47,8 +47,8 @@ class TestMetricDescriptors < FogIntegrationTest
     series = @client.timeseries_collection.all(
       :filter => "metric.type = \"#{metric_type}\"",
       :interval => {
-        :start_time => start_time.rfc3339,
-        :end_time => DateTime.now.rfc3339
+        :start_time => start_time.to_datetime.rfc3339,
+        :end_time => Time.now.to_datetime.rfc3339
       }
     )
     assert_equal(1, series.size)
@@ -66,7 +66,7 @@ class TestMetricDescriptors < FogIntegrationTest
     metric_type = "#{TEST_METRIC_PREFIX}/test_multiple"
     _some_custom_metric_descriptor(metric_type)
 
-    start_time = DateTime.now
+    start_time = Time.now
     metric_labels = [
       {
         :test_string_label => "first",
@@ -86,8 +86,8 @@ class TestMetricDescriptors < FogIntegrationTest
 
     @client.create_timeseries(:timeseries => timeseries)
     interval = {
-      :start_time => start_time.rfc3339,
-      :end_time => DateTime.now.rfc3339
+      :start_time => start_time.to_datetime.rfc3339,
+      :end_time => Time.now.to_datetime.rfc3339
     }
 
     # Wait for creation
@@ -189,8 +189,8 @@ class TestMetricDescriptors < FogIntegrationTest
       :points => [
         {
           :interval => {
-            :end_time => start_time.rfc3339,
-            :start_time => start_time.rfc3339
+            :end_time => start_time.to_datetime.rfc3339,
+            :start_time => start_time.to_datetime.rfc3339
           },
           :value => {
             :int64_value => rand(10)
