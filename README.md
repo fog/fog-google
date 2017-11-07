@@ -26,7 +26,8 @@ If you are using Fog to interact with GCE, please keep Fog up to date and [file 
 
 ## SQL
 
-Fog implements [v1beta3](https://cloud.google.com/sql/docs/admin-api/v1beta3/) of the Google Cloud SQL Admin API. This is a currently deprecated API. Pull Requests for updates would be greatly appreciated.
+Fog implements [v1beta4](https://cloud.google.com/sql/docs/mysql/admin-api/v1beta4/) of the Google Cloud SQL Admin API. As of 11/6/17, Cloud SQL is mostly feature-complete. Please [file issues](https://github.com/fog/fog-google/issues) for any anomalies you see or features you would like as we finish 
+adding remaining features. 
 
 ## DNS
 
