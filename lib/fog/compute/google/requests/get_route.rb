@@ -8,14 +8,11 @@ module Fog
       end
 
       class Real
+        # List address resources in the specified project
+        #
+        # @see https://cloud.google.com/compute/docs/reference/latest/routes/list
         def get_route(identity)
-          api_method = @compute.routes.get
-          parameters = {
-            "project" => @project,
-            "route" => identity
-          }
-
-          request(api_method, parameters)
+          @compute.get_route(@project, identity)
         end
       end
     end
