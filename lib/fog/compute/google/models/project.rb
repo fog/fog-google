@@ -19,8 +19,8 @@ module Fog
         def set_metadata(metadata = {})
           requires :identity
 
-          data = service.set_common_instance_metadata(identity, common_instance_metadata["fingerprint"], metadata)
-          Fog::Compute::Google::Operations.new(:service => service).get(data.body["name"])
+          operation = service.set_common_instance_metadata(identity, common_instance_metadata["fingerprint"], metadata)
+          Fog::Compute::Google::Operations.new(:service => service).get(operation.id)
         end
       end
     end

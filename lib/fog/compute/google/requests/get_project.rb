@@ -9,12 +9,7 @@ module Fog
 
       class Real
         def get_project(identity)
-          api_method = @compute.projects.get
-          parameters = {
-            :project => identity
-          }
-
-          request(api_method, parameters)
+          @compute.get_project(identity)
         end
       end
     end
