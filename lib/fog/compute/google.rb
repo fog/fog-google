@@ -180,6 +180,7 @@ module Fog
       request :set_metadata
       request :set_server_disk_auto_delete
       request :set_server_scheduling
+      request :set_snapshot_labels
       request :set_tags
       request :set_target_http_proxy_url_map
       request :set_target_https_proxy_url_map

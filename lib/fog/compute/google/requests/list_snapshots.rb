@@ -8,15 +8,11 @@ module Fog
       end
 
       class Real
-        def list_snapshots(project = nil, next_page_token = nil)
-          api_method = @compute.snapshots.list
-          project = @project if project.nil?
-          parameters = {
-            "project" => project,
-            "pageToken" => next_page_token
-          }
-
-          request(api_method, parameters)
+        def list_snapshots(project = @project, filter: nil, max_results: nil,
+                           order_by: nil, page_token: nil)
+          @compute.list_snapshots(project,
+                                  :filter => filter, :max_results => max_results,
+                                  :order_by => order_by, :page_token => page_token)
         end
       end
     end
