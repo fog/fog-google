@@ -21,7 +21,7 @@ module Fog
             "type" => "ONE_TO_ONE_NAT"
           }
 
-          body_object["name"] = options[:name] ? options[:name] : "External NAT"
+          options[:name] ? body_object["name"] = options[:name] : body_object["name"] = "External NAT"
           body_object["natIP"] = options[:address] if options[:address]
 
           request(api_method, parameters, body_object)

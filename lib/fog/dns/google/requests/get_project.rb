@@ -13,7 +13,7 @@ module Fog
       end
 
       class Mock
-        def get_project(identity)
+        def get_project(_identity)
           raise Fog::Errors::MockNotImplemented
         end
       end

@@ -12,7 +12,7 @@ module Fog
       end
 
       class Mock
-        def get_topic(topic_name)
+        def get_topic(_topic_name)
           raise Fog::Errors::MockNotImplemented
         end
       end

@@ -18,7 +18,7 @@ module Fog
       end
 
       class Mock
-        def create_managed_zone(name, dns_name, description)
+        def create_managed_zone(_name, _dns_name, _description)
           raise Fog::Errors::MockNotImplemented
         end
       end

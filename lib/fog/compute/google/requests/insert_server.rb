@@ -241,7 +241,7 @@ module Fog
           if options.key? "on_host_maintenance"
             ohm = options.delete "on_host_maintenance"
             scheduling["onHostMaintenance"] = (ohm.respond_to?("upcase") &&
-                    ohm.upcase == "MIGRATE" && "MIGRATE") || "TERMINATE"
+                    ohm.casecmp("MIGRATE").zero? && "MIGRATE") || "TERMINATE"
           end
           body_object["scheduling"] = scheduling
 

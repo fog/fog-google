@@ -2,7 +2,7 @@ module Fog
   module Compute
     class Google
       class Mock
-        def get_global_operation(operation)
+        def get_global_operation(_operation)
           Fog::Mock.not_implemented
         end
       end

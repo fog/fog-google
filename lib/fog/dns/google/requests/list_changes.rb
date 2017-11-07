@@ -18,7 +18,7 @@ module Fog
       end
 
       class Mock
-        def list_changes(zone_name_or_id)
+        def list_changes(_zone_name_or_id)
           raise Fog::Errors::MockNotImplemented
         end
       end

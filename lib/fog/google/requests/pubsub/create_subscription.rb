@@ -28,7 +28,7 @@ module Fog
       end
 
       class Mock
-        def create_subscription(subscription_name, topic, push_config = {}, ack_deadline_seconds = nil)
+        def create_subscription(_subscription_name, _topic, _push_config = {}, _ack_deadline_seconds = nil)
           raise Fog::Errors::MockNotImplemented
         end
       end

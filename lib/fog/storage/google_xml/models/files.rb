@@ -59,8 +59,8 @@ module Fog
           data.headers.each do |k, v|
             file_data[k] = v
           end
-          file_data.merge!(:body => data.body,
-                           :key  => key)
+          file_data[:body] = data.body
+          file_data[:key] = key
           new(file_data)
         rescue Excon::Errors::NotFound
           nil

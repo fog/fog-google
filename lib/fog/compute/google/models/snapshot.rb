@@ -16,11 +16,11 @@ module Fog
         attribute :storage_bytes, :aliases => "storageBytes"
         attribute :storage_bytes_status, :aliases => "storageBytesStatus"
 
-        CREATING_STATE  = "CREATING"
-        DELETING_STATE  = "DELETING"
-        FAILED_STATE    = "FAILED"
-        READY_STATE     = "READY"
-        UPLOADING_STATE = "UPLOADING"
+        CREATING_STATE  = "CREATING".freeze
+        DELETING_STATE  = "DELETING".freeze
+        FAILED_STATE    = "FAILED".freeze
+        READY_STATE     = "READY".freeze
+        UPLOADING_STATE = "UPLOADING".freeze
 
         def destroy(async = true)
           requires :identity

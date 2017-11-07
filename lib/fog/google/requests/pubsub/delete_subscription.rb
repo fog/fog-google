@@ -12,7 +12,7 @@ module Fog
       end
 
       class Mock
-        def delete_subscription(subscription_name)
+        def delete_subscription(_subscription_name)
           raise Fog::Errors::MockNotImplemented
         end
       end

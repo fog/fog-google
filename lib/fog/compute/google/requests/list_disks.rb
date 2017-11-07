@@ -2,7 +2,7 @@ module Fog
   module Compute
     class Google
       class Mock
-        def list_disks(zone_name)
+        def list_disks(_zone_name)
           Fog::Mock.not_implemented
         end
       end

@@ -16,7 +16,7 @@ module Fog
               disk_types_items["zones/#{zone}"] = { "diskTypes" => disk_types }
             end
           end
-          build_excon_response("kind" => 'compute#diskTypeAggregatedList',
+          build_excon_response("kind" => "compute#diskTypeAggregatedList",
                                "selfLink" => "https://www.googleapis.com/compute/#{api_version}/projects/#{@project}/aggregated/diskTypes",
                                "items" => disk_types_items)
         end

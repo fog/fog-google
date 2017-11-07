@@ -12,7 +12,7 @@ module Fog
       end
 
       class Mock
-        def get_change(zone_name_or_id, identity)
+        def get_change(_zone_name_or_id, _identity)
           raise Fog::Errors::MockNotImplemented
         end
       end

@@ -25,7 +25,7 @@ module Fog
         attribute :storage_class, :aliases => "storageClass"
 
         def body
-          attributes[:body] ||= last_modified && (file = collection.get(identity)) ? file.body : ""
+          last_modified && (file = collection.get(identity)) ? attributes[:body] ||= file.body : attributes[:body] ||= ""
         end
 
         def body=(new_body)

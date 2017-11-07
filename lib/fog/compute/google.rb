@@ -19,13 +19,13 @@ module Fog
         :google_json_key_string
       )
 
-      GOOGLE_COMPUTE_API_VERSION     = "v1"
-      GOOGLE_COMPUTE_BASE_URL        = "https://www.googleapis.com/compute/"
+      GOOGLE_COMPUTE_API_VERSION     = "v1".freeze
+      GOOGLE_COMPUTE_BASE_URL        = "https://www.googleapis.com/compute/".freeze
       GOOGLE_COMPUTE_API_SCOPE_URLS  = %w(https://www.googleapis.com/auth/compute
                                           https://www.googleapis.com/auth/devstorage.read_write
                                           https://www.googleapis.com/auth/ndev.cloudman
-                                          https://www.googleapis.com/auth/cloud-platform)
-      GOOGLE_COMPUTE_DEFAULT_NETWORK = "default"
+                                          https://www.googleapis.com/auth/cloud-platform).freeze
+      GOOGLE_COMPUTE_DEFAULT_NETWORK = "default".freeze
       RUNNING = "RUNNING".freeze
       PROVISIONING = "PROVISIONING".freeze
 
@@ -183,7 +183,6 @@ module Fog
       request :set_tags
       request :set_target_http_proxy_url_map
       request :set_target_https_proxy_url_map
-
 
       request :attach_disk
       request :detach_disk

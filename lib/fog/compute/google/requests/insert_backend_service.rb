@@ -17,7 +17,8 @@ module Fog
                 "balancingMode" => "RATE",
                 "capacityScaler" => 1.1,
                 "maxRate" => 0.5
-              }],
+              }
+            ],
             "healthChecks" => [opts["health_check"]],
             "timeoutSec" => 30,
             "port" => 80,

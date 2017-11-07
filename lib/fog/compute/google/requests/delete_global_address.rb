@@ -12,7 +12,7 @@ module Fog
           api_method = @compute.global_addresses.delete
           parameters = {
             "project" => @project,
-            "address" => address_name,
+            "address" => address_name
           }
           request(api_method, parameters)
         end

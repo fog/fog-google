@@ -3,11 +3,11 @@ module Fog
     class Google
       class Mock
         def list_disk_types(zone)
-          build_excon_response("kind" => 'compute#diskTypeList',
+          build_excon_response("kind" => "compute#diskTypeList",
                                "selfLink" => "https://www.googleapis.com/compute/#{api_version}/projects/#{@project}/zones/#{zone}/diskTypes",
                                "items" => [
                                  {
-                                   "kind" => 'compute#diskType',
+                                   "kind" => "compute#diskType",
                                    "creationTimestamp" => "2014-06-02T18:07:28.530Z",
                                    "name" => "pd-standard",
                                    "description" => "Standard Persistent Disk",
@@ -16,7 +16,7 @@ module Fog
                                    "selfLink" => "https://www.googleapis.com/compute/#{api_version}/projects/#{@project}/zones/#{zone}/diskTypes/pd-standard"
                                  },
                                  {
-                                   "kind" => 'compute#diskType',
+                                   "kind" => "compute#diskType",
                                    "creationTimestamp" => "2014-06-02T18:07:28.529Z",
                                    "name" => "pd-ssd",
                                    "description" => "SSD Persistent Disk",

@@ -19,7 +19,7 @@ module Fog
       end
 
       class Mock
-        def publish_topic(topic, messages)
+        def publish_topic(_topic, _messages)
           raise Fog::Errors::MockNotImplemented
         end
       end

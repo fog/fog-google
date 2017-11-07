@@ -2,7 +2,7 @@ module Fog
   module Compute
     class Google
       class Mock
-        def get_region_operation(region_name, operation)
+        def get_region_operation(_region_name, _operation)
           raise Fog::Errors::MockNotImplemented
         end
       end

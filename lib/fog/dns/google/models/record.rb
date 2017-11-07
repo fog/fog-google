@@ -40,7 +40,7 @@ module Fog
 
           data = service.create_change(zone.id, [resource_record_set_format], [deletions])
           change = Fog::DNS::Google::Changes.new(:service => service, :zone => zone).get(data.body["id"])
-          async = new_attributes.key?(:async) ? new_attributes[:async] : true
+          new_attributes.key?(:async) ? async = new_attributes[:async] : async = true
           change.wait_for { ready? } unless async
           self
         end
@@ -89,7 +89,7 @@ module Fog
         #
         def resource_record_set_format
           {
-            "kind" => 'dns#resourceRecordSet',
+            "kind" => "dns#resourceRecordSet",
             "name" => name,
             "type" => type,
             "ttl"  => ttl,

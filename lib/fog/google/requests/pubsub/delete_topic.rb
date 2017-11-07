@@ -12,7 +12,7 @@ module Fog
       end
 
       class Mock
-        def delete_topic(topic_name)
+        def delete_topic(_topic_name)
           raise Fog::Errors::MockNotImplemented
         end
       end

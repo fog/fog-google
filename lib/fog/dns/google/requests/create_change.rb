@@ -16,7 +16,7 @@ module Fog
       end
 
       class Mock
-        def create_change(zone_name_or_id, additions = [], deletions = [])
+        def create_change(_zone_name_or_id, _additions = [], _deletions = [])
           raise Fog::Errors::MockNotImplemented
         end
       end

@@ -13,7 +13,7 @@ module Fog
             "managedZone" => zone_name_or_id
           }
 
-          [:name, :type].reject { |o| options[o].nil? }.each do |key|
+          %i(name type).reject { |o| options[o].nil? }.each do |key|
             parameters[key] = options[key]
           end
 
@@ -22,7 +22,7 @@ module Fog
       end
 
       class Mock
-        def list_resource_record_sets(zone_name_or_id, options = {})
+        def list_resource_record_sets(_zone_name_or_id, _options = {})
           raise Fog::Errors::MockNotImplemented
         end
       end

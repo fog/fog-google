@@ -26,7 +26,7 @@ module Fog
       end
 
       class Mock
-        def head_object(bucket_name, object_name, options = {})
+        def head_object(_bucket_name, _object_name, _options = {})
           raise Fog::Errors::MockNotImplemented
         end
       end

@@ -19,7 +19,6 @@ module Fog
             end
           end
 
-
           request = ::Google::Apis::ComputeV1::InstanceGroupsAddInstancesRequest.new(
             :instances => instances
           )

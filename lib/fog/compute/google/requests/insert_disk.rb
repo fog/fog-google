@@ -2,7 +2,7 @@ module Fog
   module Compute
     class Google
       class Mock
-        def insert_disk(disk_name, zone_name, image_name = nil, options = {})
+        def insert_disk(_disk_name, _zone_name, _image_name = nil, _options = {})
           Fog::Mock.not_implemented
         end
       end

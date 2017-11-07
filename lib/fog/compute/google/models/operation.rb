@@ -64,9 +64,9 @@ module Fog
           self
         end
 
-        PENDING_STATE = "PENDING"
-        RUNNING_STATE = "RUNNING"
-        DONE_STATE = "DONE"
+        PENDING_STATE = "PENDING".freeze
+        RUNNING_STATE = "RUNNING".freeze
+        DONE_STATE = "DONE".freeze
       end
     end
   end

@@ -2,7 +2,7 @@ module Fog
   module Compute
     class Google
       class Mock
-        def list_aggregated_disks(options = {})
+        def list_aggregated_disks(_options = {})
           Fog::Mock.not_implemented
         end
       end

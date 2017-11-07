@@ -7,7 +7,7 @@ module Fog
         def all(_filters = {})
           data = []
           service.list_aggregated_addresses.body["items"].each_value do |region|
-              data.concat(region["addresses"]) if region["addresses"]
+            data.concat(region["addresses"]) if region["addresses"]
           end
           load(data)
         end

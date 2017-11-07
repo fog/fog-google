@@ -53,11 +53,11 @@ module Fog
           name = /(\w+\.?)*/.match(bucket_name)
           if bucket_name == name.to_s
             if bucket = data[:buckets][bucket_name]
-              contents = bucket[:objects].values.sort { |x, y| x["Key"] <=> y["Key"] }.reject do |object|
+              contents = bucket[:objects].values.sort_by { |a| a["Key"] }.reject do |object|
                 (options["prefix"] && object["Key"][0...options["prefix"].length] != options["prefix"]) ||
-                (options["marker"] && object["Key"] <= options["marker"])
+                  (options["marker"] && object["Key"] <= options["marker"])
               end.map do |object|
-                data = object.reject { |key, _value| !%w(ETag Key).include?(key) }
+                data = object.select { |key, _value| %w(ETag Key).include?(key) }
                 data.merge!("LastModified" => Time.parse(object["Last-Modified"]),
                             "Owner"        => bucket["Owner"],
                             "Size"         => object["Content-Length"].to_i)

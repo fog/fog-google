@@ -8,7 +8,7 @@ module Fog
       end
 
       class Real
-        def add_backend_service_backends(backend_service, new_backends)
+        def add_backend_service_backends(backend_service, _new_backends)
           @compute.patch_backend_service(@project, backend_service.name, backend_service)
         end
       end

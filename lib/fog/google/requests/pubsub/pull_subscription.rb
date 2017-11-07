@@ -27,7 +27,7 @@ module Fog
       end
 
       class Mock
-        def pull_subscription(subscription, options = { :return_immediately => true, :max_messages => 10 })
+        def pull_subscription(_subscription, _options = { :return_immediately => true, :max_messages => 10 })
           raise Fog::Errors::MockNotImplemented
         end
       end

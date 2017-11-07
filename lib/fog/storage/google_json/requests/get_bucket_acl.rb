@@ -15,7 +15,7 @@ module Fog
       end
 
       class Mock
-        def get_bucket_acl(bucket_name)
+        def get_bucket_acl(_bucket_name)
           raise Fog::Errors::MockNotImplemented
         end
       end

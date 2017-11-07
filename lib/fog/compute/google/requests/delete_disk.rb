@@ -2,7 +2,7 @@ module Fog
   module Compute
     class Google
       class Mock
-        def delete_disk(disk_name, zone_name)
+        def delete_disk(_disk_name, _zone_name)
           Fog::Mock.not_implemented
         end
       end

@@ -24,7 +24,7 @@ module Fog
       end
 
       class Mock
-        def copy_object(source_bucket_name, source_object_name, target_bucket_name, target_object_name, _options = {})
+        def copy_object(_source_bucket_name, _source_object_name, _target_bucket_name, _target_object_name, _options = {})
           raise Fog::Errors::MockNotImplemented
         end
       end

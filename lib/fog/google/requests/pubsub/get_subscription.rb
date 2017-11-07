@@ -12,7 +12,7 @@ module Fog
       end
 
       class Mock
-        def get_subscription(subscription_name)
+        def get_subscription(_subscription_name)
           raise Fog::Errors::MockNotImplemented
         end
       end

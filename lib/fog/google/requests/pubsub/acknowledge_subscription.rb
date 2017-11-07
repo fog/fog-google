@@ -20,7 +20,7 @@ module Fog
       end
 
       class Mock
-        def acknowledge_subscription(subscription, ack_ids)
+        def acknowledge_subscription(_subscription, _ack_ids)
           raise Fog::Errors::MockNotImplemented
         end
       end

@@ -45,7 +45,7 @@ module Fog
           "storage-full" => "devstorage.full_control",
           "storage-ro" => "devstorage.read_only",
           "storage-rw" => "devstorage.read_write"
-        }
+        }.freeze
 
         def image_name=(_args)
           Fog::Logger.deprecation("image_name= is no longer used [light_black](#{caller.first})[/]")
@@ -291,7 +291,10 @@ module Fog
           # future - for now defer to using 'ssh-keys' unless the user is
           # already using the deprecated version
           # https://cloud.google.com/compute/docs/instances/adding-removing-ssh-keys#deprecated
-          metadata_key = metadata.key?("sshKeys") ? "sshKeys" : "ssh-keys"
+          metadata_key = "ssh-keys"
+          if metadata.key?("sshKeys")
+            metadata_key = "ssh-keys"
+          end
 
           # You can have multiple SSH keys, seperated by newlines.
           # https://developers.google.com/compute/docs/console?hl=en#sshkeys

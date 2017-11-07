@@ -18,7 +18,7 @@ module Fog
           "suse-cloud",
           "ubuntu-os-cloud",
           "windows-cloud"
-        ]
+        ].freeze
 
         def all
           data = []
@@ -67,7 +67,7 @@ module Fog
 
         def get_from_family(family)
           data = nil
-          
+
           all_projects.each do |project|
             begin
               data = service.get_image_from_family(family, project).body

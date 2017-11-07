@@ -14,7 +14,7 @@ module Fog
       end
 
       class Mock
-        def create_topic(topic_name)
+        def create_topic(_topic_name)
           raise Fog::Errors::MockNotImplemented
         end
       end
