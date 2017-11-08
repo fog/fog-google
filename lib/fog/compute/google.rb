@@ -169,12 +169,14 @@ module Fog
       request :set_server_disk_auto_delete
       request :set_server_scheduling
       request :set_snapshot_labels
+      request :set_subnetwork_private_ip_google_access
       request :set_tags
       request :set_target_http_proxy_url_map
       request :set_target_https_proxy_url_map
 
       request :attach_disk
       request :detach_disk
+      request :expand_subnetwork_ip_cidr_range
       request :reset_server
       request :start_server
       request :stop_server
