@@ -11,10 +11,10 @@ module Fog
         # Creates a Route resource.
         #
         # @see https://cloud.google.com/compute/docs/reference/latest/routes/insert
-        def insert_route(identity, network, dest_range, priority, options = {})
+        def insert_route(route_name, network, dest_range, priority, options = {})
 
           route = ::Google::Apis::ComputeV1::Route.new(
-            :name => identity,
+            :name => route_name,
             :network => network,
             :dest_range => dest_range,
             :priority => priority,
