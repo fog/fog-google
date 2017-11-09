@@ -180,6 +180,9 @@ module Fog
       request :reset_server
       request :start_server
       request :stop_server
+
+      request :invalidate_url_map_cache
+      request :patch_url_map
       request :update_url_map
       request :validate_url_map
 
