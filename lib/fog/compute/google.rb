@@ -172,6 +172,7 @@ module Fog
       request :set_subnetwork_private_ip_google_access
       request :set_tags
       request :set_target_http_proxy_url_map
+      request :set_target_https_proxy_ssl_certificates
       request :set_target_https_proxy_url_map
 
       request :attach_disk
