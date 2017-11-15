@@ -4,57 +4,58 @@ module Fog
       class TargetHttpProxy < Fog::Model
         identity :name
 
-        attribute :kind, :aliases => "kind"
-        attribute :self_link, :aliases => "selfLink"
-        attribute :id, :aliases => "id"
         attribute :creation_timestamp, :aliases => "creationTimestamp"
         attribute :description, :aliases => "description"
+        attribute :id, :aliases => "id"
+        attribute :kind, :aliases => "kind"
+        attribute :self_link, :aliases => "selfLink"
         attribute :url_map, :aliases => "urlMap"
 
         def save
-          requires :name
-
-          options = {
-            "description" => description,
-            "urlMap" => url_map
-          }
-
-          data = service.insert_target_http_proxy(name, options).body
-          operation = Fog::Compute::Google::Operations.new(:service => service).get(data["name"], data["zone"])
+          requires :identity
+          data = service.insert_target_http_proxy(
+            identity, :description => description, :url_map => url_map
+          )
+          operation = Fog::Compute::Google::Operations.new(:service => service)
+                                                      .get(data.name)
           operation.wait_for { !pending? }
           reload
         end
 
         def destroy(async = true)
-          requires :name
-          operation = service.delete_target_http_proxy(name)
-          unless async
-            # wait until "DONE" to ensure the operation doesn't fail, raises
-            # exception on error
-            Fog.wait_for do
-              operation.body["status"] == "DONE"
-            end
-          end
+          requires :identity
+
+          data = service.delete_target_http_proxy(identity)
+          operation = Fog::Compute::Google::Operations.new(:service => service)
+                                                      .get(data.name)
+          operation.wait_for { ready? } unless async
           operation
         end
 
-        def set_url_map(url_map)
-          service.set_target_http_proxy_url_map(self, url_map)
+        def set_url_map(url_map, async = true)
+          requires :identity
+
+          data = service.set_target_http_proxy_url_map(identity, url_map)
+          operation = Fog::Compute::Google::Operations.new(:service => service)
+                                                      .get(data.name)
+          operation.wait_for { ready? } unless async
           reload
         end
 
         def ready?
-          service.get_target_http_proxy(name)
+          requires :identity
+
+          service.get_target_http_proxy(identity)
           true
         rescue Fog::Errors::NotFound
           false
         end
 
         def reload
-          requires :name
+          requires :identity
 
           return unless data = begin
-            collection.get(name)
+            collection.get(identity)
           rescue Excon::Errors::SocketError
             nil
           end

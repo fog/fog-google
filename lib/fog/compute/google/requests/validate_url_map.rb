@@ -2,21 +2,19 @@ module Fog
   module Compute
     class Google
       class Mock
-        def validate_url_map(_url_map)
+        def validate_url_map(_url_map_name, _url_map: {})
           Fog::Mock.not_implemented
         end
       end
 
       class Real
-        def validate_url_map(url_map)
-          api_method = @compute.url_maps.validate
-          parameters = {
-            "project" => @project,
-            "urlMap" => url_map.name
-          }
-          body = { "resource" => url_map }
-
-          request(api_method, parameters, body_object = body)
+        def validate_url_map(url_map_name, url_map = {})
+          @compute.validate_url_map(
+            @project, url_map_name,
+            ::Google::Apis::ComputeV1::ValidateUrlMapsRequest.new(
+              :url_map => ::Google::Apis::ComputeV1::UrlMap.new(url_map)
+            )
+          )
         end
       end
     end

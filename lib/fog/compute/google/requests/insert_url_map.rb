@@ -2,52 +2,21 @@ module Fog
   module Compute
     class Google
       class Mock
-        def insert_url_map(url_map_name, opts)
-          id = Fog::Mock.random_numbers(19).to_s
-          data[:url_maps][url_map_name] = {
-            "kind" => "compute#urlMap",
-            "id" => id,
-            "creationTimestamp" => Time.now.iso8601,
-            "name" => url_map_name,
-            "description" => "",
-            "hostRules" => [],
-            "pathMatchers" => [],
-            "tests" => [],
-            "defaultService" => opts["defaultService"],
-            "selfLink" => "https://www.googleapis.com/compute/#{api_version}/projects/#{@project}/global/urlMaps/#{url_map_name}"
-          }
-
-          operation = random_operation
-          data[:operations][operation] = {
-            "kind" => "compute#operation",
-            "id" => Fog::Mock.random_numbers(19).to_s,
-            "name" => operation,
-            "zone" => "https://www.googleapis.com/compute/#{api_version}/projects/#{@project}/global",
-            "operationType" => "insert",
-            "targetLink" => "https://www.googleapis.com/compute/#{api_version}/projects/#{@project}/global/urlMaps/#{url_map_name}",
-            "targetId" => id,
-            "status" => Fog::Compute::Google::Operation::PENDING_STATE,
-            "user" => "123456789012-qwertyuiopasdfghjkl1234567890qwe@developer.gserviceaccount.com",
-            "progress" => 0,
-            "insertTime" => Time.now.iso8601,
-            "startTime" => Time.now.iso8601,
-            "selfLink" => "https://www.googleapis.com/compute/#{api_version}/projects/#{@project}/global/operations/#{operation}"
-          }
-
-          build_excon_response(data[:operations][operation])
+        def insert_url_map(_url_map_name, _url_map = {})
+          Fog::Mock.not_implemented
         end
       end
 
       class Real
-        def insert_url_map(url_map_name, opts = {})
-          api_method = @compute.url_maps.insert
-          parameters = {
-            "project" => @project
-          }
-          body_object = { "name" => url_map_name }
-          body_object.merge!(opts)
+        def insert_url_map(url_map_name, url_map = {})
+          url_map[:host_rules] = url_map[:host_rules] || []
+          url_map[:path_matchers] = url_map[:path_matchers] || []
+          url_map[:tests] = url_map[:tests] || []
 
-          request(api_method, parameters, body_object = body_object)
+          url_map_obj = ::Google::Apis::ComputeV1::UrlMap.new(
+            url_map.merge(:name => url_map_name)
+          )
+          @compute.insert_url_map(@project, url_map_obj)
         end
       end
     end
