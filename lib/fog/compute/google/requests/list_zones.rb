@@ -3,22 +3,20 @@ module Fog
     class Google
       class Mock
         def list_zones
-          zones = data[:zones].values
-          build_excon_response("kind" => "compute#zoneList",
-                               "selfLink" => "https://www.googleapis.com/compute/#{api_version}/projects/#{@project}/zones",
-                               "id" => "projects/#{@project}/zones",
-                               "items" => zones)
+          Fog::Mock.not_implemented
         end
       end
 
       class Real
-        def list_zones
-          api_method = @compute.zones.list
-          parameters = {
-            "project" => @project
-          }
-
-          request(api_method, parameters)
+        def list_zones(filter: nil, max_results: nil,
+                       order_by: nil, page_token: nil)
+          @compute.list_zones(
+            @project,
+            :filter => filter,
+            :max_results => max_results,
+            :order_by => order_by,
+            :page_token => page_token
+          )
         end
       end
     end

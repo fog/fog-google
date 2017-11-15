@@ -5,12 +5,12 @@ module Fog
         model Fog::Compute::Google::Zone
 
         def all
-          data = service.list_zones.body["items"] || []
+          data = service.list_zones.to_h[:items] || []
           load(data)
         end
 
         def get(identity)
-          data = service.get_zone(identity).body
+          data = service.get_zone(identity).to_h
           new(data)
         rescue Fog::Errors::NotFound
           nil
