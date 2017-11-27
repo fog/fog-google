@@ -35,8 +35,6 @@ module Fog
       request :add_server_access_config
       request :add_target_pool_health_checks
       request :add_target_pool_instances
-      request :add_url_map_host_rules
-      request :add_url_map_path_matchers
 
       request :delete_address
       request :delete_global_address
