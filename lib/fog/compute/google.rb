@@ -112,7 +112,6 @@ module Fog
       request :insert_network
       request :insert_route
       request :insert_server
-      request :insert_snapshot
       request :insert_subnetwork
       request :insert_target_http_proxy
       request :insert_target_https_proxy
@@ -177,6 +176,8 @@ module Fog
 
       request :attach_disk
       request :detach_disk
+      request :create_disk_snapshot
+
       request :expand_subnetwork_ip_cidr_range
       request :reset_server
       request :start_server
