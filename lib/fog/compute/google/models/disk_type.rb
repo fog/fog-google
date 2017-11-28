@@ -7,6 +7,7 @@ module Fog
         attribute :kind
         attribute :id
         attribute :creation_timestamp, :aliases => "creationTimestamp"
+        attribute :default_disk_size_gb, :aliases => "defaultDiskSizeGb"
         attribute :deprecated
         attribute :description
         attribute :self_link, :aliases => "selfLink"
