@@ -155,6 +155,9 @@ module Fog
       request :list_zones
       request :list_ssl_certificates
 
+      request :patch_firewall
+      request :patch_url_map
+
       request :remove_instance_group_instances
       request :remove_target_pool_health_checks
       request :remove_target_pool_instances
@@ -182,7 +185,6 @@ module Fog
       request :stop_server
 
       request :invalidate_url_map_cache
-      request :patch_url_map
       request :update_url_map
       request :validate_url_map
 
