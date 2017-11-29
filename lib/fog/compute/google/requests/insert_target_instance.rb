@@ -2,52 +2,20 @@ module Fog
   module Compute
     class Google
       class Mock
-        def insert_target_instance(target_instance, zone_name, opts = {})
-          id = Fog::Mock.random_numbers(19).to_s
-          data[:target_instances][target_instance] = {
-            "kind" => "compute#targetInstance",
-            "id" => id,
-            "creationTimestamp" => Time.now.iso8601,
-            "name" => target_instance,
-            "description" => "",
-            "natPolicy" => "",
-            "zone" => zone_name,
-            "instance" => opts["instance"],
-            "selfLink" => "https://www.googleapis.com/compute/#{api_version}/projects/#{@project}/zones/#{zone_name}/targetInstances/#{target_instance}"
-          }
-
-          operation = random_operation
-          data[:operations][operation] = {
-            "kind" => "compute#operation",
-            "id" => Fog::Mock.random_numbers(19).to_s,
-            "name" => operation,
-            "zone" => "https://www.googleapis.com/compute/#{api_version}/projects/#{@project}/zones/#{zone_name}",
-            "operationType" => "insert",
-            "targetLink" => "https://www.googleapis.com/compute/#{api_version}/projects/#{@project}/zones/#{zone_name}/targetInstances/#{target_instance}",
-            "targetId" => id,
-            "status" => Fog::Compute::Google::Operation::PENDING_STATE,
-            "user" => "123456789012-qwertyuiopasdfghjkl1234567890qwe@developer.gserviceaccount.com",
-            "progress" => 0,
-            "insertTime" => Time.now.iso8601,
-            "startTime" => Time.now.iso8601,
-            "selfLink" => "https://www.googleapis.com/compute/#{api_version}/projects/#{@project}/zones/#{zone_name}/operations/#{operation}"
-          }
-
-          build_excon_response(data[:operations][operation])
+        def insert_target_instance(_target_name, _zone, _target_instance = {})
+          Fog::Mock.not_implemented
         end
       end
 
       class Real
-        def insert_target_instance(target_instance_name, zone_name, opts = {})
-          api_method = @compute.target_instances.insert
-          parameters = {
-            "project" => @project,
-            "zone" => zone_name
-          }
-          body_object = { "name" => target_instance_name }
-          body_object.merge!(opts)
-
-          request(api_method, parameters, body_object = body_object)
+        def insert_target_instance(target_name, zone, target_instance = {})
+          zone = zone.split("/")[-1] if zone.start_with? "http"
+          @compute.insert_target_instance(
+            @project, zone,
+            ::Google::Apis::ComputeV1::TargetInstance.new(
+              target_instance.merge(:name => target_name)
+            )
+          )
         end
       end
     end
