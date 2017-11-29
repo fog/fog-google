@@ -18,25 +18,31 @@ module Fog
         attribute :source_snapshot_id, :aliases => "sourceSnapshotId"
         attribute :type
 
+        def default_description
+          if !source_image.nil?
+            "created from image: #{source_image}"
+          elsif !source_snapshot.nil?
+            "created from snapshot: #{source_snapshot}"
+          else
+            "created with fog"
+          end
+        end
+
         def save
           requires :name, :zone, :size_gb
 
-          options = {}
-          my_description = "Created with fog"
-          unless source_image.nil?
-            my_description = "Created from image: #{source_image}"
-          end
-          if source_image.nil? && !source_snapshot.nil?
-            options["sourceSnapshot"] = source_snapshot
-            my_description = "Created from snapshot: #{source_snapshot}"
-          end
+          options = {
+            :description => description || default_description,
+            :source_image => source_image,
+            :source_snapshot => source_snapshot,
+            :size_gb => size_gb,
+            :type => type,
+            :zone => zone
+          }
 
-          options["sizeGb"] = size_gb
-          options["description"] = description || my_description
-          options["type"] = type
-
-          data = service.insert_disk(name, zone, source_image, options).to_h
-          operation = Fog::Compute::Google::Operations.new(:service => service).get(data[:name], data[:zone])
+          data = service.insert_disk(name, zone, source_image, options)
+          operation = Fog::Compute::Google::Operations.new(:service => service)
+                                                      .get(data.name, data.zone)
           operation.wait_for { !pending? }
           reload
         end
@@ -44,8 +50,9 @@ module Fog
         def destroy(async = true)
           requires :name, :zone
 
-          data = service.delete_disk(name, zone_name).to_h
-          operation = Fog::Compute::Google::Operations.new(:service => service).get(data[:name], data[:zone])
+          data = service.delete_disk(name, zone_name)
+          operation = Fog::Compute::Google::Operations.new(:service => service)
+                                                      .get(data.name, data.zone)
           operation.wait_for { ready? } unless async
           operation
         end
@@ -95,20 +102,13 @@ module Fog
           self
         end
 
-        def create_snapshot(snapshot_name, snapshot_description = "")
+        def create_snapshot(snapshot_name, snapshot = {})
           requires :name, :zone
+          raise ArgumentError, "Invalid snapshot name" unless snapshot_name
 
-          if snapshot_name.nil? || snapshot_name.empty?
-            raise ArgumentError, "Invalid snapshot name"
-          end
-
-          options = {
-            "name"        => snapshot_name,
-            "description" => snapshot_description
-          }
-
-          data = service.insert_snapshot(name, zone_name, service.project, options).to_h
-          operation = Fog::Compute::Google::Operations.new(:service => service).get(data[:name], data[:zone])
+          data = service.create_disk_snapshot(snapshot_name, name, zone_name, snapshot)
+          operation = Fog::Compute::Google::Operations.new(:service => service)
+                                                      .get(data.name, data.zone)
           operation.wait_for { !pending? }
           service.snapshots.get(snapshot_name)
         end
