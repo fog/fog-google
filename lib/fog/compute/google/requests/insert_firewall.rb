@@ -44,18 +44,17 @@ module Fog
         #
         # @see https://cloud.google.com/compute/docs/reference/latest/firewalls/insert
         def insert_firewall(firewall_name, opts = {})
-          if opts.key? :network
+          if opts.key?(:network) && !opts[:network].empty?
             unless opts[:network].start_with?("http://", "https://", "projects/", "global/")
               opts[:network] = "projects/#{@project}/global/networks/#{opts[:network]}"
             end
           end
 
+          opts = opts.select { |k, _| INSERTABLE_FIREWALL_FIELDS.include? k }
+                     .merge(:name => firewall_name)
+
           @compute.insert_firewall(
-            @project,
-            ::Google::Apis::ComputeV1::Firewall.new(
-              opts.select { |k, _| INSERTABLE_FIREWALL_FIELDS.include? k }
-                  .merge(:name => firewall_name)
-            )
+            @project, ::Google::Apis::ComputeV1::Firewall.new(opts)
           )
         end
       end

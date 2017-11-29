@@ -34,12 +34,11 @@ module Fog
         # @option opts [Array<String>] target_tags
         #
         # @see https://cloud.google.com/compute/docs/reference/latest/firewalls/insert
-        def update_firewall(firewall_name, options = {})
+        def update_firewall(firewall_name, opts = {})
+          opts = opts.select { |k, _| UPDATABLE_FIREWALL_FIELDS.include? k }
           @compute.update_firewall(
             @project, firewall_name,
-            ::Google::Apis::ComputeV1::Firewall.new(
-              options.select { |k, _| UPDATABLE_FIREWALL_FIELDS.include? k }
-            )
+            ::Google::Apis::ComputeV1::Firewall.new(opts)
           )
         end
       end

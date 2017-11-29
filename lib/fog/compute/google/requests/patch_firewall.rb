@@ -12,12 +12,11 @@ module Fog
         # Patch a Firewall resource. Supports PATCH semantics.
         #
         # @see https://cloud.google.com/compute/docs/reference/latest/firewalls/patch
-        def patch_firewall(firewall_name, options = {})
+        def patch_firewall(firewall_name, opts = {})
+          opts = opts.select { |k, _| UPDATABLE_FIREWALL_FIELDS.include? k }
           @compute.patch_firewall(
             @project, firewall_name,
-            ::Google::Apis::ComputeV1::Firewall.new(
-              options.select { |k, _| UPDATABLE_FIREWALL_FIELDS.include? k }
-            )
+            ::Google::Apis::ComputeV1::Firewall.new(opts)
           )
         end
       end
