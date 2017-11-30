@@ -4,14 +4,14 @@ module Fog
       class GlobalForwardingRules < Fog::Collection
         model Fog::Compute::Google::GlobalForwardingRule
 
-        def all
-          data = service.list_global_forwarding_rules.body["items"] || []
+        def all(opts = {})
+          data = service.list_global_forwarding_rules(opts).to_h[:items] || []
           load(data)
         end
 
-        def get(identity, region = "global")
-          if global_forwarding_rule = service.get_global_forwarding_rule(identity, region).body
-            new(global_forwarding_rule)
+        def get(identity)
+          if rule = service.get_global_forwarding_rule(identity).to_h
+            new(rule)
           end
         rescue Fog::Errors::NotFound
           nil
