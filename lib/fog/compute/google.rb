@@ -203,6 +203,9 @@ module Fog
       model :disk_type
       collection :disk_types
 
+      model :machine_type
+      collection :machine_types
+
       model :address
       collection :addresses
 
