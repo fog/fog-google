@@ -2,38 +2,15 @@ module Fog
   module Compute
     class Google
       class Mock
-        def get_machine_type(machine_type_name, zone_name = nil)
-          zone_name = data[:zones].keys.first if zone_name.nil?
-          get_zone(zone_name)
-          machine_type = data[:machine_types][zone_name][machine_type_name] || {
-            "error" => {
-              "errors" => [
-                {
-                  "domain" => "global",
-                  "reason" => "notFound",
-                  "message" => "The resource 'projects/#{@project}/zones/#{zone_name}/machineTypes/#{machine_type_name}' was not found"
-                }
-              ],
-              "code" => 404,
-              "message" => "The resource 'projects/#{@project}/zones/#{zone_name}/machineTypes/#{machine_type_name}' was not found"
-            }
-          }
-          build_excon_response(machine_type)
+        def get_machine_type(_machine_type, _zone)
+          Fog::Mock.not_implemented
         end
       end
 
       class Real
-        def get_machine_type(machine_type_name, zone_name = nil)
-          zone_name = list_zones.body["items"].first["name"] if zone_name.nil?
-          zone_name = zone_name.split("/")[-1] if zone_name.start_with? "http"
-          api_method = @compute.machine_types.get
-          parameters = {
-            "zone" => zone_name,
-            "project" => @project,
-            "machineType" => machine_type_name
-          }
-
-          request(api_method, parameters)
+        def get_machine_type(machine_type, zone)
+          zone = zone.split("/")[-1] if zone.start_with? "http"
+          @compute.get_machine_type(@project, zone, machine_type)
         end
       end
     end
