@@ -8,18 +8,18 @@ module Fog
         attribute :ip_protocol, :aliases => "IPProtocol"
         attribute :backend_service, :aliases => "backendService"
         attribute :creation_timestamp, :aliases => "creationTimestamp"
-        attribute :description, :aliases => "description"
-        attribute :id, :aliases => "id"
+        attribute :description
+        attribute :id
         attribute :ip_version, :aliases => "ipVersion"
-        attribute :kind, :aliases => "kind"
+        attribute :kind
         attribute :load_balancing_scheme, :aliases => "loadBalancingScheme"
-        attribute :network, :aliases => "network"
+        attribute :network
         attribute :port_range, :aliases => "portRange"
         attribute :ports
-        attribute :region, :aliases => "region"
+        attribute :region
         attribute :self_link, :aliases => "selfLink"
-        attribute :subnetwork, :aliases => "subnetwork"
-        attribute :target, :aliases => "target"
+        attribute :subnetwork
+        attribute :target
 
         def save
           requires :identity
