@@ -9,13 +9,7 @@ module Fog
 
       class Real
         def get_network(network_name)
-          api_method = @compute.networks.get
-          parameters = {
-            "project" => @project,
-            "network" => network_name
-          }
-
-          request(api_method, parameters)
+          @compute.get_network(@project, network_name)
         end
       end
     end

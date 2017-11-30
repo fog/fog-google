@@ -2,26 +2,29 @@ module Fog
   module Compute
     class Google
       class Mock
-        def insert_network(_network_name, _ip_range, _options = {})
+        def insert_network(_network_name, _opts = {})
           Fog::Mock.not_implemented
         end
       end
 
       class Real
-        def insert_network(network_name, ip_range, options = {})
-          api_method = @compute.networks.insert
-          parameters = {
-            "project" => @project
-          }
-          body_object = {
-            "name" => network_name,
-            "IPv4Range" => ip_range
-          }
+        INSERTABLE_NETWORK_FIELDS = %i{
+          auto_create_subnetworks
+          description
+          gateway_i_pv4
+          i_pv4_range
+          name
+          routing_config
+        }.freeze
 
-          body_object["description"] = options[:description] if options[:description]
-          body_object["gatewayIPv4"] = options[:gateway_ipv4] if options[:gateway_ipv4]
+        def insert_network(network_name, opts = {})
+          opts = opts.select { |k, _| INSERTABLE_NETWORK_FIELDS.include? k }
+                     .merge(:name => network_name)
 
-          request(api_method, parameters, body_object)
+          @compute.insert_network(
+            @project,
+            ::Google::Apis::ComputeV1::Network.new(opts)
+          )
         end
       end
     end
