@@ -2,57 +2,24 @@ module Fog
   module Compute
     class Google
       class Mock
-        def insert_forwarding_rule(name, region_name, opts = {})
-          # check that region exists
-          get_region(region_name)
-
-          id = Fog::Mock.random_numbers(19).to_s
-          data[:forwarding_rules][name] = {
-            "kind" => "compute#forwardingRule",
-            "id" => id,
-            "creationTimestamp" => Time.now.iso8601,
-            "name" => name,
-            "description" => "",
-            "region" => "https://www.googleapis.com/compute/#{api_version}/projects/#{@project}/regions/#{region_name}",
-            "IPAddress" => "",
-            "IPProtocol" => "",
-            "portRange" => "",
-            "target" => opts["target"],
-            "selfLink" => "https://www.googleapis.com/compute/#{api_version}/projects/#{@project}/regions/#{region_name}/forwardingRules/#{name}"
-          }
-
-          operation = random_operation
-          data[:operations][operation] = {
-            "kind" => "compute#operation",
-            "id" => Fog::Mock.random_numbers(19).to_s,
-            "name" => operation,
-            "region" => "https://www.googleapis.com/compute/#{api_version}/projects/#{@project}/regions/#{region_name}",
-            "operationType" => "insert",
-            "targetLink" => "https://www.googleapis.com/compute/#{api_version}/projects/#{@project}/regions/#{region_name}/forwardingRules/#{name}",
-            "targetId" => id,
-            "status" => Fog::Compute::Google::Operation::PENDING_STATE,
-            "user" => "123456789012-qwertyuiopasdfghjkl1234567890qwe@developer.gserviceaccount.com",
-            "progress" => 0,
-            "insertTime" => Time.now.iso8601,
-            "startTime" => Time.now.iso8601,
-            "selfLink" => "https://www.googleapis.com/compute/#{api_version}/projects/#{@project}/regions/#{region_name}/operations/#{operation}"
-          }
-
-          build_excon_response(data[:operations][operation])
+        def insert_forwarding_rule(_rule_name, _region, _opts = {})
+          Fog::Mock.not_implemented
         end
       end
 
       class Real
-        def insert_forwarding_rule(forwarding_rule_name, region_name, opts = {})
-          api_method = @compute.forwarding_rules.insert
-          parameters = {
-            "project" => @project,
-            "region" => region_name
-          }
-          body_object = { "name" => forwarding_rule_name }
-          body_object.merge!(opts)
-
-          request(api_method, parameters, body_object = body_object)
+        ##
+        # Create a forwarding rule.
+        #
+        # @see https://cloud.google.com/compute/docs/reference/latest/forwardingRules/insert
+        def insert_forwarding_rule(rule_name, region, opts = {})
+          region = region.split("/")[-1] if region.start_with? "http"
+          @compute.insert_forwarding_rule(
+            @project, region,
+            ::Google::Apis::ComputeV1::ForwardingRule.new(
+              opts.merge(:name => rule_name)
+            )
+          )
         end
       end
     end

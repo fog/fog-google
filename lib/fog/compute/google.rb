@@ -122,6 +122,7 @@ module Fog
       request :list_aggregated_addresses
       request :list_aggregated_disk_types
       request :list_aggregated_disks
+      request :list_aggregated_forwarding_rules
       request :list_aggregated_instance_groups
       request :list_aggregated_machine_types
       request :list_aggregated_servers

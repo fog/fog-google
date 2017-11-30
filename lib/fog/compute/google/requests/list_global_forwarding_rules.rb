@@ -2,25 +2,19 @@ module Fog
   module Compute
     class Google
       class Mock
-        def list_global_forwarding_rules(_region_name = "global")
-          global_forwarding_rules = data[:global_forwarding_rules].values
-
-          build_excon_response("kind" => "compute#forwardingRuleList",
-                               "selfLink" => "https://www.googleapis.com/compute/#{api_version}/projects/#{@project}/global/forwardingRules",
-                               "id" => "projects/#{@project}/global/forwardingRules",
-                               "items" => global_forwarding_rules)
+        def list_global_forwarding_rules(_opts = {})
+          Fog::Mock.not_implemented
         end
       end
 
       class Real
-        def list_global_forwarding_rules(region_name = "global")
-          api_method = @compute.global_forwarding_rules.list
-          parameters = {
-            "project" => @project,
-            "region" => region_name
-          }
-
-          request(api_method, parameters)
+        def list_global_forwarding_rules(filter: nil, max_results: nil,
+                                         order_by: nil, page_token: nil)
+          @compute.list_global_forwarding_rules(
+            @project,
+            :filter => filter, :max_results => max_results,
+            :order_by => order_by, :page_token => page_token
+          )
         end
       end
     end
