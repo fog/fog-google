@@ -10,13 +10,15 @@ module Fog
       class Real
         # https://developers.google.com/compute/docs/reference/latest/globalOperations
 
-        def list_global_operations
-          api_method = @compute.global_operations.list
-          parameters = {
-            "project" => @project
-          }
-
-          request(api_method, parameters)
+        def list_global_operations(filter: nil, max_results: nil,
+                                   order_by: nil, page_token: nil)
+          @compute.list_global_operations(
+            @project,
+            :filter => filter,
+            :max_results => max_results,
+            :order_by => order_by,
+            :page_token => page_token
+          )
         end
       end
     end

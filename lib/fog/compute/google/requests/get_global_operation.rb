@@ -9,7 +9,7 @@ module Fog
 
       class Real
         # Get the updated status of a global operation
-        # https://developers.google.com/compute/docs/reference/latest/globalOperations
+        # @see https://developers.google.com/compute/docs/reference/latest/globalOperations/get
         #
         # @param operation [Google::Apis::ComputeV1::Operation] Return value from asynchronous act
         def get_global_operation(operation)
