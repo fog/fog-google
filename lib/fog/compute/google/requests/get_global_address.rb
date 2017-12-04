@@ -9,12 +9,7 @@ module Fog
 
       class Real
         def get_global_address(address_name)
-          api_method = @compute.global_addresses.get
-          parameters = {
-            "project" => @project,
-            "address" => address_name
-          }
-          request(api_method, parameters)
+          @compute.get_global_address(@project, address_name)
         end
       end
     end
