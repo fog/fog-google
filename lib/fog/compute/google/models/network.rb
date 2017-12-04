@@ -11,8 +11,8 @@ module Fog
         attribute :auto_create_subnetworks, aliases => "autoCreateSubnetworks"
         attribute :creation_timestamp, aliases => "creationTimestamp"
         attribute :description
-        attribute :gateway_i_pv4, aliases => "gatewayIPv4"
-        attribute :i_pv4_range, aliases => "IPv4Range"
+        attribute :gateway_ipv4, aliases => %w(gateway_i_pv4 gatewayIPv4)
+        attribute :ipv4_range, aliases => %w(i_pv4_range IPv4Range)
         attribute :id
         attribute :kind
         attribute :peerings
