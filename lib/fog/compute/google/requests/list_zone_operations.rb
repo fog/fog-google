@@ -8,16 +8,17 @@ module Fog
       end
 
       class Real
-        # https://developers.google.com/compute/docs/reference/latest/zoneOperations
-
-        def list_zone_operations(zone)
-          api_method = @compute.zone_operations.list
-          parameters = {
-            "zone" => zone,
-            "project" => @project
-          }
-
-          request(api_method, parameters)
+        # @see https://developers.google.com/compute/docs/reference/latest/zoneOperations/list
+        def list_zone_operations(zone, filter: nil, max_results: nil,
+                                 order_by: nil, page_token: nil)
+          zone = zone.split("/")[-1] if zone.start_with? "http"
+          @compute.list_zone_operations(
+            @project, zone,
+            :filter => filter,
+            :max_results => max_results,
+            :order_by => order_by,
+            :page_token => page_token
+          )
         end
       end
     end

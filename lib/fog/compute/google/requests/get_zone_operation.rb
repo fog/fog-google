@@ -9,7 +9,7 @@ module Fog
 
       class Real
         # Get the updated status of a zone operation
-        # https://developers.google.com/compute/docs/reference/latest/zoneOperations
+        # @see https://developers.google.com/compute/docs/reference/latest/zoneOperations/get
         #
         # @param zone_name [String] Zone the operation was peformed in
         # @param operation [Google::Apis::ComputeV1::Operation] Return value from asynchronous actions
