@@ -133,6 +133,7 @@ module Fog
       request :list_disks
       request :list_firewalls
       request :list_forwarding_rules
+      request :list_global_addresses
       request :list_global_forwarding_rules
       request :list_global_operations
       request :list_http_health_checks
