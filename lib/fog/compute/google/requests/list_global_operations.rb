@@ -8,8 +8,7 @@ module Fog
       end
 
       class Real
-        # https://developers.google.com/compute/docs/reference/latest/globalOperations
-
+        # @see https://developers.google.com/compute/docs/reference/latest/globalOperations/list
         def list_global_operations(filter: nil, max_results: nil,
                                    order_by: nil, page_token: nil)
           @compute.list_global_operations(
