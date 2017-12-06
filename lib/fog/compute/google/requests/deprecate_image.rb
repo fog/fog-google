@@ -9,7 +9,7 @@ module Fog
 
       class Real
         def deprecate_image(image_name, deprecation_status = {}, project = @project)
-          @compute.delete_images(
+          @compute.deprecate_image(
             project, image_name,
             ::Google::Apis::ComputeV1::DeprecationStatus.new(deprecation_status)
           )
