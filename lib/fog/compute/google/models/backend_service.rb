@@ -29,7 +29,7 @@ module Fog
             "timeoutSec" => timeout_sec
           }
 
-          data = service.insert_backend_service(name, options).body
+          data = service.insert_backend_service(name, options)
           operation = Fog::Compute::Google::Operations.new(:service => service).get(data.name)
           operation.wait_for { !pending? }
           reload
