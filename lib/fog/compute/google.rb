@@ -192,6 +192,8 @@ module Fog
       request :invalidate_url_map_cache
       request :validate_url_map
 
+      request :deprecate_image
+
       model_path "fog/compute/google/models"
       model :server
       collection :servers

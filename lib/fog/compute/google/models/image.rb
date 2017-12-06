@@ -4,25 +4,17 @@ module Fog
       class Image < Fog::Model
         identity :name
 
-        attribute :id
-        attribute :kind
         attribute :archive_size_bytes, :aliases => "archiveSizeBytes"
         attribute :creation_timestamp, :aliases => "creationTimestamp"
         attribute :deprecated
         attribute :description
         attribute :disk_size_gb, :aliases => "diskSizeGb"
         attribute :family
+        attribute :guest_os_features, :aliases => "guestOsFeatures"
+        attribute :id
+        attribute :image_encryption_key, :aliases => "imageEncryptionKey"
+        attribute :kind
         attribute :licenses
-        attribute :self_link, :aliases => "selfLink"
-        attribute :source_type, :aliases => "sourceType"
-        attribute :status
-
-        # This attribute is not available in the representation of an
-        # 'image' returned by the GCE servser (see GCE API). However,
-        # images are a global resource and a user can query for images
-        # across projects. Therefore we try to remember which project
-        # the image belongs to by tracking it in this attribute.
-        attribute :project
 
         # A RawDisk, e.g. -
         # {
@@ -32,12 +24,29 @@ module Fog
         # }
         attribute :raw_disk, :aliases => "rawDisk"
 
+        attribute :self_link, :aliases => "selfLink"
+        attribute :source_disk, :aliases => "sourceDisk"
+        attribute :source_disk_encryption_key, :aliases => "sourceDiskEncryptionKey"
+        attribute :source_disk_id, :aliases => "sourceDiskId"
+        attribute :source_image, :aliases => "sourceImage"
+        attribute :source_image_encryption_key, :aliases => "sourceImageEncryptionKey"
+        attribute :source_image_id, :aliases => "sourceImageId"
+        attribute :source_type, :aliases => "sourceType"
+        attribute :status
+
+        # This attribute is not available in the representation of an
+        # 'image' returned by the GCE server (see GCE API). However,
+        # images are a global resource and a user can query for images
+        # across projects. Therefore we try to remember which project
+        # the image belongs to by tracking it in this attribute.
+        attribute :project
+
         def preferred_kernel=(_args)
-          Fog::Logger.deprecation("preferred_kernel= is no longer used [light_black](#{caller.first})[/]")
+          Fog::Logger.deprecation("preferred_kernel= is no longer used [light_black](#{caller(0, 1)})[/]")
         end
 
         def preferred_kernel
-          Fog::Logger.deprecation("preferred_kernel is no longer used [light_black](#{caller.first})[/]")
+          Fog::Logger.deprecation("preferred_kernel is no longer used [light_black](#{caller(0, 1)})[/]")
           nil
         end
 
@@ -49,32 +58,25 @@ module Fog
 
         def destroy(async = true)
           data = service.delete_image(name)
-          operation = Fog::Compute::Google::Operations.new(:service => service).get(data.body["name"])
+          operation = Fog::Compute::Google::Operations.new(:service => service)
+                                                      .get(data.name)
           operation.wait_for { ready? } unless async
           operation
         end
 
         def reload
           requires :name
-
-          self.project = service.project
-          data = service.get_image(name, project).body
-
-          merge_attributes(data)
+          data = service.get_image(name, project)
+          merge_attributes(data.to_h)
           self
         end
 
         def save
           requires :name
-          requires :raw_disk
 
-          options = {
-            "rawDisk"         => raw_disk,
-            "description"     => description
-          }
-
-          data = service.insert_image(name, options)
-          operation = Fog::Compute::Google::Operations.new(:service => service).get(data.body["name"])
+          data = service.insert_image(name, attributes)
+          operation = Fog::Compute::Google::Operations.new(:service => service)
+                                                      .get(data.name)
           operation.wait_for { !pending? }
           reload
         end
