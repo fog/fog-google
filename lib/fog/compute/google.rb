@@ -101,7 +101,6 @@ module Fog
       request :insert_backend_service
       request :insert_disk
       request :insert_firewall
-      request :update_firewall
       request :insert_forwarding_rule
       request :insert_global_forwarding_rule
       request :insert_http_health_check
@@ -177,6 +176,10 @@ module Fog
       request :set_target_https_proxy_ssl_certificates
       request :set_target_https_proxy_url_map
 
+      request :update_firewall
+      request :update_http_health_check
+      request :update_url_map
+
       request :attach_disk
       request :detach_disk
       request :create_disk_snapshot
@@ -187,7 +190,6 @@ module Fog
       request :stop_server
 
       request :invalidate_url_map_cache
-      request :update_url_map
       request :validate_url_map
 
       model_path "fog/compute/google/models"

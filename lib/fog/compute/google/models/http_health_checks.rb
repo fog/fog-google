@@ -5,15 +5,14 @@ module Fog
         model Fog::Compute::Google::HttpHealthCheck
 
         def all(_filters = {})
-          data = service.list_http_health_checks.body["items"] || []
+          data = service.list_http_health_checks.to_h[:items] || []
           load(data)
         end
 
         def get(identity)
-          response = nil
           response = service.get_http_health_check(identity)
           return nil if response.nil?
-          new(response.body)
+          new(response.to_h)
         rescue Fog::Errors::NotFound
           nil
         end
