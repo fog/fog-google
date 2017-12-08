@@ -41,15 +41,6 @@ module Fog
         # the image belongs to by tracking it in this attribute.
         attribute :project
 
-        def preferred_kernel=(_args)
-          Fog::Logger.deprecation("preferred_kernel= is no longer used [light_black](#{caller(0, 1)})[/]")
-        end
-
-        def preferred_kernel
-          Fog::Logger.deprecation("preferred_kernel is no longer used [light_black](#{caller(0, 1)})[/]")
-          nil
-        end
-
         READY_STATE = "READY".freeze
 
         def ready?
