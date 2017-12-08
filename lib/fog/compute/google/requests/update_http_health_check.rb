@@ -2,15 +2,16 @@ module Fog
   module Compute
     class Google
       class Mock
-        def insert_http_health_check(_check_name, _options = {})
+        def update_http_health_check(_check_name, _opts = {})
           Fog::Mock.not_implemented
         end
       end
 
       class Real
-        def insert_http_health_check(check_name, opts = {})
-          @compute.insert_http_health_check(
+        def update_http_health_check(check_name, opts = {})
+          @compute.update_http_health_check(
             @project,
+            check_name,
             ::Google::Apis::ComputeV1::HttpHealthCheck.new(
               opts.merge(:name => check_name)
             )
