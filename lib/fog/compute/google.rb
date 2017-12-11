@@ -127,6 +127,7 @@ module Fog
       request :list_aggregated_servers
       request :list_aggregated_subnetworks
       request :list_aggregated_target_instances
+      request :list_aggregated_target_pools
       request :list_backend_services
       request :list_disk_types
       request :list_disks
@@ -175,6 +176,7 @@ module Fog
       request :set_target_http_proxy_url_map
       request :set_target_https_proxy_ssl_certificates
       request :set_target_https_proxy_url_map
+      request :set_target_pool_backup
 
       request :update_firewall
       request :update_http_health_check

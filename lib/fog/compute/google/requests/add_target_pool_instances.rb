@@ -2,24 +2,25 @@ module Fog
   module Compute
     class Google
       class Mock
-        def add_target_pool_instances(_target_pool, _instances)
+        def add_target_pool_instances(_target_pool, _region, _instances)
           Fog::Mock.not_implemented
         end
       end
 
       class Real
-        def add_target_pool_instances(target_pool, instances)
-          api_method = @compute.target_pools.add_instance
-          parameters = {
-            "project" => @project,
-            "targetPool" => target_pool.name,
-            "region" => target_pool.region.split("/")[-1]
-          }
-          body = {
-            "instances" => instances.map { |i| { "instance" => i } }
-          }
+        def add_target_pool_instances(target_pool, region, instances)
+          instances_lst = instances.map do |instance|
+            ::Google::Apis::ComputeV1::InstanceReference.new(:instance => instance)
+          end
 
-          request(api_method, parameters, body_object = body)
+          @compute.add_target_pool_instance(
+            @project,
+            region.split("/")[-1],
+            target_pool,
+            ::Google::Apis::ComputeV1::AddTargetPoolsInstanceRequest.new(
+              :instances => instances_lst
+            )
+          )
         end
       end
     end
