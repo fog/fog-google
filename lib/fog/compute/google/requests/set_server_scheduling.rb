@@ -8,21 +8,14 @@ module Fog
       end
 
       class Real
-        def set_server_scheduling(identity, zone, on_host_maintenance, automatic_restart, preemptible)
-          api_method = @compute.instances.set_scheduling
-          parameters = {
-            "project"  => @project,
-            "instance" => identity,
-            "zone"     => zone.split("/")[-1]
-          }
-
-          body_object = {
-            "onHostMaintenance" => on_host_maintenance,
-            "automaticRestart"  => automatic_restart,
-            "preemptible" => preemptible
-          }
-
-          request(api_method, parameters, body_object)
+        def set_server_scheduling(identity, zone, on_host_maintenance: nil, automatic_restart: nil, preemptible: nil)
+          scheduling = ::Google::Apis::ComputeV1::Scheduling.new(
+            :on_host_maintenance => on_host_maintenance,
+            :automatic_restart => automatic_restart,
+            :preemptible => preemptible
+          )
+          zone = zone.split("/")[-1]
+          @compute.set_instance_scheduling(@project, zone, identity, scheduling)
         end
       end
     end
