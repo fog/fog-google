@@ -167,12 +167,12 @@ module Fog
       request :set_common_instance_metadata
       request :set_forwarding_rule_target
       request :set_global_forwarding_rule_target
-      request :set_metadata
       request :set_server_disk_auto_delete
+      request :set_server_metadata
       request :set_server_scheduling
+      request :set_server_tags
       request :set_snapshot_labels
       request :set_subnetwork_private_ip_google_access
-      request :set_tags
       request :set_target_http_proxy_url_map
       request :set_target_https_proxy_ssl_certificates
       request :set_target_https_proxy_url_map
