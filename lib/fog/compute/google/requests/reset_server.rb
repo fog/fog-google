@@ -9,14 +9,7 @@ module Fog
 
       class Real
         def reset_server(identity, zone)
-          api_method = @compute.instances.reset
-          parameters = {
-            "project"  => @project,
-            "instance" => identity,
-            "zone"     => zone.split("/")[-1]
-          }
-
-          request(api_method, parameters)
+          @compute.reset_instance(@project, zone.split("/")[-1], identity)
         end
       end
     end
