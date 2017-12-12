@@ -2,24 +2,23 @@ module Fog
   module Compute
     class Google
       class Mock
-        def list_disks(zone_name)
-          disks = data[:disks].values.select { |d| d["zone"].split("/")[-1] == zone_name }
-          build_excon_response("kind" => "compute#diskList",
-                               "selfLink" => "https://www.googleapis.com/compute/#{api_version}/projects/#{@project}/zones/#{zone_name}/disks",
-                               "id" => "projects/#{@project}/zones/#{zone_name}/disks",
-                               "items" => disks)
+        def list_disks(_zone_name, _opts = {})
+          Fog::Mock.not_implemented
         end
       end
 
       class Real
-        def list_disks(zone_name)
-          api_method = @compute.disks.list
-          parameters = {
-            "project" => @project,
-            "zone" => zone_name
-          }
-
-          request(api_method, parameters)
+        # List disk resources in the specified zone
+        # https://cloud.google.com/compute/docs/reference/latest/disks/list
+        #
+        # @param zone_name [String] Zone to list disks from
+        def list_disks(zone_name, filter: nil, max_results: nil,
+                       order_by: nil, page_token: nil)
+          @compute.list_disks(
+            @project, zone_name,
+            :filter => filter, :max_results => max_results,
+            :order_by => order_by, :page_token => page_token
+          )
         end
       end
     end

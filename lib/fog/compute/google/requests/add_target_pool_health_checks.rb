@@ -2,24 +2,27 @@ module Fog
   module Compute
     class Google
       class Mock
-        def add_target_pool_health_checks(_target_pool, _health_checks)
+        def add_target_pool_health_checks(_target_pool, _region, _health_checks)
           Fog::Mock.not_implemented
         end
       end
 
       class Real
-        def add_target_pool_health_checks(target_pool, health_checks)
-          api_method = @compute.target_pools.add_health_check
-          parameters = {
-            "project" => @project,
-            "targetPool" => target_pool.name,
-            "region" => target_pool.region.split("/")[-1]
-          }
-          body = {
-            "healthChecks" => health_checks.map { |i| { "healthCheck" => i } }
-          }
+        def add_target_pool_health_checks(target_pool, region, health_checks)
+          check_list = health_checks.map do |health_check|
+            ::Google::Apis::ComputeV1::HealthCheckReference.new(
+              :health_check => health_check
+            )
+          end
 
-          request(api_method, parameters, body_object = body)
+          @compute.add_target_pool_health_check(
+            @project,
+            region.split("/")[-1],
+            target_pool,
+            ::Google::Apis::ComputeV1::AddTargetPoolsHealthCheckRequest.new(
+              :health_checks => check_list
+            )
+          )
         end
       end
     end

@@ -29,8 +29,8 @@ module Fog
             "timeoutSec" => timeout_sec
           }
 
-          data = service.insert_backend_service(name, options).body
-          operation = Fog::Compute::Google::Operations.new(:service => service).get(data["name"])
+          data = service.insert_backend_service(name, options)
+          operation = Fog::Compute::Google::Operations.new(:service => service).get(data.name)
           operation.wait_for { !pending? }
           reload
         end
@@ -39,13 +39,13 @@ module Fog
           requires :name
 
           data = service.delete_backend_service(name)
-          operation = Fog::Compute::Google::Operations.new(:service => service).get(data.body["name"])
+          operation = Fog::Compute::Google::Operations.new(:service => service).get(data.name)
           operation.wait_for { ready? } unless async
           operation
         end
 
         def get_health
-          service.get_backend_service_health self
+          service.get_backend_service_health(self)
         end
 
         def add_backend(backend)
@@ -67,18 +67,18 @@ module Fog
           requires :name
 
           return unless data =
-            begin
-              collection.get(name)
-            rescue Excon::Errors::SocketError
-              nil
-            end
+                          begin
+                            collection.get(name)
+                          rescue Excon::Errors::SocketError
+                            nil
+                          end
 
           new_attributes = data.attributes
           merge_attributes(new_attributes)
           self
         end
 
-        RUNNING_STATE = "READY"
+        RUNNING_STATE = "READY".freeze
       end
     end
   end

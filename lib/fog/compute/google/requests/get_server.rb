@@ -56,14 +56,7 @@ module Fog
             zone = zone_name
           end
 
-          api_method = @compute.instances.get
-          parameters = {
-            "project" => @project,
-            "zone" => zone,
-            "instance" => server_name
-          }
-
-          request(api_method, parameters)
+          @compute.get_instance(@project, zone, server_name)
         end
       end
     end

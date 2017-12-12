@@ -4,31 +4,29 @@ module Fog
       class Disks < Fog::Collection
         model Fog::Compute::Google::Disk
 
-        def all(filters = {})
-          if filters["zone"]
-            data = service.list_disks(filters["zone"]).body["items"] || []
+        def all(zone: nil, filter: nil, max_results: nil, order_by: nil,
+                page_token: nil)
+          opts = {
+            :filter => filter,
+            :max_results => max_results,
+            :order_by => order_by,
+            :page_token => page_token
+          }
+          if zone
+            data = service.list_disks(zone, opts).items || []
           else
             data = []
-            service.list_aggregated_disks.body["items"].each_value do |zone|
-              data.concat(zone["disks"]) if zone["disks"]
+            service.list_aggregated_disks(opts).items.each_value do |scoped_list|
+              data.concat(scoped_list.disks) if scoped_list.disks
             end
           end
-          load(data)
+          load(data.map(&:to_h))
         end
 
-        def get(identity, zone = nil)
-          response = nil
-          if zone
-            response = service.get_disk(identity, zone).body
-          else
-            disks = service.list_aggregated_disks(:filter => "name eq .*#{identity}").body["items"]
-            disk = disks.each_value.select { |zone| zone.key?("disks") }
-
-            # It can only be 1 disk with the same name across all regions
-            response = disk.first["disks"].first unless disk.empty?
-          end
+        def get(identity, zone)
+          response = service.get_disk(identity, zone)
           return nil if response.nil?
-          new(response)
+          new(response.to_h)
         rescue Fog::Errors::NotFound
           nil
         end

@@ -18,22 +18,8 @@ module Fog
       end
 
       class Mock
-        def list_changes(zone_name_or_id)
-          if data[:managed_zones].key?(zone_name_or_id)
-            zone = data[:managed_zones][zone_name_or_id]
-          else
-            zone = data[:managed_zones].values.detect { |z| z["name"] == zone_name_or_id }
-          end
-
-          unless zone
-            raise Fog::Errors::NotFound, "The 'parameters.managedZone' resource named '#{zone_name_or_id}' does not exist."
-          end
-
-          body = {
-            "kind" => 'dns#changesListResponse',
-            "changes" => data[:changes][zone["id"]]
-          }
-          build_excon_response(body)
+        def list_changes(_zone_name_or_id)
+          raise Fog::Errors::MockNotImplemented
         end
       end
     end

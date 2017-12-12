@@ -27,7 +27,7 @@ module Fog
         def get(identity)
           requires :zone
 
-          if change = service.get_change(zone.identity, identity).body
+          if change = service.get_change(zone.identity, identity).to_h
             new(change)
           end
         rescue Fog::Errors::NotFound

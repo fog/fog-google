@@ -6,7 +6,7 @@ module Fog
       ##
       # A Google Cloud SQL service flag resource
       #
-      # @see https://developers.google.com/cloud-sql/docs/admin-api/v1beta3/flags
+      # @see https://cloud.google.com/sql/docs/mysql/admin-api/v1beta4/flags
       class Flag < Fog::Model
         identity :name
 
@@ -15,6 +15,7 @@ module Fog
         attribute :kind
         attribute :max_value, :aliases => "maxValue"
         attribute :min_value, :aliases => "minValue"
+        attribute :requires_restart, :aliases => "requiresRestart"
         attribute :type
       end
     end

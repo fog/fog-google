@@ -8,14 +8,12 @@ module Fog
       end
 
       class Real
+        # List address resources in the specified project
+        # https://cloud.google.com/compute/docs/reference/latest/addresses/list
+        #
+        # @param region_name [String] Region for address
         def list_addresses(region_name)
-          api_method = @compute.addresses.list
-          parameters = {
-            "project" => @project,
-            "region" => region_name
-          }
-
-          request(api_method, parameters)
+          @compute.list_addresses(@project, region_name)
         end
       end
     end

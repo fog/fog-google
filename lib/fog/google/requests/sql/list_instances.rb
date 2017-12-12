@@ -4,27 +4,20 @@ module Fog
       ##
       # Lists instances under a given project in the alphabetical order of the instance name
       #
-      # @see https://developers.google.com/cloud-sql/docs/admin-api/v1beta3/instances/list
+      # @see https://cloud.google.com/sql/docs/mysql/admin-api/v1beta4/instances/list
 
       class Real
-        def list_instances
-          api_method = @sql.instances.list
-          parameters = {
-            "project" => @project
-          }
-
-          request(api_method, parameters)
+        def list_instances(filter: nil, max_results: nil, page_token: nil)
+          @sql.list_instances(@project,
+                              :filter => filter,
+                              :max_results => max_results,
+                              :page_token => page_token)
         end
       end
 
       class Mock
-        def list_instances
-          body = {
-            "kind" => 'sql#instancesList',
-            "items" => data[:instances].values
-          }
-
-          build_excon_response(body)
+        def list_instances(_options: {})
+          Fog::Mock.not_implemented
         end
       end
     end

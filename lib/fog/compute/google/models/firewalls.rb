@@ -4,14 +4,14 @@ module Fog
       class Firewalls < Fog::Collection
         model Fog::Compute::Google::Firewall
 
-        def all
-          data = service.list_firewalls.body
-          load(data["items"] || [])
+        def all(opts = {})
+          data = service.list_firewalls(opts).to_h[:items]
+          load(data || [])
         end
 
         def get(identity)
-          if firewall = service.get_firewall(identity).body
-            new(firewall)
+          if firewall = service.get_firewall(identity)
+            new(firewall.to_h)
           end
         rescue Fog::Errors::NotFound
           nil

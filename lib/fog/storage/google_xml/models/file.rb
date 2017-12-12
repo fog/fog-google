@@ -36,7 +36,7 @@ module Fog
         end
 
         def body
-          attributes[:body] ||= last_modified && (file = collection.get(identity)) ? file.body : ""
+          last_modified && (file = collection.get(identity)) ? attributes[:body] ||= file.body : attributes[:body] ||= ""
         end
 
         def body=(new_body)
@@ -62,7 +62,7 @@ module Fog
 
         remove_method :metadata
         def metadata
-          attributes.reject { |key, _value| !(key.to_s =~ /^x-goog-meta-/) }
+          attributes.reject { |key, _value| key.to_s =~ /^x-goog-meta-/ }
         end
 
         remove_method :metadata=

@@ -6,27 +6,28 @@ module Fog
 
         def all(filters = {})
           if filters[:zone]
-            data = service.list_instance_groups(filters[:zone]).body
+            data = Array(service.list_instance_groups(filters[:zone]))
           else
             data = []
-            service.list_aggregated_instance_groups.body["items"].each_value do |group|
-              data.concat(group["instanceGroups"]) if group["instanceGroups"]
+            service.list_aggregated_instance_groups.items.each_value do |group|
+              data.concat(group.instance_groups) if group.instance_groups
             end
           end
 
-          load(data)
+          load(data.map(&:to_h))
         end
 
         def get(identity, zone = nil)
           if zone.nil?
-            zones = service.list_aggregated_instance_groups(:filter => "name eq .*#{identity}").body["items"]
-            target_zone = zones.each_value.select { |zone| zone.key?("instanceGroups") }
-            response = target_zone.first["instanceGroups"].first unless target_zone.empty?
-            zone = response["zone"].split("/")[-1]
+            zones = service.list_aggregated_instance_groups(:filter => "name eq .*#{identity}").items
+            instance_groups = zones.each_value.map(&:instance_groups).compact.first
+            if instance_groups
+              zone = instance_groups.first.zone.split("/")[-1]
+            end
           end
 
-          if instance_group = service.get_instance_group(identity, zone).body
-            new(instance_group)
+          if instance_group = service.get_instance_group(identity, zone)
+            new(instance_group.to_h)
           end
         rescue Fog::Errors::NotFound
           nil

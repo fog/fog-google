@@ -63,7 +63,7 @@ module Fog
           raise Fog::Errors::Error.new("Resaving an existing object may create a duplicate") if persisted?
 
           data = service.create_managed_zone(name, domain, description)
-          merge_attributes(data.body)
+          merge_attributes(data.to_h)
           self
         end
       end

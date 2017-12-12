@@ -17,19 +17,12 @@ module Fog
 
       class Real
         # Get an expiring object https url from Google Storage
-        #
-        # ==== Parameters
-        # * bucket_name<~String> - Name of bucket containing object
-        # * object_name<~String> - Name of object to get expiring url for
-        # * expires<~Time> - An expiry time for this url
-        #
-        # ==== Returns
-        # * response<~Excon::Response>:
-        #   * body<~String> - url for object
-        #
-        # ==== See Also
         # https://cloud.google.com/storage/docs/access-control#Signed-URLs
-
+        #
+        # @param bucket_name [String] Name of bucket to read from
+        # @param object_name [String] Name of object to read
+        # @param expires [Time] Expiry time for this URL
+        # @return [String] Expiring object https URL
         include GetObjectHttpsUrl
       end
 

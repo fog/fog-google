@@ -3,12 +3,12 @@ def test
 
   puts "Create a Instance..."
   puts "--------------------"
-  instance = connection.instances.create(:instance => Fog::Mock.random_letters(16), :tier => "D1")
+  instance = connection.instances.create(:name => Fog::Mock.random_letters(16), :tier => "D1")
   instance.wait_for { ready? }
 
   puts "Get the Instance..."
   puts "----------------------"
-  connection.instances.get(instance.instance)
+  connection.instances.get(instance.name)
 
   puts "List all Instances..."
   puts "---------------------"
@@ -16,7 +16,7 @@ def test
 
   puts "Update the Instance..."
   puts "----------------------"
-  instance.activation_policy = "ALWAYS"
+  instance.settings[:activation_policy] = "ALWAYS"
   instance.update
   instance.wait_for { ready? }
 
@@ -27,10 +27,6 @@ def test
   puts "Restart the Instance..."
   puts "-----------------------"
   instance.restart
-
-  puts "Set the Instance root password..."
-  puts "---------------------------------"
-  instance.set_root_password(Fog::Mock.random_letters_and_numbers(8))
 
   puts "Delete the Instance..."
   puts "----------------------"

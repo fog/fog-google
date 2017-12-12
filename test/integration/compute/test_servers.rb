@@ -21,7 +21,7 @@ class TestServers < FogIntegrationTest
     # This should be removed when
     #     https://github.com/fog/fog-google/issues/17
     # is solved
-    disk = Fog::Compute[:google].disks.get(resource_name)
+    disk = Fog::Compute[:google].disks.get(resource_name, instance.zone)
     disk.destroy
     Fog.wait_for { !Fog::Compute[:google].disks.all.map(&:identity).include? disk.identity }
   end

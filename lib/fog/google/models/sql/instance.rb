@@ -4,7 +4,7 @@ module Fog
   module Google
     class SQL
       class Instance < Fog::Model
-        identity :instance
+        identity :name
 
         attribute :current_disk_size, :aliases => "currentDiskSize"
         attribute :database_version, :aliases => "databaseVersion"
@@ -20,7 +20,7 @@ module Fog
 
         # These attributes are not available in the representation of an 'Instance' returned by the Google SQL API.
         attribute :activation_policy
-        attribute :autorized_gae_applications
+        attribute :authorized_gae_applications
         attribute :backup_configuration
         attribute :database_flags
         attribute :ip_configuration_authorized_networks
@@ -33,52 +33,54 @@ module Fog
         attribute :settings_version
         attribute :tier
 
-        MAINTENANCE_STATE    = "MAINTENANCE"
-        PENDING_CREATE_STATE = "PENDING_CREATE"
-        RUNNABLE_STATE       = "RUNNABLE"
-        SUSPENDED_STATE      = "SUSPENDED"
-        UNKNOWN_STATE        = "UNKNOWN_STATE"
+        MAINTENANCE_STATE    = "MAINTENANCE".freeze
+        PENDING_CREATE_STATE = "PENDING_CREATE".freeze
+        RUNNABLE_STATE       = "RUNNABLE".freeze
+        SUSPENDED_STATE      = "SUSPENDED".freeze
+        UNKNOWN_STATE        = "UNKNOWN_STATE".freeze
 
         ##
         # Returns the activation policy for this instance
         #
         # @return [String] The activation policy for this instance
         def activation_policy
-          settings["activationPolicy"]
+          settings[:activation_policy]
         end
 
         ##
         # Returns the AppEngine app ids that can access this instance
         #
         # @return [Array<String>] The AppEngine app ids that can access this instance
-        def autorized_gae_applications
-          settings["authorizedGaeApplications"]
+        def authorized_gae_applications
+          settings[:authorized_gae_applications]
         end
 
         ##
         # Returns the daily backup configuration for the instance
         #
-        # @return [Array<Hash>] The daily backup configuration for the instance
+        # @return [Hash] The daily backup configuration for the instance
         def backup_configuration
-          settings["backupConfiguration"]
+          settings["backup_configuration"]
         end
 
         ##
         # Creates a Cloud SQL instance as a clone of the source instance
         #
         # @param [String] destination_name Name of the Cloud SQL instance to be created as a clone
-        # @param [Hash] options Method options
-        # @option options [String] :log_filename Name of the binary log file for a Cloud SQL instance
-        # @option options [Integer] :log_position Position (offset) within the binary log file
-        # @option options [Boolean] :async If the operation must be performed asynchronously (true by default)
+        # @param [Boolean] async If the operation must be performed asynchronously (true by default)
+        # @param [String] log_filename Name of the binary log file for a Cloud SQL instance
+        # @param [Integer] log_position Position (offset) within the binary log file
         # @return [Fog::Google::SQL::Operation] A Operation resource
-        def clone(destination_name, options = {})
+        def clone(destination_name, async: true, log_filename: nil, log_position: nil)
           requires :identity
 
-          data = service.clone_instance(identity, destination_name, options)
-          operation = Fog::Google::SQL::Operations.new(:service => service).get(instance, data.body["operation"])
-          operation.wait_for { ready? } unless options.fetch(:async, true)
-          operation
+          data = service.clone_instance(
+            identity, destination_name,
+            :log_filename => log_filename,
+            :log_position => log_position
+          )
+          operation = Fog::Google::SQL::Operations.new(:service => service).get(data.name)
+          operation.tap { |o| o.wait_for { ready? } unless async }
         end
 
         ##
@@ -89,7 +91,7 @@ module Fog
           requires :identity
 
           data = service.insert_instance(identity, attributes[:tier], attributes)
-          operation = Fog::Google::SQL::Operations.new(:service => service).get(instance, data.body["operation"])
+          operation = Fog::Google::SQL::Operations.new(:service => service).get(data.name)
           operation.wait_for { !pending? }
           reload
         end
@@ -99,25 +101,20 @@ module Fog
         #
         # @return [Array<Hash>] The database flags passed to the instance at startup
         def database_flags
-          settings["databaseFlags"]
+          settings[:database_flags]
         end
 
         ##
         # Deletes a Cloud SQL instance
         #
-        # @param [Hash] options Method options
-        # @option options [Boolean] :async If the operation must be performed asynchronously (true by default)
+        # @param [Boolean] :async If the operation must be performed asynchronously (true by default)
         # @return [Fog::Google::SQL::Operation] A Operation resource
-        def destroy(options = {})
+        def destroy(async: nil)
           requires :identity
 
           data = service.delete_instance(identity)
-          operation = Fog::Google::SQL::Operations.new(:service => service).get(instance, data.body["operation"])
-          unless options.fetch(:async, true)
-            # DISABLED: A delete instance operation never reachs a 'DONE' state (bug?)
-            # operation.wait_for { ready? }
-          end
-          operation
+          operation = Fog::Google::SQL::Operations.new(:service => service).get(data.name)
+          operation.tap { |o| o.wait_for { ready? } unless async }
         end
 
         ##
@@ -132,13 +129,12 @@ module Fog
         #   If you specify tables, specify one and only one database.
         # @option options [Boolean] :async If the operation must be performed asynchronously (true by default)
         # @return [Fog::Google::SQL::Operation] A Operation resource
-        def export(uri, options = {})
+        def export(uri, options: {})
           requires :identity
 
           data = service.export_instance(identity, uri, options)
-          operation = Fog::Google::SQL::Operations.new(:service => service).get(instance, data.body["operation"])
-          operation.wait_for { ready? } unless options.fetch(:async, true)
-          operation
+          operation = Fog::Google::SQL::Operations.new(:service => service).get(data.name)
+          operation.tap { |o| o.wait_for { ready? } unless async }
         end
 
         ##
@@ -155,9 +151,8 @@ module Fog
           requires :identity
 
           data = service.import_instance(identity, uri, options)
-          operation = Fog::Google::SQL::Operations.new(:service => service).get(instance, data.body["operation"])
-          operation.wait_for { ready? } unless options.fetch(:async, true)
-          operation
+          operation = Fog::Google::SQL::Operations.new(:service => service).get(data.name)
+          operation.tap { |o| o.wait_for { ready? } unless options.fetch(:async, true) }
         end
 
         ##
@@ -165,23 +160,24 @@ module Fog
         #
         # @return [Array<String>] The list of external networks that are allowed to connect to the instance using the IP
         def ip_configuration_authorized_networks
-          settings.fetch("ipConfiguration", {})["authorizedNetworks"]
+          settings.fetch(:ip_configuration, {})
+                  .fetch(:authorized_networks, [])
         end
 
         ##
         # Returns whether the instance should be assigned an IP address or not
         #
         # @return [Boolean] Whether the instance should be assigned an IP address or not
-        def ip_configuration_enabled
-          settings.fetch("ipConfiguration", {})["enabled"]
+        def ip_configuration_ipv4_enabled
+          settings.fetch(:ip_configuration, {})[:ipv4_enabled]
         end
 
         ##
-        # Returns whether the mysqld should default to 'REQUIRE X509' for users connecting over IP
+        # Returns whether SSL connections over IP should be enforced or not.
         #
-        # @return [Boolean] Whether the mysqld should default to 'REQUIRE X509' for users connecting over IP
+        # @return [Boolean] Whether SSL connections over IP should be enforced or not.
         def ip_configuration_require_ssl
-          settings.fetch("ipConfiguration", {})["requireSsl"]
+          settings.fetch(:ip_configuration, {})[:require_ssl]
         end
 
         ##
@@ -189,7 +185,7 @@ module Fog
         #
         # @return [String] The AppEngine application to follow
         def location_preference_zone_follow_gae_application
-          settings.fetch("locationPreference", {})["followGaeApplication"]
+          settings.fetch(:location_preference, {})[:follow_gae_application]
         end
 
         ##
@@ -197,7 +193,7 @@ module Fog
         #
         # @return [String] The preferred Compute Engine zone
         def location_preference_zone
-          settings.fetch("locationPreference", {})["zone"]
+          settings.fetch(:location_preference, {})[:zone]
         end
 
         ##
@@ -205,7 +201,7 @@ module Fog
         #
         # @return [String] The pricing plan for this instance
         def pricing_plan
-          settings["pricingPlan"]
+          settings[:pricing_plan]
         end
 
         ##
@@ -221,54 +217,47 @@ module Fog
         #
         # @return [String] The type of replication this instance uses
         def replication_type
-          settings["replicationType"]
+          settings[:replication_type]
         end
 
         ##
         # Deletes all client certificates and generates a new server SSL certificate for the instance
         #
-        # @param [Hash] options Method options
-        # @option options [Boolean] :async If the operation must be performed asynchronously (true by default)
+        # @param [Boolean] async If the operation must be performed asynchronously (true by default)
         # @return [Fog::Google::SQL::Operation] A Operation resource
-        def reset_ssl_config(options = {})
+        def reset_ssl_config(async: true)
           requires :identity
 
           data = service.reset_instance_ssl_config(identity)
-          operation = Fog::Google::SQL::Operations.new(:service => service).get(instance, data.body["operation"])
-          operation.wait_for { ready? } unless options.fetch(:async, true)
-          operation
+          operation = Fog::Google::SQL::Operations.new(:service => service).get(data.name)
+          operation.tap { |o| o.wait_for { ready? } unless async }
         end
 
         ##
         # Restarts a Cloud SQL instance
         #
-        # @param [Hash] options Method options
-        # @option options [Boolean] :async If the operation must be performed asynchronously (true by default)
+        # @param [Boolean] async If the operation must be performed asynchronously (true by default)
         # @return [Fog::Google::SQL::Operation] A Operation resource
-        def restart(options = {})
+        def restart(async: true)
           requires :identity
 
           data = service.restart_instance(identity)
-          operation = Fog::Google::SQL::Operations.new(:service => service).get(instance, data.body["operation"])
-          operation.wait_for { ready? } unless options.fetch(:async, true)
-          operation
+          operation = Fog::Google::SQL::Operations.new(:service => service).get(data.name)
+          operation.tap { |o| o.wait_for { ready? } unless async }
         end
 
         ##
         # Restores a backup of a Cloud SQL instance
         #
-        # @param [String] backup_configuration The identifier of the backup configuration
-        # @param [String] due_time The time when this run is due to start in RFC 3339 format
-        # @param [Hash] options Method options
-        # @option options [Boolean] :async If the operation must be performed asynchronously (true by default)
+        # @param [String] backup_run_id The identifier of the backup configuration
+        # @param [Boolean] async If the operation must be performed asynchronously (true by default)
         # @return [Fog::Google::SQL::Operation] A Operation resource
-        def restore_backup(backup_configuration, due_time, options = {})
+        def restore_backup(backup_run_id, async: true)
           requires :identity
 
-          data = service.restore_instance_backup(identity, backup_configuration, due_time)
-          operation = Fog::Google::SQL::Operations.new(:service => service).get(instance, data.body["operation"])
-          operation.wait_for { ready? } unless options.fetch(:async, true)
-          operation
+          data = service.restore_instance_backup(identity, backup_run_id)
+          operation = Fog::Google::SQL::Operations.new(:service => service).get(data.name)
+          operation.tap { |o| o.wait_for { ready? } unless async }
         end
 
         ##
@@ -280,27 +269,11 @@ module Fog
         end
 
         ##
-        # Sets the password for the root user
-        #
-        # @param [String] password The password for the root user
-        # @param [Hash] options Method options
-        # @option options [Boolean] :async If the operation must be performed asynchronously (true by default)
-        # @return [Fog::Google::SQL::Operation] A Operation resource
-        def set_root_password(password, options = {})
-          requires :identity
-
-          data = service.set_instance_root_password(identity, password)
-          operation = Fog::Google::SQL::Operations.new(:service => service).get(instance, data.body["operation"])
-          operation.wait_for { ready? } unless options.fetch(:async, true)
-          operation
-        end
-
-        ##
         # Returns the version of instance settings
         #
         # @return [String] The version of instance settings
         def settings_version
-          settings["settingsVersion"]
+          settings[:settings_version]
         end
 
         ##
@@ -318,7 +291,7 @@ module Fog
         #
         # @return [String] The tier of service for this instance
         def tier
-          settings["tier"]
+          settings[:tier]
         end
 
         ##
@@ -326,12 +299,24 @@ module Fog
         #
         # @return [Fog::Google::SQL::Instance] Instance resource
         def update
-          requires :identity
+          requires :identity, :settings_version, :tier
 
-          data = service.update_instance(identity, settings_version, tier, attributes)
-          operation = Fog::Google::SQL::Operations.new(:service => service).get(instance, data.body["operation"])
+          data = service.update_instance(identity, settings_version, tier, settings)
+          operation = Fog::Google::SQL::Operations.new(:service => service).get(data.name)
           operation.wait_for { !pending? }
           reload
+        end
+
+        ##
+        # Reload a Cloud SQL instance
+        #
+        # @return [Fog::Google::SQL::Instance] Instance resource
+        def reload
+          requires :identity
+
+          data = collection.get(identity)
+          merge_attributes(data.attributes)
+          self
         end
       end
     end

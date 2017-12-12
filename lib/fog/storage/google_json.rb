@@ -9,6 +9,7 @@ module Fog
       recognizes(
         :app_name,
         :app_version,
+        :google_auth,
         :google_client,
         :google_client_email,
         :google_client_options,
@@ -19,12 +20,12 @@ module Fog
       )
 
       # https://cloud.google.com/storage/docs/json_api/v1/
-      GOOGLE_STORAGE_JSON_API_VERSION = "v1"
-      GOOGLE_STORAGE_JSON_BASE_URL = "https://www.googleapis.com/storage/"
+      GOOGLE_STORAGE_JSON_API_VERSION = "v1".freeze
+      GOOGLE_STORAGE_JSON_BASE_URL = "https://www.googleapis.com/storage/".freeze
 
       # TODO: Come up with a way to only request a subset of permissions.
       # https://cloud.google.com/storage/docs/json_api/v1/how-tos/authorizing
-      GOOGLE_STORAGE_JSON_API_SCOPE_URLS = %w(https://www.googleapis.com/auth/devstorage.full_control)
+      GOOGLE_STORAGE_JSON_API_SCOPE_URLS = %w(https://www.googleapis.com/auth/devstorage.full_control).freeze
 
       ##
       # Models

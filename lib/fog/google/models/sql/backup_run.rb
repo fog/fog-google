@@ -6,27 +6,30 @@ module Fog
       ##
       # A database instance backup run resource
       #
-      # @see https://developers.google.com/cloud-sql/docs/admin-api/v1beta3/backupRuns
+      # @see https://cloud.google.com/sql/docs/mysql/admin-api/v1beta4/backupRuns
       class BackupRun < Fog::Model
-        identity :backup_configuration, :aliases => "backupConfiguration"
+        identity :id
 
-        attribute :due_time, :aliases => "dueTime"
+        attribute :description
         attribute :end_time, :aliases => "endTime"
         attribute :enqueued_time, :aliases => "enqueuedTime"
         attribute :error
         attribute :instance
         attribute :kind
+        attribute :self_link, :aliases => "selfLink"
         attribute :start_time, :aliases => "startTime"
         attribute :status
+        attribute :type
+        attribute :window_start_time, :aliases => "windowStartTime"
 
-        DONE_STATE = "DONE"
+        READY_STATUS = "DONE".freeze
 
         ##
         # Checks if the instance backup run is done
         #
         # @return [Boolean] True if the backup run is done; False otherwise
         def ready?
-          state == DONE_STATE
+          status == READY_STATUS
         end
       end
     end

@@ -18,6 +18,7 @@ module Fog
         attribute :next_hop_instance, :aliases => "nextHopInstance"
         attribute :next_hop_ip, :aliases => "nextHopIp"
         attribute :next_hop_network, :aliases => "nextHopNetwork"
+        attribute :next_hop_vpn_tunnel, :aliases => "nextHopVpnTunnel"
         attribute :priority
         attribute :self_link, :aliases => "selfLink"
         attribute :tags
@@ -27,7 +28,8 @@ module Fog
           requires :identity, :network, :dest_range, :priority
 
           data = service.insert_route(identity, network, dest_range, priority, attributes)
-          operation = Fog::Compute::Google::Operations.new(:service => service).get(data.body["name"])
+          operation = Fog::Compute::Google::Operations.new(:service => service)
+                                                      .get(data.name)
           operation.wait_for { !pending? }
           reload
         end
@@ -36,7 +38,8 @@ module Fog
           requires :identity
 
           data = service.delete_route(identity)
-          operation = Fog::Compute::Google::Operations.new(:service => service).get(data.body["name"])
+          operation = Fog::Compute::Google::Operations.new(:service => service)
+                                                      .get(data.name)
           operation.wait_for { ready? } unless async
           operation
         end

@@ -2,40 +2,44 @@ module Fog
   module Compute
     class Google
       class Mock
-        def update_firewall(_firewall_name, _allowed, _network = GOOGLE_COMPUTE_DEFAULT_NETWORK, _options = {})
+        def update_firewall(_firewall_name, _firewall_opts = {})
           Fog::Mock.not_implemented
         end
       end
 
       class Real
-        def update_firewall(firewall_name, allowed, network = GOOGLE_COMPUTE_DEFAULT_NETWORK, options = {})
-          unless network.start_with? "http"
-            network = "#{@api_url}#{@project}/global/networks/#{network}"
-          end
+        UPDATABLE_FIREWALL_FIELDS = %i{
+          allowed
+          description
+          source_ranges
+          source_service_accounts
+          source_tags
+          target_service_accounts
+          target_tags
+        }.freeze
 
-          api_method = @compute.firewalls.update
-          parameters = {
-            "project" => @project,
-            "firewall" => firewall_name
-          }
-          body_object = {
-            "allowed" => allowed,
-            "network" => network
-          }
-          unless options[:description].nil?
-            body_object["description"] = options[:description]
-          end
-          unless options[:source_ranges].nil? || options[:source_ranges].empty?
-            body_object["sourceRanges"] = options[:source_ranges]
-          end
-          unless options[:source_tags].nil? || options[:source_tags].empty?
-            body_object["sourceTags"] = options[:source_tags]
-          end
-          unless options[:target_tags].nil? || options[:target_tags].empty?
-            body_object["targetTags"] = options[:target_tags]
-          end
-
-          request(api_method, parameters, body_object)
+        ##
+        # Update a Firewall resource.
+        #
+        # Only the following fields can/will be changed.
+        #
+        # @param [Hash] opts The firewall object to create
+        # @option opts [Array<Hash>] allowed
+        # @option opts [String] description
+        # @option opts [Array<String>] destination_ranges
+        # @option opts [Array<String>] source_ranges
+        # @option opts [Array<String>] source_service_accounts
+        # @option opts [Array<String>] source_tags
+        # @option opts [Array<String>] target_service_accounts
+        # @option opts [Array<String>] target_tags
+        #
+        # @see https://cloud.google.com/compute/docs/reference/latest/firewalls/insert
+        def update_firewall(firewall_name, opts = {})
+          opts = opts.select { |k, _| UPDATABLE_FIREWALL_FIELDS.include? k }
+          @compute.update_firewall(
+            @project, firewall_name,
+            ::Google::Apis::ComputeV1::Firewall.new(opts)
+          )
         end
       end
     end
