@@ -17,7 +17,10 @@ module Fog
             raise ArgumentError.new("at least one value for disks is required")
           end
 
-          disk_lst = disks.map { |d| ::Google::Apis::ComputeV1::AttachedDisk.new(d) }
+          disk_lst = disks.map do |d|
+            d = d.get_attached_disk if d.is_a? Disk
+            ::Google::Apis::ComputeV1::AttachedDisk.new(d)
+          end
           disk_lst.first.boot = true
           disk_lst
         end
@@ -100,8 +103,6 @@ module Fog
           end
 
           instance = ::Google::Apis::ComputeV1::Instance.new(data)
-          puts instance
-
           @compute.insert_instance(@project, zone, instance)
         end
       end

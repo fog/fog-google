@@ -18,7 +18,7 @@ module Fog
         # @option options [String] :page_token
         def list_aggregated_disks(filter: nil, max_results: nil,
                                   order_by: nil, page_token: nil)
-          @compute.list_aggregated_disks(
+          @compute.list_aggregated_disk(
             @project,
             :filter => filter, :max_results => max_results,
             :order_by => order_by, :page_token => page_token
