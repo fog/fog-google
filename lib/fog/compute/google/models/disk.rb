@@ -61,20 +61,9 @@ module Fog
           zone.nil? ? nil : zone.split("/")[-1]
         end
 
-        # auto_delete can only be applied to disks created before instance creation.
-        # auto_delete = true will automatically delete disk upon instance termination.
-        # @returns [Hash] the AttachedDisk representation of this disk
-        def get_attached_disk(writable: true, boot: false,
-                              device_name: nil, auto_delete: false)
-          Hash[{
-            :auto_delete => auto_delete,
-            :boot => boot,
-            :device_name => device_name,
-            :disk_encryption_key => device_name,
-            :mode => writable ? "READ_WRITE" : "READ_ONLY",
-            :source => self_link,
-            :type => "PERSISTENT"
-          }.reject { |_k, v| v.nil? }]
+        def attached_disk_obj(opts = {})
+          requires :self_link
+          collection.attached_disk_obj(self_link, opts)
         end
 
         def get_as_boot_disk(writable = true, auto_delete = false)

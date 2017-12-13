@@ -18,7 +18,7 @@ module Fog
           end
 
           disk_lst = disks.map do |d|
-            d = d.get_attached_disk if d.is_a? Disk
+            d = d.attached_disk_obj if d.is_a? Disk
             ::Google::Apis::ComputeV1::AttachedDisk.new(d)
           end
           disk_lst.first.boot = true
