@@ -66,7 +66,8 @@ module Fog
 
           service.get_target_https_proxy(identity)
           true
-        rescue Fog::Errors::NotFound
+        rescue ::Google::Api::ClientError => e
+          raise e unless e.status_code == 404
           false
         end
 

@@ -13,7 +13,8 @@ module Fog
           if rule = service.get_global_forwarding_rule(identity).to_h
             new(rule)
           end
-        rescue Fog::Errors::NotFound
+        rescue ::Google::Api::ClientError => e
+          raise e unless e.status_code == 404
           nil
         end
       end
