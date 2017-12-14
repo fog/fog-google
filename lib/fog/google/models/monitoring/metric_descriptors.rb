@@ -33,7 +33,8 @@ module Fog
         def get(metric_type)
           data = service.get_metric_descriptor(metric_type).to_h
           new(data)
-        rescue Fog::Errors::NotFound
+        rescue ::Google::Api::ClientError => e
+          raise e unless e.status_code == 404
           nil
         end
       end
