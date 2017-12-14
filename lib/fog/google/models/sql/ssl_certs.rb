@@ -39,7 +39,7 @@ module Fog
           end
         rescue ::Google::Api::ClientError => e
           # Google SQL returns a 403 if we try to access a non-existing resource
-          # The default behaviour in Fog is to return an empty Array
+          # The default behaviour in Fog is to return nil
           return nil if e.status_code == 404 || e.status_code == 403
           raise e
         end
