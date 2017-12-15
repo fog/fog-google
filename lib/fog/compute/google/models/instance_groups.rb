@@ -29,7 +29,7 @@ module Fog
           if instance_group = service.get_instance_group(identity, zone)
             new(instance_group.to_h)
           end
-        rescue ::Google::Api::ClientError => e
+        rescue ::Google::Apis::ClientError => e
           raise e unless e.status_code == 404
           nil
         end

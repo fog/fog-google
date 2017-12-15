@@ -12,7 +12,7 @@ module Fog
         def get(identity)
           data = service.get_zone(identity).to_h
           new(data)
-        rescue ::Google::Api::ClientError => e
+        rescue ::Google::Apis::ClientError => e
           raise e unless e.status_code == 404
           nil
         end

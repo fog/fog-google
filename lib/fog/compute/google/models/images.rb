@@ -29,7 +29,7 @@ module Fog
               images = service.list_images(project).items || []
               # Keep track of the project in which we found the image(s)
               images.map { |img| img.to_h.merge(:project => project) }
-            rescue ::Google::Api::ClientError => e
+            rescue ::Google::Apis::ClientError => e
               raise e unless e.status_code == 404
               # Not everyone has access to every Global Project. Requests
               # return 404 if you don't have access.

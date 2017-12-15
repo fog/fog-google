@@ -35,7 +35,7 @@ module Fog
 
           return nil if response.nil?
           new(response.to_h)
-        rescue ::Google::Api::ClientError => e
+        rescue ::Google::Apis::ClientError => e
           raise e unless e.status_code == 404
           nil
         end

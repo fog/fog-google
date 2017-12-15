@@ -37,7 +37,7 @@ module Fog
           if ssl_cert
             new(ssl_cert)
           end
-        rescue ::Google::Api::ClientError => e
+        rescue ::Google::Apis::ClientError => e
           # Google SQL returns a 403 if we try to access a non-existing resource
           # The default behaviour in Fog is to return nil
           return nil if e.status_code == 404 || e.status_code == 403

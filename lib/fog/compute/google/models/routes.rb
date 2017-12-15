@@ -13,7 +13,7 @@ module Fog
           if route = service.get_route(identity).to_h
             new(route)
           end
-        rescue ::Google::Api::ClientError => e
+        rescue ::Google::Apis::ClientError => e
           raise e unless e.status_code == 404
           nil
         end

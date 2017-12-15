@@ -27,7 +27,7 @@ module Fog
           if address = service.get_address(identity, region).to_h
             new(address)
           end
-        rescue ::Google::Api::ClientError => e
+        rescue ::Google::Apis::ClientError => e
           raise e unless e.status_code == 404
           nil
         end

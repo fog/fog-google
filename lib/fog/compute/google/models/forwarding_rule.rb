@@ -55,7 +55,7 @@ module Fog
           requires :identity
           service.get_forwarding_rule(identity, region)
           true
-        rescue ::Google::Api::ClientError => e
+        rescue ::Google::Apis::ClientError => e
           raise e unless e.status_code == 404
           false
         end

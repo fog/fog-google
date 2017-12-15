@@ -28,7 +28,7 @@ module Fog
           if backup_run
             new(backup_run)
           end
-        rescue ::Google::Api::ClientError => e
+        rescue ::Google::Apis::ClientError => e
           raise e unless e.status_code == 404
           nil
         end

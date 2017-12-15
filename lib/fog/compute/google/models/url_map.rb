@@ -95,7 +95,7 @@ module Fog
         def ready?
           service.get_url_map(name)
           true
-        rescue ::Google::Api::ClientError => e
+        rescue ::Google::Apis::ClientError => e
           raise e unless e.status_code == 404
           false
         end

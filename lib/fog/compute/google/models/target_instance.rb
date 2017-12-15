@@ -42,7 +42,7 @@ module Fog
         def ready?
           service.get_target_instance(name, zone)
           true
-        rescue ::Google::Api::ClientError => e
+        rescue ::Google::Apis::ClientError => e
           raise e unless e.status_code == 404
           false
         end

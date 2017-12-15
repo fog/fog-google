@@ -13,7 +13,7 @@ module Fog
           if target_https_proxy = service.get_target_https_proxy(identity).to_h
             new(target_https_proxy)
           end
-        rescue ::Google::Api::ClientError => e
+        rescue ::Google::Apis::ClientError => e
           raise e unless e.status_code == 404
           nil
         end

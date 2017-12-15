@@ -8,7 +8,7 @@ module Fog
           if project = service.get_project(identity).to_h
             new(project)
           end
-        rescue ::Google::Api::ClientError => e
+        rescue ::Google::Apis::ClientError => e
           raise e unless e.status_code == 404
           nil
         end
