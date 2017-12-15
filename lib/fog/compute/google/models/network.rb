@@ -44,8 +44,8 @@ module Fog
 
         # Returns a ready API structure for insert_instance, used in insert_server request.
         def get_as_interface_config(access_config = nil)
-          network_interface = { "network" => self_link }
-          network_interface["accessConfigs"] = [access_config] if access_config
+          network_interface = { :network => self_link }
+          network_interface[:access_configs] = [access_config] if access_config
           network_interface
         end
       end

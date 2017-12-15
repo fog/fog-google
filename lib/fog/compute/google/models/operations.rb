@@ -4,15 +4,24 @@ module Fog
       class Operations < Fog::Collection
         model Fog::Compute::Google::Operation
 
-        def all(filters = {})
-          data = service.list_global_operations.body
-          if filters.zone
-            data = service.list_zone_operations(filters.zone).body
-          elsif filters.region
-            data = service.list_region_operations(filters.region).body
+        def all(zone: nil, region: nil, filter: nil, max_results: nil,
+                order_by: nil, page_token: nil)
+          opts = {
+            :filter => filter,
+            :max_results => max_results,
+            :order_by => order_by,
+            :page_token => page_token
+          }
+
+          if zone
+            data = service.list_zone_operations(zone, opts).to_h[:items]
+          elsif region
+            data = service.list_region_operations(regions, opts).to_h[:items]
+          else
+            data = service.list_global_operations(opts).to_h[:items]
           end
 
-          load(data.items || [])
+          load(data || [])
         end
 
         def get(identity, zone = nil, region = nil)
