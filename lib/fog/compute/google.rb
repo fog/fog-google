@@ -203,9 +203,6 @@ module Fog
       model :image
       collection :images
 
-      model :flavor
-      collection :flavors
-
       model :disk
       collection :disks
 
