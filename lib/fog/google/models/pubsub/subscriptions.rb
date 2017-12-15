@@ -23,7 +23,8 @@ module Fog
         def get(subscription_name)
           subscription = service.get_subscription(subscription_name).to_h
           new(subscription)
-        rescue Fog::Errors::NotFound
+        rescue ::Google::Api::ClientError => e
+          raise e unless e.status_code == 404
           nil
         end
       end

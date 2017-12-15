@@ -19,7 +19,8 @@ module Fog
           rescue Fog::Errors::Error => e
             # Google SQL returns a 403 if we try to access a non-existing resource
             # The default behaviour in Fog is to return an empty Array
-            raise e unless e.message == "The client is not authorized to make this request."
+            return nil if e.status_code == 404 || e.status_code == 403
+            raise e
           end
 
           load(data)
@@ -36,12 +37,10 @@ module Fog
           if ssl_cert
             new(ssl_cert)
           end
-        rescue Fog::Errors::NotFound
-          nil
-        rescue Fog::Errors::Error => e
+        rescue ::Google::Api::ClientError => e
           # Google SQL returns a 403 if we try to access a non-existing resource
-          # The default behaviour in Fog is to return a nil
-          return nil if e.message == "The client is not authorized to make this request."
+          # The default behaviour in Fog is to return nil
+          return nil if e.status_code == 404 || e.status_code == 403
           raise e
         end
       end

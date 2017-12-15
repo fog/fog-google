@@ -27,7 +27,8 @@ module Fog
         def get(resource_type)
           data = service.get_monitored_resource_descriptor(resource_type).to_h
           new(data)
-        rescue Fog::Errors::NotFound
+        rescue ::Google::Api::ClientError => e
+          raise e unless e.status_code == 404
           nil
         end
       end
