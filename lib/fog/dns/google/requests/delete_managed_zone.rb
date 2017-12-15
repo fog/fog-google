@@ -13,7 +13,7 @@ module Fog
 
       class Mock
         def delete_managed_zone(_name_or_id)
-          raise Fog::Errors::MockNotImplemented
+          Fog::Mock.not_implemented
         end
       end
     end

@@ -6,20 +6,21 @@ module Fog
       #
       # @see https://developers.google.com/cloud-dns/api/v1/changes/list
       class Real
-        def list_changes(zone_name_or_id)
-          api_method = @dns.changes.list
-          parameters = {
-            "project" => @project,
-            "managedZone" => zone_name_or_id
-          }
-
-          request(api_method, parameters)
+        def list_changes(zone_name_or_id, max_results: nil, page_token: nil,
+                         sort_by: nil, sort_order: nil)
+          @dns.list_changes(
+            @project, zone_name_or_id,
+            :max_results => max_results,
+            :page_token => page_token,
+            :sort_by => sort_by,
+            :sort_order => sort_order
+          )
         end
       end
 
       class Mock
-        def list_changes(_zone_name_or_id)
-          raise Fog::Errors::MockNotImplemented
+        def list_changes(_zone_name_or_id, _opts = {})
+          Fog::Mock.not_implemented
         end
       end
     end
