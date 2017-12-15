@@ -2,34 +2,19 @@ module Fog
   module Compute
     class Google
       class Mock
-        def list_aggregated_servers(options = {})
-          # Create a Hash of unique zones from the servers Array previously filled when servers are created
-          zones = Hash[data[:servers].values.map { |server| ["zones/#{server['zone'].split('/')[-1]}", { "instances" => [] }] }]
-          if options[:filter]
-            # Look up for the server name
-            server = data[:servers][options[:filter].gsub(/name eq \.\*/, "")]
-            # Fill the zones Hash with the server (if it's found)
-            zones["zones/#{server['zone'].split('/')[-1]}"]["instances"].concat([server]) if server
-          else
-            # Fill the zones Hash with the servers attached to each zone
-            data[:servers].values.each { |server| zones["zones/#{server['zone'].split('/')[-1]}"]["instances"].concat([server]) }
-          end
-          build_excon_response("kind" => "compute#instanceAggregatedList",
-                               "selfLink" => "https://www.googleapis.com/compute/#{api_version}/projects/#{@project}/aggregated/instances",
-                               "id" => "projects/#{@project}/aggregated/instances",
-                               "items" => zones)
+        def list_aggregated_servers(_opts = {})
+          Fog::Mock.not_implemented
         end
       end
 
       class Real
-        def list_aggregated_servers(options = {})
-          api_method = @compute.instances.aggregated_list
-          parameters = {
-            "project" => @project
-          }
-          parameters["filter"] = options[:filter] if options[:filter]
-
-          request(api_method, parameters)
+        def list_aggregated_servers(filter: nil, max_results: nil,
+                                    order_by: nil, page_token: nil)
+          @compute.list_aggregated_instances(
+            @project,
+            :filter => filter, :max_results => max_results,
+            :order_by => order_by, :page_token => page_token
+          )
         end
       end
     end

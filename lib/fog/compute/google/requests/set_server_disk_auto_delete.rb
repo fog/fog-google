@@ -8,17 +8,15 @@ module Fog
       end
 
       class Real
+        # @see https://cloud.google.com/compute/docs/reference/latest/instances/setDiskAutoDelete
         def set_server_disk_auto_delete(identity, zone, auto_delete, device_name)
-          api_method = @compute.instances.set_disk_auto_delete
-          parameters = {
-            "project"    => @project,
-            "instance"   => identity,
-            "zone"       => zone.split("/")[-1],
-            "autoDelete" => auto_delete,
-            "deviceName" => device_name
-          }
-
-          request(api_method, parameters)
+          @compute.set_disk_auto_delete(
+            @project,
+            zone.split("/")[-1],
+            identity,
+            auto_delete,
+            device_name
+          )
         end
       end
     end

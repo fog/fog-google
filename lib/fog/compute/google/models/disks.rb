@@ -30,6 +30,23 @@ module Fog
         rescue Fog::Errors::NotFound
           nil
         end
+
+        def attached_disk_obj(source,
+                              writable: true,
+                              boot: false,
+                              device_name: nil,
+                              encryption_key: nil,
+                              auto_delete: false)
+          {
+            :auto_delete => auto_delete,
+            :boot => boot,
+            :device_name => device_name,
+            :disk_encryption_key => encryption_key,
+            :mode => writable ? "READ_WRITE" : "READ_ONLY",
+            :source => source,
+            :type => "PERSISTENT"
+          }.reject { |_k, v| v.nil? }
+        end
       end
     end
   end

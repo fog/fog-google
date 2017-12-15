@@ -69,26 +69,44 @@ module Fog
 
         private
 
-        def associate(server)
-          # TODO: implement when servers are implemented @everlag
-          nic = server.network_interfaces.first["name"]
-          data = service.add_server_access_config(server.name, server.zone_name, nic, :address => address)
-          Fog::Compute::Google::Operations.new(:service => service).get(data.body["name"], data.body["zone"])
+        def associate(nic_name, async = true)
+          requires :address
+
+          data = service.add_server_access_config(
+            server.name, server.zone, nic_name, :nat_ip => address
+          )
+          operation = Fog::Compute::Google::Operations
+                      .new(:service => service)
+                      .get(data.name, data.zone)
+          operation.wait_for { ready? } unless async
         end
 
         def disassociate
-          # TODO: implement when servers are implemented @everlag
+          requires :address
+
           return nil if !in_use? || users.nil? || users.empty?
 
+          server_name = users.first.split("/")[-1]
+
           # An address can only be associated with one server at a time
-          server = service.servers.get(users.first.split("/")[-1])
-          nic = server.network_interfaces.first["name"]
-          unless server.network_interfaces.first["accessConfigs"].nil? ||
-                 server.network_interfaces.first["accessConfigs"].empty?
-            access_config = server.network_interfaces.first["accessConfigs"].first["name"]
-            data = service.delete_server_access_config(server.name, server.zone_name, nic,
-                                                       :access_config => access_config)
-            Fog::Compute::Google::Operations.new(:service => service).get(data.body["name"], data.body["zone"])
+          server = service.servers.get(server_name)
+          server.network_interfaces.each do |nic|
+            # Skip if nic has no access_config
+            next if nic[:access_configs].nil? || nic[:access_configs].empty?
+
+            access_config = nic[:access_configs].first
+
+            # Skip access_config with different address
+            next if access_config[:nat_ip] != address
+
+            data = service.delete_server_access_config(
+              server.name, server.zone, nic[:name], access_config[:name]
+            )
+            operation = Fog::Compute::Google::Operations
+                        .new(:service => service)
+                        .get(data.name, data.zone)
+            operation.wait_for { ready? } unless async
+            return operation
           end
         end
       end
