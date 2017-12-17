@@ -22,7 +22,7 @@ module Fog
           if zone = service.get_managed_zone(name_or_id).to_h
             new(zone)
           end
-        rescue ::Google::Api::ClientError => e
+        rescue ::Google::Apis::ClientError => e
           raise e unless e.status_code == 404
           nil
         end

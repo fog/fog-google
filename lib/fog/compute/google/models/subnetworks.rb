@@ -27,7 +27,8 @@ module Fog
           if subnetwork = service.get_subnetwork(identity, region).to_h
             new(subnetwork)
           end
-        rescue Fog::Errors::NotFound
+        rescue ::Google::Apis::ClientError => e
+          raise e unless e.status_code == 404
           nil
         end
       end

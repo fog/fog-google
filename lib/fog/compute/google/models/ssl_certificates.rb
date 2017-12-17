@@ -8,7 +8,8 @@ module Fog
           if certificate = service.get_ssl_certificate(certificate_name)
             new(certificate.to_h)
           end
-        rescue Fog::Errors::NotFound
+        rescue ::Google::Apis::ClientError => e
+          raise e unless e.status_code == 404
           nil
         end
 

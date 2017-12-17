@@ -4,13 +4,20 @@ module Fog
       class Addresses < Fog::Collection
         model Fog::Compute::Google::Address
 
-        def all(filters = {})
-          if filters[:region]
-            data = service.list_addresses(filters[:region]).items || []
+        def all(region: nil, filter: nil, max_results: nil, order_by: nil, page_token: nil)
+          opts = {
+            :filter => filter,
+            :max_results => max_results,
+            :order_by => order_by,
+            :page_token => page_token
+          }
+
+          if region
+            data = service.list_addresses(region, opts).items || []
           else
             data = []
-            service.list_aggregated_addresses.items.each_value do |region|
-              data.concat(region.addresses) if region.addresses
+            service.list_aggregated_addresses(opts).items.each_value do |scoped_list|
+              data.concat(scoped_list.addresses) if scoped_list && scoped_list.addresses
             end
           end
           load(data.map(&:to_h))
@@ -20,7 +27,8 @@ module Fog
           if address = service.get_address(identity, region).to_h
             new(address)
           end
-        rescue Fog::Errors::NotFound
+        rescue ::Google::Apis::ClientError => e
+          raise e unless e.status_code == 404
           nil
         end
 

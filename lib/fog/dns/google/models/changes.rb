@@ -15,7 +15,7 @@ module Fog
 
           data = service.list_changes(zone.identity).to_h[:changes] || []
           load(data)
-        rescue ::Google::Api::ClientError => e
+        rescue ::Google::Apis::ClientError => e
           raise e unless e.status_code == 404
           []
         end
@@ -30,7 +30,7 @@ module Fog
           if change = service.get_change(zone.identity, identity).to_h
             new(change)
           end
-        rescue ::Google::Api::ClientError => e
+        rescue ::Google::Apis::ClientError => e
           raise e unless e.status_code == 404
           nil
         end

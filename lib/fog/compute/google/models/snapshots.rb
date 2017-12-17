@@ -21,7 +21,8 @@ module Fog
           response = service.get_snapshot(snap_id)
           return nil if response.nil?
           new(response.to_h)
-        rescue Fog::Errors::NotFound
+        rescue ::Google::Apis::ClientError => e
+          raise e unless e.status_code == 404
           nil
         end
       end

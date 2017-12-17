@@ -22,7 +22,7 @@ module Fog
         def get(topic_name)
           topic = service.get_topic(topic_name).to_h
           new(topic)
-        rescue ::Google::Api::ClientError => e
+        rescue ::Google::Apis::ClientError => e
           raise e unless e.status_code == 404
           nil
         end

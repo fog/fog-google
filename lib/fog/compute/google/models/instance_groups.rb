@@ -29,14 +29,15 @@ module Fog
           if instance_group = service.get_instance_group(identity, zone)
             new(instance_group.to_h)
           end
-        rescue Fog::Errors::NotFound
+        rescue ::Google::Apis::ClientError => e
+          raise e unless e.status_code == 404
           nil
         end
 
         # TODO: To be deprecated
         def add_instance(params)
           Fog::Logger.deprecation(
-            "#{self.class}.#{__method__} is deprecated, use Fog::Compute::Google::InstanceGroup.#{__method__} instead [light_black](#{caller.first})[/]"
+            "#{self.class}.#{__method__} is deprecated, use Fog::Compute::Google::InstanceGroup.#{__method__} instead [light_black](#{caller(0..0)})[/]"
           )
           params[:instance] = [params[:instance]] unless params[:instance] == Array
           service.add_instance_group_instances(params[:group], params[:zone], params[:instance])
@@ -45,7 +46,7 @@ module Fog
         # TODO: To be deprecated
         def remove_instance(params)
           Fog::Logger.deprecation(
-            "#{self.class}.#{__method__} is deprecated, use Fog::Compute::Google::InstanceGroup.#{__method__} instead [light_black](#{caller.first})[/]"
+            "#{self.class}.#{__method__} is deprecated, use Fog::Compute::Google::InstanceGroup.#{__method__} instead [light_black](#{caller(0..0)})[/]"
           )
           params[:instance] = [params[:instance]] unless params[:instance] == Array
           service.remove_instance_group_instances(params[:group], params[:zone], params[:instance])

@@ -13,7 +13,8 @@ module Fog
           if address = service.get_global_address(identity).to_h
             new(address)
           end
-        rescue Fog::Errors::NotFound
+        rescue ::Google::Apis::ClientError => e
+          raise e unless e.status_code == 404
           nil
         end
 

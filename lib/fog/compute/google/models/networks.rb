@@ -13,7 +13,8 @@ module Fog
           if network = service.get_network(identity).to_h
             new(network)
           end
-        rescue Fog::Errors::NotFound
+        rescue ::Google::Apis::ClientError => e
+          raise e unless e.status_code == 404
           nil
         end
       end

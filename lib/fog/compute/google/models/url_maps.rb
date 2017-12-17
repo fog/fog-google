@@ -13,7 +13,8 @@ module Fog
           if url_map = service.get_url_map(identity).to_h
             new(url_map)
           end
-        rescue Fog::Errors::NotFound
+        rescue ::Google::Apis::ClientError => e
+          raise e unless e.status_code == 404
           nil
         end
       end

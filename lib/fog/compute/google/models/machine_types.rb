@@ -27,7 +27,8 @@ module Fog
           machine_type = service.get_machine_type(identity, zone).to_h
           return nil if machine_type.nil?
           new(machine_type)
-        rescue Fog::Errors::NotFound
+        rescue ::Google::Apis::ClientError => e
+          raise e unless e.status_code == 404
           nil
         end
       end

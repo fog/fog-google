@@ -16,7 +16,7 @@ module Fog
           data = service.list_resource_record_sets(zone.identity)
                         .to_h[:rrsets] || []
           load(data)
-        rescue ::Google::Api::ClientError => e
+        rescue ::Google::Apis::ClientError => e
           raise e unless e.status_code == 404
           []
         end
@@ -33,7 +33,7 @@ module Fog
           records = service.list_resource_record_sets(zone.identity, :name => name, :type => type)
                            .to_h[:rrsets] || []
           records.any? ? new(records.first) : nil
-        rescue ::Google::Api::ClientError => e
+        rescue ::Google::Apis::ClientError => e
           raise e unless e.status_code == 404
           nil
         end
