@@ -2,6 +2,8 @@ module Fog
   module Storage
     class GoogleJSON
       class Files < Fog::Collection
+        model Fog::Storage::GoogleJSON::File
+
         extend Fog::Deprecation
         deprecate :get_url, :get_https_url
 
@@ -11,8 +13,6 @@ module Fog
         attribute :page_token,      :aliases => %w(pageToken page_token)
         attribute :max_results,     :aliases => ["MaxKeys", "max-keys"]
         attribute :prefix,          :aliases => "Prefix"
-
-        model Fog::Storage::GoogleJSON::File
 
         def all(options = {})
           requires :directory
@@ -35,7 +35,8 @@ module Fog
           requires :directory
           data = service.get_object(directory.key, key, options, &block).to_h
           new(data)
-        rescue Fog::Errors::NotFound
+        rescue ::Google::Apis::ClientError => e
+          raise e unless e.status_code == 404
           nil
         end
 
@@ -44,17 +45,17 @@ module Fog
           service.get_object_https_url(directory.key, key, expires)
         end
 
-        def head(key, options = {})
+        def metadata(key, options = {})
           requires :directory
-          data = service.head_object(directory.key, key, options).to_h
+          data = service.get_object_metadata(directory.key, key, options).to_h
           new(data)
         rescue ::Google::Apis::ClientError
           nil
         end
 
-        def new(attributes = {})
+        def new(opts = {})
           requires :directory
-          super({ :directory => directory }.merge(attributes))
+          super({ :directory => directory }.merge(opts))
         end
       end
     end

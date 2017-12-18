@@ -8,43 +8,80 @@ module Fog
         # @param bucket_name [String] Name of bucket to create object in
         # @param object_name [String] Name of object to create
         # @param data [File|String|Paperclip::AbstractAdapter] File, String or Paperclip adapter to create object from
-        # @option options [String] "predefinedAcl" Applies a predefined set of access controls to this bucket.
-        # @option options [String] "Cache-Control" Caching behaviour
-        # @option options [DateTime] "Content-Disposition" Presentational information for the object
-        # @option options [String] "Content-Encoding" Encoding of object data
-        # @option options [String] "Content-MD5" Base64 encoded 128-bit MD5 digest of message (defaults to Base64 encoded MD5 of object.read)
-        # @option options [String] "Content-Type" Standard MIME type describing contents (defaults to MIME::Types.of.first)ols
-        # @option options [String] "x-goog-acl" Permissions, must be in ['private', 'public-read', 'public-read-write', 'authenticated-read']
-        # @option options [String] "x-goog-meta-#{name}" Headers to be returned with object, note total size of request without body must be less than 8 KB.
+        # @param options [Hash] Optional query parameters or Object attributes
+        #   Optional query parameters are listed below.
+        # @param content_encoding [String]
+        #   If set, sets the contentEncoding property of the final object to
+        #   this value.
+        # @param if_generation_match [Fixnum]
+        #   Makes the operation conditional on whether the object's current
+        #   generation matches the given value. Setting to 0 makes the operation
+        #   succeed only if there are no live versions of the object.
+        # @param if_generation_not_match [Fixnum]
+        #   Makes the operation conditional on whether the object's current
+        #   generation does not match the given value. If no live object exists,
+        #   the precondition fails. Setting to 0 makes the operation succeed
+        #   only if there is a live version of the object.
+        # @param if_metageneration_match [Fixnum]
+        #   Makes the operation conditional on whether the object's
+        #   current metageneration matches the given value.
+        # @param if_metageneration_not_match [Fixnum]
+        #   Makes the operation conditional on whether the object's
+        #   current metageneration does not match the given value.
+        # @param predefined_acl [String]
+        #   Apply a predefined set of access controls to this object.
+        # @param projection [String]
+        #   Set of properties to return. Defaults to noAcl,
+        #   unless the object resource specifies the acl property,
+        #   when it defaults to full.
         # @return [Google::Apis::StorageV1::Object]
-        def put_object(bucket_name, object_name, data, options = {})
-          unless options["Content-Type"]
+        def put_object(bucket_name,
+                       object_name,
+                       data,
+                       content_encoding: nil,
+                       if_generation_match: nil,
+                       if_generation_not_match: nil,
+                       if_metageneration_match: nil,
+                       if_metageneration_not_match: nil,
+                       kms_key_name: nil,
+                       predefined_acl: nil,
+                       **options)
+          unless options[:content_type]
             if data.is_a?(String)
               data = StringIO.new(data)
-              options["Content-Type"] = "text/plain"
+              options[:content_type] = "text/plain"
             elsif data.is_a?(::File)
-              options["Content-Type"] = Fog::Storage.parse_data(data)[:headers]["Content-Type"]
+              options[:content_type] = Fog::Storage.parse_data(data)[:headers]["Content-Type"]
             elsif data.respond_to?(:content_type) && data.respond_to?(:path)
-              options["Content-Type"] = data.content_type
+              options[:content_type] = data.content_type
               data = data.path
             end
           end
 
           object_config = ::Google::Apis::StorageV1::Object.new(
-            :name => object_name
+            options.merge(:name => object_name)
           )
-          request_options = ::Google::Apis::RequestOptions.default.merge(options)
-          @storage_json.insert_object(bucket_name,
-                                      object_config,
-                                      :upload_source => data,
-                                      :predefined_acl => options["predefinedAcl"],
-                                      :options => request_options)
+
+          @storage_json.insert_object(
+            bucket_name, object_config,
+            :content_encoding => content_encoding,
+            :if_generation_match => if_generation_match,
+            :if_generation_not_match => if_generation_not_match,
+            :if_metageneration_match => if_metageneration_match,
+            :if_metageneration_not_match => if_metageneration_not_match,
+            :kms_key_name => kms_key_name,
+            :predefined_acl => predefined_acl,
+            :options => ::Google::Apis::RequestOptions.default.merge(options),
+            # see https://developers.google.com/api-client-library/ruby/guide/media_upload
+            :content_type => options[:content_type],
+            :upload_source => data
+          )
         end
       end
 
       class Mock
         def put_object(_bucket_name, _object_name, _data, _options = {})
-          raise Fog::Errors::MockNotImplemented
+          Fog::Mock.not_implemented
         end
       end
     end

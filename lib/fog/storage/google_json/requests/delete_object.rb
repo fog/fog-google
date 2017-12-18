@@ -14,7 +14,7 @@ module Fog
 
       class Mock
         def delete_object(_bucket_name, _object_name)
-          raise Fog::Errors::MockNotImplemented
+          Fog::Mock.not_implemented
         end
       end
     end
