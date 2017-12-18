@@ -4,19 +4,26 @@ module Fog
       class Directories < Fog::Collection
         model Fog::Storage::GoogleJSON::Directory
 
-        def all
-          data = service.list_buckets.to_h[:items] || []
+        def all(opts = {})
+          data = service.list_buckets(opts).to_h[:items] || []
           load(data)
         end
 
-        def get(key, options = {})
-          remap_attributes(options,             :delimiter  => "delimiter",
-                                                :marker     => "marker",
-                                                :max_keys   => "max-keys",
-                                                :prefix     => "prefix")
-          data = service.get_bucket(key, options).to_h
+        def get(bucket_name,
+                if_metageneration_match: nil,
+                if_metageneration_not_match: nil,
+                projection: nil)
+          data = service.get_bucket(
+            bucket_name,
+            :if_metageneration_match => if_metageneration_match,
+            :if_metageneration_not_match => if_metageneration_not_match,
+            :projection => projection
+          ).to_h
+
           new(data)
-        rescue Fog::Errors::NotFound
+        rescue ::Google::Apis::ClientError => e
+          # metageneration check failures returns HTTP 412 Precondition Failed
+          raise e unless e.status_code == 404 || e.status_code == 412
           nil
         end
       end

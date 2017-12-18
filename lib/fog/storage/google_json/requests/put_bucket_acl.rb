@@ -7,18 +7,12 @@ module Fog
         #
         # @param bucket_name [String] Name of bucket object is in
         # @param acl [Hash] ACL hash to add to bucket, see GCS documentation above
-        #   * :entity [String] - Entity associated with the role
-        #   * :role [String] - Role assigned
         # @return [Google::Apis::StorageV1::BucketAccessControl]
-        def put_bucket_acl(bucket_name, acl)
+        def put_bucket_acl(bucket_name, acl = {})
           raise ArgumentError.new("bucket_name is required") unless bucket_name
           raise ArgumentError.new("acl is required") unless acl
 
-          acl_update = ::Google::Apis::StorageV1::ObjectAccessControl.new(
-            :entity => acl[:entity],
-            :role => acl[:role]
-          )
-
+          acl_update = ::Google::Apis::StorageV1::BucketAccessControl.new(acl)
           @storage_json.insert_bucket_access_control(bucket_name, acl_update)
         end
       end

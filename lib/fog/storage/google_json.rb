@@ -22,6 +22,7 @@ module Fog
       # https://cloud.google.com/storage/docs/json_api/v1/
       GOOGLE_STORAGE_JSON_API_VERSION = "v1".freeze
       GOOGLE_STORAGE_JSON_BASE_URL = "https://www.googleapis.com/storage/".freeze
+      GOOGLE_STORAGE_BUCKET_BASE_URL = "https://storage.googleapis.com/".freeze
 
       # TODO: Come up with a way to only request a subset of permissions.
       # https://cloud.google.com/storage/docs/json_api/v1/how-tos/authorizing
@@ -30,8 +31,10 @@ module Fog
       ##
       # Models
       model_path "fog/storage/google_json/models"
+
       collection :directories
       model :directory
+
       collection :files
       model :file
 
@@ -47,10 +50,12 @@ module Fog
       request :get_object_acl
       request :get_object_http_url
       request :get_object_https_url
+      request :get_object_metadata
       request :get_object_url
-      request :head_object
       request :list_buckets
+      request :list_bucket_acl
       request :list_objects
+      request :list_object_acl
       request :put_bucket
       request :put_bucket_acl
       request :put_object
