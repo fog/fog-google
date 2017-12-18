@@ -24,6 +24,8 @@ module Fog
         attribute :owner
         attribute :storage_class, :aliases => "storageClass"
 
+        # attribute :body
+
         def body
           last_modified && (file = collection.get(identity)) ? attributes[:body] ||= file.body : attributes[:body] ||= ""
         end
@@ -45,7 +47,8 @@ module Fog
           requires :directory, :key
           service.delete_object(directory.key, key)
           true
-        rescue Fog::Errors::NotFound
+        rescue ::Google::Apis::ClientError => e
+          raise e unless e.status_code == 404
           false
         end
 
@@ -54,19 +57,20 @@ module Fog
           "https://storage.googleapis.com/#{directory.key}/#{key}"
         end
 
-        def save(options = {})
-          requires :body, :directory, :key
-          if options != {}
-            Fog::Logger.deprecation("options param is deprecated, use acl= instead [light_black](#{caller.first})[/]")
-          end
-          options["contentType"] = content_type if content_type
-          options["predefinedAcl"] ||= predefined_acl if predefined_acl # predefinedAcl may need to be in parameters
-          options["acl"] ||= acl if acl # Not sure if you can provide both acl and predefinedAcl
-          options["cacheControl"] = cache_control if cache_control
-          options["contentDisposition"] = content_disposition if content_disposition
-          options["contentEncoding"] = content_encoding if content_encoding
-          options["metadata"] = metadata
+        FILE_INSERTABLE_FIELDS = %i(
+          content_type
+          predefined_acl
+          acl
+          cache_control
+          content_disposition
+          content_encoding
+          metadata
+        ).freeze
 
+        def save
+          requires :body, :directory, :key
+
+          options = FILE_INSERTABLE_FIELDS.map { |k| attributes[k] }.compact
           service.put_object(directory.key, key, body, options)
           self.content_length = Fog::Storage.get_body_size(body)
           self.content_type ||= Fog::Storage.get_content_type(body)
