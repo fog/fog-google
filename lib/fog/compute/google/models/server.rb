@@ -386,13 +386,11 @@ module Fog
 
         def add_ssh_key(username, key, async = true)
           metadata = generate_ssh_key_metadata(username, key)
-          puts metadata
 
           data = service.set_server_metadata(
             identity, zone_name, metadata[:fingerprint], metadata[:items]
           )
 
-          puts data
           operation = Fog::Compute::Google::Operations
                       .new(:service => service)
                       .get(data.name, data.zone)
