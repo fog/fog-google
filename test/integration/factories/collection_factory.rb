@@ -17,6 +17,10 @@ class CollectionFactory
     @subject.create(params)
   end
 
+  def get(identity)
+    @subject.get(identity)
+  end
+
   def resource_name(base = @example, prefix = PREFIX)
     index = @resource_counter += 1
     # In prefix, convert - to _ to make sure that it doesn't get stripped by the \W strip below.
