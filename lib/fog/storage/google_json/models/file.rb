@@ -70,7 +70,11 @@ module Fog
         def save
           requires :body, :directory, :key
 
-          options = FILE_INSERTABLE_FIELDS.map { |k| attributes[k] }.compact
+          options = Hash[
+            FILE_INSERTABLE_FIELDS.map { |k| [k, attributes[k]] }
+                                  .reject { |pair| pair[1].nil? }
+          ]
+
           service.put_object(directory.key, key, body, options)
           self.content_length = Fog::Storage.get_body_size(body)
           self.content_type ||= Fog::Storage.get_content_type(body)

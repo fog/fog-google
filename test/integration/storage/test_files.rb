@@ -85,8 +85,8 @@ class TestStorageRequests < StorageShared
     assert_equal(updated_file.body, new_body)
   end
 
-  def test_files_head
-    content = @client.directories.get(some_bucket_name).files.head(some_object_name)
+  def test_files_metadata
+    content = @client.directories.get(some_bucket_name).files.metadata(some_object_name)
     assert_equal(content.content_length, temp_file_content.length)
     assert_equal(content.key, some_object_name)
   end
@@ -100,9 +100,7 @@ class TestStorageRequests < StorageShared
 
     @client.directories.get(some_bucket_name).files.destroy(file_name)
 
-    assert_raises(Google::Apis::ClientError) do
-      @client.directories.get(some_bucket_name).files.get(file_name)
-    end
+    assert_nil(@client.directories.get(some_bucket_name).files.get(file_name))
   end
 
   def test_files_all
