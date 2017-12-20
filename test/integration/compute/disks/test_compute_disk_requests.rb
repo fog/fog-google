@@ -10,7 +10,7 @@ class TestComputeDiskRequests < FogIntegrationTest
 
   def delete_test_resources
     client = Fog::Compute::Google.new
-    disks = client.list_disks(DEFAULT_ZONE).items
+    disks = client.disks.all(:zone => DEFAULT_ZONE)
     unless disks.nil?
       disks
         .select { |d| d.name.start_with?(DISK_RESOURCE_PREFIX) }
