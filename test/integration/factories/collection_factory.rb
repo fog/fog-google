@@ -7,9 +7,9 @@ class CollectionFactory
     @resource_counter = 0
   end
 
-  def cleanup
+  def cleanup(async = true)
     resources = @subject.all.select { |resource| resource.name.start_with? PREFIX }
-    resources.each{ |r| r.destroy(async = false)}
+    resources.each { |r| r.destroy(async) }
     resources.each { |r| Fog.wait_for { !@subject.all.map(&:identity).include? r.identity } }
   end
 

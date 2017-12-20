@@ -8,7 +8,8 @@ class ServersFactory < CollectionFactory
   end
 
   def cleanup
-    super
+    # Disk cleanup sometimes fails if server deletion has not been completed
+    super(false)
     @disks.cleanup
   end
 
