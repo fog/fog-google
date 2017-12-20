@@ -40,12 +40,12 @@ class TestComputeAddressesCollection < FogIntegrationTest
     my_server = client.servers.create(
       :name => new_resource_name,
       :machine_type => "f1-micro",
-      :zone_name => DEFAULT_ZONE,
+      :zone => client.zones.get(DEFAULT_ZONE).self_link,
       :disks => [
         :boot => true,
-        :autoDelete => true,
-        :initializeParams => {
-          :sourceImage => "projects/debian-cloud/global/images/family/debian-8"
+        :auto_delete => true,
+        :initialize_params => {
+          :source_image => "projects/debian-cloud/global/images/family/debian-8"
         }
       ],
       :external_ip => my_address.address
@@ -55,7 +55,7 @@ class TestComputeAddressesCollection < FogIntegrationTest
     # And verify that it's correctly assigned
     assert_equal(
       my_address.address,
-      my_server.network_interfaces[0]["accessConfigs"][0]["natIP"],
+      my_server.network_interfaces[0][:access_configs][0][:nat_ip],
       "My created server should have the same ip as my address"
     )
 
