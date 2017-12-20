@@ -80,7 +80,7 @@ module Fog
         #
         # If you want to pass in a Hash, see {#set_metadata}.
         # If you want to access the metadata items as a Hash, see
-        # {#metadata_items}.
+        # {#metadata_as_h}.
         #
         # @example Metadata in API format
         #
@@ -257,7 +257,7 @@ module Fog
 
         # Returns metadata items as a Hash.
         # @return [Hash<String, String>] items
-        def metadata_items
+        def metadata_as_h
           if metadata.nil? || metadata[:items].nil? || metadata[:items].empty?
             return {}
           end
