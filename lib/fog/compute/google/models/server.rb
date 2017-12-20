@@ -135,7 +135,7 @@ module Fog
         attribute :start_restricted, :aliases => "startRestricted"
 
         # @return [String]
-        attribute :state, :aliases => "status"
+        attribute :status, :aliases => "status"
 
         # @return [String]
         attribute :status_message, :aliases => "statusMessage"
@@ -373,11 +373,11 @@ module Fog
         end
 
         def provisioning?
-          state == PROVISIONING
+          status == PROVISIONING
         end
 
         def ready?
-          state == RUNNING
+          status == RUNNING
         end
 
         def zone_name
@@ -386,13 +386,11 @@ module Fog
 
         def add_ssh_key(username, key, async = true)
           metadata = generate_ssh_key_metadata(username, key)
-          puts metadata
 
           data = service.set_server_metadata(
             identity, zone_name, metadata[:fingerprint], metadata[:items]
           )
 
-          puts data
           operation = Fog::Compute::Google::Operations
                       .new(:service => service)
                       .get(data.name, data.zone)
@@ -420,12 +418,8 @@ module Fog
         def save(username: nil, public_key: nil)
           requires :name
           requires :machine_type
-          requires :zone_name
           requires :disks
-
-          unless service.zones.detect { |zone| zone.name == zone_name }
-            raise ArgumentError.new "#{zone_name.inspect} is either down or you don't have permission to use it."
-          end
+          requires :zone
 
           generate_ssh_key_metadata(username, public_key) if public_key
 
@@ -435,6 +429,25 @@ module Fog
             options[:service_accounts] = service_accounts.merge(
               :scopes => map_scopes(service_accounts[:scopes])
             )
+          end
+
+          if attributes[:external_ip]
+            if options[:network_interfaces].nil? || options[:network_interfaces].empty?
+              options[:network_interfaces] = [
+                {
+                  :network => "global/networks/#{GOOGLE_COMPUTE_DEFAULT_NETWORK}"
+                }
+              ]
+            end
+
+            # Add external IP as default access config if given
+            options[:network_interfaces][0][:access_configs] = [
+              {
+                :name => "External NAT",
+                :type => "ONE_TO_ONE_NAT",
+                :nat_ip => attributes[:external_ip]
+              }
+            ]
           end
 
           data = service.insert_server(name, zone_name, options)
