@@ -43,7 +43,7 @@ DATA
           end
           canonical_resource << params[:path].to_s
           canonical_resource << "?"
-          for key in (params[:query] || {}).keys
+          (params[:query] || {}).keys.each do |key|
             if %w(acl cors location logging requestPayment versions versioning).include?(key)
               canonical_resource << "#{key}&"
             end
