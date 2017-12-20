@@ -4,15 +4,15 @@ module Fog
       class BackendService < Fog::Model
         identity :name
 
-        attribute :backends, :aliases => "backends"
-        attribute :creation_timestamp, :aliases => "kind"
-        attribute :description, :aliases => "description"
-        attribute :fingerprint, :aliases => "fingerprint"
+        attribute :backends
+        attribute :creation_timestamp
+        attribute :description
+        attribute :fingerprint
         attribute :health_checks, :aliases => "healthChecks"
-        attribute :id, :aliases => "id"
-        attribute :kind, :aliases => "kind"
-        attribute :port, :aliases => "port"
-        attribute :protocol, :aliases => "protocol"
+        attribute :id
+        attribute :kind
+        attribute :port
+        attribute :protocol
         attribute :self_link, :aliases => "selfLink"
         attribute :timeout_sec, :aliases => "timeoutSec"
 
@@ -20,13 +20,13 @@ module Fog
           requires :name, :health_checks
 
           options = {
-            "description" => description,
-            "backends" => backends,
-            "fingerprint" => fingerprint,
-            "healthChecks" => health_checks,
-            "port" => port,
-            "protocol" => protocol,
-            "timeoutSec" => timeout_sec
+            :description => description,
+            :backends => backends,
+            :fingerprint => fingerprint,
+            :health_checks => health_checks,
+            :port => port,
+            :protocol => protocol,
+            :timeout_sec => timeout_sec
           }
 
           data = service.insert_backend_service(name, options)
