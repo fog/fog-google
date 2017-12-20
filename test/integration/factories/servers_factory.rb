@@ -14,7 +14,7 @@ class ServersFactory < CollectionFactory
 
   def params
     { :name => resource_name,
-      :zone_name => TEST_ZONE,
+      :zone => TEST_ZONE,
       :machine_type => TEST_MACHINE_TYPE,
       :disks => [@disks.create] }
   end
