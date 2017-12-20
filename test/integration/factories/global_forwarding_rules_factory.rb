@@ -14,6 +14,7 @@ class GlobalForwardingRulesFactory < CollectionFactory
 
   def params
     { :name => resource_name,
+      :port_range => "80-80",
       :target => @targets.create.self_link }
   end
 end
