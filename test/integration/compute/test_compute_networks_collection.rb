@@ -36,39 +36,27 @@ class TestComputeNetworksCollection < FogIntegrationTest
                  "My address's address should have a valid ipv4 address")
 
     # Now that we have an address, we can create a server using the static ip
-    my_server = client.servers.create(
-      :name => new_resource_name,
+    server_name = new_resource_name
+    client.servers.create(
+      :name => server_name,
       :machine_type => "f1-micro",
-      :zone_name => DEFAULT_ZONE,
+      :zone => client.zones.get(DEFAULT_ZONE).self_link,
       :disks => [
         :boot => true,
-        :autoDelete => true,
-        :initializeParams => {
-          :sourceImage => "projects/debian-cloud/global/images/family/debian-8"
+        :auto_delete => true,
+        :initialize_params => {
+          :source_image => "projects/debian-cloud/global/images/family/debian-8"
         }
       ],
-      :network => my_network
-    )
-    my_server.wait_for { provisioning? }
+      :network_interfaces => [my_network.get_as_interface_config]
+    ).wait_for { ready? }
 
+    my_server = client.servers.get(server_name, DEFAULT_ZONE)
     # We need to verify that the network has been correctly assigned
     assert_equal(
       my_network.self_link,
-      my_server.network_interfaces[0]["network"],
+      my_server.network_interfaces[0][:network],
       "My created server should have the network specified as the network"
-    )
-
-    # Access config needs to be correctly populated
-    assert_equal(
-      "ONE_TO_ONE_NAT",
-      my_server.network_interfaces[0]["accessConfigs"][0]["type"],
-      "Access config type matches the correct default"
-    )
-
-    assert_equal(
-      "External NAT",
-      my_server.network_interfaces[0]["accessConfigs"][0]["name"],
-      "Access config name matches the correct default"
     )
   end
 
