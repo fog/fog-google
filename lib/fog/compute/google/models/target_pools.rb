@@ -27,7 +27,10 @@ module Fog
         def get(identity, region = nil)
           response = nil
           if region.nil?
-            response = all(:filter => "name eq #{identity}").first.attributes
+            data = all(:filter => "name eq #{identity}").first
+            unless data.nil?
+              response = data.attributes
+            end
           else
             response = service.get_target_pool(identity, region).to_h
           end

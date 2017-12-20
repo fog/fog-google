@@ -20,7 +20,7 @@ module Fog
           requires :name, :region
 
           data = service.insert_target_pool(
-            name, region, attributes.reject(&:nil?)
+            name, region, attributes.reject { |_k, v| v.nil? }
           )
           operation = Fog::Compute::Google::Operations
                       .new(:service => service)
