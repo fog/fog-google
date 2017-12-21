@@ -20,6 +20,7 @@ module Fog
 
         IN_USE_STATE   = "IN_USE".freeze
         RESERVED_STATE = "RESERVED".freeze
+        RESERVING_STATE = "RESERVING".freeze
 
         def server
           return nil if !in_use? || users.nil? || users.empty?
@@ -65,6 +66,10 @@ module Fog
 
         def in_use?
           status == IN_USE_STATE
+        end
+
+        def ready?
+          status != RESERVING_STATE
         end
 
         private

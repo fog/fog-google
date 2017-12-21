@@ -10,12 +10,28 @@ class TestComputeAddressShared < FogIntegrationTest
 
   def delete_test_resources
     client = Fog::Compute::Google.new
-    addresses = client.list_addresses(DEFAULT_REGION).items
+    addresses = client.addresses.all(:region => DEFAULT_REGION)
     unless addresses.nil?
       addresses
-        .map(&:name)
-        .select { |a| a.start_with?(ADDRESS_RESOURCE_PREFIX) }
-        .each { |a| client.delete_address(a, DEFAULT_REGION) }
+        .select { |a| a.name.start_with?(ADDRESS_RESOURCE_PREFIX) }
+        .each do |a|
+          Fog.wait_for do
+            unless a.ready?
+              false
+            end
+
+            begin
+              client.delete_address(a.name, DEFAULT_REGION)
+            rescue ::Google::Apis::ClientError => e
+              if e.status_code == 400 || e.status_code == 404
+                return e.status_code == 404
+              end
+              raise e
+            else
+              true
+            end
+          end
+        end
     end
   end
 

@@ -10,7 +10,6 @@ class TestComputeAddressModels < TestComputeAddressShared
       :name => address_name,
       :region => DEFAULT_REGION
     )
-
     assert_equal(address_name, address.name, "address should have same name")
     assert_nil(address.users, "new address should have no users")
   end
