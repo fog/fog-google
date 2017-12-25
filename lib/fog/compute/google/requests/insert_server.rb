@@ -25,12 +25,12 @@ module Fog
           disk_lst
         end
 
-        def process_networks(network_interfaces)
+        def process_network_interfaces(network_interfaces)
           unless network_interfaces && !network_interfaces.empty?
             network_interfaces = [default_network_interface]
           end
           network_interfaces.map do |network|
-            ::Google::Apis::ComputeV1::Network.new(network)
+            ::Google::Apis::ComputeV1::NetworkInterface.new(network)
           end
         end
 
@@ -71,7 +71,7 @@ module Fog
 
           data = options.merge(:name => instance_name)
           data[:disks] = process_disks(options[:disks])
-          data[:network_interfaces] = process_networks(options[:network_interfaces])
+          data[:network_interfaces] = process_network_interfaces(options[:network_interfaces])
 
           machine_type = options[:machine_type]
           unless machine_type

@@ -7,14 +7,18 @@ class CollectionFactory
     @resource_counter = 0
   end
 
-  def cleanup
+  def cleanup(async = true)
     resources = @subject.all.select { |resource| resource.name.start_with? PREFIX }
-    resources.each(&:destroy)
+    resources.each { |r| r.destroy(async) }
     resources.each { |r| Fog.wait_for { !@subject.all.map(&:identity).include? r.identity } }
   end
 
   def create
     @subject.create(params)
+  end
+
+  def get(identity)
+    @subject.get(identity)
   end
 
   def resource_name(base = @example, prefix = PREFIX)

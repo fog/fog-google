@@ -31,25 +31,14 @@ module Fog
           if zone
             response = service.get_target_instance(target_instance, zone).to_h
           else
-            response = all_aggregated(
-              :filter => "name eq .*#{target_instance}"
-            ).first
+            response = all(:filter => "name eq #{target_instance}").first
+            response = response.attributes unless response.nil?
           end
           return nil if response.nil?
           new(response)
         rescue ::Google::Apis::ClientError => e
           raise e unless e.status_code == 404
           nil
-        end
-
-        def all_aggregated(filter: nil, max_results: nil,
-                           order_by: nil, page_token: nil)
-          service.list_aggregated_target_instances(
-            :filter => filter,
-            :max_results => max_results,
-            :order_by => order_by,
-            :page_token => page_token
-          ).items.map { |_, v| v.to_h[:target_instances] }.flatten
         end
       end
     end

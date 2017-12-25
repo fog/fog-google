@@ -5,6 +5,10 @@ class DisksFactory < CollectionFactory
     super(Fog::Compute[:google].disks, example)
   end
 
+  def get(identity)
+    @subject.get(identity, TEST_ZONE)
+  end
+
   def params
     { :name => resource_name,
       :zone_name => TEST_ZONE,

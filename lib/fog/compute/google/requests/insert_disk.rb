@@ -15,25 +15,19 @@ module Fog
         # @param zone_name [String] Zone the disk reside in
         # @param image_name [String] Optional image name to create the disk from
         # @param opts [Hash] Optional hash of options
-        # @option options [String] "sizeGb" Number of GB to allocate to an empty disk
-        # @option options [String] "sourceSnapshot" Snapshot to create the disk from
-        # @option options [String] "description" Human friendly description of the disk
-        # @option options [String] "type" URL of the disk type resource describing which disk type to use
-        def insert_disk(disk_name, zone, image_name = nil, opts = {})
-          # According to Google docs, if image name is not present, only one of
-          # sizeGb or sourceSnapshot need to be present, one will create blank
-          # disk of desired size, other will create disk from snapshot
-          if image_name.nil? && opts[:size_gb].nil? && opts[:source_snapshot].nil?
-            raise ArgumentError.new("Must specify image OR snapshot OR "\
-                                    "disk size when creating a disk.")
-          end
-
+        # @option options [String] size_gb Number of GB to allocate to an empty disk
+        # @option options [String] source_snapshot Snapshot to create the disk from
+        # @option options [String] description Human friendly description of the disk
+        # @option options [String] type URL of the disk type resource describing which disk type to use
+        def insert_disk(disk_name, zone, image_name = nil,
+                        description: nil, type: nil, size_gb: nil,
+                        source_snapshot: nil, **_opts)
           disk = ::Google::Apis::ComputeV1::Disk.new(
             :name => disk_name,
-            :description => opts[:description],
-            :type => opts[:type],
-            :size_gb => opts[:sizeGb],
-            :source_snapshot => opts[:source_snapshot]
+            :description => description,
+            :type => type,
+            :size_gb => size_gb,
+            :source_snapshot => source_snapshot
           )
           @compute.insert_disk(@project, zone.split("/")[-1], disk,
                                :source_image => image_name)

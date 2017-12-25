@@ -48,9 +48,7 @@ class TestStorageRequests < StorageShared
 
     @client.directories.destroy(dir_name)
 
-    assert_raises(Google::Apis::ClientError) do
-      @client.directories.get(dir_name)
-    end
+    assert_nil(@client.directories.get(dir_name))
   end
 
   def test_directories_all

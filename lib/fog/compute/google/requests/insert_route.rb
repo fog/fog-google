@@ -12,7 +12,6 @@ module Fog
         #
         # @see https://cloud.google.com/compute/docs/reference/latest/routes/insert
         def insert_route(route_name, network, dest_range, priority, options = {})
-
           route = ::Google::Apis::ComputeV1::Route.new(
             :name => route_name,
             :network => network,

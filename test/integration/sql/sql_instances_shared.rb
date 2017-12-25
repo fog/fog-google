@@ -48,7 +48,10 @@ class TestSqlInstancesShared < FogIntegrationTest
   def try_delete_instance(instance)
     @client = Fog::Google::SQL.new
     wait_until_complete { @client.delete_instance(instance) }
-  rescue ::Google::Apis::ClientError
+  rescue ::Google::Apis::ClientError => e
+    # 409: Invalid state
+    # 404: Not found
+    raise e unless e.status_code == 404 || e.status_code == 409
     Fog::Logger.warning("ignoring error in try_delete_instance")
   end
 end

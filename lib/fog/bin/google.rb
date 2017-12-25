@@ -1,4 +1,5 @@
-module Google # deviates from other bin stuff to accomodate gem
+# deviates from other bin stuff to accomodate gem
+module Google
   class << self
     def class_for(key)
       case key
@@ -62,7 +63,7 @@ module Google # deviates from other bin stuff to accomodate gem
       end
 
       # Then make sure we have all of the requirements
-      for service in services
+      services.each do |service|
         begin
           service = class_for(service)
           availability &&= service.requirements.all? { |requirement| Fog.credentials.include?(requirement) }
@@ -75,8 +76,8 @@ module Google # deviates from other bin stuff to accomodate gem
       end
 
       if availability
-        for service in services
-          for collection in class_for(service).collections
+        services.each do |service|
+          class_for(service).collections.each do |collection|
             next if respond_to?(collection)
             class_eval <<-EOS, __FILE__, __LINE__
                 def self.#{collection}

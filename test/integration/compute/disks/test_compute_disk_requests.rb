@@ -10,13 +10,14 @@ class TestComputeDiskRequests < FogIntegrationTest
 
   def delete_test_resources
     client = Fog::Compute::Google.new
-    disks = client.list_disks(DEFAULT_ZONE).items
+    disks = client.disks.all(:zone => DEFAULT_ZONE)
     unless disks.nil?
       disks
-        .select { |a| a.type == "READY" }
-        .map(&:name)
-        .select { |a| a.start_with?(DISK_RESOURCE_PREFIX) }
-        .each { |a| client.delete_disk(a, DEFAULT_ZONE) }
+        .select { |d| d.name.start_with?(DISK_RESOURCE_PREFIX) }
+        .each do |d|
+          d.wait_for { ready? }
+          client.delete_disk(d.name, DEFAULT_ZONE)
+        end
     end
   end
 
@@ -37,15 +38,14 @@ class TestComputeDiskRequests < FogIntegrationTest
   def some_disk_name
     # created lazily to speed tests up
     @some_disk ||= new_disk_name.tap do |a|
-      result = @client.insert_disk(a, DEFAULT_ZONE, nil, "sizeGb" => "10")
+      result = @client.insert_disk(a, DEFAULT_ZONE, nil, :size_gb => 10)
       Fog.wait_for { operation_finished?(result) }
     end
   end
 
   def test_insert_disk
     result = wait_until_complete do
-      @client.insert_disk(new_disk_name, DEFAULT_ZONE,
-                          nil, "sizeGb" => "10")
+      @client.insert_disk(new_disk_name, DEFAULT_ZONE, nil, :size_gb => 10)
     end
 
     assert_equal("DONE", result.status, "request should be successful")
@@ -71,7 +71,7 @@ class TestComputeDiskRequests < FogIntegrationTest
   def test_delete_disk
     # Create something to delete
     disk_to_delete = new_disk_name
-    wait_until_complete { @client.insert_disk(disk_to_delete, DEFAULT_ZONE, nil, "sizeGb" => 10) }
+    wait_until_complete { @client.insert_disk(disk_to_delete, DEFAULT_ZONE, nil, :size_gb => 10) }
 
     result = wait_until_complete { @client.delete_disk(disk_to_delete, DEFAULT_ZONE) }
 

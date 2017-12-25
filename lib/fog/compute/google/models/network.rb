@@ -21,7 +21,7 @@ module Fog
         attribute :subnetworks
 
         def save
-          requires :identity, :i_pv4_range
+          requires :identity, :ipv4_range
 
           data = service.insert_network(identity, attributes)
           operation = Fog::Compute::Google::Operations.new(:service => service)

@@ -41,7 +41,10 @@ module Fog
           nil
         end
 
-        def bootstrap(public_key_path = "~/.ssh/id_rsa.pub", opts = {})
+        def bootstrap(public_key_path: nil, **opts)
+          user = ENV["USER"]
+          public_key = get_public_key(public_key_path)
+
           name = "fog-#{Time.now.to_i}"
           zone_name = "us-central1-f"
 
@@ -69,15 +72,37 @@ module Fog
           )
           data[:machine_type] = "n1-standard-1" unless data[:machine_type]
 
-          public_key = File.read(File.expand_path(public_key_path))
-          user = ENV["USER"]
-
           server = new(data)
           server.save(:username => user, :public_key => public_key)
-
-          # TODO: I don't think this is currently possible - remove or enable.
+          # TODO: sshable? was removed, needs to be fixed for tests
           # server.wait_for { sshable? }
           server
+        end
+
+        private
+
+        # Defaults to:
+        # 1. ~/.ssh/google_compute_engine.pub
+        # 2. ~/.ssh/id_rsa.pub
+        PUBLIC_KEY_DEFAULTS = %w(
+          ~/.ssh/google_compute_engine.pub
+          ~/.ssh/id_rsa.pub
+        ).freeze
+        def get_public_key(public_key_path)
+          unless public_key_path
+            PUBLIC_KEY_DEFAULTS.each do |path|
+              if File.exist?(File.expand_path(path))
+                public_key_path = path
+                break
+              end
+            end
+          end
+
+          if public_key_path.nil? || public_key_path.empty?
+            raise ArgumentError("cannot bootstrap instance without public key file")
+          end
+
+          File.read(File.expand_path(public_key_path))
         end
       end
     end

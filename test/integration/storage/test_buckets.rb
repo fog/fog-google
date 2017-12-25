@@ -21,12 +21,12 @@ class TestStorageRequests < StorageShared
   # As we cannot control the service account used for testing, we'll
   # just ensure that a valid operation succeeds and an invalid operation fails.
   def test_put_bucket_predefined_acl
-    @client.put_bucket(new_bucket_name, "predefinedAcl" => "publicRead")
+    @client.put_bucket(new_bucket_name, :predefined_acl => "publicRead")
   end
 
   def test_put_bucket_invalid_predefined_acl
     assert_raises(Google::Apis::ClientError) do
-      @client.put_bucket(new_bucket_name, "predefinedAcl" => "invalidAcl")
+      @client.put_bucket(new_bucket_name, :predefined_acl => "invalidAcl")
     end
   end
 
@@ -72,7 +72,7 @@ class TestStorageRequests < StorageShared
     @client.put_bucket_acl(bucket_name, acl)
   end
 
-  def test_get_bucket_acl
+  def test_list_bucket_acl
     bucket_name = new_bucket_name
     @client.put_bucket(bucket_name)
 
@@ -82,7 +82,7 @@ class TestStorageRequests < StorageShared
     }
     @client.put_bucket_acl(bucket_name, acl)
 
-    result = @client.get_bucket_acl(bucket_name)
+    result = @client.list_bucket_acl(bucket_name)
     if result.items.nil?
       raise StandardError.new("no bucket access controls found")
     end
@@ -91,5 +91,22 @@ class TestStorageRequests < StorageShared
       control.entity == acl[:entity] && control.role == acl[:role]
     end
     assert_equal(true, contained, "expected bucket access control not present")
+  end
+
+  def test_get_bucket_acl
+    bucket_name = new_bucket_name
+    @client.put_bucket(bucket_name)
+
+    acl = {
+      :entity => "allUsers",
+      :role => "READER"
+    }
+    @client.put_bucket_acl(bucket_name, acl)
+    result = @client.get_bucket_acl(bucket_name, "allUsers")
+    if result.nil?
+      raise StandardError.new("no bucket access control found")
+    end
+
+    assert_equal(result.role, acl[:role], "incorrect bucket access control role")
   end
 end
