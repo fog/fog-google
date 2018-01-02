@@ -8,23 +8,21 @@ module Fog
       end
 
       class Real
-        def add_server_access_config(identity, zone, nic, options = {})
-          api_method = @compute.instances.add_access_config
-          parameters = {
-            "project"  => @project,
-            "instance" => identity,
-            "zone"     => zone.split("/")[-1],
-            "networkInterface" => nic
-          }
-
-          body_object = {
-            "type" => "ONE_TO_ONE_NAT"
-          }
-
-          body_object["name"] = options[:name] ? options[:name] : "External NAT"
-          body_object["natIP"] = options[:address] if options[:address]
-
-          request(api_method, parameters, body_object)
+        def add_server_access_config(identity, zone,
+                                     network_interface,
+                                     access_config_name = "External NAT",
+                                     nat_ip: nil)
+          @compute.add_instance_access_config(
+            @project,
+            zone.split("/")[-1],
+            identity,
+            network_interface,
+            ::Google::Apis::ComputeV1::AccessConfig.new(
+              :name => access_config_name,
+              :nat_ip => nat_ip,
+              :type => "ONE_TO_ONE_NAT"
+            )
+          )
         end
       end
     end

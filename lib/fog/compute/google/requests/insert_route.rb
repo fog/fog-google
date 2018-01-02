@@ -2,32 +2,30 @@ module Fog
   module Compute
     class Google
       class Mock
-        def insert_route(_name, _network, _dest_range, _priority, _options = {})
+        def insert_route(_route_name, _network, _dest_range, _priority, _options = {})
           Fog::Mock.not_implemented
         end
       end
 
       class Real
-        def insert_route(name, network, dest_range, priority, options = {})
-          api_method = @compute.routes.insert
-          parameters = {
-            "project" => @project
-          }
-          body_object = {
-            "name" => name,
-            "network" => network,
-            "destRange" => dest_range,
-            "priority" => priority
-          }
-          body_object["description"] = options[:description] if options[:description]
-          unless options[:tags].nil? || options[:tags].empty?
-            body_object["tags"] = options[:tags]
-          end
-          body_object["nextHopInstance"] = options[:next_hop_instance] if options[:next_hop_instance]
-          body_object["nextHopGateway"] = options[:next_hop_gateway] if options[:next_hop_gateway]
-          body_object["nextHopIp"] = options[:next_hop_ip] if options[:next_hop_ip]
+        # Creates a Route resource.
+        #
+        # @see https://cloud.google.com/compute/docs/reference/latest/routes/insert
+        def insert_route(route_name, network, dest_range, priority, options = {})
+          route = ::Google::Apis::ComputeV1::Route.new(
+            :name => route_name,
+            :network => network,
+            :dest_range => dest_range,
+            :priority => priority,
+            :tags => options[:tags] || [],
+            :next_hop_instance => options[:next_hop_instance],
+            :next_hop_gateway => options[:next_hop_gateway],
+            :next_hop_ip => options[:next_hop_ip],
+            :next_hop_vpn_tunnel => options[:next_hop_vpn_tunnel],
+            :description => options[:description]
+          )
 
-          request(api_method, parameters, body_object)
+          @compute.insert_route(@project, route)
         end
       end
     end

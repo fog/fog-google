@@ -2,40 +2,60 @@ module Fog
   module Compute
     class Google
       class Mock
-        def insert_firewall(_firewall_name, _allowed, _network = GOOGLE_COMPUTE_DEFAULT_NETWORK, _options = {})
+        def insert_firewall(_firewall_name, _options = {})
           Fog::Mock.not_implemented
         end
       end
 
       class Real
-        def insert_firewall(firewall_name, allowed, network = GOOGLE_COMPUTE_DEFAULT_NETWORK, options = {})
-          unless network.start_with? "http"
-            network = "#{@api_url}#{@project}/global/networks/#{network}"
+        INSERTABLE_FIREWALL_FIELDS = %i{
+          allowed
+          denied
+          description
+          destination_ranges
+          direction
+          name
+          network
+          priority
+          source_ranges
+          source_service_accounts
+          source_tags
+          target_service_accounts
+          target_tags
+        }.freeze
+
+        ##
+        # Create a Firewall resource
+        #
+        # @param [Hash] opts The firewall object to create
+        # @option opts [Array<Hash>] allowed
+        # @option opts [Array<Hash>] denied
+        # @option opts [String] description
+        # @option opts [Array<String>] destination_ranges
+        # @option opts [String] direction
+        # @option opts [String] name
+        # @option opts [String] network
+        # @option opts [Fixnum] priority
+        # @option opts [Array<String>] source_ranges
+        # @option opts [Array<String>] source_service_accounts
+        # @option opts [Array<String>] source_tags
+        # @option opts [Array<String>] target_service_accounts
+        # @option opts [Array<String>] target_tags
+        #
+        # @see https://cloud.google.com/compute/docs/reference/latest/firewalls/insert
+        def insert_firewall(firewall_name, opts = {})
+          if opts.key?(:network) && !opts[:network].empty?
+            unless opts[:network].start_with?("http://", "https://", "projects/", "global/")
+              opts[:network] = "projects/#{@project}/global/networks/#{opts[:network]}"
+            end
           end
 
-          api_method = @compute.firewalls.insert
-          parameters = {
-            "project" => @project
-          }
-          body_object = {
-            "name" => firewall_name,
-            "network" => network,
-            "allowed" => allowed
-          }
-          unless options[:description].nil?
-            body_object["description"] = options[:description]
-          end
-          unless options[:source_ranges].nil? || options[:source_ranges].empty?
-            body_object["sourceRanges"] = options[:source_ranges]
-          end
-          unless options[:source_tags].nil? || options[:source_tags].empty?
-            body_object["sourceTags"] = options[:source_tags]
-          end
-          unless options[:target_tags].nil? || options[:target_tags].empty?
-            body_object["targetTags"] = options[:target_tags]
-          end
+          opts = opts.select { |k, _| INSERTABLE_FIREWALL_FIELDS.include? k }
+                     .merge(:name => firewall_name)
 
-          request(api_method, parameters, body_object)
+          @compute.insert_firewall(
+            @project, ::Google::Apis::ComputeV1::Firewall.new(opts)
+          )
         end
       end
     end

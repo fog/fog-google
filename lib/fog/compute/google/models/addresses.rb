@@ -4,40 +4,48 @@ module Fog
       class Addresses < Fog::Collection
         model Fog::Compute::Google::Address
 
-        def all(filters = {})
-          if filters[:region]
-            data = service.list_addresses(filters[:region]).body["items"] || []
+        def all(region: nil, filter: nil, max_results: nil, order_by: nil, page_token: nil)
+          opts = {
+            :filter => filter,
+            :max_results => max_results,
+            :order_by => order_by,
+            :page_token => page_token
+          }
+
+          if region
+            data = service.list_addresses(region, opts).items || []
           else
             data = []
-            service.list_aggregated_addresses.body["items"].each_value do |region|
-              data.concat(region["addresses"]) if region["addresses"]
+            service.list_aggregated_addresses(opts).items.each_value do |scoped_list|
+              data.concat(scoped_list.addresses) if scoped_list && scoped_list.addresses
             end
           end
-          load(data)
+          load(data.map(&:to_h))
         end
 
         def get(identity, region)
-          if address = service.get_address(identity, region).body
+          if address = service.get_address(identity, region).to_h
             new(address)
           end
-        rescue Fog::Errors::NotFound
+        rescue ::Google::Apis::ClientError => e
+          raise e unless e.status_code == 404
           nil
         end
 
         def get_by_ip_address(ip_address)
-          addresses = service.list_aggregated_addresses(:filter => "address eq .*#{ip_address}").body["items"]
-          address = addresses.each_value.select { |region| region.key?("addresses") }
+          addresses = service.list_aggregated_addresses(:filter => "address eq .*#{ip_address}").items
+          address = addresses.each_value.select(&:addresses)
 
           return nil if address.empty?
-          new(address.first["addresses"].first)
+          new(address.first.addresses.first.to_h)
         end
 
         def get_by_name(ip_name)
-          names = service.list_aggregated_addresses(:filter => "name eq .*#{ip_name}").body["items"]
-          name = names.each_value.select { |region| region.key?("addresses") }
+          names = service.list_aggregated_addresses(:filter => "name eq .*#{ip_name}").items
+          name = names.each_value.select(&:addresses)
 
           return nil if name.empty?
-          new(name.first["addresses"].first)
+          new(name.first.addresses.first.to_h)
         end
 
         def get_by_ip_address_or_name(ip_address_or_name)

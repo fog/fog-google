@@ -4,13 +4,23 @@ module Fog
       class Servers < Fog::Collection
         model Fog::Compute::Google::Server
 
-        def all(filters = {})
-          if filters["zone"]
-            data = service.list_servers(filters["zone"]).body["items"] || []
+        def all(zone: nil, filter: nil, max_results: nil,
+                order_by: nil, page_token: nil)
+          opts = {
+            :filter => filter,
+            :max_results => max_results,
+            :order_by => order_by,
+            :page_token => page_token
+          }
+
+          if zone
+            data = service.list_servers(zone, opts).to_h[:items] || []
           else
             data = []
-            service.list_aggregated_servers.body["items"].each_value do |zone|
-              data.concat(zone["instances"]) if zone["instances"]
+            service.list_aggregated_servers(opts).items.each_value do |scoped_lst|
+              if scoped_lst && scoped_lst.instances
+                data.concat(scoped_lst.instances.map(&:to_h))
+              end
             end
           end
           load(data)
@@ -19,57 +29,80 @@ module Fog
         def get(identity, zone = nil)
           response = nil
           if zone
-            response = service.get_server(identity, zone).body
+            response = service.get_server(identity, zone).to_h
           else
-            servers = service.list_aggregated_servers(:filter => "name eq .*#{identity}").body["items"]
-            server = servers.each_value.select { |zone| zone.key?("instances") }
-
-            # It can only be 1 server with the same name across all regions
-            response = server.first["instances"].first unless server.empty?
+            server = all(:filter => "name eq .*#{identity}").first
+            response = server.attributes if server
           end
           return nil if response.nil?
           new(response)
-        rescue Fog::Errors::NotFound
+        rescue ::Google::Apis::ClientError => e
+          raise e unless e.status_code == 404
           nil
         end
 
-        def bootstrap(new_attributes = {})
-          name = "fog-#{Time.now.to_i}"
-          zone = "us-central1-f"
+        def bootstrap(public_key_path: nil, **opts)
+          user = ENV["USER"]
+          public_key = get_public_key(public_key_path)
 
-          disks = new_attributes[:disks]
+          name = "fog-#{Time.now.to_i}"
+          zone_name = "us-central1-f"
+
+          disks = opts[:disks]
 
           if disks.nil? || disks.empty?
             # create the persistent boot disk
+            source_img = service.images.get_from_family("debian-8")
             disk_defaults = {
               :name => name,
               :size_gb => 10,
-              :zone_name => zone,
-              :source_image => "debian-8-jessie-v20161215"
+              :zone_name => zone_name,
+              :source_image => source_img.self_link
             }
-
-            # backwards compatibility to pre-v1
-            new_attributes[:source_image] = new_attributes[:image_name] if new_attributes[:image_name]
-
-            disk = service.disks.create(disk_defaults.merge(new_attributes))
+            disk = service.disks.create(disk_defaults.merge(opts))
             disk.wait_for { disk.ready? }
+
             disks = [disk]
           end
 
-          defaults = {
+          data = opts.merge(
             :name => name,
-            :disks => disks,
-            :machine_type => "n1-standard-1",
-            :zone_name => zone,
-            :private_key_path => File.expand_path("~/.ssh/id_rsa"),
-            :public_key_path => File.expand_path("~/.ssh/id_rsa.pub"),
-            :username => ENV["USER"]
-          }
+            :zone => zone_name,
+            :disks => disks
+          )
+          data[:machine_type] = "n1-standard-1" unless data[:machine_type]
 
-          server = create(defaults.merge(new_attributes))
-          server.wait_for { sshable? }
-
+          server = new(data)
+          server.save(:username => user, :public_key => public_key)
+          # TODO: sshable? was removed, needs to be fixed for tests
+          # server.wait_for { sshable? }
           server
+        end
+
+        private
+
+        # Defaults to:
+        # 1. ~/.ssh/google_compute_engine.pub
+        # 2. ~/.ssh/id_rsa.pub
+        PUBLIC_KEY_DEFAULTS = %w(
+          ~/.ssh/google_compute_engine.pub
+          ~/.ssh/id_rsa.pub
+        ).freeze
+        def get_public_key(public_key_path)
+          unless public_key_path
+            PUBLIC_KEY_DEFAULTS.each do |path|
+              if File.exist?(File.expand_path(path))
+                public_key_path = path
+                break
+              end
+            end
+          end
+
+          if public_key_path.nil? || public_key_path.empty?
+            raise ArgumentError("cannot bootstrap instance without public key file")
+          end
+
+          File.read(File.expand_path(public_key_path))
         end
       end
     end

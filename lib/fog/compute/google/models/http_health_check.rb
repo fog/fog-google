@@ -4,58 +4,82 @@ module Fog
       class HttpHealthCheck < Fog::Model
         identity :name
 
-        attribute :kind, :aliases => "kind"
-        attribute :self_link, :aliases => "selfLink"
-        attribute :id, :aliases => "id"
-        attribute :creation_timestamp, :aliases => "creationTimestamp"
-        attribute :description, :aliases => "description"
-        attribute :host, :aliases => "host"
-        attribute :request_path, :aliases => "requestPath"
-        attribute :port, :aliases => "port"
         attribute :check_interval_sec, :aliases => "checkIntervalSec"
+        attribute :creation_timestamp, :aliases => "creationTimestamp"
+        attribute :description
+        attribute :healthy_threshold, :aliases => "healthyThreshold"
+        attribute :host
+        attribute :id
+        attribute :kind
+        attribute :port
+        attribute :request_path, :aliases => "requestPath"
+        attribute :self_link, :aliases => "selfLink"
         attribute :timeout_sec, :aliases => "timeoutSec"
         attribute :unhealthy_threshold, :aliases => "unhealthyThreshold"
-        attribute :healthy_threshold, :aliases => "healthyThreshold"
+
+        MODIFIABLE_FIELDS = %i(
+          name
+          check_interval_sec
+          creation_timestamp
+          description
+          healthy_threshold
+          host
+          port
+          request_path
+          timeout_sec
+          unhealthy_threshold
+        ).freeze
 
         def save
-          requires :name
-
-          options = {
-            "description" => description,
-            "host" => host,
-            "requestPath" => request_path || "/",
-            "port" => port || 80,
-            "checkIntervalSec" => check_interval_sec || 5,
-            "timeoutSec" => timeout_sec || 5,
-            "unhealthyThreshold" => unhealthy_threshold || 2,
-            "healthyThreshold" => healthy_threshold || 2
+          opts = {
+            :name => name,
+            :check_interval_sec => check_interval_sec,
+            :creation_timestamp => creation_timestamp,
+            :description => description,
+            :healthy_threshold => healthy_threshold,
+            :host => host,
+            :port => port,
+            :request_path => request_path,
+            :timeout_sec => timeout_sec,
+            :unhealthy_threshold => unhealthy_threshold
           }
 
-          data = service.insert_http_health_check(name, options).body
-          operation = Fog::Compute::Google::Operations.new(:service => service).get(data["name"], data["zone"])
+          id.nil? ? create(opts) : update(opts)
+        end
+
+        def create(opts)
+          requires :name
+
+          data = service.insert_http_health_check(name, opts)
+          operation = Fog::Compute::Google::Operations.new(:service => service)
+                                                      .get(data.name, data.zone)
+          operation.wait_for { !pending? }
+          reload
+        end
+
+        def update(opts)
+          requires :name
+          data = service.update_http_health_check(name, opts)
+          operation = Fog::Compute::Google::Operations.new(:service => service)
+                                                      .get(data.name, data.zone)
           operation.wait_for { !pending? }
           reload
         end
 
         def destroy(async = true)
           requires :name
-          operation = service.delete_http_health_check(name)
-
-          unless async
-            # wait until "DONE" to ensure the operation doesn't fail, raises
-            # exception on error
-            Fog.wait_for do
-              operation = service.get_global_operation(operation.body["name"])
-              operation.body["status"] == "DONE"
-            end
-          end
+          data = service.delete_http_health_check(name)
+          operation = Fog::Compute::Google::Operations.new(:service => service)
+                                                      .get(data.name)
+          operation.wait_for { ready? } unless async
           operation
         end
 
         def ready?
           service.get_http_health_check(name)
           true
-        rescue Fog::Errors::NotFound
+        rescue ::Google::Apis::ClientError => e
+          raise e unless e.status_code == 404
           false
         end
 
@@ -73,7 +97,7 @@ module Fog
           self
         end
 
-        RUNNING_STATE = "READY"
+        RUNNING_STATE = "READY".freeze
       end
     end
   end

@@ -4,60 +4,58 @@ module Fog
       class GlobalForwardingRule < Fog::Model
         identity :name
 
-        attribute :kind, :aliases => "kind"
-        attribute :self_link, :aliases => "selfLink"
-        attribute :id, :aliases => "id"
+        attribute :ip_address, :aliases => "IPAddress"
+        attribute :ip_protocol, :aliases => "IPProtocol"
+        attribute :backend_service, :aliases => "backendService"
         attribute :creation_timestamp, :aliases => "creationTimestamp"
-        attribute :description, :aliases => "description"
-        attribute :region, :aliases => "region" # should always be 'global'
-        attribute :ip_address, :aliases => "IPAddress" # string
-        attribute :ip_protocol, :aliases => "IPProtocol" # string
-        attribute :port_range, :aliases => "portRange" # string
-        attribute :target, :aliases => "target" # string, URL of global target http proxy
+        attribute :description
+        attribute :id
+        attribute :ip_version, :aliases => "ipVersion"
+        attribute :kind
+        attribute :load_balancing_scheme, :aliases => "loadBalancingScheme"
+        attribute :network
+        attribute :port_range, :aliases => "portRange"
+        attribute :ports
+        attribute :region
+        attribute :self_link, :aliases => "selfLink"
+        attribute :subnetwork
+        attribute :target
 
         def save
-          requires :name
+          requires :identity
 
-          options = {
-            "description" => description,
-            "region" => "global",
-            "IPAddress" => ip_address,
-            "IPProtocol" => ip_protocol || "TCP",
-            "portRange" => port_range || 80,
-            "target" => target
-          }
-
-          data = service.insert_global_forwarding_rule(name, options).body
-          operation = Fog::Compute::Google::Operations.new(:service => service).get(data["name"], nil, data["region"])
+          data = service.insert_global_forwarding_rule(identity, attributes)
+          operation = Fog::Compute::Google::Operations.new(:service => service)
+                                                      .get(data.name, nil, data.region)
           operation.wait_for { !pending? }
           reload
         end
 
         def destroy(async = true)
-          requires :name
-
-          operation = service.delete_global_forwarding_rule(name, "global")
-          unless async
-            # wait until "RUNNING" or "DONE" to ensure the operation doesn't
-            # fail, raises exception on error
-            Fog.wait_for do
-              operation.body["status"] == "DONE"
-            end
-          end
+          requires :identity
+          data = service.delete_global_forwarding_rule(identity)
+          operation = Fog::Compute::Google::Operations.new(:service => service)
+                                                      .get(data.name, nil, data.region)
+          operation.wait_for { ready? } unless async
           operation
         end
 
         def set_target(new_target)
+          requires :identity
+
           new_target = new_target.self_link unless new_target.class == String
           self.target = new_target
-          service.set_global_forwarding_rule_target(self, new_target)
+          service.set_global_forwarding_rule_target(
+            identity, :target => new_target
+          )
           reload
         end
 
         def ready?
-          service.get_global_forwarding_rule(name, "global")
+          service.get_global_forwarding_rule(name)
           true
-        rescue Fog::Errors::NotFound
+        rescue ::Google::Apis::ClientError => e
+          raise e unless e.status_code == 404
           false
         end
 
@@ -65,7 +63,7 @@ module Fog
           requires :name
 
           return unless data = begin
-            collection.get(name, "global")
+            collection.get(name)
           rescue Excon::Errors::SocketError
             nil
           end
@@ -74,8 +72,6 @@ module Fog
           merge_attributes(new_attributes)
           self
         end
-
-        RUNNING_STATE = "READY"
       end
     end
   end

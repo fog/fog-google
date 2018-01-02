@@ -1,96 +1,74 @@
+require "tempfile"
+
 module Fog
   module Storage
     class GoogleJSON
       class Real
         # Get an object from Google Storage
-        # https://cloud.google.com/storage/docs/json_api/v1/objects/get
+        # @see https://cloud.google.com/storage/docs/json_api/v1/objects/get
         #
-        # ==== Parameters
-        # * bucket_name<~String> - Name of bucket to read from
-        # * object_name<~String> - Name of object to read
-        # * options<~Hash>:
-        #   * 'If-Match'<~String> - Returns object only if its etag matches this value, otherwise returns 412 (Precondition Failed).
-        #   * 'If-Modified-Since'<~Time> - Returns object only if it has been modified since this time, otherwise returns 304 (Not Modified).
-        #   * 'If-None-Match'<~String> - Returns object only if its etag differs from this value, otherwise returns 304 (Not Modified)
-        #   * 'If-Unmodified-Since'<~Time> - Returns object only if it has not been modified since this time, otherwise returns 412 (Precodition Failed).
-        #   * 'Range'<~String> - Range of object to download
-        #   * 'versionId'<~String> - specify a particular version to retrieve
-        #
-        # ==== Returns
-        # * response<~Excon::Response>:
-        #   * body<~String> - Contents of object
-        #   * headers<~Hash>:
-        #     * 'Content-Length'<~String> - Size of object contents
-        #     * 'Content-Type'<~String> - MIME type of object
-        #     * 'ETag'<~String> - Etag of object
-        #     * 'Last-Modified'<~String> - Last modified timestamp for object
-        #
-        def get_object(bucket_name, object_name, _options = {}, &_block)
+        # @param bucket_name [String] Name of bucket to create object in
+        # @param object_name [String] Name of object to create
+        # @param generation [Fixnum]
+        #   If present, selects a specific revision of this object (as opposed to the latest version, the default).
+        # @param ifGenerationMatch [Fixnum]
+        #   Makes the operation conditional on whether the object's current generation matches the given value. Setting to 0 makes the operation succeed only if there are no live versions of the object.
+        # @param ifGenerationNotMatch [Fixnum]
+        #   Makes the operation conditional on whether the object's current generation does not match the given value. If no live object exists, the precondition fails. Setting to 0 makes the operation succeed only if there is a live version of the object.
+        # @param ifMetagenerationMatch [Fixnum]
+        #   Makes the operation conditional on whether the object's current metageneration matches the given value.
+        # @param ifMetagenerationNotMatch [Fixnum]
+        #   Makes the operation conditional on whether the object's current metageneration does not match the given value.
+        # @param projection [Fixnum]
+        #   Set of properties to return
+        # @param options [Hash]
+        #   Request-specific options
+        # @return [Hash] Object metadata with :body attribute set to contents of object
+        def get_object(bucket_name, object_name,
+                       generation: nil,
+                       if_generation_match: nil,
+                       if_generation_not_match: nil,
+                       if_metageneration_match: nil,
+                       if_metageneration_not_match: nil,
+                       projection: nil,
+                       **options)
           raise ArgumentError.new("bucket_name is required") unless bucket_name
           raise ArgumentError.new("object_name is required") unless object_name
 
-          api_method = @storage_json.objects.get
-          parameters = {
-            "bucket" => bucket_name,
-            "object" => object_name,
-            "projection" => "full"
+          # The previous semantics require returning the content of the request
+          # rather than taking a filename to populate. Hence, tempfile.
+          buf = Tempfile.new("fog-google-storage-temp")
+
+          # Two requests are necessary, first for metadata, then for content.
+          # google-api-ruby-client doesn't allow fetching both metadata and content
+          request_options = ::Google::Apis::RequestOptions.default.merge(options)
+          all_opts = {
+            :generation => generation,
+            :if_generation_match => if_generation_match,
+            :if_generation_not_match => if_generation_not_match,
+            :if_metageneration_match => if_metageneration_match,
+            :if_metageneration_not_match => if_metageneration_not_match,
+            :projection => projection,
+            :options => request_options
           }
 
-          object = request(api_method, parameters)
+          object = @storage_json.get_object(bucket_name, object_name, all_opts).to_h
+          @storage_json.get_object(
+            bucket_name,
+            object_name,
+            all_opts.merge(:download_dest => buf.path)
+          )
 
-          # Get the body of the object (can't use request for this)
-          parameters["alt"] = "media"
-          client_parms = {
-            :api_method => api_method,
-            :parameters => parameters
-          }
+          object[:body] = buf.read
+          buf.unlink
 
-          result = @client.execute(client_parms)
-          object.headers = object.body
-          object.body = result.body.nil? || result.body.empty? ? nil : result.body
           object
         end
       end
 
       class Mock
-        def get_object(bucket_name, object_name, options = {}, &block)
-          raise ArgumentError.new("bucket_name is required") unless bucket_name
-          raise ArgumentError.new("object_name is required") unless object_name
-          response = Excon::Response.new
-          if (bucket = data[:buckets][bucket_name]) && (object = bucket[:objects][object_name])
-            if options["If-Match"] && options["If-Match"] != object["ETag"]
-              response.status = 412
-            elsif options["If-Modified-Since"] && options["If-Modified-Since"] >= Time.parse(object["Last-Modified"])
-              response.status = 304
-            elsif options["If-None-Match"] && options["If-None-Match"] == object["ETag"]
-              response.status = 304
-            elsif options["If-Unmodified-Since"] && options["If-Unmodified-Since"] < Time.parse(object["Last-Modified"])
-              response.status = 412
-            else
-              response.status = 200
-              for key, value in object
-                case key
-                when "Cache-Control", "Content-Disposition", "Content-Encoding", "Content-Length", "Content-MD5", "Content-Type", "ETag", "Expires", "Last-Modified", /^x-goog-meta-/
-                  response.headers[key] = value
-                end
-              end
-              unless block_given?
-                response.body = object[:body]
-              else
-                data = StringIO.new(object[:body])
-                remaining = data.length
-                while remaining > 0
-                  chunk = data.read([remaining, Excon::CHUNK_SIZE].min)
-                  block.call(chunk)
-                  remaining -= Excon::CHUNK_SIZE
-                end
-              end
-            end
-          else
-            response.status = 404
-            raise(Excon::Errors.status_error({ :expects => 200 }, response))
-          end
-          response
+        def get_object(_bucket_name, _object_name, _options = {})
+          Fog::Mock.not_implemented
         end
       end
     end

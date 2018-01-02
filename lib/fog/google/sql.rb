@@ -8,6 +8,7 @@ module Fog
       recognizes(
         :app_name,
         :app_version,
+        :google_auth,
         :google_client,
         :google_client_email,
         :google_client_options,
@@ -17,10 +18,10 @@ module Fog
         :google_json_key_string
       )
 
-      GOOGLE_SQL_API_VERSION    = "v1beta3"
-      GOOGLE_SQL_BASE_URL       = "https://www.googleapis.com/sql/"
+      GOOGLE_SQL_API_VERSION    = "v1beta4".freeze
+      GOOGLE_SQL_BASE_URL       = "https://www.googleapis.com/sql/".freeze
       GOOGLE_SQL_API_SCOPE_URLS = %w(https://www.googleapis.com/auth/sqlservice.admin
-                                     https://www.googleapis.com/auth/cloud-platform)
+                                     https://www.googleapis.com/auth/cloud-platform).freeze
 
       ##
       # MODELS
@@ -50,12 +51,18 @@ module Fog
       model :tier
       collection :tiers
 
+      # User
+      model :user
+      collection :users
+
       ##
       # REQUESTS
       request_path "fog/google/requests/sql"
 
       # Backup Run
+      request :delete_backup_run
       request :get_backup_run
+      request :insert_backup_run
       request :list_backup_runs
 
       # Flag
@@ -72,7 +79,6 @@ module Fog
       request :reset_instance_ssl_config
       request :restart_instance
       request :restore_instance_backup
-      request :set_instance_root_password
       request :update_instance
 
       # Operation
@@ -87,6 +93,12 @@ module Fog
 
       # Tier
       request :list_tiers
+
+      # User
+      request :insert_user
+      request :update_user
+      request :list_users
+      request :delete_user
     end
   end
 end

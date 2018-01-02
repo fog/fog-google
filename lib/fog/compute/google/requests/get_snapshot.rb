@@ -10,14 +10,7 @@ module Fog
       class Real
         def get_snapshot(snap_name, project = @project)
           raise ArgumentError.new "snap_name must not be nil." if snap_name.nil?
-
-          api_method = @compute.snapshots.get
-          parameters = {
-            "snapshot" => snap_name,
-            "project"  => project
-          }
-
-          request(api_method, parameters)
+          @compute.get_snapshot(project, snap_name)
         end
       end
     end

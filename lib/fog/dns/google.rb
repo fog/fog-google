@@ -8,6 +8,7 @@ module Fog
       recognizes(
         :app_name,
         :app_version,
+        :google_auth,
         :google_client,
         :google_client_email,
         :google_client_options,
@@ -17,9 +18,9 @@ module Fog
         :google_json_key_string
       )
 
-      GOOGLE_DNS_API_VERSION     = "v1"
-      GOOGLE_DNS_BASE_URL        = "https://www.googleapis.com/dns/"
-      GOOGLE_DNS_API_SCOPE_URLS  = %w(https://www.googleapis.com/auth/ndev.clouddns.readwrite)
+      GOOGLE_DNS_API_VERSION     = "v1".freeze
+      GOOGLE_DNS_BASE_URL        = "https://www.googleapis.com/dns/".freeze
+      GOOGLE_DNS_API_SCOPE_URLS  = %w(https://www.googleapis.com/auth/ndev.clouddns.readwrite).freeze
 
       ##
       # MODELS

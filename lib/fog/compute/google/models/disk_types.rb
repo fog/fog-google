@@ -4,31 +4,37 @@ module Fog
       class DiskTypes < Fog::Collection
         model Fog::Compute::Google::DiskType
 
-        def all(filters = {})
-          if filters["zone"]
-            data = service.list_disk_types(filters["zone"]).body["items"] || []
+        def all(zone: nil, filter: nil, max_results: nil,
+                order_by: nil, page_token: nil)
+          opts = {
+            :filter => filter,
+            :max_results => max_results,
+            :order_by => order_by,
+            :page_token => page_token
+          }
+          if zone
+            data = service.list_disk_types(zone, opts).items
           else
             data = []
-            service.list_aggregated_disk_types.body["items"].each_value do |zone|
-              data.concat(zone["diskTypes"]) if zone["diskTypes"]
+            service.list_aggregated_disk_types(opts).items.each_value do |scoped_lst|
+              data.concat(scoped_lst.disk_types) if scoped_lst && scoped_lst.disk_types
             end
           end
-          load(data)
+          load(data.map(&:to_h))
         end
 
         def get(identity, zone = nil)
           response = nil
           if zone
-            response = service.get_disk_type(identity, zone).body
+            response = service.get_disk_type(identity, zone).to_h
           else
-            disk_types = service.list_aggregated_disk_types(:filter => "name eq .*#{identity}").body["items"] || {}
-            disk_type = disk_types.each_value.detect { |zone| zone.key?("diskTypes") } || {}
-
-            response = disk_type["diskTypes"].first unless disk_type.empty?
+            disk_types = all(:filter => "name eq .*#{identity}")
+            response = disk_types.first.attributes unless disk_types.empty?
           end
           return nil if response.nil?
           new(response)
-        rescue Fog::Errors::NotFound
+        rescue ::Google::Apis::ClientError => e
+          raise e unless e.status_code == 404
           nil
         end
       end

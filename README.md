@@ -6,7 +6,7 @@ The main maintainers for the Google sections are @icco, @Temikus and @plribeiro3
 
 **As of v0.1.1, Google no longer supports Ruby versions less than 2.0.0.**
 
-**Currently, `fog-google` does not support versions of `google-api-client` >= 0.9 or <= 0.8.5.**
+**As of v1.0.0, fog-google includes google-api-client as a dependency**
 
 
 ## Storage
@@ -20,13 +20,12 @@ There are two ways to access [Google Cloud Storage](https://cloud.google.com/sto
 
 Google Compute Engine is a Virtual Machine hosting service. Currently it is built on version [v1](https://developers.google.com/compute/docs/reference/v1/) of the GCE API.
 
-As of 2015-12-07, we believe Fog for Google Compute engine (`Fog::Compute::Google`) is feature complete.
-
-If you are using Fog to interact with GCE, please keep Fog up to date and [file issues](https://github.com/fog/fog-google/issues) for any anomalies you see or features you would like.
+As of 2017-12-15, we are still working on making Fog for Google Compute engine (`Fog::Compute::Google`) feature complete. If you are using Fog to interact with GCE, please keep Fog up to date and [file issues](https://github.com/fog/fog-google/issues) for any anomalies you see or features you would like.
 
 ## SQL
 
-Fog implements [v1beta3](https://cloud.google.com/sql/docs/admin-api/v1beta3/) of the Google Cloud SQL Admin API. This is a currently deprecated API. Pull Requests for updates would be greatly appreciated.
+Fog implements [v1beta4](https://cloud.google.com/sql/docs/mysql/admin-api/v1beta4/) of the Google Cloud SQL Admin API. As of 2017-11-06, Cloud SQL is mostly feature-complete. Please [file issues](https://github.com/fog/fog-google/issues) for any anomalies you see or features you would like as we finish 
+adding remaining features. 
 
 ## DNS
 
@@ -34,10 +33,7 @@ Fog implements [v1](https://cloud.google.com/dns/api/v1/) of the Google Cloud DN
 
 ## Monitoring
 
-Fog mostly implements [v3](https://cloud.google.com/monitoring/api/ref_v3/rest/) of the Google Cloud Monitoring API. 
-
-As of 2017-09-26, some less common API methods are missing and may be added as requested. Feature requests or pull requests for 
-additions are welcome. 
+Fog implements [v3](https://cloud.google.com/monitoring/api/v3/) of the Google Cloud Monitoring API. As of 2017-10-05, we believe Fog for Google Cloud Monitoring is feature complete for metric-related resources and are working on supporting groups. 
  
 We are always looking for people to improve our code and test coverage, so please [file issues](https://github.com/fog/fog-google/issues) for any anomalies you see or features you would like.
 
@@ -46,7 +42,7 @@ We are always looking for people to improve our code and test coverage, so pleas
 Note: You **must** have a version of google-api-client > 0.8.5 to use the Pub/Sub API; previous versions will not work.
 
 Fog mostly implements [v1](https://cloud.google.com/pubsub/reference/rest/) of the Google Cloud Pub/Sub API; however some less common API methods are missing. Pull requests for additions would be greatly appreciated.
- 
+
 ## Installation
 
 Add the following two lines to your application's `Gemfile`:
@@ -68,16 +64,22 @@ Or install it yourself as:
 $ gem install fog-google
 ```
 
+## Testing
+
+The tests in `tests` are deprecated. We are currently working on a migration of tests to `minitest`.
+
+For your test to be tested with real credentials, a repo maintainer may add the label `integrate` to your PR to run integration tests.
+
 ## Setup
 
 #### Credentials
 
 Follow the [instructions to generate a private key](https://cloud.google.com/storage/docs/authentication#generating-a-private-key). A sample credentials file can be found in `.fog.example` in this directory:
 
-    cat .fog.example >> ~/.fog # appends the sample configuration
-    vim ~/.fog                 # edit file with yout config
-    
-
+```
+cat .fog.example >> ~/.fog # appends the sample configuration
+vim ~/.fog                 # edit file with yout config
+```
 
 #### SSH-ing into instances
 

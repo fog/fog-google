@@ -4,61 +4,17 @@ module Fog
       ##
       # Retrieves a particular SSL certificate (does not include the private key)
       #
-      # @see https://developers.google.com/cloud-sql/docs/admin-api/v1beta3/sslCerts/get
+      # @see https://cloud.google.com/sql/docs/mysql/admin-api/v1beta4/sslCerts/get
 
       class Real
         def get_ssl_cert(instance_id, sha1_fingerprint)
-          api_method = @sql.ssl_certs.get
-          parameters = {
-            "project" => @project,
-            "instance" => instance_id,
-            "sha1Fingerprint" => sha1_fingerprint
-          }
-
-          request(api_method, parameters)
+          @sql.get_ssl_cert(@project, instance_id, sha1_fingerprint)
         end
       end
 
       class Mock
-        def get_ssl_cert(instance_id, sha1_fingerprint)
-          if data[:ssl_certs].key?(instance_id)
-            if data[:ssl_certs][instance_id].key?(sha1_fingerprint)
-              body = data[:ssl_certs][instance_id][sha1_fingerprint]
-              status = 200
-            else
-              body = {
-                "error" => {
-                  "errors" => [
-                    {
-                      "domain" => "global",
-                      "reason" => "sslCertificateDoesNotExist",
-                      "message" => "The SSL certificate does not exist."
-                    }
-                  ],
-                  "code" => 404,
-                  "message" => "The SSL certificate does not exist."
-                }
-              }
-              status = 404
-            end
-          else
-            body = {
-              "error" => {
-                "errors" => [
-                  {
-                    "domain" => "global",
-                    "reason" => "notAuthorized",
-                    "message" => "The client is not authorized to make this request."
-                  }
-                ],
-                "code" => 403,
-                "message" => "The client is not authorized to make this request."
-              }
-            }
-            status = 403
-          end
-
-          build_excon_response(body, status)
+        def get_ssl_cert(_instance_id, _sha1_fingerprint)
+          Fog::Mock.not_implemented
         end
       end
     end

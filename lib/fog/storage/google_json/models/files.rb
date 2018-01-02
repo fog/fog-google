@@ -2,6 +2,8 @@ module Fog
   module Storage
     class GoogleJSON
       class Files < Fog::Collection
+        model Fog::Storage::GoogleJSON::File
+
         extend Fog::Deprecation
         deprecate :get_url, :get_https_url
 
@@ -12,39 +14,29 @@ module Fog
         attribute :max_results,     :aliases => ["MaxKeys", "max-keys"]
         attribute :prefix,          :aliases => "Prefix"
 
-        model Fog::Storage::GoogleJSON::File
-
         def all(options = {})
           requires :directory
 
-          body = service.list_objects(directory.key, options).body
-          load(body["items"] || [])
+          data = service.list_objects(directory.key, options).to_h[:items] || []
+          load(data)
         end
 
         alias_method :each_file_this_page, :each
         def each
-          if !block_given?
-            self
-          else
+          if block_given?
             subset = dup.all
 
             subset.each_file_this_page { |f| yield f }
-
-            self
           end
+          self
         end
 
         def get(key, options = {}, &block)
           requires :directory
-          data = service.get_object(directory.key, key, options, &block)
-          file_data = {}
-          data.headers.each do |k, v|
-            file_data[k] = v
-          end
-          file_data[:body] = data.body
-          file_data[:key] = key
-          new(file_data)
-        rescue Fog::Errors::NotFound
+          data = service.get_object(directory.key, key, options, &block).to_h
+          new(data)
+        rescue ::Google::Apis::ClientError => e
+          raise e unless e.status_code == 404
           nil
         end
 
@@ -53,18 +45,17 @@ module Fog
           service.get_object_https_url(directory.key, key, expires)
         end
 
-        def head(key, options = {})
+        def metadata(key, options = {})
           requires :directory
-          data = service.head_object(directory.key, key, options)
-          file_data = data.headers.merge(:key => key)
-          new(file_data)
-        rescue Fog::Errors::NotFound
+          data = service.get_object_metadata(directory.key, key, options).to_h
+          new(data)
+        rescue ::Google::Apis::ClientError
           nil
         end
 
-        def new(attributes = {})
+        def new(opts = {})
           requires :directory
-          super({ :directory => directory }.merge(attributes))
+          super({ :directory => directory }.merge(opts))
         end
       end
     end

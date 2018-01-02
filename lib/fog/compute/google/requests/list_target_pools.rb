@@ -2,24 +2,21 @@ module Fog
   module Compute
     class Google
       class Mock
-        def list_target_pools(region_name)
-          target_pools = data[:target_pools].values.select { |d| d["region"].split("/")[-1] == region_name }
-          build_excon_response("kind" => "compute#forwardingRuleList",
-                               "selfLink" => "https://www.googleapis.com/compute/#{api_version}/projects/#{@project}/regions/#{region_name}/targetPools",
-                               "id" => "projects/#{@project}/regions/#{region_name}/regions",
-                               "items" => target_pools)
+        def list_target_pools(_region, _opts = {})
+          Fog::Mock.not_implemented
         end
       end
 
       class Real
-        def list_target_pools(region_name)
-          api_method = @compute.target_pools.list
-          parameters = {
-            "project" => @project,
-            "region" => region_name
-          }
-
-          request(api_method, parameters)
+        def list_target_pools(region, filter: nil, max_results: nil,
+                              order_by: nil, page_token: nil)
+          @compute.list_target_pools(
+            @project, region.split("/")[-1],
+            :filter => filter,
+            :max_results => max_results,
+            :order_by => order_by,
+            :page_token => page_token
+          )
         end
       end
     end

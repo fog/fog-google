@@ -4,14 +4,22 @@ module Fog
       class TargetPools < Fog::Collection
         model Fog::Compute::Google::TargetPool
 
-        def all(filters = {})
-          if filters["region"].nil?
+        def all(region: nil, filter: nil, max_results: nil, order_by: nil, page_token: nil)
+          opts = {
+            :filter => filter,
+            :max_results => max_results,
+            :order_by => order_by,
+            :page_token => page_token
+          }
+          if region.nil?
             data = []
-            service.list_regions.body["items"].each do |region|
-              data += service.list_target_pools(region["name"]).body["items"] || []
+            service.list_aggregated_target_pools(opts).items.each_value do |lst|
+              unless lst.nil? || lst.target_pools.nil?
+                data += lst.to_h[:target_pools]
+              end
             end
           else
-            data = service.list_target_pools(filters["region"]).body["items"] || []
+            data = service.list_target_pools(region, opts).to_h[:items]
           end
           load(data)
         end
@@ -19,18 +27,18 @@ module Fog
         def get(identity, region = nil)
           response = nil
           if region.nil?
-            service.regions.all.each do |region|
-              begin
-                response = service.get_target_pool(identity, region.name)
-                break if response.status == 200
-              rescue Fog::Errors::Error
-              end
+            data = all(:filter => "name eq #{identity}").first
+            unless data.nil?
+              response = data.attributes
             end
           else
-            response = service.get_target_pool(identity, region)
+            response = service.get_target_pool(identity, region).to_h
           end
           return nil if response.nil?
-          new(response.body)
+          new(response)
+        rescue ::Google::Apis::ClientError => e
+          raise e unless e.status_code = 404
+          nil
         end
       end
     end

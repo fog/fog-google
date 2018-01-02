@@ -4,48 +4,46 @@ module Fog
       class TargetInstance < Fog::Model
         identity :name
 
-        attribute :kind, :aliases => "kind"
-        attribute :self_link, :aliases => "selfLink"
-        attribute :id, :aliases => "id"
         attribute :creation_timestamp, :aliases => "creationTimestamp"
-        attribute :description, :aliases => "description"
-        attribute :zone, :aliases => "zone"
-        attribute :instance, :aliases => "instance"
+        attribute :description
+        attribute :id
+        attribute :instance
+        attribute :kind
         attribute :nat_policy, :aliases => "natPolicy"
+        attribute :self_link, :aliases => "selfLink"
+        attribute :zone
 
         def save
-          requires :name, :zone
+          requires :identity, :zone
 
           options = {
-            "description" => description,
-            "zone" => zone,
-            "natPolicy" => nat_policy,
-            "instance" => instance
+            :description => description,
+            :zone => zone,
+            :nat_policy => nat_policy,
+            :instance => instance
           }
 
-          data = service.insert_target_instance(name, zone, options)
-          operation = Fog::Compute::Google::Operations.new(:service => service).get(data.body["name"], data.body["zone"])
+          data = service.insert_target_instance(identity, zone, options)
+          operation = Fog::Compute::Google::Operations.new(:service => service)
+                                                      .get(data.name, data.zone)
           operation.wait_for { !pending? }
           reload
         end
 
         def destroy(async = true)
           requires :name, :zone
-          operation = service.delete_target_instance(name, zone)
-          unless async
-            # wait until "DONE" to ensure the operation doesn't fail, raises
-            # exception on error
-            Fog.wait_for do
-              operation.body["status"] == "DONE"
-            end
-          end
+          data = service.delete_target_instance(name, zone)
+          operation = Fog::Compute::Google::Operations.new(:service => service)
+                                                      .get(data.name, data.zone)
+          operation.wait_for { ready? } unless async
           operation
         end
 
         def ready?
           service.get_target_instance(name, zone)
           true
-        rescue Fog::Errors::NotFound
+        rescue ::Google::Apis::ClientError => e
+          raise e unless e.status_code == 404
           false
         end
 
@@ -62,7 +60,7 @@ module Fog
           end
         end
 
-        RUNNING_STATE = "READY"
+        RUNNING_STATE = "READY".freeze
       end
     end
   end

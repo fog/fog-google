@@ -2,43 +2,20 @@ module Fog
   module Compute
     class Google
       class Mock
-        def delete_disk(disk_name, zone_name)
-          get_disk(disk_name, zone_name)
-
-          operation = random_operation
-          data[:operations][operation] = {
-            "kind" => "compute#operation",
-            "id" => Fog::Mock.random_numbers(19).to_s,
-            "name" => operation,
-            "zone" => "https://www.googleapis.com/compute/#{api_version}/projects/#{@project}/zones/#{zone_name}",
-            "operationType" => "delete",
-            "targetLink" => "https://www.googleapis.com/compute/#{api_version}/projects/#{@project}/zones/#{zone_name}/disks/#{disk_name}",
-            "targetId" => data[:disks][disk_name]["id"],
-            "status" => Fog::Compute::Google::Operation::PENDING_STATE,
-            "user" => "123456789012-qwertyuiopasdfghjkl1234567890qwe@developer.gserviceaccount.com",
-            "progress" => 0,
-            "insertTime" => Time.now.iso8601,
-            "startTime" => Time.now.iso8601,
-            "selfLink" => "https://www.googleapis.com/compute/#{api_version}/projects/#{@project}/zones/#{zone_name}/operations/#{operation}"
-          }
-          data[:disks].delete disk_name
-
-          build_excon_response(data[:operations][operation])
+        def delete_disk(_disk_name, _zone_name)
+          Fog::Mock.not_implemented
         end
       end
 
       class Real
+        # Delete a disk resource
+        # https://cloud.google.com/compute/docs/reference/latest/disks/delete
+        #
+        # @param disk_name [String] Name of the disk to delete
+        # @param zone_name [String] Zone the disk reside in
         def delete_disk(disk_name, zone_name)
           zone_name = zone_name.split("/")[-1] if zone_name.start_with? "http"
-
-          api_method = @compute.disks.delete
-          parameters = {
-            "project" => @project,
-            "disk" => disk_name,
-            "zone" => zone_name
-          }
-
-          request(api_method, parameters)
+          @compute.delete_disk(@project, zone_name, disk_name)
         end
       end
     end

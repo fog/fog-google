@@ -5,15 +5,16 @@ module Fog
         model Fog::Compute::Google::Region
 
         def all
-          data = service.list_regions.body
-          load(data["items"] || [])
+          data = service.list_regions.to_h
+          load(data[:items] || [])
         end
 
         def get(identity)
-          if region = service.get_region(identity).body
+          if region = service.get_region(identity).to_h
             new(region)
           end
-        rescue Fog::Errors::NotFound
+        rescue ::Google::Apis::ClientError => e
+          raise e unless e.status_code == 404
           nil
         end
       end

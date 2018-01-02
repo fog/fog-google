@@ -1,4 +1,5 @@
-module Google # deviates from other bin stuff to accomodate gem
+# deviates from other bin stuff to accomodate gem
+module Google
   class << self
     def class_for(key)
       case key
@@ -53,13 +54,16 @@ module Google # deviates from other bin stuff to accomodate gem
     # based off of virtual_box.rb
     def available?
       # Make sure the gem we use is enabled.
-      availability = if Gem::Specification.respond_to?(:find_all_by_name)
-                       !Gem::Specification.find_all_by_name("google-api-client").empty? # newest rubygems
-                     else
-                       !Gem.source_index.find_name("google-api-client").empty? # legacy
-                     end
+      if Gem::Specification.respond_to?(:find_all_by_name)
+        # newest rubygems
+        availability = !Gem::Specification.find_all_by_name("google-api-client").empty?
+      else
+        # legacy
+        availability = !Gem.source_index.find_name("google-api-client").empty?
+      end
+
       # Then make sure we have all of the requirements
-      for service in services
+      services.each do |service|
         begin
           service = class_for(service)
           availability &&= service.requirements.all? { |requirement| Fog.credentials.include?(requirement) }
@@ -72,15 +76,14 @@ module Google # deviates from other bin stuff to accomodate gem
       end
 
       if availability
-        for service in services
-          for collection in class_for(service).collections
-            unless self.respond_to?(collection)
-              class_eval <<-EOS, __FILE__, __LINE__
+        services.each do |service|
+          class_for(service).collections.each do |collection|
+            next if respond_to?(collection)
+            class_eval <<-EOS, __FILE__, __LINE__
                 def self.#{collection}
                   self[:#{service}].#{collection}
                 end
-              EOS
-            end
+            EOS
           end
         end
       end

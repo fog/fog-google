@@ -12,7 +12,7 @@ module Fog
         #
         # @return [Array<Fog::Google::SQL::Tier>] List of tiers
         def all
-          data = service.list_tiers.body["items"] || []
+          data = service.list_tiers.to_h[:items] || []
           load(data)
         end
       end

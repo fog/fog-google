@@ -8,20 +8,16 @@ module Fog
       end
 
       class Real
-        def insert_ssl_certificate(certificate_name, certificate, private_key, options = {})
-          api_method = @compute.ssl_certificates.insert
-          parameters = {
-            "project" => @project
-          }
-          body_object = {
-            "certificate" => certificate,
-            "name" => certificate_name,
-            "privateKey" => private_key
-          }
-
-          body_object["description"] = options[:description] if options[:description]
-
-          request(api_method, parameters, body_object)
+        def insert_ssl_certificate(certificate_name, certificate, private_key, description: nil)
+          @compute.insert_ssl_certificate(
+            @project,
+            ::Google::Apis::ComputeV1::SslCertificate.new(
+              :certificate => certificate,
+              :name => certificate_name,
+              :private_key => private_key,
+              :description => description
+            )
+          )
         end
       end
     end

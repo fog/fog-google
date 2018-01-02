@@ -14,7 +14,7 @@ module Fog
           @host = options[:host] || "storage.googleapis.com"
 
           @client = initialize_google_client(options)
-          @storage_json = @client.discovered_api("storage", api_version)
+          @storage_json = ::Google::Apis::StorageV1::StorageService.new
         end
 
         def signature(params)
@@ -31,7 +31,7 @@ DATA
             google_headers[key] = value if key[0..6] == "x-goog-"
           end
 
-          google_headers = google_headers.sort { |x, y| x[0] <=> y[0] }
+          google_headers = google_headers.sort_by { |a| a[0] }
           google_headers.each do |key, value|
             canonical_google_headers << "#{key}:#{value}\n"
           end
@@ -43,7 +43,7 @@ DATA
           end
           canonical_resource << params[:path].to_s
           canonical_resource << "?"
-          for key in (params[:query] || {}).keys
+          (params[:query] || {}).each_key do |key|
             if %w(acl cors location logging requestPayment versions versioning).include?(key)
               canonical_resource << "#{key}&"
             end
@@ -51,7 +51,7 @@ DATA
           canonical_resource.chop!
           string_to_sign << canonical_resource.to_s
 
-          key = OpenSSL::PKey::RSA.new(@client.authorization.signing_key)
+          key = OpenSSL::PKey::RSA.new(@client.signing_key)
           digest = OpenSSL::Digest::SHA256.new
           signed_string = key.sign(digest, string_to_sign)
 

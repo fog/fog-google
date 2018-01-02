@@ -9,12 +9,7 @@ module Fog
 
       class Real
         def delete_global_address(address_name)
-          api_method = @compute.global_addresses.delete
-          parameters = {
-            "project" => @project,
-            "address" => address_name,
-          }
-          request(api_method, parameters)
+          @compute.delete_global_address(@project, address_name)
         end
       end
     end

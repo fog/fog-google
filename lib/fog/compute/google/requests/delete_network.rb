@@ -9,13 +9,7 @@ module Fog
 
       class Real
         def delete_network(network_name)
-          api_method = @compute.networks.delete
-          parameters = {
-            "project" => @project,
-            "network" => network_name
-          }
-
-          request(api_method, parameters)
+          @compute.delete_network(@project, network_name)
         end
       end
     end

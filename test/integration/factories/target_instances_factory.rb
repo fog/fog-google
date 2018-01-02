@@ -15,6 +15,6 @@ class TargetInstancesFactory < CollectionFactory
   def params
     { :name => resource_name,
       :zone => TEST_ZONE,
-      :instance => @servers.create }
+      :instance => @servers.create.self_link }
   end
 end

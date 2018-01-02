@@ -4,32 +4,40 @@ module Fog
       class TargetInstances < Fog::Collection
         model Fog::Compute::Google::TargetInstance
 
-        def all(filters = {})
-          if filters["zone"]
-            data = service.list_target_instances(filters["zone"]).body["items"] || []
+        def all(zone: nil, filter: nil, max_results: nil, order_by: nil,
+                page_token: nil)
+          opts = {
+            :filter => filter,
+            :max_results => max_results,
+            :order_by => order_by,
+            :page_token => page_token
+          }
+
+          if zone
+            data = service.list_target_instances(zone, opts).to_h[:items] || []
           else
             data = []
-            service.list_aggregated_target_instances.body["items"].each_value do |zone|
-              data.concat(zone["targetInstances"]) if zone["targetInstances"]
+            service.list_aggregated_target_instances(opts).items.each_value do |scoped_list|
+              unless scoped_list.nil? || scoped_list.target_instances.nil?
+                data += scoped_list.target_instances.map(&:to_h)
+              end
             end
           end
           load(data)
         end
 
-        def get(identity, zone = nil)
+        def get(target_instance, zone = nil)
           response = nil
           if zone
-            response = service.get_target_instance(identity, zone).body
+            response = service.get_target_instance(target_instance, zone).to_h
           else
-            target_instances = service.list_aggregated_target_instances(:filter => "name eq .*#{identity}").body["items"]
-            target_instance = target_instances.each_value.select { |zone| zone.key?("targetInstances") }
-
-            # It can only be 1 target_instance with the same name across all regions
-            response = target_instance.first["targetInstances"].first unless target_instance.empty?
+            response = all(:filter => "name eq #{target_instance}").first
+            response = response.attributes unless response.nil?
           end
           return nil if response.nil?
           new(response)
-        rescue Fog::Errors::NotFound
+        rescue ::Google::Apis::ClientError => e
+          raise e unless e.status_code == 404
           nil
         end
       end

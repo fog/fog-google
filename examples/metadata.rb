@@ -26,7 +26,8 @@ def test
     :machine_type => "n1-standard-1",
     :zone_name => "us-central1-f",
     :private_key_path => File.expand_path("~/.ssh/id_rsa"),
-    :public_key_path => File.expand_path("~/.ssh/id_rsa.pub"))
+    :public_key_path => File.expand_path("~/.ssh/id_rsa.pub")
+  )
 
   server.wait_for { ready? }
 

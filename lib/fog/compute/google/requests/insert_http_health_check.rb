@@ -2,56 +2,19 @@ module Fog
   module Compute
     class Google
       class Mock
-        def insert_http_health_check(name, _options = {})
-          id = Fog::Mock.random_numbers(19).to_s
-          data[:http_health_checks][name] = {
-            "kind" => "compute#httpHealthCheck",
-            "id" => id,
-            "creationTimestamp" => Time.now.iso8601,
-            "name" => name,
-            "description" => "",
-            "host" => "0.00.0.0",
-            "requestPath" => "/",
-            "port" => 80,
-            "checkIntervalSec" => 5,
-            "timeoutSec" => 5,
-            "unhealthyThreshold" => 2,
-            "healthyThreshold" => 2,
-            "selfLink" => "https://www.googleapis.com/compute/#{api_version}/projects/#{@project}/global/httpHealthChecks/#{name}"
-          }
-
-          operation = random_operation
-          data[:operations][operation] = {
-            "kind" => "compute#operation",
-            "id" => Fog::Mock.random_numbers(19).to_s,
-            "name" => operation,
-            "zone" => "https://www.googleapis.com/compute/#{api_version}/projects/#{@project}/global",
-            "operationType" => "insert",
-            "targetLink" => "https://www.googleapis.com/compute/#{api_version}/projects/#{@project}/global/httpHealthChecks/#{name}",
-            "targetId" => id,
-            "status" => Fog::Compute::Google::Operation::PENDING_STATE,
-            "user" => "123456789012-qwertyuiopasdfghjkl1234567890qwe@developer.gserviceaccount.com",
-            "progress" => 0,
-            "insertTime" => Time.now.iso8601,
-            "startTime" => Time.now.iso8601,
-            "selfLink" => "https://www.googleapis.com/compute/#{api_version}/projects/#{@project}/global/operations/#{operation}"
-          }
-
-          build_excon_response(data[:operations][operation])
+        def insert_http_health_check(_check_name, _options = {})
+          Fog::Mock.not_implemented
         end
       end
 
       class Real
-        def insert_http_health_check(name, opts = {})
-          api_method = @compute.http_health_checks.insert
-          parameters = {
-            "project" => @project
-          }
-
-          body_object = { "name" => name }
-          body_object.merge!(opts)
-
-          request(api_method, parameters, body_object)
+        def insert_http_health_check(check_name, opts = {})
+          @compute.insert_http_health_check(
+            @project,
+            ::Google::Apis::ComputeV1::HttpHealthCheck.new(
+              opts.merge(:name => check_name)
+            )
+          )
         end
       end
     end

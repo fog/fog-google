@@ -42,14 +42,18 @@ module Fog
             when "ETag"
               @version[name] = value.delete('"')
             when "IsLatest"
-              if @in_delete_marker
-                @delete_marker
-              elsif @in_version
-                @version
-              end["IsLatest"] = if value == "true"
-                                  true
-                                else
-                                  false
+              if value == "true"
+                if @in_delete_marker
+                  @delete_marker
+                elsif @in_version
+                  @version
+              end["IsLatest"] = true
+              else
+                if @in_delete_marker
+                  @delete_marker
+                elsif @in_version
+                  @version
+              end["IsLatest"] = false
               end
             when "IsTruncated"
               if value == "true"

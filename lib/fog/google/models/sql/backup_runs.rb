@@ -8,13 +8,12 @@ module Fog
         model Fog::Google::SQL::BackupRun
 
         ##
-        # Lists all backup runs associated with a given instance and configuration
+        # Lists all backup runs associated with a given instance.
         #
         # @param [String] instance_id Instance ID
-        # @param [String] backup_configuration_id Backup Configuration ID
         # @return [Array<Fog::Google::SQL::BackupRun>] List of Backup run resources
-        def all(instance_id, backup_configuration_id)
-          data = service.list_backup_runs(instance_id, backup_configuration_id).body["items"] || []
+        def all(instance_id)
+          data = service.list_backup_runs(instance_id).to_h[:items] || []
           load(data)
         end
 
@@ -22,14 +21,15 @@ module Fog
         # Retrieves a resource containing information about a backup run
         #
         # @param [String] instance_id Instance ID
-        # @param [String] backup_configuration_id Backup Configuration ID
-        # @param [String] due_time The time when this run is due to start in RFC 3339 format
+        # @param [String] backup_run_id Backup Configuration ID
         # @return [Fog::Google::SQL::BackupRun] Backup run resource
-        def get(instance_id, backup_configuration_id, due_time)
-          if backup_run = service.get_backup_run(instance_id, backup_configuration_id, due_time).body
+        def get(instance_id, backup_run_id)
+          backup_run = service.get_backup_run(instance_id, backup_run_id).to_h
+          if backup_run
             new(backup_run)
           end
-        rescue Fog::Errors::NotFound
+        rescue ::Google::Apis::ClientError => e
+          raise e unless e.status_code == 404
           nil
         end
       end

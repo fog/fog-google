@@ -22,7 +22,9 @@ module Fog
           requires :name, :type, :ttl, :rrdatas
 
           data = service.create_change(zone.id, [], [resource_record_set_format])
-          change = Fog::DNS::Google::Changes.new(:service => service, :zone => zone).get(data.body["id"])
+          change = Fog::DNS::Google::Changes
+                   .new(:service => service, :zone => zone)
+                   .get(data.id)
           change.wait_for { ready? } unless async
           true
         end
@@ -39,8 +41,10 @@ module Fog
           merge_attributes(new_attributes)
 
           data = service.create_change(zone.id, [resource_record_set_format], [deletions])
-          change = Fog::DNS::Google::Changes.new(:service => service, :zone => zone).get(data.body["id"])
-          async = new_attributes.key?(:async) ? new_attributes[:async] : true
+          change = Fog::DNS::Google::Changes
+                   .new(:service => service, :zone => zone)
+                   .get(data.id)
+          new_attributes.key?(:async) ? async = new_attributes[:async] : async = true
           change.wait_for { ready? } unless async
           self
         end
@@ -52,7 +56,7 @@ module Fog
         def reload
           requires :name, :type
 
-          data = collection.get(name, type)
+          data = collection.get(name, type).to_h
           merge_attributes(data.attributes)
           self
         end
@@ -65,7 +69,9 @@ module Fog
           requires :name, :type, :ttl, :rrdatas
 
           data = service.create_change(zone.id, [resource_record_set_format], [])
-          change = Fog::DNS::Google::Changes.new(:service => service, :zone => zone).get(data.body["id"])
+          change = Fog::DNS::Google::Changes
+                   .new(:service => service, :zone => zone)
+                   .get(data.id)
           change.wait_for { !pending? }
           self
         end
@@ -89,11 +95,11 @@ module Fog
         #
         def resource_record_set_format
           {
-            "kind" => 'dns#resourceRecordSet',
-            "name" => name,
-            "type" => type,
-            "ttl"  => ttl,
-            "rrdatas" => rrdatas
+            :kind => "dns#resourceRecordSet",
+            :name => name,
+            :type => type,
+            :ttl  => ttl,
+            :rrdatas => rrdatas
           }
         end
       end

@@ -3,7 +3,7 @@ def test
 
   puts "Create a Instance..."
   puts "--------------------"
-  instance = connection.instances.create(:instance => Fog::Mock.random_letters(16), :tier => "D1")
+  instance = connection.instances.create(:name => Fog::Mock.random_letters(16), :tier => "D1")
   instance.wait_for { ready? }
 
   puts "Delete the Instance..."
@@ -12,7 +12,7 @@ def test
 
   puts "Get the Operation..."
   puts "--------------------"
-  connection.operations.get(instance.identity, operation.identity)
+  connection.operations.get(operation.identity)
 
   puts "Listing all Operations..."
   puts "-------------------------"

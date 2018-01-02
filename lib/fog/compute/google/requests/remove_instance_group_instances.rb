@@ -9,27 +9,25 @@ module Fog
 
       class Real
         def remove_instance_group_instances(group_name, zone, instances)
-          api_method = @compute.instance_groups.remove_instances
-
-          parameters = {
-            "project" => @project,
-            "instanceGroup" => group_name,
-            "zone" => zone
-          }
-
           instances.map! do |instance|
             if instance.start_with?("https:")
-              { "instance" => instance }
+              ::Google::Apis::ComputeV1::InstanceReference.new(:instance => instance)
             else
-              { "instance" => "https://www.googleapis.com/compute/#{api_version}/projects/#{@project}/zones/#{zone}/instances/#{instance}\n" }
+              ::Google::Apis::ComputeV1::InstanceReference.new(
+                :instance => "https://www.googleapis.com/compute/#{api_version}/projects/#{@project}/zones/#{zone}/instances/#{instance}\n"
+              )
             end
           end
 
-          body_object = {
-            "instances" => instances
-          }
-
-          request(api_method, parameters, body_object)
+          request = ::Google::Apis::ComputeV1::InstanceGroupsRemoveInstancesRequest.new(
+            :instances => instances
+          )
+          @compute.remove_instance_group_instances(
+            @project,
+            zone,
+            group_name,
+            request
+          )
         end
       end
     end

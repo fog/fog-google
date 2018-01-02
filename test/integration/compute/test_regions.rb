@@ -1,25 +1,25 @@
 require "helpers/integration_test_helper"
 
 class TestRegions < FogIntegrationTest
-  NAMES = %w(asia-east1 asia-northeast1 europe-west1 us-central1 us-east1 us-west1).freeze
+  EXAMPLE_NAMES = %w(asia-east1 asia-northeast1 europe-west1 us-central1 us-east1 us-west1).freeze
 
   def setup
     @subject = Fog::Compute[:google].regions
   end
 
   def test_all
-    assert_equal NAMES.size, @subject.all.size
+    assert_operator(@subject.all.size, :>=, EXAMPLE_NAMES.size)
   end
 
   def test_get
-    NAMES.each do |name|
-      refute_nil @subject.get(name)
+    EXAMPLE_NAMES.each do |region|
+      refute_nil @subject.get(region)
     end
   end
 
   def test_up
-    NAMES.each do |name|
-      assert @subject.get(name).up?
+    EXAMPLE_NAMES.each do |region|
+      assert @subject.get(region).up?
     end
   end
 

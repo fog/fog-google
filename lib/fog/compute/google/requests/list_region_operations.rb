@@ -8,16 +8,18 @@ module Fog
       end
 
       class Real
-        # https://developers.google.com/compute/docs/reference/latest/regionOperations
-
-        def list_region_operations(region)
-          api_method = @compute.region_operations.list
-          parameters = {
-            "region" => region,
-            "project" => @project
-          }
-
-          request(api_method, parameters)
+        # Retrieves a list of Operation resources contained within the specified region
+        # @see https://developers.google.com/compute/docs/reference/latest/regionOperations/list
+        def list_region_operations(region, filter: nil, max_results: nil,
+                                   order_by: nil, page_token: nil)
+          region = region.split("/")[-1] if region.start_with? "http"
+          @compute.list_region_operations(
+            @project, region,
+            :filter => filter,
+            :max_results => max_results,
+            :order_by => order_by,
+            :page_token => page_token
+          )
         end
       end
     end

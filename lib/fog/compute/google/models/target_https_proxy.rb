@@ -4,59 +4,78 @@ module Fog
       class TargetHttpsProxy < Fog::Model
         identity :name
 
-        attribute :kind, :aliases => "kind"
-        attribute :self_link, :aliases => "selfLink"
-        attribute :id, :aliases => "id"
         attribute :creation_timestamp, :aliases => "creationTimestamp"
         attribute :description, :aliases => "description"
+        attribute :id, :aliases => "id"
+        attribute :kind, :aliases => "kind"
+        attribute :self_link, :aliases => "selfLink"
         attribute :url_map, :aliases => "urlMap"
         attribute :ssl_certificates, :aliases => "sslCertificates"
 
         def save
-          requires :name
+          requires :identity, :url_map, :ssl_certificates
 
-          options = {
-            "description" => description,
-            "urlMap" => url_map,
-            "sslCertificates" => ssl_certificates
-          }
-
-          data = service.insert_target_https_proxy(name, options).body
-          operation = Fog::Compute::Google::Operations.new(:service => service).get(data["name"])
+          data = service.insert_target_https_proxy(
+            identity,
+            :description => description,
+            :url_map => url_map,
+            :ssl_certificates => ssl_certificates
+          )
+          operation = Fog::Compute::Google::Operations.new(:service => service)
+                                                      .get(data.name)
           operation.wait_for { !pending? }
           reload
         end
 
         def destroy(async = true)
-          requires :name
-          operation = service.delete_target_https_proxy(name)
-          unless async
-            # wait until "DONE" to ensure the operation doesn't fail, raises
-            # exception on error
-            Fog.wait_for do
-              operation.body["status"] == "DONE"
-            end
-          end
+          requires :identity
+
+          data = service.delete_target_https_proxy(identity)
+          operation = Fog::Compute::Google::Operations.new(:service => service)
+                                                      .get(data.name)
+          operation.wait_for { ready? } unless async
           operation
         end
 
-        def set_url_map(url_map)
-          service.set_target_https_proxy_url_map(self, url_map)
+        def set_url_map(url_map, async = true)
+          requires :identity
+
+          data = service.set_target_https_proxy_url_map(
+            identity, url_map
+          )
+          operation = Fog::Compute::Google::Operations.new(:service => service)
+                                                      .get(data.name)
+          operation.wait_for { ready? } unless async
+          reload
+        end
+
+        def set_ssl_certificates(ssl_certificates, async = true)
+          requires :identity
+
+          data = service.set_target_https_proxy_ssl_certificates(
+            identity, ssl_certificates
+          )
+          operation = Fog::Compute::Google::Operations.new(:service => service)
+                                                      .get(data.name)
+          operation.wait_for { ready? } unless async
           reload
         end
 
         def ready?
-          service.get_target_https_proxy(name)
+          requires :identity
+
+          service.get_target_https_proxy(identity)
           true
-        rescue Fog::Errors::NotFound
+        rescue ::Google::Apis::ClientError => e
+          raise e unless e.status_code == 404
           false
         end
 
         def reload
-          requires :name
+          requires :identity
 
           return unless data = begin
-            collection.get(name)
+            collection.get(identity)
           rescue Excon::Errors::SocketError
             nil
           end

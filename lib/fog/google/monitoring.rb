@@ -43,12 +43,17 @@ module Fog
 
       # Timeseries
       request :list_timeseries
+      request :create_timeseries
 
       # MetricDescriptors
+      request :get_metric_descriptor
       request :list_metric_descriptors
+      request :create_metric_descriptor
+      request :delete_metric_descriptor
 
       # MonitoredResourceDescriptors
       request :list_monitored_resource_descriptors
+      request :get_monitored_resource_descriptor
     end
   end
 end

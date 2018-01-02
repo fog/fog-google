@@ -2,26 +2,19 @@ module Fog
   module Compute
     class Google
       class Mock
-        def list_servers(zone_name)
-          get_zone(zone_name)
-          zone = data[:zones][zone_name]
-          servers = data[:servers].values.select { |s| s["zone"] == zone["selfLink"] }
-          build_excon_response("kind" => "compute#instanceList",
-                               "selfLink" => "https://www.googleapis.com/compute/#{api_version}/projects/#{@project}/zones/#{zone_name}/instances",
-                               "id" => "projects/#{@project}/zones/#{zone_name}/instances",
-                               "items" => servers)
+        def list_servers(_zone, _opts = {})
+          Fog::Mock.not_implemented
         end
       end
 
       class Real
-        def list_servers(zone_name)
-          api_method = @compute.instances.list
-          parameters = {
-            "project" => @project,
-            "zone" => zone_name
-          }
-
-          request(api_method, parameters)
+        def list_servers(zone, filter: nil, max_results: nil,
+                         order_by: nil, page_token: nil)
+          @compute.list_instances(
+            @project, zone.split("/")[-1],
+            :filter => filter, :max_results => max_results,
+            :order_by => order_by, :page_token => page_token
+          )
         end
       end
     end

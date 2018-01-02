@@ -3,62 +3,27 @@ module Fog
     class GoogleJSON
       class Real
         # Copy an object from one Google Storage bucket to another
-        # https://cloud.google.com/storage/docs/json_api/v1/objects/copy
         #
-        # ==== Parameters
-        # * source_bucket_name<~String> - Name of source bucket
-        # * source_object_name<~String> - Name of source object
-        # * target_bucket_name<~String> - Name of bucket to create copy in
-        # * target_object_name<~String> - Name for new copy of object
-        # * options<~Hash>:
-        #   * 'x-goog-metadata-directive'<~String> - Specifies whether to copy metadata from source or replace with data in request.  Must be in ['COPY', 'REPLACE']
-        #   * 'x-goog-copy_source-if-match'<~String> - Copies object if its etag matches this value
-        #   * 'x-goog-copy_source-if-modified_since'<~Time> - Copies object it it has been modified since this time
-        #   * 'x-goog-copy_source-if-none-match'<~String> - Copies object if its etag does not match this value
-        #   * 'x-goog-copy_source-if-unmodified-since'<~Time> - Copies object it it has not been modified since this time
+        # @param source_bucket [String] Name of source bucket
+        # @param source_object [String] Name of source object
+        # @param target_bucket [String] Name of bucket to create copy in
+        # @param target_object [String] Name of new copy of object
         #
-        # ==== Returns
-        # * response<~Excon::Response>:
-        #   * body<~Hash>:
-        #     * 'ETag'<~String> - etag of new object
-        #     * 'LastModified'<~Time> - date object was last modified
-        #
-        def copy_object(source_bucket_name, source_object_name, target_bucket_name, target_object_name, options = {})
-          api_method = @storage_json.objects.copy
-          parameters = {
-            "sourceBucket" => source_bucket_name,
-            "sourceObject" => source_object_name,
-            "destinationBucket" => target_bucket_name,
-            "destinationObject" => target_object_name
-          }
-          parameters.merge! options
-
-          request(api_method, parameters)
+        # @see https://cloud.google.com/storage/docs/json_api/v1/objects/copy
+        # @return [Google::Apis::StorageV1::Object] copy of object
+        def copy_object(source_bucket, source_object,
+                        target_bucket, target_object, options = {})
+          request_options = ::Google::Apis::RequestOptions.default.merge(options)
+          @storage_json.copy_object(source_bucket, source_object,
+                                    target_bucket, target_object,
+                                    request_options)
         end
       end
 
       class Mock
-        def copy_object(source_bucket_name, source_object_name, target_bucket_name, target_object_name, _options = {})
-          response = Excon::Response.new
-          source_bucket = data[:buckets][source_bucket_name]
-          source_object = source_bucket && source_bucket[:objects][source_object_name]
-          target_bucket = data[:buckets][target_bucket_name]
-
-          if source_object && target_bucket
-            response.status = 200
-            target_object = source_object.dup
-            target_object.merge!("Name" => target_object_name)
-            target_bucket[:objects][target_object_name] = target_object
-            response.body = {
-              "ETag"          => target_object["ETag"],
-              "LastModified"  => Time.parse(target_object["Last-Modified"])
-            }
-          else
-            response.status = 404
-            raise(Excon::Errors.status_error({ :expects => 200 }, response))
-          end
-
-          response
+        def copy_object(_source_bucket, _source_object,
+                        _target_bucket, _target_object, _options = {})
+          Fog::Mock.not_implemented
         end
       end
     end

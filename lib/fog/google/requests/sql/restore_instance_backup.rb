@@ -4,24 +4,23 @@ module Fog
       ##
       # Restores a backup of a Cloud SQL instance
       #
-      # @see https://developers.google.com/cloud-sql/docs/admin-api/v1beta3/instances/restoreBackup
+      # @see https://cloud.google.com/sql/docs/mysql/admin-api/v1beta4/instances/restoreBackup
 
       class Real
-        def restore_instance_backup(identity, backup_configuration, due_time)
-          api_method = @sql.instances.reset_ssl_config
-          parameters = {
-            "project" => @project,
-            "instance" => identity,
-            "backupConfiguration" => backup_configuration,
-            "dueTime" => due_time
-          }
-
-          request(api_method, parameters)
+        def restore_instance_backup(instance_id, backup_run_id)
+          request = ::Google::Apis::SqladminV1beta4::RestoreInstancesBackupRequest.new(
+            :restore_backup_context => ::Google::Apis::SqladminV1beta4::RestoreBackupContext.new(
+              :backup_run_id => backup_run_id,
+              :instance_id => instance_id,
+              :kind => "sql#restoreBackupContext"
+            )
+          )
+          @sql.restore_instance_backup(@project, instance_id, request)
         end
       end
 
       class Mock
-        def restore_instance_backup(_identity, _backup_configuration, _due_time)
+        def restore_instance_backup(_instance_id, _backup_run_id)
           Fog::Mock.not_implemented
         end
       end

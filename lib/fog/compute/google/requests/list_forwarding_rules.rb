@@ -2,24 +2,20 @@ module Fog
   module Compute
     class Google
       class Mock
-        def list_forwarding_rules(region_name)
-          forwarding_rules = data[:forwarding_rules].values.select { |d| d["region"].split("/")[-1] == region_name }
-          build_excon_response("kind" => "compute#forwardingRuleList",
-                               "selfLink" => "https://www.googleapis.com/compute/#{api_version}/projects/#{@project}/regions/#{region_name}/forwardingRules",
-                               "id" => "projects/#{@project}/regions/#{region_name}/regions",
-                               "items" => forwarding_rules)
+        def list_forwarding_rules(_region, _opts = {})
+          Fog::Mock.not_implemented
         end
       end
 
       class Real
-        def list_forwarding_rules(region_name)
-          api_method = @compute.forwarding_rules.list
-          parameters = {
-            "project" => @project,
-            "region" => region_name
-          }
-
-          request(api_method, parameters)
+        def list_forwarding_rules(region,
+                                  filter: nil, max_results: nil,
+                                  order_by: nil, page_token: nil)
+          @compute.list_forwarding_rules(
+            @project, region,
+            :filter => filter, :max_results => max_results,
+            :order_by => order_by, :page_token => page_token
+          )
         end
       end
     end

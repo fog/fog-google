@@ -13,9 +13,11 @@ module Fog
         def all
           requires :zone
 
-          data = service.list_resource_record_sets(zone.identity).body["rrsets"] || []
+          data = service.list_resource_record_sets(zone.identity)
+                        .to_h[:rrsets] || []
           load(data)
-        rescue Fog::Errors::NotFound
+        rescue ::Google::Apis::ClientError => e
+          raise e unless e.status_code == 404
           []
         end
 
@@ -28,9 +30,11 @@ module Fog
         def get(name, type)
           requires :zone
 
-          records = service.list_resource_record_sets(zone.identity, :name => name, :type => type).body["rrsets"] || []
+          records = service.list_resource_record_sets(zone.identity, :name => name, :type => type)
+                           .to_h[:rrsets] || []
           records.any? ? new(records.first) : nil
-        rescue Fog::Errors::NotFound
+        rescue ::Google::Apis::ClientError => e
+          raise e unless e.status_code == 404
           nil
         end
 

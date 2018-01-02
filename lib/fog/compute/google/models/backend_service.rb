@@ -4,15 +4,15 @@ module Fog
       class BackendService < Fog::Model
         identity :name
 
-        attribute :backends, :aliases => "backends"
-        attribute :creation_timestamp, :aliases => "kind"
-        attribute :description, :aliases => "description"
-        attribute :fingerprint, :aliases => "fingerprint"
+        attribute :backends
+        attribute :creation_timestamp
+        attribute :description
+        attribute :fingerprint
         attribute :health_checks, :aliases => "healthChecks"
-        attribute :id, :aliases => "id"
-        attribute :kind, :aliases => "kind"
-        attribute :port, :aliases => "port"
-        attribute :protocol, :aliases => "protocol"
+        attribute :id
+        attribute :kind
+        attribute :port
+        attribute :protocol
         attribute :self_link, :aliases => "selfLink"
         attribute :timeout_sec, :aliases => "timeoutSec"
 
@@ -20,17 +20,17 @@ module Fog
           requires :name, :health_checks
 
           options = {
-            "description" => description,
-            "backends" => backends,
-            "fingerprint" => fingerprint,
-            "healthChecks" => health_checks,
-            "port" => port,
-            "protocol" => protocol,
-            "timeoutSec" => timeout_sec
+            :description => description,
+            :backends => backends,
+            :fingerprint => fingerprint,
+            :health_checks => health_checks,
+            :port => port,
+            :protocol => protocol,
+            :timeout_sec => timeout_sec
           }
 
-          data = service.insert_backend_service(name, options).body
-          operation = Fog::Compute::Google::Operations.new(:service => service).get(data["name"])
+          data = service.insert_backend_service(name, options)
+          operation = Fog::Compute::Google::Operations.new(:service => service).get(data.name)
           operation.wait_for { !pending? }
           reload
         end
@@ -39,13 +39,13 @@ module Fog
           requires :name
 
           data = service.delete_backend_service(name)
-          operation = Fog::Compute::Google::Operations.new(:service => service).get(data.body["name"])
+          operation = Fog::Compute::Google::Operations.new(:service => service).get(data.name)
           operation.wait_for { ready? } unless async
           operation
         end
 
         def get_health
-          service.get_backend_service_health self
+          service.get_backend_service_health(self)
         end
 
         def add_backend(backend)
@@ -59,7 +59,8 @@ module Fog
         def ready?
           service.get_backend_service(name)
           true
-        rescue Fog::Errors::NotFound
+        rescue ::Google::Apis::ClientError => e
+          raise e unless e.status_code == 404
           false
         end
 
@@ -67,18 +68,18 @@ module Fog
           requires :name
 
           return unless data =
-            begin
-              collection.get(name)
-            rescue Excon::Errors::SocketError
-              nil
-            end
+                          begin
+                            collection.get(name)
+                          rescue Excon::Errors::SocketError
+                            nil
+                          end
 
           new_attributes = data.attributes
           merge_attributes(new_attributes)
           self
         end
 
-        RUNNING_STATE = "READY"
+        RUNNING_STATE = "READY".freeze
       end
     end
   end

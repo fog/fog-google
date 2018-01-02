@@ -3,30 +3,30 @@ module Fog
     class Google
       class Mock
         def list_aggregated_subnetworks(_options = {})
-          subnetworks_by_region = data[:subnetworks].each_with_object({}) do |(_, subnetwork), memo|
-            region = subnetwork["region"].split("/")[-2..-1].join("/")
-            memo[region] ||= { "subnetworks" => [] }
-            memo[region]["subnetworks"].push subnetwork
-          end
-
-          build_excon_response("kind" => "compute#subnetworkAggregatedList",
-                               "selfLink" => "https://www.googleapis.com/compute/#{api_version}/projects/#{@project}/aggregated/subnetworks",
-                               "items" => subnetworks_by_region)
+          Fog::Mock.not_implemented
         end
       end
 
       class Real
-        def list_aggregated_subnetworks(options = {})
-          api_method = @compute.subnetworks.aggregated_list
-          parameters = {
-            "project" => @project
-          }
-
-          parameters["filter"] = options[:filter] if options[:filter]
-          parameters["maxResults"] = options[:max_results] if options[:max_results]
-          parameters["pageToken"] = options[:page_token] if options[:page_token]
-
-          request(api_method, parameters)
+        ##
+        # Retrieves an aggregated list of subnetworks across a project.
+        #
+        # @param filter [String] A filter expression for filtering listed resources.
+        # @param max_results [Fixnum] Max number of results to return
+        # @param order_by [String] Sorts list results by a certain order
+        # @param page_token [String] specifies a page token to use
+        # @return [Google::Apis::ComputeV1::SubnetworkAggregatedList] list result
+        #
+        # @see https://cloud.google.com/compute/docs/reference/latest/subnetworks/aggregatedList
+        def list_aggregated_subnetworks(filter: nil, max_results: nil,
+                                        page_token: nil, order_by: nil)
+          @compute.aggregated_subnetwork_list(
+            @project,
+            :filter => filter,
+            :max_results => max_results,
+            :page_token => page_token,
+            :order_by => order_by
+          )
         end
       end
     end

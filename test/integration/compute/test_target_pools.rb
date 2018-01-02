@@ -8,4 +8,9 @@ class TestTargetPools < FogIntegrationTest
     @subject = Fog::Compute[:google].target_pools
     @factory = TargetPoolsFactory.new(namespaced_name)
   end
+
+  # Override to include zone in get request
+  def get_resource(identity)
+    @subject.get(identity, TEST_ZONE)
+  end
 end

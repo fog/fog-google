@@ -8,33 +8,13 @@ module Fog
       # @see https://developers.google.com/cloud-dns/api/v1/projects/get
       class Real
         def get_project(identity)
-          api_method = @dns.projects.get
-          parameters = {
-            :project => identity
-          }
-
-          request(api_method, parameters)
+          @dns.get_project(identity)
         end
       end
 
       class Mock
-        def get_project(identity)
-          body = {
-            "kind" => 'dns#project',
-            "number" => Fog::Mock.random_numbers(12).to_s,
-            "id" => identity,
-            "quota" => {
-              "kind" => 'dns#quota',
-              "managedZones" => 100,
-              "rrsetsPerManagedZone" => 10_000,
-              "rrsetAdditionsPerChange" => 100,
-              "rrsetDeletionsPerChange" => 100,
-              "totalRrdataSizePerChange" => 10_000,
-              "resourceRecordsPerRrset" => 20
-            }
-          }
-
-          build_excon_response(body)
+        def get_project(_identity)
+          Fog::Mock.not_implemented
         end
       end
     end

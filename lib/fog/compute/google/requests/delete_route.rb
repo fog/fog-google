@@ -8,14 +8,12 @@ module Fog
       end
 
       class Real
+        # Deletes the specified Route resource.
+        #
+        # @param identity [String] Name of the route to delete
+        # @see https://cloud.google.com/compute/docs/reference/latest/routes/delete
         def delete_route(identity)
-          api_method = @compute.routes.delete
-          parameters = {
-            "project" => @project,
-            "route" => identity
-          }
-
-          request(api_method, parameters)
+          @compute.delete_route(@project, identity)
         end
       end
     end

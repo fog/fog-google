@@ -5,10 +5,11 @@ module Fog
         model Fog::Compute::Google::Project
 
         def get(identity)
-          if project = service.get_project(identity).body
+          if project = service.get_project(identity).to_h
             new(project)
           end
-        rescue Fog::Errors::NotFound
+        rescue ::Google::Apis::ClientError => e
+          raise e unless e.status_code == 404
           nil
         end
       end

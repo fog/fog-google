@@ -4,91 +4,134 @@ module Fog
       class TargetPool < Fog::Model
         identity :name
 
-        attribute :kind, :aliases => "kind"
-        attribute :self_link, :aliases => "selfLink"
-        attribute :id, :aliases => "id"
-        attribute :creation_timestamp, :aliases => "creationTimestamp"
-        attribute :description, :aliases => "description"
-        attribute :region, :aliases => "region"
-        attribute :health_checks, :aliases => "healthChecks"
-        attribute :instances, :aliases => "instances"
-        attribute :session_affinity, :aliases => "sessionAffinity"
-        attribute :failover_ratio, :aliases => "failoverRatio"
         attribute :backup_pool, :aliases => "backupPool"
+        attribute :creation_timestamp, :aliases => "creationTimestamp"
+        attribute :description
+        attribute :failover_ratio, :aliases => "failoverRatio"
+        attribute :health_checks, :aliases => "healthChecks"
+        attribute :id
+        attribute :instances
+        attribute :kind
+        attribute :region
+        attribute :self_link, :aliases => "selfLink"
+        attribute :session_affinity, :aliases => "sessionAffinity"
 
         def save
           requires :name, :region
 
-          options = {
-            "description" => description,
-            "region" => region,
-            "healthChecks" => health_checks,
-            "instances" => instances,
-            "sessionAffinity" => session_affinity,
-            "failoverRatio" => failover_ratio,
-            "backupPool" => backup_pool
-          }
-
-          data = service.insert_target_pool(name, region, options).body
-          operation = Fog::Compute::Google::Operations.new(:service => service).get(data["name"], nil, data["region"])
+          data = service.insert_target_pool(
+            name, region, attributes.reject { |_k, v| v.nil? }
+          )
+          operation = Fog::Compute::Google::Operations
+                      .new(:service => service)
+                      .get(data.name, nil, data.region)
           operation.wait_for { !pending? }
           reload
         end
 
         def destroy(async = true)
-          requires :name, :region
-          operation = service.delete_target_pool(name, region)
-          unless async
-            # wait until "DONE" to ensure the operation doesn't fail, raises
-            # exception on error
-            Fog.wait_for do
-              operation = service.get_region_operation(region, operation.body["name"])
-              operation.body["status"] == "DONE"
-            end
-          end
+          requires :identity, :region
+          data = service.delete_target_pool(identity, region)
+          operation = Fog::Compute::Google::Operations
+                      .new(:service => service)
+                      .get(data.name, nil, data.region)
+          operation.wait_for { ready? } unless async
           operation
         end
 
-        def add_instance(instance)
+        def add_instance(instance, async = true)
+          requires :identity
           instance = instance.self_link unless instance.class == String
-          service.add_target_pool_instances(self, [instance])
+          data = service.add_target_pool_instances(identity, region, [instance])
+          operation = Fog::Compute::Google::Operations
+                      .new(:service => service)
+                      .get(data.name, nil, data.region)
+          operation.wait_for { ready? } unless async
+
           reload
         end
 
-        def remove_instance(instance)
+        def remove_instance(instance, async = true)
+          requires :identity
+
           instance = instance.self_link unless instance.class == String
-          service.remove_target_pool_instances(self, [instance])
+          data = service.remove_target_pool_instances(identity, region, [instance])
+          operation = Fog::Compute::Google::Operations
+                      .new(:service => service)
+                      .get(data.name, nil, data.region)
+
+          operation.wait_for { ready? } unless async
+
           reload
         end
 
-        def add_health_check(health_check)
+        def add_health_check(health_check, async = true)
+          requires :identity, :region
+
           health_check = health_check.self_link unless health_check.class == String
-          service.add_target_pool_health_checks(self, [health_check])
+          data = service.add_target_pool_health_checks(identity, region, [health_check])
+          operation = Fog::Compute::Google::Operations
+                      .new(:service => service)
+                      .get(data.name, nil, data.region)
+          operation.wait_for { ready? } unless async
+
           reload
         end
 
-        def remove_health_check(health_check)
+        def remove_health_check(health_check, async = true)
+          requires :identity, :region
+
           health_check = health_check.self_link unless health_check.class == String
-          service.remove_target_pool_health_checks(self, [health_check])
+          data = service.remove_target_pool_health_checks(identity, region, [health_check])
+          operation = Fog::Compute::Google::Operations
+                      .new(:service => service)
+                      .get(data.name, nil, data.region)
+          operation.wait_for { ready? } unless async
           reload
         end
 
+        ##
+        # Get most recent health checks for each IP for instances.
+        #
+        # @param [String] instance_name a specific instance to look up. Default
+        #   behavior returns health checks for all instances associated with
+        #   this check.
+        # @returns [Hash<String, Array<Hash>>] a map of instance URL to health checks
         def get_health(instance_name = nil)
+          requires :identity, :region
+
           if instance_name
             instance = service.servers.get(instance_name)
-            health_results = [service.get_target_pool_health(self, instance.self_link)]
+            data = service.get_target_pool_health(identity, region, instance.self_link)
+                          .to_h[:health_status] || []
+            results = [instance.self_link, data]
           else
-            health_results = instances.map do |instance_selflink|
-              service.get_target_pool_health(self, instance_selflink)
+            results = instances.map do |self_link|
+              data = service.get_target_pool_health(identity, region, self_link)
+                            .to_h[:health_status] || []
+              [self_link, data]
             end
           end
-          Hash[health_results]
+          Hash[results]
+        end
+
+        def set_backup(backup = nil)
+          requires :identity, :region
+
+          backup ||= backup_pool
+
+          service.set_target_pool_backup(
+            identity, region, backup,
+            :failover_ratio => failover_ratio
+          )
+          reload
         end
 
         def ready?
           service.get_target_pool(name, region)
           true
-        rescue Fog::Errors::NotFound
+        rescue ::Google::Apis::ClientError => e
+          raise e unless e.status_code == 404
           false
         end
 
@@ -110,7 +153,7 @@ module Fog
           self
         end
 
-        RUNNING_STATE = "READY"
+        RUNNING_STATE = "READY".freeze
       end
     end
   end

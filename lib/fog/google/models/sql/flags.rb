@@ -12,7 +12,7 @@ module Fog
         #
         # @return [Array<Fog::Google::SQL::Flag>] List of flags
         def all
-          data = service.list_flags.body["items"] || []
+          data = service.list_flags.to_h[:items] || []
           load(data)
         end
       end

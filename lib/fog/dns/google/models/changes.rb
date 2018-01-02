@@ -13,9 +13,10 @@ module Fog
         def all
           requires :zone
 
-          data = service.list_changes(zone.identity).body["changes"] || []
+          data = service.list_changes(zone.identity).to_h[:changes] || []
           load(data)
-        rescue Fog::Errors::NotFound
+        rescue ::Google::Apis::ClientError => e
+          raise e unless e.status_code == 404
           []
         end
 
@@ -26,11 +27,11 @@ module Fog
         # @return [Fog::DNS::Google::Change] Change resource
         def get(identity)
           requires :zone
-
-          if change = service.get_change(zone.identity, identity).body
+          if change = service.get_change(zone.identity, identity).to_h
             new(change)
           end
-        rescue Fog::Errors::NotFound
+        rescue ::Google::Apis::ClientError => e
+          raise e unless e.status_code == 404
           nil
         end
 
