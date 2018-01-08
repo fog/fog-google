@@ -202,8 +202,8 @@ module Fog
 
         def public_ip_addresses
           addresses = []
-          if network_interfaces.respond_to? :flatMap
-            addresses = network_interfaces.flatMap do |nic|
+          if network_interfaces.respond_to? :flat_map
+            addresses = network_interfaces.flat_map do |nic|
               if nic[:access_configs].respond_to? :each
                 nic[:access_configs].select { |config| config[:name] == "External NAT" }
                                     .map { |config| config[:nat_ip] }
