@@ -52,10 +52,13 @@ module Fog
               options[:content_type] = "text/plain"
             elsif data.is_a?(::File)
               options[:content_type] = Fog::Storage.parse_data(data)[:headers]["Content-Type"]
-            elsif data.respond_to?(:content_type) && data.respond_to?(:path)
-              options[:content_type] = data.content_type
-              data = data.path
             end
+          end
+
+          # Paperclip::AbstractAdapter
+          if data.respond_to?(:content_type) && data.respond_to?(:path)
+            options[:content_type] = data.content_type
+            data = data.path
           end
 
           object_config = ::Google::Apis::StorageV1::Object.new(
