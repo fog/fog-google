@@ -29,7 +29,19 @@ class TestStorageRequests < StorageShared
     object_name = new_object_name
     paperclip_file = OpenStruct.new(:path => some_temp_file,
                                     :content_type => "image/png")
-    @client.put_object(some_bucket_name, object_name, paperclip_file)
+    @client.put_object(some_bucket_name, object_name, paperclip_file, :content_type => "image/png")
+
+    object = @client.get_object(some_bucket_name, object_name)
+
+    assert_equal(object_name, object[:name])
+    assert_equal("image/png", object[:content_type])
+  end
+
+  def test_put_object_contradictory_content_type
+    object_name = new_object_name
+    file = OpenStruct.new(:path => some_temp_file,
+                          :content_type => "text/plain")
+    @client.put_object(some_bucket_name, object_name, file, :content_type => "image/png")
 
     object = @client.get_object(some_bucket_name, object_name)
 
