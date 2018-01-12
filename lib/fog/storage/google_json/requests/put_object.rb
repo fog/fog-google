@@ -57,7 +57,7 @@ module Fog
 
           # Paperclip::AbstractAdapter
           if data.respond_to?(:content_type) && data.respond_to?(:path)
-            options[:content_type] = data.content_type
+            options[:content_type] ||= data.content_type
             data = data.path
           end
 
