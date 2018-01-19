@@ -23,6 +23,9 @@ module Fog
         #   Set of properties to return
         # @param options [Hash]
         #   Request-specific options
+        # @param &block [Proc]
+        #   Block to pass a streamed object response to. Expected format is
+        #   same as Excon :response_block ({ |chunk, remaining_bytes, total_bytes| ... })
         # @return [Hash] Object metadata with :body attribute set to contents of object
         def get_object(bucket_name, object_name,
                        generation: nil,
@@ -31,12 +34,10 @@ module Fog
                        if_metageneration_match: nil,
                        if_metageneration_not_match: nil,
                        projection: nil,
-                       **options)
+                       **options, &_block)
           raise ArgumentError.new("bucket_name is required") unless bucket_name
           raise ArgumentError.new("object_name is required") unless object_name
 
-          # The previous semantics require returning the content of the request
-          # rather than taking a filename to populate. Hence, tempfile.
           buf = Tempfile.new("fog-google-storage-temp")
 
           # Two requests are necessary, first for metadata, then for content.
@@ -59,8 +60,12 @@ module Fog
             all_opts.merge(:download_dest => buf.path)
           )
 
-          object[:body] = buf.read
-          buf.unlink
+          if block_given?
+            yield buf.read, nil, nil
+          else
+            object[:body] = buf.read
+            buf.unlink
+          end
 
           object
         end
