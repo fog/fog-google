@@ -17,7 +17,7 @@ module Fog
           data = service.get_bucket(key, options).body
           directory = new(:key => data["Name"])
           options = {}
-          for k, v in data
+          data.each_pair do |k, v|
             if %w(CommonPrefixes Delimiter IsTruncated Marker MaxKeys Prefix).include?(k)
               options[k] = v
             end
