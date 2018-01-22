@@ -9,10 +9,11 @@ module Fog
           load(data)
         end
 
-        def get(bucket_name,
-                if_metageneration_match: nil,
-                if_metageneration_not_match: nil,
-                projection: nil)
+        def get(bucket_name, options = {})
+          if_metageneration_match = options[:if_metageneration_match]
+          if_metageneration_not_match = options[:if_metageneration_not_match]
+          projection = options[:projection]
+
           data = service.get_bucket(
             bucket_name,
             :if_metageneration_match => if_metageneration_match,
