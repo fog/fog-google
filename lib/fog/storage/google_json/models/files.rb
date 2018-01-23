@@ -52,7 +52,7 @@ module Fog
         rescue ::Google::Apis::ClientError
           nil
         end
-        alias_method head, metadata
+        alias_method :head, :metadata
 
         def new(opts = {})
           requires :directory
