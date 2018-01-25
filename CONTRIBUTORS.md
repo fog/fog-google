@@ -1,43 +1,51 @@
-* Alexander Lomov <lomov.as@gmail.com>
-* Alexander Kolesen <akolesen@iron.io>
-* althras <althras@gmail.com>
-* Andrew Leonard <andy@hurricane-ridge.com>
-* Antonio <0x414f@gmail.com>
-* Ariel Zavala <arielo.zavala@gmail.com>
-* ashmrtnz <ashmrtnz@google.com>
-* Akshay Moghe <amoghe@maginatics.com>
-* Benson Kalahar <bensonk42@gmail.com>
-* Bob Lail and Luke Booth <pair=bob.lail+luke.booth@cphepdev.com>
-* Brett Porter <brett@apache.org>
-* Brian D. Burns <iosctr@gmail.com>
-* Carlos Sanchez <csanchez@maestrodev.com>
-* Chris Gianelloni <wolf31o2@gmail.com>
-* Dan Prince <dprince@redhat.com>
-* Daniel Broudy <broudy@google.com>
+With also previous help from unnamed Google employees and [Fog contributors](https://github.com/fog/fog/blob/master/CONTRIBUTORS.md)
+
+* Alex Coomans <alex@alexcoomans.com>
+* Artem <code@temik.me>
+* Artem <temikus@google.com>
+* Artem Yakimenko <code@temik.me>
+* Artem Yakimenko <temikus@google.com>
+* Daniel van Gils <daniel@cloud66.com>
+* David Salgado <david@digitalronin.com>
+* Dawid Janczak <dawid.janczak@gmail.com>
 * Dean Putney <dean@glowforge.com>
-* Doug Henderson <dhenderson@maestrodev.com>
+* Dean Putney <putney.dean@gmail.com>
+* Dima <dima@cloud66.com>
+* Emily Ye <emilyye@google.com>
 * Eric Johnson <erjohnso@google.com>
-* Ferran Rodenas <frodenas@gmail.com>
-* Frederick Cheung <frederick.cheung@gmail.com>
-* Jacob Mattingley <jem@ubalo.com>
-* James Herdman <james.herdman@me.com>
-* jordangbull <jordangbull@gmail.com>
-* Juris Galang <jurisgalang@gmail.com>
-* kbockmanrs <kevin@rightscale.com>
-* Lance Ivy <lance@cainlevy.net>
-* leonidlm <leonidlm@gmail.com>
-* Marcin Owsiany <porridge@google.com>
-* Matt Darby <matt.darby@rackspace.com>
-* Michael Elfassy <michaelelfassy@napps.ca>
+* Ervin Weber <webervin@users.noreply.github.com>
+* Imri Zvik <imrizvik@gmail.com>
+* Isaac Hollander McCreery <ihmccreery@google.com>
+* Isaac Hollander McCreery <ihmccreery@users.noreply.github.com>
+* Jakob Krigovsky <jakob@krigovsky.com>
+* Jared <j.schaber@innovati.ws>
+* Jeffrey Dang <jcdang@gmail.com>
+* Joe Selman <jsselman@google.com>
+* Jonathan Yankovich <jonathan.yankovich@gmail.com>
+* Julian Cheal <jcheal@redhat.com>
+* Kyle Boutette <Everlag@users.noreply.github.com>
+* Kyle Boutette <boutette@google.com>
+* Leila <leyla.myosotis@gmail.com>
+* Leila-Kuntar <leyla.myosotis@gmail.com>
+* Marcel Hild <hild@b4mad.net>
+* Martin Lazarov <martin@lazarov.bg>
+* Miguel Martinez <miguel@bitnami.com>
+* Misha Brukman <mbrukman@google.com>
+* Myosotis <leyla.myosotis@gmail.com>
 * Nat Welch <nat@natwelch.com>
-* neillturner <neillwturner@gmail.com>
-* Paul Thornthwaite <tokengeek@gmail.com>
-* Paulo Henrique Lopes Ribeiro <plribeiro@zertico.com>
-* Romain Haenni <admin@zlabs.ch>
-* Romain Vrignaud <rvrignaud@gmail.com>
-* snyquist2 <snyquist@google.com>
-* Stephen von Takach <steve@advancedcontrol.com.au>
-* Timur Alperovich <timur.alperovich@gmail.com>
-* unknown <bturner_2@pibuk-lp71.pibenchmark.com>
+* Paul Thornthwaite <paul@brightbox.co.uk>
+* Paulo Henrique Lopes Ribeiro <plribeiro3000@gmail.com>
+* Paulo Ribeiro <paulo@majority.co>
+* Pradeep G <itsprdp@gmail.com>
+* Rama McIntosh <rama@contix.com>
+* Riccardo Carlesso <palladiusbonton@gmail.com>
+* Riccardo Carlesso <riccardo.carlesso@gmail.com>
+* Richard Wallace <rwallace@gmail.com>
+* Tim Downey <tdowney@pivotal.io>
+* Vadim Shaulski <sh.vadim@gmail.com>
 * Wesley Beary <geemus@gmail.com>
-* Google Inc.
+* Zach Robinson <zrobinson@pivotal.io>
+* canausa <tscanausa@gmail.com>
+* geemus <geemus@gmail.com>
+* lkuntar <leyla.myosotis@gmail.com>
+* scott rushforth <scott@spotman.net>
