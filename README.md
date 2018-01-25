@@ -49,7 +49,6 @@ Add the following two lines to your application's `Gemfile`:
 
 ```ruby
 gem 'fog-google'
-gem 'google-api-client', '~> 0.8.6'
 ```
 
 And then execute:
