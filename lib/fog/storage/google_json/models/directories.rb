@@ -21,7 +21,13 @@ module Fog
             :projection => projection
           ).to_h
 
-          new(data)
+          directory = new(data)
+
+          files_attr_names = %i(delimiter page_token max_results prefix)
+
+          file_opts = options.select { |k, _| files_attr_names.include? k }
+          directory.files(file_opts)
+          directory
         rescue ::Google::Apis::ClientError => e
           # metageneration check failures returns HTTP 412 Precondition Failed
           raise e unless e.status_code == 404 || e.status_code == 412
