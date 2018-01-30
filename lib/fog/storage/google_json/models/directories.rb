@@ -22,7 +22,9 @@ module Fog
           ).to_h
 
           directory = new(data)
-
+          # Because fog-aws accepts these arguments on files at the
+          # directories.get level, we need to preload the directory files
+          # with these attributes here.
           files_attr_names = %i(delimiter page_token max_results prefix)
 
           file_opts = options.select { |k, _| files_attr_names.include? k }
