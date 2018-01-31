@@ -37,11 +37,10 @@ module Fog
           false
         end
 
-        def files
+        def files(attr = {})
           @files ||= begin
             Fog::Storage::GoogleJSON::Files.new(
-              :directory => self,
-              :service => service
+              attr.merge(:directory => self, :service => service)
             )
           end
         end

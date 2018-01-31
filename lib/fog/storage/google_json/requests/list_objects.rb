@@ -20,8 +20,19 @@ module Fog
         #   object as distinct results (defaults to False)
         # @return [Google::Apis::StorageV1::Objects]
         def list_objects(bucket, options = {})
-          request_options = ::Google::Apis::RequestOptions.default.merge(options)
-          @storage_json.list_objects(bucket, :options => request_options)
+          allowed_opts = %i(
+            delimiter
+            max_results
+            page_token
+            prefix
+            projection
+            versions
+          )
+
+          @storage_json.list_objects(
+            bucket,
+            options.select { |k, _| allowed_opts.include? k }
+          )
         end
       end
 

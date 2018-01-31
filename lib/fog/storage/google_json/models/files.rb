@@ -16,8 +16,8 @@ module Fog
 
         def all(options = {})
           requires :directory
-
-          data = service.list_objects(directory.key, options).to_h[:items] || []
+          data = service.list_objects(directory.key, attributes.merge(options))
+                        .to_h[:items] || []
           load(data)
         end
 
