@@ -8,11 +8,10 @@ matrix:
     - rvm: 2.1
     - rvm: 2.2
     - rvm: 2.3
-    - rvm: 2.4.0
-    - rvm: 2.4.1
+    - rvm: 2.4
+    - rvm: 2.5
     - rvm: jruby-head
   allow_failures:
     - rvm: jruby-head
-    - rvm: 2.4.1
 notifications:
   email: false
