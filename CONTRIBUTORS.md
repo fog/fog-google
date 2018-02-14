@@ -58,6 +58,7 @@ With also previous help from unnamed Google employees and [Fog contributors](htt
 * Misha Brukman <mbrukman@google.com>
 * Myosotis <leyla.myosotis@gmail.com>
 * Nat Welch <nat@natwelch.com>
+* Nicolas Leger <nicolasleger@users.noreply.github.com>
 * Paul Thornthwaite <paul@brightbox.co.uk>
 * Paul Thornthwaite <tokengeek@gmail.com>
 * Paulo Henrique Lopes Ribeiro <plribeiro3000@gmail.com>
@@ -70,6 +71,7 @@ With also previous help from unnamed Google employees and [Fog contributors](htt
 * Richard Wallace <rwallace@gmail.com>
 * Romain Haenni <admin@zlabs.ch>
 * Romain Vrignaud <rvrignaud@gmail.com>
+* Sean Malloy <spinelli85@gmail.com>
 * Stephen von Takach <steve@advancedcontrol.com.au>
 * Tim Downey <tdowney@pivotal.io>
 * Timur Alperovich <timur.alperovich@gmail.com>
