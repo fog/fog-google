@@ -95,7 +95,7 @@ module Fog
           end
 
           if data[:scheduling]
-            data[:scheduling] = ::Google::Apis::ComputeV1::ServiceAccount.new(options[:scheduling])
+            data[:scheduling] = ::Google::Apis::ComputeV1::Scheduling.new(options[:scheduling])
           end
 
           if data[:tags]
