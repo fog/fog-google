@@ -425,10 +425,9 @@ module Fog
 
           options = attributes.reject { |_, v| v.nil? }
 
-          if service_accounts && service_accounts[:scopes]
-            options[:service_accounts] = service_accounts.merge(
-              :scopes => map_scopes(service_accounts[:scopes])
-            )
+          if service_accounts && service_accounts[0]
+            service_accounts[0].merge!(:scopes => map_scopes(service_accounts[0][:scopes]))
+            options[:service_accounts] = service_accounts
           end
 
           if attributes[:external_ip]
