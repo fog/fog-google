@@ -18,6 +18,7 @@ module Fog
       request :copy_object
       request :delete_bucket
       request :delete_object
+      request :delete_object_url
       request :get_bucket
       request :get_bucket_acl
       request :get_object
