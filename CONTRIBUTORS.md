@@ -1,6 +1,7 @@
 With also previous help from unnamed Google employees and [Fog contributors](https://github.com/fog/fog/blob/master/CONTRIBUTORS.md)
 
 * Akshay Moghe <amoghe@maginatics.com>
+* Alessio Caiazza <acaiazza@gitlab.com>
 * Alex Coomans <alex@alexcoomans.com>
 * Alexander Kolesen <akolesen@iron.io>
 * Alexander Lomov <lomov.as@gmail.com>
