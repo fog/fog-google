@@ -14,14 +14,14 @@ module Fog
         #   * body<~String> - url for object
 
         def get_object_url(bucket_name, object_name, expires)
-          Fog::Logger.deprecation("Fog::Storage::Google => ##{get_object_url} is deprecated, use ##{get_object_https_url} instead[/] [light_black](#{caller.first})")
+          Fog::Logger.deprecation("Fog::Storage::Google => #get_object_url is deprecated, use #get_object_https_url instead[/] [light_black](#{caller(1..1).first})")
           get_object_https_url(bucket_name, object_name, expires)
         end
       end
 
       class Mock # :nodoc:all
         def get_object_url(bucket_name, object_name, expires)
-          Fog::Logger.deprecation("Fog::Storage::Google => ##{get_object_url} is deprecated, use ##{get_object_https_url} instead[/] [light_black](#{caller.first})")
+          Fog::Logger.deprecation("Fog::Storage::Google => #get_object_url is deprecated, use #get_object_https_url instead[/] [light_black](#{caller(1..1).first})")
           get_object_https_url(bucket_name, object_name, expires)
         end
       end
