@@ -46,6 +46,8 @@ module Fog
                        kms_key_name: nil,
                        predefined_acl: nil,
                        **options)
+          data = StringIO.new(data) if options[:content_type] == "text/plain"
+
           unless options[:content_type]
             if data.is_a?(String)
               data = StringIO.new(data)
