@@ -46,13 +46,11 @@ module Fog
                        kms_key_name: nil,
                        predefined_acl: nil,
                        **options)
-          unless options[:content_type]
-            if data.is_a?(String)
-              data = StringIO.new(data)
-              options[:content_type] = "text/plain"
-            elsif data.is_a?(::File)
-              options[:content_type] = Fog::Storage.parse_data(data)[:headers]["Content-Type"]
-            end
+          if data.is_a?(String)
+            data = StringIO.new(data)
+            options[:content_type] ||= "text/plain"
+          elsif data.is_a?(::File)
+            options[:content_type] ||= Fog::Storage.parse_data(data)[:headers]["Content-Type"]
           end
 
           # Paperclip::AbstractAdapter
