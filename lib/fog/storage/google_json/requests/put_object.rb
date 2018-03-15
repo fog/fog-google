@@ -48,14 +48,9 @@ module Fog
                        **options)
           if data.is_a?(String)
             data = StringIO.new(data)
-          end
-
-          unless options[:content_type]
-            options[:content_type] = "text/plain"
-
-            if data.is_a?(::File)
-              options[:content_type] = Fog::Storage.parse_data(data)[:headers]["Content-Type"]
-            end
+            options[:content_type] ||= "text/plain"
+          elsif data.is_a?(::File)
+             options[:content_type] ||= Fog::Storage.parse_data(data)[:headers]["Content-Type"]
           end
 
           # Paperclip::AbstractAdapter
