@@ -73,6 +73,7 @@ With also previous help from unnamed Google employees and [Fog contributors](htt
 * Romain Haenni <admin@zlabs.ch>
 * Romain Vrignaud <rvrignaud@gmail.com>
 * Sean Malloy <spinelli85@gmail.com>
+* Shinya Maeda <shinya@gitlab.com>
 * Stephen von Takach <steve@advancedcontrol.com.au>
 * Tim Downey <tdowney@pivotal.io>
 * Timur Alperovich <timur.alperovich@gmail.com>
