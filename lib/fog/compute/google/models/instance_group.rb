@@ -33,6 +33,10 @@ module Fog
           service.delete_instance_group(name, zone_name)
         end
 
+        def add_instance(instance_id)
+          add_instances [instance_id]
+        end
+
         def add_instances(instances)
           requires :identity, :zone
 
