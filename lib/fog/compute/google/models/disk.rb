@@ -33,14 +33,21 @@ module Fog
 
           options = {
             :description => description || default_description,
-            :source_image => source_image,
-            :source_snapshot => source_snapshot,
-            :size_gb => size_gb,
             :type => type,
-            :zone => zone
+            :size_gb => size_gb,
+            :source_image => source_image,
+            :source_snapshot => source_snapshot
           }
 
-          data = service.insert_disk(name, zone, source_image, options)
+          if options[:source_image]
+            unless source_image.include?("projects/")
+              options[:source_image] = service.images.get(source_image).self_link
+            end
+          end
+
+          # Request needs backward compatibility so source image is specified in
+          # method arguments
+          data = service.insert_disk(name, zone, options[:source_image], options)
           operation = Fog::Compute::Google::Operations.new(:service => service)
                                                       .get(data.name, data.zone)
           operation.wait_for { !pending? }
