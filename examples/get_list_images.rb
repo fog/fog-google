@@ -23,7 +23,7 @@ def test
 
   puts "Fetching a single image from a global project..."
   puts "------------------------------------------------"
-  img = connection.images.get("debian-8-jessie-v20161215")
+  img = connection.images.get("debian-8-jessie-v20180329")
   raise "Could not GET the image" unless img
   puts img.inspect
 
