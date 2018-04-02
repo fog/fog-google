@@ -24,7 +24,7 @@ def test
     :name => name,
     :size_gb => 10,
     :zone_name => "us-central1-a",
-    :source_image => "debian-8-jessie-v20161215"
+    :source_image => "debian-8-jessie-v20180329"
   )
 
   disk.wait_for { disk.ready? }
