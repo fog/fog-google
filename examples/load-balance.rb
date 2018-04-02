@@ -24,7 +24,7 @@ def test
         :name => "#{name}-#{i}",
         :size_gb => 10,
         :zone_name => zone,
-        :source_image => "debian-8-jessie-v20160718"
+        :source_image => "debian-8-jessie-v20180329"
       )
       disk.wait_for { disk.ready? }
     rescue
