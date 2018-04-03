@@ -26,6 +26,24 @@ module Fog
 
         # attribute :body
 
+        # https://cloud.google.com/storage/docs/access-control#predefined-acl
+        VALID_PREDEFINED_ACLS = [
+          "authenticatedRead",
+          "bucketOwnerFullControl",
+          "bucketOwnerRead",
+          "private",
+          "projectPrivate",
+          "publicRead",
+          "publicReadWrite"
+        ].freeze
+
+        def predefined_acl=(new_predefined_acl)
+          unless VALID_PREDEFINED_ACLS.include?(new_predefined_acl)
+            raise ArgumentError.new("acl must be one of [#{VALID_PREDEFINED_ACLS.join(', ')}]")
+          end
+          @predefined_acl = new_predefined_acl
+        end
+
         def body
           last_modified && (file = collection.get(identity)) ? attributes[:body] ||= file.body : attributes[:body] ||= ""
         end
@@ -52,6 +70,15 @@ module Fog
           false
         end
 
+        def public=(new_public)
+          if new_public
+            @predefined_acl = "publicRead"
+          else
+            @predefined_acl = "projectPrivate"
+          end
+          new_public
+        end
+
         def public_url
           requires :directory, :key
           "https://storage.googleapis.com/#{directory.key}/#{key}"
@@ -60,7 +87,6 @@ module Fog
         FILE_INSERTABLE_FIELDS = %i(
           content_type
           predefined_acl
-          acl
           cache_control
           content_disposition
           content_encoding
@@ -74,6 +100,8 @@ module Fog
             FILE_INSERTABLE_FIELDS.map { |k| [k, attributes[k]] }
                                   .reject { |pair| pair[1].nil? }
           ]
+
+          options[:predefined_acl] = @predefined_acl if @predefined_acl
 
           service.put_object(directory.key, key, body, options)
           self.content_length = Fog::Storage.get_body_size(body)
