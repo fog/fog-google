@@ -26,7 +26,7 @@ module Fog
 
         # attribute :body
 
-        # https://cloud.google.com/storage/docs/access-control#predefined-acl
+        # https://cloud.google.com/storage/docs/access-control/lists#predefined-acls
         VALID_PREDEFINED_ACLS = [
           "authenticatedRead",
           "bucketOwnerFullControl",
@@ -71,10 +71,12 @@ module Fog
         end
 
         def public=(new_public)
-          if new_public
-            @predefined_acl = "publicRead"
-          else
-            @predefined_acl = "projectPrivate"
+          unless new_public.nil?
+            if new_public
+              @predefined_acl = "publicRead"
+            else
+              @predefined_acl = "projectPrivate"
+            end
           end
           new_public
         end
@@ -100,8 +102,8 @@ module Fog
             FILE_INSERTABLE_FIELDS.map { |k| [k, attributes[k]] }
                                   .reject { |pair| pair[1].nil? }
           ]
-
-          options[:predefined_acl] = @predefined_acl if @predefined_acl
+          
+          options[:predefined_acl] ||= @predefined_acl
 
           service.put_object(directory.key, key, body, options)
           self.content_length = Fog::Storage.get_body_size(body)
