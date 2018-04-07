@@ -1,9 +1,5 @@
 language: ruby
 cache: bundler
-before_install:
-  # Added gem update due to travis-ci/issues/8969
-  - gem update --system
-  - gem --version
 sudo: false
 dist: trusty
 matrix:
@@ -16,6 +12,9 @@ matrix:
     - rvm: 2.5
     - rvm: jruby-head
   allow_failures:
+  # allow 2.5 to fail until Travis CI is fixed.
+  # See travis-ci/travis-ci#8969
+    - rvm: 2.5
     - rvm: jruby-head
 notifications:
   email: false
