@@ -1,19 +1,5 @@
 jobs:
-  - name: base-int
-    plan:
-      - aggregate:
-        - {
-            get: fog-google-src, resource: fog-google-src-in, trigger: true
-          }
-
-      - task: full-integration-tests
-        file: fog-google-src/ci/tasks/run-int.yml
-        params:
-          google_project: {{google_project}}
-          google_json_key_data: {{google_json_key_data}}
-          google_client_email: {{google_client_email}}
-
-  - name: pr-int
+  - name: pr-integrate
     plan:
       - get: fog-google-src
         resource: pull-request
@@ -40,11 +26,6 @@ jobs:
             status: failure
 
 resources:
-  - name: fog-google-src-in
-    type: git
-    source:
-      uri: https://github.com/fog/fog-google.git
-      branch: upgrade-google-client
   - name: pull-request
     type: pull-request
     source:
