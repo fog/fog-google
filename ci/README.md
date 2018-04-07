@@ -1,11 +1,6 @@
 # fog-google CI
 
-This pipeline performs two functions.
-
-1. Performing an integration test of the
-upgrade-google-client branch whenever new changes appear there.
-
-1. Running integration tests against every PR with the
+This pipeline performs integration tests against every PR with the
 `integrate` label. This allows whitelisted PRs to be tested
 automatically before being merged. Status is updated on the
 PR when the test completes.
@@ -24,7 +19,7 @@ To deploy the pipeline:
 * Login to your Concourse:
 
 ```
-fly -t fog-google login -c <YOUR CONCOURSE URL>
+fly -t fog-ci login -c <YOUR CONCOURSE URL>
 ```
 
 * Update the [credentials.yml](https://github.com/fog/fog-google/blob/master/ci/credentials.yml.tpl)
@@ -33,13 +28,13 @@ file. See [Credentials Requirements](#credentials-requirements) for specific ins
 * Set the fog-google pipeline:
 
 ```
-fly -t fog-google set-pipeline -p fog-google -c pipeline.yml -l credentials.yml
+fly -t fog-ci set-pipeline -p fog-google -c pipeline.yml -l credentials.yml
 ```
 
 * Unpause the fog-google pipeline:
 
 ```
-fly -t fog-google unpause-pipeline -p fog-google
+fly -t fog-ci unpause-pipeline -p fog-google
 ```
 
 ## Credentials Requirements
