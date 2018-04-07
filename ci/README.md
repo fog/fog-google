@@ -14,7 +14,7 @@ PR when the test completes.
 
 In order to run the fog-google Concourse Pipeline you must have an existing
 [Concourse](http://concourse.ci) environment.
-See [Deploying Concourse on Google Compute Engine](https://github.com/cloudfoundry-incubator/bosh-google-cpi-release/blob/master/docs/deploy_concourse.md)
+See [Deploying Concourse on Google Compute Engine](https://github.com/cloudfoundry-incubator/bosh-google-cpi-release/blob/master/docs/concourse/README.md)
 for instructions.
 
 To deploy the pipeline:
