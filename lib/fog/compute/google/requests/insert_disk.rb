@@ -25,8 +25,8 @@ module Fog
                         description: nil, type: nil, size_gb: nil,
                         source_snapshot: nil, **_opts)
 
-          unless source_image.include?("projects/")
-            raise ArgumentError.new("source_image needs to be a self-link formatted or specify a family")
+          if source_image && !source_image.include?("projects/")
+            raise ArgumentError.new("source_image needs to be self-link formatted or specify a family")
           end
 
           disk = ::Google::Apis::ComputeV1::Disk.new(
