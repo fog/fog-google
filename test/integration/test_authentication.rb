@@ -6,7 +6,7 @@ class TestAuthentication < FogIntegrationTest
     @google_json_key_location = Fog.credentials[:google_json_key_location]
     @google_json_key_string = File.open(File.expand_path(@google_json_key_location), "rb", &:read)
   end
-  
+
   def test_authenticates_with_json_key_location
     c = Fog::Compute::Google.new(:google_key_location => nil,
                                  :google_key_string => nil,
