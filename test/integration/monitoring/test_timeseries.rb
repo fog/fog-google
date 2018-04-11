@@ -138,7 +138,8 @@ class TestMetricDescriptors < FogIntegrationTest
 
   def _delete_test_resources
     list_resp = @client.monitoring.list_project_metric_descriptors(
-      :filter => "metric.type = starts_with(\"#{TEST_METRIC_PREFIX}\")"
+      "projects/#{@client.project}",
+      filter: "metric.type = starts_with(\"#{TEST_METRIC_PREFIX}\")"
     )
     unless list_resp.metric_descriptors.nil?
       puts "Found #{list_resp.metric_descriptors.size} test metric descriptors."
