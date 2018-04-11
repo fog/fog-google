@@ -15,7 +15,7 @@ module Fog
           if region.nil?
             data = []
             service.list_aggregated_subnetworks(filters).to_h[:items].each_value do |region_obj|
-              data.concat(region_obj["subnetworks"]) if region_obj["subnetworks"]
+              data.concat(region_obj[:subnetworks]) if region_obj[:subnetworks]
             end
           else
             data = service.list_subnetworks(region, filters).to_h[:items]
