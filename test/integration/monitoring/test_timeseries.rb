@@ -1,4 +1,5 @@
 require "helpers/integration_test_helper"
+require "retriable"
 
 class TestMetricDescriptors < FogIntegrationTest
   TEST_METRIC_PREFIX = "custom.googleapis.com/fog-google-test/timeseries".freeze
@@ -44,10 +45,31 @@ class TestMetricDescriptors < FogIntegrationTest
     resp = @client.create_timeseries(:timeseries => [expected])
     assert_empty(resp.to_h)
 
+    # Wait for metric to be created
+    # Retriable is used instead of wait_for due to API client returning Google::Apis::ClientError: badRequest if the
+    # metric hasn't yet been created
+    Retriable.retriable(on: {Google::Apis::ClientError => /The provided filter doesn't refer to any known metric./},
+                        tries: 2,
+                        base_interval: 30) do
+      @client.list_timeseries(
+          :filter => "metric.type = \"#{metric_type}\"",
+          :interval => {
+            # Subtracting one second because timeSeries.list API
+            # doesn't return points that are exactly the same time
+            # as the interval for some reason.
+            :start_time => (start_time - 1).to_datetime.rfc3339,
+            :end_time => Time.now.to_datetime.rfc3339
+          }
+      ).time_series
+    end
+
     series = @client.timeseries_collection.all(
       :filter => "metric.type = \"#{metric_type}\"",
       :interval => {
-        :start_time => start_time.to_datetime.rfc3339,
+        # Subtracting one second because timeSeries.list API
+        # doesn't return points that are exactly the same time
+        # as the interval for some reason.
+        :start_time => (start_time - 1).to_datetime.rfc3339,
         :end_time => Time.now.to_datetime.rfc3339
       }
     )
@@ -86,18 +108,23 @@ class TestMetricDescriptors < FogIntegrationTest
 
     @client.create_timeseries(:timeseries => timeseries)
     interval = {
-      :start_time => start_time.to_datetime.rfc3339,
+      # Subtracting one second because timeSeries.list API
+      # doesn't return points that are exactly the same time
+      # as the interval for some reason.
+      :start_time => (start_time - 1).to_datetime.rfc3339,
       :end_time => Time.now.to_datetime.rfc3339
     }
 
-    # Wait for creation
-    Fog.wait_for(30) do
-      # Test all created timeseries are returned.
-      list_result = @client.list_timeseries(
+    # Wait for metric to be created
+    # Retriable is used instead of wait_for due to API client returning Google::Apis::ClientError: badRequest if the
+    # metric hasn't yet been created
+    Retriable.retriable(on: {Google::Apis::ClientError => /The provided filter doesn't refer to any known metric./},
+                        tries: 2,
+                        base_interval: 30) do
+      @client.list_timeseries(
         :filter => "metric.type = \"#{metric_type}\"",
         :interval => interval
       ).time_series
-      !list_result.nil? && list_result.size == timeseries.size
     end
 
     # Test page size
@@ -165,7 +192,7 @@ class TestMetricDescriptors < FogIntegrationTest
     )
 
     # Wait for metric descriptor to be created
-    Fog.wait_for(30, 2) do
+    Fog.wait_for(180, 2) do
       begin
         @client.get_metric_descriptor(metric_type)
         true
