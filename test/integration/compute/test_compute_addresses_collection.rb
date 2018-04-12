@@ -50,7 +50,7 @@ class TestComputeAddressesCollection < FogIntegrationTest
       ],
       :external_ip => my_address.address
     )
-    my_server.wait_for { provisioning? }
+    my_server.wait_for { staging? }
 
     # And verify that it's correctly assigned
     assert_equal(
