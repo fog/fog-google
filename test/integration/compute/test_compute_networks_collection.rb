@@ -30,14 +30,15 @@ class TestComputeNetworksCollection < FogIntegrationTest
 
     # Be aware that although the address resource is created, it might not yet
     # have an ip address. You can poll until the address has been assigned.
-    my_network.wait_for { !my_network.ipv4_range.nil? }
+    my_network.wait_for(60) { !my_network.ipv4_range.nil? }
     assert_match(/\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\/\d{1,2}/,
                  my_network.ipv4_range,
                  "My address's address should have a valid ipv4 address")
 
     # Now that we have an address, we can create a server using the static ip
     server_name = new_resource_name
-    client.servers.create(
+    
+    my_server = client.servers.create(
       :name => server_name,
       :machine_type => "f1-micro",
       :zone => client.zones.get(DEFAULT_ZONE).self_link,
@@ -49,9 +50,10 @@ class TestComputeNetworksCollection < FogIntegrationTest
         }
       ],
       :network_interfaces => [my_network.get_as_interface_config]
-    ).wait_for { ready? }
+    )
 
-    my_server = client.servers.get(server_name, DEFAULT_ZONE)
+    my_server.wait_for { ready? }
+
     # We need to verify that the network has been correctly assigned
     assert_equal(
       my_network.self_link,
