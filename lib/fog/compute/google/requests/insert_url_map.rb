@@ -16,7 +16,7 @@ module Fog
           url_map_obj = ::Google::Apis::ComputeV1::UrlMap.new(
             url_map.merge(:name => url_map_name)
           )
-          # HACK - Currently URL map insert may fail even though the backend
+          # HACK: Currently URL map insert may fail even though the backend
           # service operation is done. Retriable is not used to not add another
           # runtime dependency.
           # TODO: Remove after that has been corrected.

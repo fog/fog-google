@@ -37,7 +37,7 @@ class TestComputeNetworksCollection < FogIntegrationTest
 
     # Now that we have an address, we can create a server using the static ip
     server_name = new_resource_name
-    
+
     my_server = client.servers.create(
       :name => server_name,
       :machine_type => "f1-micro",

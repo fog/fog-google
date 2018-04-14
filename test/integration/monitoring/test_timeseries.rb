@@ -67,9 +67,9 @@ class TestMetricDescriptors < FogIntegrationTest
       ).time_series
     end
 
-    series = Retriable.retriable(on: {Google::Apis::ClientError => NOT_READY_REGEX},
-                        tries: RETRIABLE_TRIES,
-                        base_interval: RETRIABLE_BASE_INTERVAL) do
+    series = Retriable.retriable(on: { Google::Apis::ClientError => NOT_READY_REGEX },
+                                 tries: RETRIABLE_TRIES,
+                                 base_interval: RETRIABLE_BASE_INTERVAL) do
       @client.timeseries_collection.all(
         :filter => "metric.type = \"#{metric_type}\"",
         :interval => {
@@ -132,7 +132,7 @@ class TestMetricDescriptors < FogIntegrationTest
     # Wait for metric to be created
     # Retriable is used instead of wait_for due to API client returning Google::Apis::ClientError: badRequest if the
     # metric hasn't yet been created
-    Retriable.retriable(on: {Google::Apis::ClientError => NOT_READY_REGEX},
+    Retriable.retriable(on: { Google::Apis::ClientError => NOT_READY_REGEX },
                         tries: RETRIABLE_TRIES,
                         base_interval: RETRIABLE_BASE_INTERVAL) do
       @client.list_timeseries(
@@ -142,9 +142,9 @@ class TestMetricDescriptors < FogIntegrationTest
     end
 
     # Test page size
-    resp = Retriable.retriable(on: {Google::Apis::ClientError => NOT_READY_REGEX},
-                        tries: RETRIABLE_TRIES,
-                        base_interval: RETRIABLE_BASE_INTERVAL) do
+    resp = Retriable.retriable(on: { Google::Apis::ClientError => NOT_READY_REGEX },
+                               tries: RETRIABLE_TRIES,
+                               base_interval: RETRIABLE_BASE_INTERVAL) do
       @client.list_timeseries(
         :filter => "metric.type = \"#{metric_type}\"",
         :interval => interval,
@@ -168,7 +168,7 @@ class TestMetricDescriptors < FogIntegrationTest
            "expected different timeseries when using page_token")
 
     # Test filter
-    series = Retriable.retriable(on: {Google::Apis::ClientError => NOT_READY_REGEX},
+    series = Retriable.retriable(on: { Google::Apis::ClientError => NOT_READY_REGEX },
                                  tries: RETRIABLE_TRIES,
                                  base_interval: RETRIABLE_BASE_INTERVAL) do
       @client.timeseries_collection.all(
