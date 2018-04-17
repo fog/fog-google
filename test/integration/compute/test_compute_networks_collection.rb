@@ -5,12 +5,13 @@ class TestComputeNetworksCollection < FogIntegrationTest
   DEFAULT_REGION = "us-central1".freeze
   DEFAULT_ZONE = "us-central1-b".freeze
   RESOURCE_PREFIX = "fog-test-networkscol".freeze
+  TEST_ASYNC = false
 
   # Ensure we clean up any created resources
   Minitest.after_run do
     client = Fog::Compute::Google.new
-    client.networks.each { |a| a.destroy if a.name.start_with?(RESOURCE_PREFIX) }
-    client.servers.each { |s| s.destroy if s.name.start_with?(RESOURCE_PREFIX) }
+    client.networks.each { |a| a.destroy(TEST_ASYNC) if a.name.start_with?(RESOURCE_PREFIX) }
+    client.servers.each { |s| s.destroy(TEST_ASYNC) if s.name.start_with?(RESOURCE_PREFIX) }
   end
 
   def test_network_workflow
