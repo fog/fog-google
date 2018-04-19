@@ -24,7 +24,11 @@ module Fog
         end
 
         def put_object_acl(bucket_name, object_name, acl)
-          data = <<-DATA
+          headers = {}
+          data = ""
+
+          if acl.is_a?(Hash)
+            data = <<-DATA
 <AccessControlList>
   <Owner>
     #{tag('ID', acl['Owner']['ID'])}
@@ -34,10 +38,16 @@ module Fog
   </Entries>
 </AccessControlList>
 DATA
+          else
+            if !%w(private bucket-owner-read bucket-owner-full-control project-private authenticated-read public-read public-read-write).include?(acl)
+              raise Excon::Errors::BadRequest.new('invalid x-goog-acl')
+            end
+            headers['x-goog-acl'] = acl
+          end
 
           request(:body     => data,
                   :expects  => 200,
-                  :headers  => {},
+                  :headers  => headers,
                   :host     => "#{bucket_name}.#{@host}",
                   :method   => "PUT",
                   :query    => { "acl" => nil },
