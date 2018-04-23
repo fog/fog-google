@@ -39,10 +39,10 @@ module Fog
 </AccessControlList>
 DATA
           else
-            if !%w(private bucket-owner-read bucket-owner-full-control project-private authenticated-read public-read public-read-write).include?(acl)
-              raise Excon::Errors::BadRequest.new('invalid x-goog-acl')
+            unless %w(private bucket-owner-read bucket-owner-full-control project-private authenticated-read public-read public-read-write).include?(acl)
+              raise Excon::Errors::BadRequest.new("invalid x-goog-acl")
             end
-            headers['x-goog-acl'] = acl
+            headers["x-goog-acl"] = acl
           end
 
           request(:body     => data,
