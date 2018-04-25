@@ -376,6 +376,12 @@ module Fog
           status == PROVISIONING
         end
 
+        # Check if instance is Staging. On staging vs. provisioning difference:
+        # https://cloud.google.com/compute/docs/instances/checking-instance-status
+        def staging?
+          status == STAGING
+        end
+
         def ready?
           status == RUNNING
         end

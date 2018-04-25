@@ -16,7 +16,18 @@ module Fog
           url_map_obj = ::Google::Apis::ComputeV1::UrlMap.new(
             url_map.merge(:name => url_map_name)
           )
-          @compute.insert_url_map(@project, url_map_obj)
+          # HACK: Currently URL map insert may fail even though the backend
+          # service operation is done. Retriable is not used to not add another
+          # runtime dependency.
+          # TODO: Remove after that has been corrected.
+          begin
+            retries ||= 0
+            @compute.insert_url_map(@project, url_map_obj)
+          rescue ::Google::Apis::ClientError
+            Fog::Logger.warning("URL map insert failed, retrying...")
+            sleep 10
+            retry if (retries += 1) < 2
+          end
         end
       end
     end

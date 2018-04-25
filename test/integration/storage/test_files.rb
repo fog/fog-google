@@ -37,7 +37,7 @@ class TestStorageRequests < StorageShared
   end
 
   def test_files_create_invalid_predefined_acl
-    assert_raises(Google::Apis::ClientError) do
+    assert_raises(ArgumentError) do
       @client.directories.get(some_bucket_name).files.create(
         :key => new_object_name,
         :body => some_temp_file,

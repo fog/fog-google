@@ -4,7 +4,7 @@ require "securerandom"
 
 class TestComputeAddressShared < FogIntegrationTest
   DEFAULT_REGION = "us-central1".freeze
-  ADDRESS_RESOURCE_PREFIX = "fog-test-address".freeze
+  ADDRESS_RESOURCE_PREFIX = "fog-int-test-address".freeze
 
   include ClientHelper
 

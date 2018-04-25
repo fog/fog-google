@@ -1,6 +1,13 @@
 require "helpers/integration_test_helper"
+require "retriable"
 
 class TestMetricDescriptors < FogIntegrationTest
+  # Retriable is used to wrap each request in this test due to Stackdriver API being slow with
+  # metric propagation (sometimes 80+ seconds) and client returning
+  # Google::Apis::ClientError: badRequest if the metric hasn't yet been created instead of a 404.
+  NOT_READY_REGEX = /The provided filter doesn't refer to any known metric./
+  RETRIABLE_TRIES = 3
+  RETRIABLE_BASE_INTERVAL = 30
   TEST_METRIC_PREFIX = "custom.googleapis.com/fog-google-test/timeseries".freeze
   LABEL_DESCRIPTORS = [
     {
@@ -44,13 +51,37 @@ class TestMetricDescriptors < FogIntegrationTest
     resp = @client.create_timeseries(:timeseries => [expected])
     assert_empty(resp.to_h)
 
-    series = @client.timeseries_collection.all(
-      :filter => "metric.type = \"#{metric_type}\"",
-      :interval => {
-        :start_time => start_time.to_datetime.rfc3339,
-        :end_time => Time.now.to_datetime.rfc3339
-      }
-    )
+    # Wait for metric to be created
+    Retriable.retriable(on: {Google::Apis::ClientError => NOT_READY_REGEX},
+                        tries: RETRIABLE_TRIES,
+                        base_interval: RETRIABLE_BASE_INTERVAL) do
+      @client.list_timeseries(
+          :filter => "metric.type = \"#{metric_type}\"",
+          :interval => {
+            # Subtracting one second because timeSeries.list API
+            # doesn't return points that are exactly the same time
+            # as the interval for some reason.
+            :start_time => (start_time - 1).to_datetime.rfc3339,
+            :end_time => Time.now.to_datetime.rfc3339
+          }
+      ).time_series
+    end
+
+    series = Retriable.retriable(on: { Google::Apis::ClientError => NOT_READY_REGEX },
+                                 tries: RETRIABLE_TRIES,
+                                 base_interval: RETRIABLE_BASE_INTERVAL) do
+      @client.timeseries_collection.all(
+        :filter => "metric.type = \"#{metric_type}\"",
+        :interval => {
+          # Subtracting one second because timeSeries.list API
+          # doesn't return points that are exactly the same time
+          # as the interval for some reason.
+          :start_time => (start_time - 1).to_datetime.rfc3339,
+          :end_time => Time.now.to_datetime.rfc3339
+        }
+      )
+    end
+
     assert_equal(1, series.size)
     actual = series.first
     assert_equal(expected[:metric], actual.metric)
@@ -84,28 +115,42 @@ class TestMetricDescriptors < FogIntegrationTest
       _some_timeseries(start_time, metric_type, labels)
     end
 
-    @client.create_timeseries(:timeseries => timeseries)
+    Retriable.retriable(on: Google::Apis::ServerError,
+                        tries: RETRIABLE_TRIES,
+                        base_interval: RETRIABLE_BASE_INTERVAL) do
+      @client.create_timeseries(:timeseries => timeseries)
+    end
     interval = {
-      :start_time => start_time.to_datetime.rfc3339,
+      # Subtracting one second because timeSeries.list API
+      # doesn't return points that are exactly the same time
+      # as the interval for some reason.
+      :start_time => (start_time - 1).to_datetime.rfc3339,
       :end_time => Time.now.to_datetime.rfc3339
     }
 
-    # Wait for creation
-    Fog.wait_for(30) do
-      # Test all created timeseries are returned.
-      list_result = @client.list_timeseries(
+
+    # Wait for metric to be created
+    # Retriable is used instead of wait_for due to API client returning Google::Apis::ClientError: badRequest if the
+    # metric hasn't yet been created
+    Retriable.retriable(on: { Google::Apis::ClientError => NOT_READY_REGEX },
+                        tries: RETRIABLE_TRIES,
+                        base_interval: RETRIABLE_BASE_INTERVAL) do
+      @client.list_timeseries(
         :filter => "metric.type = \"#{metric_type}\"",
         :interval => interval
       ).time_series
-      !list_result.nil? && list_result.size == timeseries.size
     end
 
     # Test page size
-    resp = @client.list_timeseries(
-      :filter => "metric.type = \"#{metric_type}\"",
-      :interval => interval,
-      :page_size => 1
-    )
+    resp = Retriable.retriable(on: { Google::Apis::ClientError => NOT_READY_REGEX },
+                               tries: RETRIABLE_TRIES,
+                               base_interval: RETRIABLE_BASE_INTERVAL) do
+      @client.list_timeseries(
+        :filter => "metric.type = \"#{metric_type}\"",
+        :interval => interval,
+        :page_size => 1
+      )
+    end
     assert_equal(resp.time_series.size, 1,
                  "expected timeseries count to be equal to page size 1")
 
@@ -123,13 +168,17 @@ class TestMetricDescriptors < FogIntegrationTest
            "expected different timeseries when using page_token")
 
     # Test filter
-    series = @client.timeseries_collection.all(
-      :filter => %[
-        metric.type = "#{metric_type}" AND
-        metric.label.test_string_label = "first"
-      ],
-      :interval => interval
-    )
+    series = Retriable.retriable(on: { Google::Apis::ClientError => NOT_READY_REGEX },
+                                 tries: RETRIABLE_TRIES,
+                                 base_interval: RETRIABLE_BASE_INTERVAL) do
+      @client.timeseries_collection.all(
+        :filter => %[
+          metric.type = "#{metric_type}" AND
+          metric.label.test_string_label = "first"
+        ],
+        :interval => interval
+      )
+    end
     assert_equal(series.size, 1,
                  "expected returned timeseries to be filtered to 1 value")
     assert_equal("true", series.first.metric[:labels][:test_bool_label])
@@ -138,7 +187,8 @@ class TestMetricDescriptors < FogIntegrationTest
 
   def _delete_test_resources
     list_resp = @client.monitoring.list_project_metric_descriptors(
-      :filter => "metric.type = starts_with(\"#{TEST_METRIC_PREFIX}\")"
+      "projects/#{@client.project}",
+      filter: "metric.type = starts_with(\"#{TEST_METRIC_PREFIX}\")"
     )
     unless list_resp.metric_descriptors.nil?
       puts "Found #{list_resp.metric_descriptors.size} test metric descriptors."
@@ -164,7 +214,7 @@ class TestMetricDescriptors < FogIntegrationTest
     )
 
     # Wait for metric descriptor to be created
-    Fog.wait_for(30, 2) do
+    Fog.wait_for(180, 2) do
       begin
         @client.get_metric_descriptor(metric_type)
         true

@@ -11,14 +11,20 @@ module Fog
         attribute :auto_create_subnetworks, aliases => "autoCreateSubnetworks"
         attribute :creation_timestamp, aliases => "creationTimestamp"
         attribute :description
-        attribute :gateway_ipv4, aliases => %w(gateway_i_pv4 gatewayIPv4)
-        attribute :ipv4_range, aliases => %w(i_pv4_range IPv4Range)
+        # TODO: Naming issue in the client lib, rename after this is resolved:
+        # https://github.com/google/google-api-ruby-client/issues/666
+        attribute :gateway_i_pv4, aliases => %w(gateway_ipv4 gatewayIPv4)
+        attribute :i_pv4_range, aliases => %w(ipv4_range IPv4Range)
         attribute :id
         attribute :kind
         attribute :peerings
         attribute :routing_config, aliases => "routingConfig"
         attribute :self_link, aliases => "selfLink"
         attribute :subnetworks
+
+        # TODO: Naming issue in the client lib, rename after this is resolved:
+        # https://github.com/google/google-api-ruby-client/issues/666
+        alias_method :ipv4_range, :i_pv4_range
 
         def save
           requires :identity, :ipv4_range
