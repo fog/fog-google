@@ -2,7 +2,7 @@
 
 New contributors are always welcome, and when in doubt please ask questions! We strive to be an open and welcoming community. Please be nice to one another.
 
-I recommend heading over to fog's [CONTRIBUTING](https://github.com/fog/fog/blob/master/CONTRIBUTING.md) and having a look around as well.  It has information and context about the state of the `fog` project as a whole.
+We recommend heading over to fog's [CONTRIBUTING](https://github.com/fog/fog/blob/master/CONTRIBUTING.md) and having a look around as well.  It has information and context about the state of the `fog` project as a whole.
 
 ### Coding
 
@@ -56,11 +56,8 @@ This module is tested with [Minitest](https://github.com/seattlerb/minitest).  R
 test:
   google_project: my-project
   google_client_email: xxxxxxxxxxxxx-xxxxxxxxxxxxx@developer.gserviceaccount.com
-  google_key_location: /path/to/my-project-xxxxxxxxxxxxx.p12
   google_json_key_location: /path/to/my-project-xxxxxxxxxxxxx.json
 ```
-
-Note that you need both a `.p12` and a `.json` key file for all the tests to pass.
 
 Then you can run all the live tests:
 
@@ -68,7 +65,7 @@ Then you can run all the live tests:
 $ rake test
 ```
 
-or just one:
+or just one file:
 
 ```shell
 $ rake test TEST=test/integration/compute/test_servers.rb TESTOPTS="--name=TestServers#test_bootstrap_ssh_destroy"
@@ -76,13 +73,15 @@ $ rake test TEST=test/integration/compute/test_servers.rb TESTOPTS="--name=TestS
 
 #### The transition from `shindo` to Minitest
 
-Previously, [shindo](https://github.com/geemus/shindo) was the primary testing framework.  We've started moving away from it, and to Minitest, but some artifacts remain.
+Previously, [shindo](https://github.com/geemus/shindo) was the primary testing framework.  We've started moving away from it, and to Minitest, but some artifacts may remain.
 
-- The `test` directory contains the new Minitest tests, which currently only cover live integration testing for `compute`.
-- The `tests` directory contains the old `shindo` tests, which generally pass if mocking is turned on.  No promises if mocking is off.
-- Travis CI runs the mocked `shindo` tests, though hopefully in the long run it will run the unit and integration `Minitest` tests.  Currently, Google maintains its own Jenkins instance that runs the Minitest integraiton tests.
+For more information on transition, read [#50](https://github.com/fog/fog-google/issues/50).
 
-Follow [#50](https://github.com/fog/fog-google/issues/50) for the status of the transition from `shindo` to Minitest.
+#### Continuous integration
+
+Currently Google maintains a [Concourse CI](https://concourse-ci.org/) server, running a pipeline defined in `ci` folder. It automatically runs all integration tests against every pull-request marked with `integration` label.
+
+For more information on the pipeline please refer to the [ci README](https://github.com/fog/fog-google/blob/master/ci/README.md).
 
 #### Some notes about the tests as they stand
 
