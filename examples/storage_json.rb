@@ -15,7 +15,7 @@ def test
 
   puts "Put a bucket..."
   puts "----------------"
-  connection.put_bucket("fog-smoke-test", options = { "predefinedAcl" => "publicReadWrite" })
+  connection.put_bucket("fog-smoke-test", predefined_acl: "publicReadWrite")
 
   puts "Get the bucket..."
   puts "-----------------"
