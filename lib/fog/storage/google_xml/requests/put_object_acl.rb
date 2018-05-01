@@ -2,6 +2,15 @@ module Fog
   module Storage
     class GoogleXML
       class Real
+        VALID_ACLS = [
+          "authenticated-read",
+          "bucket-owner-full-control",
+          "bucket-owner-read",
+          "private",
+          "project-private",
+          "public-read",
+          "public-read-write"
+        ].freeze
         # TODO: move this methods to helper to use them with put_bucket_acl request
         def tag(name, value)
           "<#{name}>#{value}</#{name}>"
@@ -38,11 +47,10 @@ module Fog
   </Entries>
 </AccessControlList>
 DATA
-          else
-            unless %w(private bucket-owner-read bucket-owner-full-control project-private authenticated-read public-read public-read-write).include?(acl)
-              raise Excon::Errors::BadRequest.new("invalid x-goog-acl")
-            end
+          elsif acl.is_a?(String) && VALID_ACLS.include?(acl)
             headers["x-goog-acl"] = acl
+          else
+            raise Excon::Errors::BadRequest.new("invalid x-goog-acl")
           end
 
           request(:body     => data,
