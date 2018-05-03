@@ -2,6 +2,17 @@ module Fog
   module Storage
     class GoogleXML
       module Utils
+        # https://cloud.google.com/storage/docs/access-control#predefined-acl
+        VALID_ACLS = [
+          "authenticated-read",
+          "bucket-owner-full-control",
+          "bucket-owner-read",
+          "private",
+          "project-private",
+          "public-read",
+          "public-read-write"
+        ].freeze
+
         def http_url(params, expires)
           "http://" << host_path_query(params, expires)
         end

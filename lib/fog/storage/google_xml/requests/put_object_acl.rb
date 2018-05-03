@@ -24,7 +24,11 @@ module Fog
         end
 
         def put_object_acl(bucket_name, object_name, acl)
-          data = <<-DATA
+          headers = {}
+          data = ""
+
+          if acl.is_a?(Hash)
+            data = <<-DATA
 <AccessControlList>
   <Owner>
     #{tag('ID', acl['Owner']['ID'])}
@@ -34,10 +38,15 @@ module Fog
   </Entries>
 </AccessControlList>
 DATA
+          elsif acl.is_a?(String) && Utils::VALID_ACLS.include?(acl)
+            headers["x-goog-acl"] = acl
+          else
+            raise Excon::Errors::BadRequest.new("invalid x-goog-acl")
+          end
 
           request(:body     => data,
                   :expects  => 200,
-                  :headers  => {},
+                  :headers  => headers,
                   :host     => "#{bucket_name}.#{@host}",
                   :method   => "PUT",
                   :query    => { "acl" => nil },
