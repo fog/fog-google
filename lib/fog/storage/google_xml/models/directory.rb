@@ -7,9 +7,8 @@ module Fog
         attribute :creation_date, :aliases => "CreationDate"
 
         def acl=(new_acl)
-          valid_acls = ["private", "public-read", "public-read-write", "authenticated-read"]
-          unless valid_acls.include?(new_acl)
-            raise ArgumentError.new("acl must be one of [#{valid_acls.join(', ')}]")
+          unless Utils::VALID_ACLS.include?(new_acl)
+            raise ArgumentError.new("acl must be one of [#{Utils::VALID_ACLS.join(', ')}]")
           end
           @acl = new_acl
         end
