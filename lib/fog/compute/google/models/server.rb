@@ -200,6 +200,14 @@ module Fog
           operation
         end
 
+        # Helper method that returns first public ip address
+        # for Fog::Compute::Server.ssh default behavior
+        #
+        # @return [String]
+        def public_ip_address
+          public_ip_addresses.first
+        end
+
         def public_ip_addresses
           addresses = []
           if network_interfaces.respond_to? :flat_map
