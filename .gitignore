@@ -17,3 +17,4 @@ mkmf.log
 .DS_Store
 .env
 .fog
+.byebug_history
