@@ -12,7 +12,7 @@ def test
   disk = connection.disks.create(
     :name => "fog-smoke-test-#{Time.now.to_i}",
     :size_gb => 10,
-    :zone => "us-central1-f",
+    :zone_name => "us-central1-f",
     :source_image => "debian-8-jessie-v20180329"
   )
 
@@ -24,10 +24,10 @@ def test
     :machine_type => "n1-standard-1",
     :private_key_path => File.expand_path("~/.ssh/id_rsa"),
     :public_key_path => File.expand_path("~/.ssh/id_rsa.pub"),
-    :zone => "us-central1-f",
+    :zone_name => "us-central1-f",
     :username => ENV["USER"],
     :tags => ["fog"],
-    :service_accounts => {:scopes => %w(sql-admin bigquery https://www.googleapis.com/auth/compute)}
+    :service_accounts => %w(sql-admin bigquery https://www.googleapis.com/auth/compute)
   )
 
   # Wait_for routine copied here to show errors, if necessary.

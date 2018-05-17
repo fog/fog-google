@@ -145,7 +145,7 @@ module Fog
         attribute :tags
 
         # @return [String]
-        attribute :zone, :aliases => :zone_name
+        attribute :zone
 
         GCE_SCOPE_ALIASES = {
           "default" => %w(
