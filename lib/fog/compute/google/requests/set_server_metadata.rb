@@ -18,6 +18,8 @@ module Fog
         #     instance.reload
         #     fingerprint = instance.metadata['fingerprint']
         # @param [Hash] metadata A new metadata object
+        #   Should have the following structure:
+        #   {:items=>[{:key=>"foo", :value=>"bar"}, {:key=>"baz", :value=>"foo"}]}
         #
         # @returns [::Google::Apis::ComputeV1::Operation] set operation
         def set_server_metadata(instance, zone, fingerprint, metadata_items = [])
