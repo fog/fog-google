@@ -2,23 +2,18 @@ require "helpers/integration_test_helper"
 
 class TestDiskTypes < FogIntegrationTest
   NAMES = %w(local-ssd pd-ssd pd-standard).freeze
-  ZONES = %w(https://www.googleapis.com/compute/v1/projects/graphite-fog/zones/us-central1-a
-             https://www.googleapis.com/compute/v1/projects/graphite-fog/zones/us-central1-b
-             https://www.googleapis.com/compute/v1/projects/graphite-fog/zones/us-central1-c
-             https://www.googleapis.com/compute/v1/projects/graphite-fog/zones/us-central1-f
-             https://www.googleapis.com/compute/v1/projects/graphite-fog/zones/europe-west1-b
-             https://www.googleapis.com/compute/v1/projects/graphite-fog/zones/europe-west1-c
-             https://www.googleapis.com/compute/v1/projects/graphite-fog/zones/europe-west1-d
-             https://www.googleapis.com/compute/v1/projects/graphite-fog/zones/asia-east1-a
-             https://www.googleapis.com/compute/v1/projects/graphite-fog/zones/asia-east1-b
-             https://www.googleapis.com/compute/v1/projects/graphite-fog/zones/asia-east1-c).freeze
+  # Testing in one random zone per region (region list as of May 2018)
+  ZONES = %w(asia-east1-a asia-northeast1-b asia-south1-c asia-southeast1-a australia-southeast1-b
+             europe-west1-c europe-west2-a europe-west3-b europe-west4-c northamerica-northeast1-a
+             southamerica-east1-b us-central1-c us-east1-b us-east4-a us-west1-c).freeze
 
   def setup
     @subject = Fog::Compute[:google].disk_types
   end
 
   def test_all
-    assert_operator(@subject.all.size, :>=, 1, "expected multiple disk types")
+    assert_operator(@subject.all.size, :>=, NAMES.size * ZONES.size,
+                    "Number of all disk type references should be greater or equal to test zones * disk types")
   end
 
   def test_get
