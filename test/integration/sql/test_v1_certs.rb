@@ -20,8 +20,8 @@ class TestSQLV1Certs < FogIntegrationTest
     instance_name = ssl_cert.instance
 
     # Create a second cert and attach to the same instance
-    ssl_cert2 = @subject.new( :common_name => "#{ssl_cert.common_name}-2",
-                              :instance => instance_name )
+    ssl_cert2 = @subject.new(:common_name => "#{ssl_cert.common_name}-2",
+                             :instance => instance_name)
     ssl_cert2.save
 
     # Verify it can be retrieved
