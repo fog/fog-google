@@ -1,6 +1,6 @@
 require "helpers/integration_test_helper"
 
-class TestTiers < FogIntegrationTest
+class TestCommonTiers < FogIntegrationTest
   def setup
     @subject = Fog::Google[:sql].tiers
   end

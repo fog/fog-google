@@ -20,17 +20,15 @@ class TestSQLV1Certs < FogIntegrationTest
     instance_name = ssl_cert.instance
 
     # Create a second cert and attach to the same instance
-    ssl_cert2 = @subject.new(
-                     :common_name => "#{ssl_cert.common_name}-2" ,
-                     :instance => instance_name
-                     )
+    ssl_cert2 = @subject.new( :common_name => "#{ssl_cert.common_name}-2",
+                              :instance => instance_name )
     ssl_cert2.save
 
     # Verify it can be retrieved
     @subject.get(instance_name, ssl_cert2.sha1_fingerprint).tap do |result|
-        assert_equal(ssl_cert2.common_name, result.common_name)
-        assert_equal("sql#sslCert", result.kind)
-      end
+      assert_equal(ssl_cert2.common_name, result.common_name)
+      assert_equal("sql#sslCert", result.kind)
+    end
 
     # Verify instance returns 2 certs
     list_result = @subject.all(instance_name)
