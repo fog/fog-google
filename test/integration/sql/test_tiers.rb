@@ -2,23 +2,15 @@ require "helpers/integration_test_helper"
 
 class TestTiers < FogIntegrationTest
   def setup
-    @client = Fog::Google::SQL.new
-  end
-
-  def test_list
-    resp = @client.list_tiers
-
-    assert_operator(resp.items.size, :>, 0,
-                    "response tiers count should be positive")
-    _sanity_check_tier(resp.items.first)
+    @subject = Fog::Google[:sql].tiers
   end
 
   def test_all
-    resp = @client.tiers.all
+    tiers = @subject.all
 
-    assert_operator(resp.size, :>, 0,
+    assert_operator(tiers.size, :>, 0,
                     "tier count should be positive")
-    _sanity_check_tier(resp.first)
+    _sanity_check_tier(tiers.first)
   end
 
   def _sanity_check_tier(tier)
