@@ -7,8 +7,8 @@ module Fog
       # @see https://cloud.google.com/sql/docs/mysql/admin-api/v1beta4/instances/insert
 
       class Real
-        def insert_instance(name, tier, instance = {})
-          instance = ::Google::Apis::SqladminV1beta4::DatabaseInstance.new(instance)
+        def insert_instance(name, tier, options = {})
+          instance = ::Google::Apis::SqladminV1beta4::DatabaseInstance.new(options)
           instance.name = name
           instance.settings = ::Google::Apis::SqladminV1beta4::Settings.new(instance.settings || {})
           instance.settings.tier = tier
