@@ -30,8 +30,8 @@ class TestSQLV1Users < FogIntegrationTest
     # Delete user
     users.first.destroy(:async => false)
     assert_empty(
-        @subject.all(user.instance).select { |u| u.name == user.name },
-        "expected no user #{user.name}"
+      @subject.all(user.instance).select { |u| u.name == user.name },
+      "expected no user #{user.name}"
     )
   end
 end
