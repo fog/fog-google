@@ -85,14 +85,21 @@ module Fog
 
         ##
         # Creates a Cloud SQL instance
+        # @param [Boolean] async If the operation must be performed asynchronously
+        #
+        #   This is true by default since SQL instances return Google::Apis::ClientError: invalidState
+        #   whenever an instance is in a transition process (creation, deletion, etc.) which makes it
+        #   hard to operate unless one puts guard clauses on Google::Apis::ClientError everywhere.
+        #
+        #   TODO: Rethink this when API graduates out of beta. (Written as of V1beta4)
         #
         # @return [Fog::Google::SQL::Instance] Instance resource
-        def create
+        def create(async = false)
           requires :identity
 
           data = service.insert_instance(identity, attributes[:tier], attributes)
           operation = Fog::Google::SQL::Operations.new(:service => service).get(data.name)
-          operation.wait_for { !pending? }
+          operation.wait_for { ready? } unless async
           reload
         end
 
@@ -107,9 +114,11 @@ module Fog
         ##
         # Deletes a Cloud SQL instance
         #
-        # @param [Boolean] :async If the operation must be performed asynchronously (true by default)
+        # @param [Boolean] async If the operation must be performed asynchronously (false by default)
+        #   See Fog::Google::SQL::Instance.create on details why default is set this way.
+        #
         # @return [Fog::Google::SQL::Operation] A Operation resource
-        def destroy(async: nil)
+        def destroy(async = false)
           requires :identity
 
           data = service.delete_instance(identity)
