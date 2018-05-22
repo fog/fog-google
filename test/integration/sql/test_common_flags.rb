@@ -1,6 +1,6 @@
 require "helpers/integration_test_helper"
 
-class TestFlags < FogIntegrationTest
+class TestCommonFlags < FogIntegrationTest
   def setup
     @client = Fog::Google::SQL.new
   end
