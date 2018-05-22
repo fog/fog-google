@@ -14,7 +14,7 @@ class TestSQLV1Instances < FogIntegrationTest
 
     settings_version = instance.settings_version
     labels = {
-        :foo => "bar"
+      :foo => "bar"
     }
     instance.settings[:user_labels] = labels
     instance.save
@@ -22,5 +22,10 @@ class TestSQLV1Instances < FogIntegrationTest
     updated = @subject.get(instance.name)
     assert_equal(labels, updated.settings[:user_labels])
     assert_operator(updated.settings_version, :>, settings_version)
+  end
+
+  def test_default_settings
+    instance = @factory.create
+    assert_equal([], instance.ssl_certs, "new instance should have 0 initial ssl certs")
   end
 end

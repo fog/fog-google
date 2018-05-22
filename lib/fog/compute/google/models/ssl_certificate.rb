@@ -2,7 +2,7 @@ module Fog
   module Compute
     class Google
       ##
-      # Represents a Subnetwork resource
+      # Represents a SslCertificate resource
       #
       # @see https://cloud.google.com/compute/docs/reference/latest/sslCertificates
       class SslCertificate < Fog::Model
