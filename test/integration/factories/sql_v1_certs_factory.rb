@@ -8,8 +8,8 @@ class SqlV1CertsFactory < CollectionFactory
   end
 
   def cleanup
-     # Certs will be cleaned up with the test instance.
-     @instances.cleanup
+    # Certs will be cleaned up with the test instance.
+    @instances.cleanup
   end
 
   def params
