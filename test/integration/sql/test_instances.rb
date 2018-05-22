@@ -13,50 +13,6 @@ class TestFirstGenInstances < TestSqlInstancesShared
     assert_equal(1, filtered.size, "expected instance with name #{test_name}")
   end
 
-  def test_update
-    instance = @client.instances.get(some_instance_name)
-    settings_version = instance.settings_version
-    labels = {
-      :foo => "bar"
-    }
-    instance.settings[:user_labels] = labels
-    instance.save
-
-    updated = @client.instances.get(some_instance_name)
-    assert_equal(labels, updated.settings[:user_labels])
-    assert_operator(updated.settings_version, :>, settings_version)
-  end
-
-  def test_users
-    # Create user
-    username = "test_user"
-
-    wait_until_complete do
-      @client.insert_user(some_instance_name, :name => username)
-    end
-
-    # Check user was created
-    users = @client.users.all(some_instance_name)
-                   .select { |u| u.name == username }
-    assert_equal(1, users.size, "expected user to have been created")
-
-    # Delete user
-    users.first.destroy(:async => false)
-    assert_empty(
-      @client.users.all(some_instance_name).select { |u| u.name == username },
-      "expected no user #{username}"
-    )
-  end
-
-  def test_operations
-    operations = @client.operations.all(some_instance_name)
-    operations.select do |op|
-      op.operation_type == "CREATE"
-    end
-
-    create_op = @client.operations.get(operations.first.name)
-    assert(create_op.ready?)
-  end
 
   def test_ssl_certs
     list_result = @client.ssl_certs.all(some_instance_name)

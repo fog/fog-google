@@ -1,6 +1,6 @@
 require "integration/factories/collection_factory"
 
-class SqlV1Factory < CollectionFactory
+class SqlV1InstancesFactory < CollectionFactory
   def initialize(example)
     super(Fog::Google[:sql].instances, example)
   end
