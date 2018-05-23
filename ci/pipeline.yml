@@ -1,5 +1,5 @@
 jobs:
-  - name: pr-integrate
+  - name: integration-tests-compute
     plan:
       - get: fog-google-src
         resource: pull-request
@@ -11,9 +11,89 @@ jobs:
       - task: full-integration-tests
         file: fog-google-src/ci/tasks/run-int.yml
         params:
+          rake_task: test:compute
           google_project: {{google_project}}
           google_json_key_data: {{google_json_key_data}}
           google_client_email: {{google_client_email}}
+
+  - name: integration-tests-monitoring
+    plan:
+      - get: fog-google-src
+        resource: pull-request
+        version: every
+        trigger: true
+      - put: pull-request
+        params: {path: fog-google-src, status: pending}
+
+      - task: full-integration-tests
+        file: fog-google-src/ci/tasks/run-int.yml
+        params:
+          rake_task: test:monitoring
+          google_project: {{google_project}}
+          google_json_key_data: {{google_json_key_data}}
+          google_client_email: {{google_client_email}}
+
+  - name: integration-tests-pubsub
+    plan:
+      - get: fog-google-src
+        resource: pull-request
+        version: every
+        trigger: true
+      - put: pull-request
+        params: {path: fog-google-src, status: pending}
+
+      - task: full-integration-tests
+        file: fog-google-src/ci/tasks/run-int.yml
+        params:
+          rake_task: test:pubsub
+          google_project: {{google_project}}
+          google_json_key_data: {{google_json_key_data}}
+          google_client_email: {{google_client_email}}
+
+  - name: integration-tests-sql
+    plan:
+      - get: fog-google-src
+        resource: pull-request
+        version: every
+        trigger: true
+      - put: pull-request
+        params: {path: fog-google-src, status: pending}
+
+      - task: full-integration-tests
+        file: fog-google-src/ci/tasks/run-int.yml
+        params:
+          rake_task: test:sql
+          google_project: {{google_project}}
+          google_json_key_data: {{google_json_key_data}}
+          google_client_email: {{google_client_email}}
+
+  - name: integration-tests-storage
+    plan:
+      - get: fog-google-src
+        resource: pull-request
+        version: every
+        trigger: true
+      - put: pull-request
+        params: {path: fog-google-src, status: pending}
+
+      - task: full-integration-tests
+        file: fog-google-src/ci/tasks/run-int.yml
+        params:
+          rake_task: test:storage
+          google_project: {{google_project}}
+          google_json_key_data: {{google_json_key_data}}
+          google_client_email: {{google_client_email}}
+
+  - name: github-pr-aggregator
+    plan:
+      - get: fog-google-src
+        resource: pull-request
+        passed: [integration-tests-storage,
+                 integration-tests-sql,
+                 integration-tests-pubsub,
+                 integration-tests-monitoring,
+                 integration-tests-compute]
+        trigger: true
         on_success:
           put: pull-request
           params:

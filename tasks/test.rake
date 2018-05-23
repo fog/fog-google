@@ -38,14 +38,6 @@ namespace :test do
   Rake::TestTask.new do |t|
     t.name = "pubsub"
     t.libs << "test"
-    t.pattern = FileList['test/integration/monitoring/test_*.rb']
-    t.warning = false
-    t.verbose = true
-  end
-
-  Rake::TestTask.new do |t|
-    t.name = "pubsub"
-    t.libs << "test"
     t.pattern = FileList['test/integration/pubsub/test_*.rb']
     t.warning = false
     t.verbose = true
