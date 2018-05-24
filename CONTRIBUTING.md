@@ -65,6 +65,13 @@ Then you can run all the live tests:
 $ rake test
 ```
 
+or just one API:
+
+```
+$ rake test:compute
+```
+(See `rake -T` for all available tasks)
+
 or just one file:
 
 ```shell
@@ -79,7 +86,8 @@ For more information on transition, read [#50](https://github.com/fog/fog-google
 
 #### Continuous integration
 
-Currently Google maintains a [Concourse CI](https://concourse-ci.org/) server, running a pipeline defined in `ci` folder. It automatically runs all integration tests against every pull-request marked with `integration` label.
+Currently Google maintains a [Concourse CI](https://concourse-ci.org/) server, running a pipeline defined in `ci` folder. 
+It automatically runs all integration tests against every pull-request marked with `integration` label.
 
 For more information on the pipeline please refer to the [ci README](https://github.com/fog/fog-google/blob/master/ci/README.md).
 
