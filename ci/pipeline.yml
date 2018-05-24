@@ -1,5 +1,6 @@
 jobs:
   - name: integration-tests-compute
+    serial: true
     plan:
       - get: fog-google-src
         resource: pull-request
@@ -17,6 +18,7 @@ jobs:
           google_client_email: {{google_client_email}}
 
   - name: integration-tests-monitoring
+    serial: true
     plan:
       - get: fog-google-src
         resource: pull-request
@@ -34,6 +36,7 @@ jobs:
           google_client_email: {{google_client_email}}
 
   - name: integration-tests-pubsub
+    serial: true
     plan:
       - get: fog-google-src
         resource: pull-request
@@ -51,6 +54,7 @@ jobs:
           google_client_email: {{google_client_email}}
 
   - name: integration-tests-sqlv1
+    serial: true
     plan:
       - get: fog-google-src
         resource: pull-request
@@ -68,6 +72,7 @@ jobs:
           google_client_email: {{google_client_email}}
 
   - name: integration-tests-sqlv2
+    serial: true
     plan:
       - get: fog-google-src
         resource: pull-request
@@ -85,6 +90,7 @@ jobs:
           google_client_email: {{google_client_email}}
 
   - name: integration-tests-storage
+    serial: true
     plan:
       - get: fog-google-src
         resource: pull-request
