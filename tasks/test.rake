@@ -17,7 +17,8 @@ namespace :test do
   multitask :parallel => ["test:compute",
                           "test:monitoring",
                           "test:pubsub",
-                          "test:sql",
+                          "test:sqlv1",
+                          "test:sqlv2",
                           "test:storage"]
 
   Rake::TestTask.new do |t|
@@ -56,11 +57,26 @@ namespace :test do
     t.verbose = true
   end
 
+  desc 'Run all SQL API tests in parallel'
+  multitask :sql_parallel => [:sqlv1, :sqlv2]
+
+  desc 'Run all SQL API tests'
+  task :sql => [:sqlv1, :sqlv2]
+
   Rake::TestTask.new do |t|
-    t.name = "sql"
-    t.description = "Run SQL API tests"
+    t.name = "sqlv1"
+    t.description = "Run SQLv1 API tests"
     t.libs << "test"
-    t.pattern = FileList['test/integration/sql/test_*.rb']
+    t.pattern = FileList['test/integration/sql/test_common*.rb','test/integration/sql/test_v1*.rb']
+    t.warning = false
+    t.verbose = true
+  end
+
+  Rake::TestTask.new do |t|
+    t.name = "sqlv2"
+    t.description = "Run SQLv2 API tests"
+    t.libs << "test"
+    t.pattern = FileList['test/integration/sql/test_v2*.rb']
     t.warning = false
     t.verbose = true
   end
