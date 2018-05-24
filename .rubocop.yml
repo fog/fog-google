@@ -19,6 +19,10 @@ Style/FrozenStringLiteralComment:
 Style/HashSyntax:
   EnforcedStyle: no_mixed_keys
 
+# Do not enforce %i syntax
+Style/SymbolArray:
+  Enabled: false
+
 # HoundCI config
 
 AllCops:
