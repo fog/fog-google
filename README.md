@@ -8,6 +8,7 @@ The main maintainers for the Google sections are @icco, @Temikus and @plribeiro3
 
 **As of v1.0.0, fog-google includes google-api-client as a dependency**
 
+**See [MIGRATING.md](MIGRATING.MD) for migration between major versions**
 
 ## Storage
 
@@ -65,9 +66,22 @@ $ gem install fog-google
 
 ## Testing
 
-The tests in `tests` are deprecated. We are currently working on a migration of tests to `minitest`.
+Integration tests can be kicked off via following rake tasks.
+**Important note:** As those tests are running against real API's YOU WILL BE BILLED.
 
-For your test to be tested with real credentials, a repo maintainer may add the label `integrate` to your PR to run integration tests.
+```
+rake test               # Run all integration tests
+rake test:parallel      # Run all integration tests in parallel
+
+rake test:compute       # Run Compute API tests
+rake test:monitoring    # Run Monitoring API tests
+rake test:pubsub        # Run PubSub API tests
+rake test:sql           # Run SQL API tests
+rake test:storage       # Run Storage API tests
+```
+
+Since some resources can be expensive to test, we have a self-hosted CI server.
+Due to security considerations a repo maintainer needs to add the label `integrate` to kick off the CI.
 
 ## Setup
 
