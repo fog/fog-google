@@ -68,7 +68,7 @@ jobs:
             path: fog-google-src
             status: failure
 
-  - name: integration-tests-sqlv1
+  - name: integration-tests-sql
     serial: true
     plan:
       - get: fog-google-src
@@ -81,30 +81,7 @@ jobs:
       - task: full-integration-tests
         file: fog-google-src/ci/tasks/run-int.yml
         params:
-          rake_task: test:sqlv1
-          google_project: {{google_project}}
-          google_json_key_data: {{google_json_key_data}}
-          google_client_email: {{google_client_email}}
-        on_failure:
-          put: pull-request
-          params:
-            path: fog-google-src
-            status: failure
-
-  - name: integration-tests-sqlv2
-    serial: true
-    plan:
-      - get: fog-google-src
-        resource: pull-request
-        version: every
-        trigger: true
-      - put: pull-request
-        params: {path: fog-google-src, status: pending}
-
-      - task: full-integration-tests
-        file: fog-google-src/ci/tasks/run-int.yml
-        params:
-          rake_task: test:sqlv2
+          rake_task: test:sql
           google_project: {{google_project}}
           google_json_key_data: {{google_json_key_data}}
           google_client_email: {{google_client_email}}
@@ -142,8 +119,7 @@ jobs:
       - get: fog-google-src
         resource: pull-request
         passed: [integration-tests-storage,
-                 integration-tests-sqlv1,
-                 integration-tests-sqlv2,
+                 integration-tests-sql,
                  integration-tests-pubsub,
                  integration-tests-monitoring,
                  integration-tests-compute]
