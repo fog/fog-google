@@ -26,6 +26,7 @@ module Fog
           load(data)
         end
 
+        # TODO: This method needs to take self_links as well as names
         def get(identity, zone = nil)
           response = nil
           if zone
