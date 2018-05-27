@@ -104,7 +104,7 @@ module Fog
             instance = service.servers.get(instance_name)
             data = service.get_target_pool_health(identity, region, instance.self_link)
                           .to_h[:health_status] || []
-            results = [instance.self_link, data]
+            results = [[instance.self_link, data]]
           else
             results = instances.map do |self_link|
               data = service.get_target_pool_health(identity, region, self_link)
