@@ -41,10 +41,6 @@ module Fog
       request :list_global_forwarding_rules
       request :list_url_maps
       request :list_target_http_proxies
-      request :list_zone_views
-      request :list_region_views
-      request :list_region_view_resources
-      request :list_zone_view_resources
       request :list_target_instances
       request :list_aggregated_target_instances
       request :list_instance_groups
@@ -76,8 +72,6 @@ module Fog
       request :get_url_map
       request :get_global_forwarding_rule
       request :get_target_http_proxy
-      request :get_zone_view
-      request :get_region_view
       request :get_target_instance
       request :get_instance_group
 
@@ -99,8 +93,6 @@ module Fog
       request :delete_url_map
       request :delete_target_http_proxy
       request :delete_global_forwarding_rule
-      request :delete_zone_view
-      request :delete_region_view
       request :delete_target_instance
       request :delete_instance_group
 
@@ -119,8 +111,6 @@ module Fog
       request :insert_url_map
       request :insert_target_http_proxy
       request :insert_global_forwarding_rule
-      request :insert_zone_view
-      request :insert_region_view
       request :insert_target_instance
       request :insert_instance_group
 
@@ -135,8 +125,6 @@ module Fog
       request :add_backend_service_backends
       request :add_url_map_host_rules
       request :add_url_map_path_matchers
-      request :add_zone_view_resources
-      request :add_region_view_resources
       request :add_instance_group_instance
 
       request :remove_target_pool_instances
@@ -1072,7 +1060,6 @@ module Fog
 
           @client = initialize_google_client(options)
           @compute = @client.discovered_api('compute', api_version)
-          @resourceviews = @client.discovered_api('resourceviews', 'v1beta1')
           @extra_global_projects = options[:google_extra_global_projects] || []
         end
       end
