@@ -67,7 +67,7 @@ namespace :test do
     t.name = "sqlv1"
     t.description = "Run SQLv1 API tests"
     t.libs << "test"
-    t.pattern = FileList["test/integration/sql/test_common*.rb","test/integration/sql/test_v1*.rb"]
+    t.pattern = FileList["test/integration/sql/test_common*.rb", "test/integration/sql/test_v1*.rb"]
     t.warning = false
     t.verbose = true
   end
