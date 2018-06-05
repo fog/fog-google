@@ -15,6 +15,12 @@ class TestStorageRequests < StorageShared
     assert_equal(temp_file_content, object[:body])
   end
 
+  def test_put_object_nil
+    assert_raises(ArgumentError) do
+      @client.put_object(some_bucket_name, new_object_name, nil)
+    end
+  end
+
   def test_put_object_file
     object_name = new_object_name
     expected_body = "A file body"

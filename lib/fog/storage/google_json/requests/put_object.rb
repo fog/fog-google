@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Fog
   module Storage
     class GoogleJSON
@@ -46,18 +48,7 @@ module Fog
                        kms_key_name: nil,
                        predefined_acl: nil,
                        **options)
-          if data.is_a?(String)
-            data = StringIO.new(data)
-            options[:content_type] ||= "text/plain"
-          elsif data.is_a?(::File)
-            options[:content_type] ||= Fog::Storage.parse_data(data)[:headers]["Content-Type"]
-          end
-
-          # Paperclip::AbstractAdapter
-          if data.respond_to?(:content_type) && data.respond_to?(:path)
-            options[:content_type] ||= data.content_type
-            data = data.path
-          end
+          data, options = normalize_data(data, options)
 
           object_config = ::Google::Apis::StorageV1::Object.new(
             options.merge(:name => object_name)
@@ -77,6 +68,25 @@ module Fog
             :content_type => options[:content_type],
             :upload_source => data
           )
+        end
+
+        protected
+
+        def normalize_data(data, options)
+          raise ArgumentError.new("data is required") unless data
+          if data.is_a?(String)
+            data = StringIO.new(data)
+            options[:content_type] ||= "text/plain"
+          elsif data.is_a?(::File)
+            options[:content_type] ||= Fog::Storage.parse_data(data)[:headers]["Content-Type"]
+          end
+
+          # Paperclip::AbstractAdapter
+          if data.respond_to?(:content_type) && data.respond_to?(:path)
+            options[:content_type] ||= data.content_type
+            data = data.path
+          end
+          [data, options]
         end
       end
 
