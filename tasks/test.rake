@@ -1,7 +1,7 @@
 require "rake/testtask"
 
 Rake::TestTask.new do |t|
-  t.description = "Run all integration tests"
+  t.description = "Run integration and unit tests"
   t.libs << "test"
   t.pattern = File.join("test", "**", "test_*.rb")
   t.warning = false
@@ -19,6 +19,16 @@ namespace :test do
                           "test:pubsub",
                           "test:sql",
                           "test:storage"]
+
+  Rake::TestTask.new do |t|
+    t.name = "unit"
+    t.description = "Run Unit tests"
+    t.libs << "test"
+    t.pattern = FileList['test/unit/**/test_*.rb']
+    t.warning = false
+    t.verbose = true
+  end
+
   Rake::TestTask.new do |t|
     t.name = "compute"
     t.description = "Run Compute API tests"
