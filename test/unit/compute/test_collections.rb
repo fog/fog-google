@@ -3,7 +3,7 @@ require "helpers/test_helper"
 class UnitTestCollections < MiniTest::Test
   def setup
     Fog.mock!
-    @client = Fog::Compute.new(:provider => "Google")
+    @client = Fog::Compute.new(:provider => "Google", :google_project => "foo")
     common_ancestors = [Fog::Collection, Fog::Association, Fog::PagedCollection]
     descendants = ObjectSpace.each_object(Fog::Collection.singleton_class).to_a
 
@@ -19,5 +19,4 @@ class UnitTestCollections < MiniTest::Test
       assert obj.respond_to?(:each), "#{klass} should be enumerable"
     end
   end
-
 end
