@@ -8,8 +8,16 @@ class InstanceTemplateFactory < CollectionFactory
   def params
     {
       :name => resource_name,
-      # TODO: This needs to be populated
-      :properties => {}
+      # TODO: Properties config is convoluted, needs to be refactored
+      :properties => {
+          :machine_type => TEST_MACHINE_TYPE,
+          :disks => [{
+                         :boot => true,
+                         :initialize_params =>
+                          { :source_image => "projects/ubuntu-os-cloud/global/images/ubuntu-1804-bionic-v20180522" }
+                     }],
+          :network_interfaces => [{ :network => "global/networks/default" }]
+      }
     }
   end
 end
