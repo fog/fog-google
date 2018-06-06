@@ -1,7 +1,6 @@
 require "helpers/test_helper"
 
 class UnitTestCollections < MiniTest::Test
-
   def setup
     Fog.mock!
     @client = Fog::Compute.new(:provider => "Google")
@@ -20,4 +19,5 @@ class UnitTestCollections < MiniTest::Test
       assert obj.respond_to?(:each), "#{klass} should be enumerable"
     end
   end
+
 end
