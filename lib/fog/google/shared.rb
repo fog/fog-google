@@ -46,7 +46,7 @@ module Fog
           require "google/apis/storage_#{Fog::Storage::GoogleJSON::GOOGLE_STORAGE_JSON_API_VERSION}"
           require "googleauth"
         rescue LoadError => error
-          Fog::Logger.error("Please install the google-api-client (>= 0.9) gem before using this provider")
+          Fog::Errors::Error.new("Please install the google-api-client (>= 0.9) gem before using this provider")
           raise error
         end
 
