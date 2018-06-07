@@ -181,25 +181,6 @@ module Fog
 
                     }
                   },
-                  :backend_services => {
-                    "test-backend-service" => {
-                      "kind" => "compute#backend_service",
-                      "id" => "1361932147851415729",
-                      "creationTimestamp" => "2014-08-23T10:06:13.951-07:00",
-                      "name" => "test-backend-service",
-                      "description" => "",
-                      "backends" => [
-                        {
-                          "description" => "",
-                          "group" => "https://www.googleapis.com/resourceviews/v1beta1/projects#{@project}/zones/us-central1-a/zoneViews/name",
-                          "balancingMode" => "RATE",
-                          "capacityScaler" => 1.1,
-                          "maxRate" => 0.5
-                        }
-                      ],
-                      "selfLink" => "https://www.googleapis.com/compute/#{api_version}/projects/#{@project}/global/backendServices/test-backend-service"
-                    }
-                  },
                   :servers => {
                     "fog-1" => {
                       "kind" => "compute#instance",

@@ -42,12 +42,11 @@ module Fog
           require "google/apis/compute_#{Fog::Compute::Google::GOOGLE_COMPUTE_API_VERSION}"
           require "google/apis/dns_#{Fog::DNS::Google::GOOGLE_DNS_API_VERSION}"
           require "google/apis/pubsub_#{Fog::Google::Pubsub::GOOGLE_PUBSUB_API_VERSION}"
-          require "google/apis/resourceviews_v1beta2"
           require "google/apis/sqladmin_#{Fog::Google::SQL::GOOGLE_SQL_API_VERSION}"
           require "google/apis/storage_#{Fog::Storage::GoogleJSON::GOOGLE_STORAGE_JSON_API_VERSION}"
           require "googleauth"
         rescue LoadError => error
-          Fog::Logger.error("Please install the google-api-client (>= 0.9) gem before using this provider")
+          Fog::Errors::Error.new("Please install the google-api-client (>= 0.9) gem before using this provider")
           raise error
         end
 
