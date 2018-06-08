@@ -196,6 +196,20 @@ module Fog
       request :invalidate_url_map_cache
       request :validate_url_map
 
+      request :get_instance_group_manager
+      request :insert_instance_group_manager
+      request :delete_instance_group_manager
+      request :list_instance_templates
+      request :list_instance_group_managers
+      request :get_instance_template
+      request :insert_instance_template
+      request :delete_instance_template
+
+      request :list_aggregated_instance_group_managers
+      request :set_instance_template
+      request :recreate_instances
+      request :abandon_instances
+
       request :deprecate_image
 
       model_path "fog/compute/google/models"
@@ -276,6 +290,12 @@ module Fog
 
       model :subnetwork
       collection :subnetworks
+
+      model :instance_template
+      collection :instance_templates
+
+      model :instance_group_manager
+      collection :instance_group_managers
 
       model :ssl_certificate
       collection :ssl_certificates
