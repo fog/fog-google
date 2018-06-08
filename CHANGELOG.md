@@ -2,6 +2,36 @@
 All notable changes to this project will be documented in this file.
 The format is loosely based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## Pending Release
+
+### User-facing
+
+#### Added
+
+- \#348 Added Instance Group Manager and Instance Templates [bpaquet]
+
+  - `Fog::Compute::Google::InstanceGroupManager` model and associated requests:
+    - `:get_instance_group_manager`
+    - `:insert_instance_group_manager`
+    - `:delete_instance_group_manager`
+    - `:list_instance_group_managers`
+    - `:list_aggregated_instance_group_managers`
+    - `:recreate_instances`
+    - `:abandon_instances`
+
+  - `Fog::Compute::Google::InstanceTemplate` model and associated requests:
+    - `:list_instance_templates`
+    - `:get_instance_template`
+    - `:insert_instance_template`
+    - `:delete_instance_template`
+    - `:set_instance_template`
+
+### Development changes
+
+#### Added
+
+- \#350 Added InstanceGroupManager and InstanceTemplate integration tests [temikus]
+
 ## 1.4.0
 
 ### User-facing
