@@ -2,11 +2,9 @@
 All notable changes to this project will be documented in this file.
 The format is loosely based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## Pending Release
+## 1.5.0
 
 ### User-facing
-
-#### Added
 
 - \#348 Added Instance Group Manager and Instance Templates [bpaquet]
 
@@ -25,6 +23,11 @@ The format is loosely based on [Keep a Changelog](http://keepachangelog.com/en/1
     - `:insert_instance_template`
     - `:delete_instance_template`
     - `:set_instance_template`
+
+#### Fixed
+
+- \#356 Hotfix - removing buggy deprecated 'google-containers' project, causing 403 errors
+  on `images.all` call. [tumido]
 
 ### Development changes
 
