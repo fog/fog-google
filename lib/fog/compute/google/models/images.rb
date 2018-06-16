@@ -19,7 +19,6 @@ module Fog
           ubuntu-os-cloud
           windows-cloud
           windows-sql-cloud
-          google-containers
           opensuse-cloud
         ).freeze
 
