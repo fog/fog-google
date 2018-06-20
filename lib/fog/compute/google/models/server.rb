@@ -473,6 +473,10 @@ module Fog
             ]
           end
 
+          if attributes[:network_ip]
+            options[:network_interfaces][0][:network_ip] = attributes[:network_ip]
+          end
+
           data = service.insert_server(name, zone_name, options)
 
           operation = Fog::Compute::Google::Operations
