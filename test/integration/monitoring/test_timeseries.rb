@@ -5,7 +5,6 @@ class TestMetricDescriptors < FogIntegrationTest
   # Retriable is used to wrap each request in this test due to Stackdriver API being slow with
   # metric propagation (sometimes 80+ seconds) and client returning
   # Google::Apis::ClientError: badRequest if the metric hasn't yet been created instead of a 404.
-  NOT_READY_REGEX = /The provided filter doesn't refer to any known metric./
   RETRIABLE_TRIES = 3
   RETRIABLE_BASE_INTERVAL = 30
   TEST_METRIC_PREFIX = "custom.googleapis.com/fog-google-test/timeseries".freeze
@@ -52,7 +51,8 @@ class TestMetricDescriptors < FogIntegrationTest
     assert_empty(resp.to_h)
 
     # Wait for metric to be created
-    Retriable.retriable(on: {Google::Apis::ClientError => NOT_READY_REGEX},
+    # TODO: Dedup retries into a helper method
+    Retriable.retriable(on: Google::Apis::ClientError,
                         tries: RETRIABLE_TRIES,
                         base_interval: RETRIABLE_BASE_INTERVAL) do
       @client.list_timeseries(
@@ -67,7 +67,7 @@ class TestMetricDescriptors < FogIntegrationTest
       ).time_series
     end
 
-    series = Retriable.retriable(on: { Google::Apis::ClientError => NOT_READY_REGEX },
+    series = Retriable.retriable(on: Google::Apis::ClientError,
                                  tries: RETRIABLE_TRIES,
                                  base_interval: RETRIABLE_BASE_INTERVAL) do
       @client.timeseries_collection.all(
@@ -132,7 +132,7 @@ class TestMetricDescriptors < FogIntegrationTest
     # Wait for metric to be created
     # Retriable is used instead of wait_for due to API client returning Google::Apis::ClientError: badRequest if the
     # metric hasn't yet been created
-    Retriable.retriable(on: { Google::Apis::ClientError => NOT_READY_REGEX },
+    Retriable.retriable(on: Google::Apis::ClientError,
                         tries: RETRIABLE_TRIES,
                         base_interval: RETRIABLE_BASE_INTERVAL) do
       @client.list_timeseries(
@@ -142,7 +142,7 @@ class TestMetricDescriptors < FogIntegrationTest
     end
 
     # Test page size
-    resp = Retriable.retriable(on: { Google::Apis::ClientError => NOT_READY_REGEX },
+    resp = Retriable.retriable(on: Google::Apis::ClientError,
                                tries: RETRIABLE_TRIES,
                                base_interval: RETRIABLE_BASE_INTERVAL) do
       @client.list_timeseries(
@@ -168,7 +168,7 @@ class TestMetricDescriptors < FogIntegrationTest
            "expected different timeseries when using page_token")
 
     # Test filter
-    series = Retriable.retriable(on: { Google::Apis::ClientError => NOT_READY_REGEX },
+    series = Retriable.retriable(on: Google::Apis::ClientError,
                                  tries: RETRIABLE_TRIES,
                                  base_interval: RETRIABLE_BASE_INTERVAL) do
       @client.timeseries_collection.all(
