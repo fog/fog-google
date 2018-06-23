@@ -10,9 +10,10 @@ The format is loosely based on [Keep a Changelog](http://keepachangelog.com/en/1
 
 - \#338 `Fog::Google::SQL` resources are now created and destroyed synchronously by default. 
 You can override it in a standard manner by passing a parameter to async method, e.g.:
- `Fog::Google::SQL::Instance.create(true)`[temikus]
-- \#367 `Fog::Compute::Google::Server.bootstrap` now creates instances with disks that automatically delete
-on instance shutdown.[temikus]
+ `Fog::Google::SQL::Instance.create(true)` [temikus]
+- \#367 `Fog::Compute::Google::Server.bootstrap` changes [temikus]
+  - Now creates instances with disks that automatically delete on instance shutdown.
+  - Now creates instances with a public IP address by default.
 
 #### Added
 

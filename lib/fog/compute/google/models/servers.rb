@@ -63,12 +63,18 @@ module Fog
             disks = [disk]
           end
 
+          # TODO: Remove the network init when #360 is fixed
+          network = { :network => "global/networks/default",
+                      :access_configs => [{ :name => 'External NAT',
+                                            :type => 'ONE_TO_ONE_NAT' }] }
+
           # Merge the options with the defaults, overwriting defaults
           # if an option is provided
           data = { :name => name,
                    :zone => zone_name,
                    :disks => disks,
-                   :public_key_path => get_public_key(public_key_path),
+                   :network_interfaces => [network],
+                   :public_key => get_public_key(public_key_path),
                    :username => ENV["USER"] }.merge(opts)
 
           data[:machine_type] = "n1-standard-1" unless data[:machine_type]
