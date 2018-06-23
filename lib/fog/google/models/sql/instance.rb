@@ -121,6 +121,12 @@ module Fog
         def destroy(async = false)
           requires :identity
 
+          # TODO(2.0): Add a deprecation warning here, depending on the decision in #27
+          # This is a compatibility fix leftover from breaking named parameter change
+          if async.is_a?(Hash)
+            async = async[:async]
+          end
+
           data = service.delete_instance(identity)
           operation = Fog::Google::SQL::Operations.new(:service => service).get(data.name)
           operation.tap { |o| o.wait_for { ready? } unless async }
