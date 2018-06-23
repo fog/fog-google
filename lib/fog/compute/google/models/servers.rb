@@ -78,6 +78,10 @@ module Fog
           # TODO: sshable? was removed, needs to be fixed for tests
           # server.wait_for { sshable? }
           server.wait_for { ready? }
+
+          # Set the disk to be autodeleted
+          server.set_disk_auto_delete(true)
+
           server
         end
 

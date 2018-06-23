@@ -24,9 +24,9 @@ class TestServers < FogIntegrationTest
 
     File.stub :read, key do
       # Name is set this way so it will be cleaned up by CollectionFactory
-      server = @subject.bootstrap({ :name => "#{CollectionFactory::PREFIX}-#{Time.now.to_i}",
-                                    :username => user })
-      boot_disk = server.disks.find { |disk| disk[:boot] }
+      server = @subject.bootstrap( :name => "#{CollectionFactory::PREFIX}-#{Time.now.to_i}",
+                                    :username => user )
+      boot_disk = server.disks.detect { |disk| disk[:boot] }
 
       assert_equal(server.status, "RUNNING", "Bootstrapped server should be running")
       assert_equal(server.public_key, key, "Bootstrapped server should have a public key set")

@@ -10,17 +10,20 @@ The format is loosely based on [Keep a Changelog](http://keepachangelog.com/en/1
 
 - \#338 `Fog::Google::SQL` resources are now created and destroyed synchronously by default. 
 You can override it in a standard manner by passing a parameter to async method, e.g.:
- `Fog::Google::SQL::Instance.create(true)`
+ `Fog::Google::SQL::Instance.create(true)`[temikus]
+- \#367 `Fog::Compute::Google::Server.bootstrap` now creates instances with disks that automatically delete
+on instance shutdown.[temikus]
 
 #### Added
 
-- \#361 `Fog::Compute::Google::Server` now recognises `network_ip` attribute to specify internal IP [mattimatti]
+- \#361 `Fog::Compute::Google::Server` now recognises `network_ip` attribute to specify internal IP. [mattimatti]
 
 #### Fixed
 
-- \#338 Fixed SQL Users model workflow
+- \#338 Fixed SQL Users model workflow [temikus]
 - \#359 Fix whitespace escaping in XML Storage methods [temikus]
 - \#366 Fixing `Server` model to properly accept `:private_key_path` and `:public_key_path` attributes again. [temikus]
+- \#367 `Fog::Compute::Google::Server.bootstrap` parameters are now properly merged with default ones. [tesmikus]
 
 ### Development changes
 
