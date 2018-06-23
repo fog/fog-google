@@ -65,8 +65,8 @@ module Fog
 
           # TODO: Remove the network init when #360 is fixed
           network = { :network => "global/networks/default",
-                      :access_configs => [{ :name => 'External NAT',
-                                            :type => 'ONE_TO_ONE_NAT' }] }
+                      :access_configs => [{ :name => "External NAT",
+                                            :type => "ONE_TO_ONE_NAT" }] }
 
           # Merge the options with the defaults, overwriting defaults
           # if an option is provided
@@ -81,8 +81,6 @@ module Fog
 
           server = new(data)
           server.save
-          # TODO: sshable? was removed, needs to be fixed for tests
-          # server.wait_for { sshable? }
           server.wait_for { ready? }
 
           # Set the disk to be autodeleted
