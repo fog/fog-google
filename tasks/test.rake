@@ -56,7 +56,7 @@ namespace :test do
     t.warning = false
     t.verbose = true
   end
-  
+
   desc "Run all SQL API tests"
   task :sql => [:sqlv1, :sqlv2]
 
