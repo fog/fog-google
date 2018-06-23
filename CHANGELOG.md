@@ -6,16 +6,28 @@ The format is loosely based on [Keep a Changelog](http://keepachangelog.com/en/1
 
 ### User-facing
 
+#### Changed
+
+- \#338 `Fog::Google::SQL` resources are now created and destroyed synchronously by default. 
+You can override it in a standard manner by passing a parameter to async method, e.g.:
+ `Fog::Google::SQL::Instance.create(true)`
+
 #### Added
 
 - \#361 `Fog::Compute::Google::Server` now recognises `network_ip` attribute to specify internal IP [mattimatti]
 
 #### Fixed
 
+- \#338 Fixed SQL Users model workflow
 - \#359 Fix whitespace escaping in XML Storage methods [temikus]
 - \#366 Fixing `Server` model to properly accept `:private_key_path` and `:public_key_path` attributes again. [temikus]
 
 ### Development changes
+
+#### Added
+
+- \#338 Major refactor of SQLv1 and SQLv2 tests + a lot of small test fixes/improvements
+   (see PR/commit messages for full set of changes) [temikus]
 
 #### Fixed
 

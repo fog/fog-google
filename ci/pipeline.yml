@@ -1,5 +1,6 @@
 jobs:
   - name: integration-tests-compute
+    serial: true
     plan:
       - get: fog-google-src
         resource: pull-request
@@ -15,8 +16,14 @@ jobs:
           google_project: {{google_project}}
           google_json_key_data: {{google_json_key_data}}
           google_client_email: {{google_client_email}}
-
+        on_failure:
+          put: pull-request
+          params:
+            path: fog-google-src
+            status: failure
+            
   - name: integration-tests-monitoring
+    serial: true
     plan:
       - get: fog-google-src
         resource: pull-request
@@ -32,8 +39,14 @@ jobs:
           google_project: {{google_project}}
           google_json_key_data: {{google_json_key_data}}
           google_client_email: {{google_client_email}}
+        on_failure:
+          put: pull-request
+          params:
+            path: fog-google-src
+            status: failure
 
   - name: integration-tests-pubsub
+    serial: true
     plan:
       - get: fog-google-src
         resource: pull-request
@@ -49,8 +62,14 @@ jobs:
           google_project: {{google_project}}
           google_json_key_data: {{google_json_key_data}}
           google_client_email: {{google_client_email}}
+        on_failure:
+          put: pull-request
+          params:
+            path: fog-google-src
+            status: failure
 
   - name: integration-tests-sql
+    serial: true
     plan:
       - get: fog-google-src
         resource: pull-request
@@ -66,8 +85,14 @@ jobs:
           google_project: {{google_project}}
           google_json_key_data: {{google_json_key_data}}
           google_client_email: {{google_client_email}}
+        on_failure:
+          put: pull-request
+          params:
+            path: fog-google-src
+            status: failure
 
   - name: integration-tests-storage
+    serial: true
     plan:
       - get: fog-google-src
         resource: pull-request
@@ -83,6 +108,11 @@ jobs:
           google_project: {{google_project}}
           google_json_key_data: {{google_json_key_data}}
           google_client_email: {{google_client_email}}
+        on_failure:
+          put: pull-request
+          params:
+            path: fog-google-src
+            status: failure
 
   - name: github-pr-aggregator
     plan:

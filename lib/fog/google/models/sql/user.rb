@@ -15,8 +15,14 @@ module Fog
         attribute :kind
         attribute :project
 
-        def destroy(async: true)
+        def destroy(async = true)
           requires :instance, :name, :host
+
+          # TODO(2.0): Add a deprecation warning here, depending on the decision in #27
+          # This is a compatibility fix leftover from breaking named parameter change
+          if async.is_a?(Hash)
+            async = async[:async]
+          end
 
           resp = service.delete_user(instance, host, name)
           operation = Fog::Google::SQL::Operations.new(:service => service).get(resp.name)
@@ -30,9 +36,9 @@ module Fog
           data = attributes
           data[:password] = password unless password.nil?
           if etag.nil?
-            resp = service.update_user(instance, data)
-          else
             resp = service.insert_user(instance, data)
+          else
+            resp = service.update_user(instance, data)
           end
 
           operation = Fog::Google::SQL::Operations.new(:service => service).get(resp.name)

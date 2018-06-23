@@ -18,7 +18,7 @@ TEST_RAW_DISK_SOURCE = "http://storage.googleapis.com/fog-test-bucket/fog-test-r
 TEST_SQL_TIER_FIRST = "D1".freeze
 TEST_SQL_REGION_FIRST = "us-central".freeze
 
-TEST_SQL_TIER_SECOND = "db-f1-micro".freeze
+TEST_SQL_TIER_SECOND = "db-n1-standard-1".freeze
 TEST_SQL_REGION_SECOND = TEST_REGION
 
 class FogIntegrationTest < MiniTest::Test
