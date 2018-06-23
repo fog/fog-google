@@ -445,6 +445,11 @@ module Fog
           requires :disks
           requires :zone
 
+          generate_ssh_key_metadata(self.username, self.public_key) if self.public_key
+
+          # XXX HACK This is a relic of 1.0 change that for some reason added those arguments
+          # to `save` method. This is left in place to keep things backwards-compatible
+          # TODO(2.0): Remove arguments from save
           generate_ssh_key_metadata(username, public_key) if public_key
 
           options = attributes.reject { |_, v| v.nil? }

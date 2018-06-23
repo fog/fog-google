@@ -43,9 +43,6 @@ module Fog
         end
 
         def bootstrap(public_key_path: nil, **opts)
-          user = ENV["USER"]
-          public_key = get_public_key(public_key_path)
-
           name = "fog-#{Time.now.to_i}"
           zone_name = "us-central1-f"
 
@@ -69,7 +66,9 @@ module Fog
           data = opts.merge(
             :name => name,
             :zone => zone_name,
-            :disks => disks
+            :disks => disks,
+            :public_key_path => get_public_key(public_key_path),
+            :username => ENV["USER"]
           )
           data[:machine_type] = "n1-standard-1" unless data[:machine_type]
 

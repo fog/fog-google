@@ -2,6 +2,25 @@
 All notable changes to this project will be documented in this file.
 The format is loosely based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## Next release (1.6.0)
+
+### User-facing
+
+#### Added
+
+- \#361 `Fog::Compute::Google::Server` now recognises `network_ip` attribute to specify internal IP [mattimatti]
+
+#### Fixed
+
+- \#359 Fix whitespace escaping in XML Storage methods [temikus]
+- \#366 Fixing `Server` model to properly accept `:private_key_path` and `:public_key_path` attributes again. [temikus]
+
+### Development changes
+
+#### Fixed
+
+- \#363 Fixed flaky Monitoring tests [temikus]
+
 ## 1.5.0
 
 ### User-facing
