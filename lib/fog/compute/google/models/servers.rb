@@ -74,9 +74,10 @@ module Fog
           data[:machine_type] = "n1-standard-1" unless data[:machine_type]
 
           server = new(data)
-          server.save(:username => user, :public_key => public_key)
+          server.save
           # TODO: sshable? was removed, needs to be fixed for tests
           # server.wait_for { sshable? }
+          server.wait_for { ready? }
           server
         end
 
