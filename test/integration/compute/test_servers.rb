@@ -34,6 +34,13 @@ class TestServers < FogIntegrationTest
       assert_equal(key, server.public_key, "Bootstrapped server should have a public key set")
       assert_equal(user, server.username, "Bootstrapped server should have user set to #{user}")
       assert(boot_disk[:auto_delete], "Bootstrapped server should have disk set to autodelete")
+
+      network_adapter = server.network_interfaces.detect { |x| x.has_key?(:access_configs) }
+
+      refute_nil(network_adapter[:access_configs].detect { |x| x[:nat_ip] },
+                 "Bootstrapped server should have an external ip by default")
+    end
+  end
     end
   end
 end
