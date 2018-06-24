@@ -31,8 +31,6 @@ pushd ${release_dir} > /dev/null
 
 bundle install
 
-echo "Attempting to run tests with coverage..."
-
 FOG_MOCK=false COVERAGE=true CODECOV_TOKEN=${codecov_token} rake ${rake_task}
 
 popd > /dev/null

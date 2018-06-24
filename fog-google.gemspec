@@ -26,16 +26,17 @@ Gem::Specification.new do |spec|
 
   # Hard Requirement as of 1.0
   spec.add_dependency "google-api-client", "~> 0.23.0"
-
-  spec.add_development_dependency "codecov"
+  
   spec.add_development_dependency "mime-types"
-  spec.add_development_dependency "minitest"
-  spec.add_development_dependency "osrcry"
+
+  # Debugger
   spec.add_development_dependency "pry"
   spec.add_development_dependency "pry-byebug"
-  spec.add_development_dependency "rake"
+
+  # Testing gems
   spec.add_development_dependency "retriable"
-  spec.add_development_dependency "rubocop"
+  spec.add_development_dependency "rake"
+  spec.add_development_dependency "minitest"
   spec.add_development_dependency "shindo"
   spec.add_development_dependency "vcr"
   spec.add_development_dependency "webmock"
