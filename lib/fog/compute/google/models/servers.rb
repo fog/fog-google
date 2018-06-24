@@ -109,7 +109,7 @@ module Fog
           end
 
           if public_key_path.nil? || public_key_path.empty?
-            raise ArgumentError("cannot bootstrap instance without public key file")
+            raise Fog::Errors::Error.new("Cannot bootstrap instance without a public key")
           end
 
           File.read(File.expand_path(public_key_path))

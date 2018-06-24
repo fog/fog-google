@@ -41,6 +41,14 @@ class TestServers < FogIntegrationTest
                  "Bootstrapped server should have an external ip by default")
     end
   end
+
+  def test_bootstrap_fail
+    # Pretend the ssh key does not exist
+    File.stub :exist?, nil do
+      assert_raises(Fog::Errors::Error) {
+        @subject.bootstrap(:name => "#{CollectionFactory::PREFIX}-#{Time.now.to_i}",
+                           :public_key_path => nil)
+      }
     end
   end
 end
