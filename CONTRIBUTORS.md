@@ -5,14 +5,13 @@ With also previous help from unnamed Google employees and [Fog contributors](htt
 * Alex Coomans <alex@alexcoomans.com>
 * Alexander Kolesen <akolesen@iron.io>
 * Alexander Lomov <lomov.as@gmail.com>
+* Alexander Stuart-Kregor <easkay@me.com>
 * Andrew Leonard <andy@hurricane-ridge.com>
 * Antonio <0x414f@gmail.com>
 * Ariel Zavala <arielo.zavala@gmail.com>
-* Artem <code@temik.me>
-* Artem <temikus@google.com>
-* Artem Yakimenko <code@temik.me>
 * Artem Yakimenko <temikus@google.com>
 * Benson Kalahar <bensonk42@gmail.com>
+* Bertrand Paquet <bertrand.paquet@gmail.com>
 * Bob Lail and Luke Booth <pair=bob.lail+luke.booth@cphepdev.com>
 * Brett Porter <brett@apache.org>
 * Brian D. Burns <iosctr@gmail.com>
@@ -28,7 +27,6 @@ With also previous help from unnamed Google employees and [Fog contributors](htt
 * Dima <dima@cloud66.com>
 * Doug Henderson <dhenderson@maestrodev.com>
 * Emily Ye <emilyye@google.com>
-* Eric Johnson <erjohnso@google.com>
 * Eric Johnson <erjohnso@google.com>
 * Ervin Weber <webervin@users.noreply.github.com>
 * Ferran Rodenas <frodenas@gmail.com>
@@ -52,8 +50,10 @@ With also previous help from unnamed Google employees and [Fog contributors](htt
 * Leila-Kuntar <leyla.myosotis@gmail.com>
 * Marcel Hild <hild@b4mad.net>
 * Marcin Owsiany <porridge@google.com>
+* Mark Huk <mark.guk.e@gmail.com>
 * Martin Lazarov <martin@lazarov.bg>
 * Matt Darby <matt.darby@rackspace.com>
+* Matteo Monti <mmonti@gmail.com>
 * Michael Elfassy <michaelelfassy@napps.ca>
 * Miguel Martinez <miguel@bitnami.com>
 * Misha Brukman <mbrukman@google.com>
@@ -77,6 +77,7 @@ With also previous help from unnamed Google employees and [Fog contributors](htt
 * Stephen von Takach <steve@advancedcontrol.com.au>
 * Tim Downey <tdowney@pivotal.io>
 * Timur Alperovich <timur.alperovich@gmail.com>
+* Tomas Coufal <tcoufal@redhat.com>
 * Vadim Shaulski <sh.vadim@gmail.com>
 * Wesley Beary <geemus@gmail.com>
 * Zach Robinson <zrobinson@pivotal.io>
@@ -84,6 +85,7 @@ With also previous help from unnamed Google employees and [Fog contributors](htt
 * ashmrtnz <ashmrtnz@google.com>
 * canausa <tscanausa@gmail.com>
 * geemus <geemus@gmail.com>
+* jayhsu <jayhsu21@gmail.com>
 * jordangbull <jordangbull@gmail.com>
 * kbockmanrs <kevin@rightscale.com>
 * leonidlm <leonidlm@gmail.com>
