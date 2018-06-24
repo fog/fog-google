@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 The format is loosely based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## Next release (1.6.0)
+## 1.6.0
 
 ### User-facing
 
@@ -145,3 +145,21 @@ PRs that change functionality: #212, #215, #203, #198, #201, #221, #222, #216
 
 Rapid-releasing 0.5.2 due to regression fixed by #190 still present in v0.5.1
 We encourage people using 0.5.1 to upgrade.
+
+## Template to use
+
+## Next release
+
+### User-facing
+
+#### Changed
+
+#### Added
+
+#### Fixed
+
+### Development changes
+
+#### Added
+
+#### Fixed
