@@ -1,10 +1,5 @@
-# The next line was added to squelch a warning message in Ruby 1.9.
-# It ensures we're using the gem, not the built-in Minitest
-# See https://github.com/seattlerb/minitest/#install
-gem "minitest"
-
-require "minitest/autorun"
-
+# Configure simplecov for coverage tests
+# Note: needs to be done _before_ requiring minitest!
 if ENV["COVERAGE"]
   require "simplecov"
 
@@ -12,5 +7,11 @@ if ENV["COVERAGE"]
     add_filter "/test/"
   end
 end
+
+# The next line was added to squelch a warning message in Ruby 1.9.
+# It ensures we're using the gem, not the built-in Minitest
+# See https://github.com/seattlerb/minitest/#install
+gem "minitest"
+require "minitest/autorun"
 
 require File.join(File.dirname(__FILE__), "../../lib/fog/google")
