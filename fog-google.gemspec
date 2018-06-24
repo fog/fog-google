@@ -27,7 +27,6 @@ Gem::Specification.new do |spec|
   # Hard Requirement as of 1.0
   spec.add_dependency "google-api-client", "~> 0.23.0"
 
-  spec.add_development_dependency "coveralls"
   spec.add_development_dependency "mime-types"
   spec.add_development_dependency "minitest"
   spec.add_development_dependency "osrcry"

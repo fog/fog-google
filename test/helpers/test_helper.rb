@@ -6,7 +6,6 @@ gem "minitest"
 require "minitest/autorun"
 
 if ENV["COVERAGE"]
-  require "coveralls"
   require "simplecov"
 
   SimpleCov.start do
@@ -15,5 +14,3 @@ if ENV["COVERAGE"]
 end
 
 require File.join(File.dirname(__FILE__), "../../lib/fog/google")
-
-Coveralls.wear! if ENV["COVERAGE"]
