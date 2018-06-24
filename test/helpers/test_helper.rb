@@ -3,6 +3,9 @@
 if ENV["COVERAGE"]
   require "simplecov"
 
+  require 'codecov'
+  SimpleCov.formatter = SimpleCov::Formatter::Codecov
+
   SimpleCov.start do
     add_filter "/test/"
   end
