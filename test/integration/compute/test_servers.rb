@@ -24,13 +24,15 @@ class TestServers < FogIntegrationTest
 
     File.stub :read, key do
       # Name is set this way so it will be cleaned up by CollectionFactory
+      # Public_key_path is set to avoid stubbing out File.exist?
       server = @subject.bootstrap(:name => "#{CollectionFactory::PREFIX}-#{Time.now.to_i}",
-                                  :username => user)
+                                  :username => user,
+                                  :public_key_path => "foo")
       boot_disk = server.disks.detect { |disk| disk[:boot] }
 
-      assert_equal(server.status, "RUNNING", "Bootstrapped server should be running")
-      assert_equal(server.public_key, key, "Bootstrapped server should have a public key set")
-      assert_equal(server.username, user, "Bootstrapped server should have a user set")
+      assert_equal("RUNNING", server.status, "Bootstrapped server should be running")
+      assert_equal(key, server.public_key, "Bootstrapped server should have a public key set")
+      assert_equal(user, server.username, "Bootstrapped server should have user set to #{user}")
       assert(boot_disk[:auto_delete], "Bootstrapped server should have disk set to autodelete")
     end
   end
