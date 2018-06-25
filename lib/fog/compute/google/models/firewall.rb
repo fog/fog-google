@@ -27,6 +27,10 @@ module Fog
 
         def save
           requires :identity
+          
+          unless self.allowed || self.denied
+            raise Fog::Errors::Error.new("Firewall needs denied or allowed ports specified")
+          end
 
           id.nil? ? create : update
         end
