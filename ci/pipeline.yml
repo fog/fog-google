@@ -13,6 +13,7 @@ jobs:
         file: fog-google-src/ci/tasks/run-int.yml
         params:
           rake_task: test:compute
+          codecov_token: {{codecov_token}}
           google_project: {{google_project}}
           google_json_key_data: {{google_json_key_data}}
           google_client_email: {{google_client_email}}
@@ -36,6 +37,7 @@ jobs:
         file: fog-google-src/ci/tasks/run-int.yml
         params:
           rake_task: test:monitoring
+          codecov_token: {{codecov_token}}
           google_project: {{google_project}}
           google_json_key_data: {{google_json_key_data}}
           google_client_email: {{google_client_email}}
@@ -59,6 +61,7 @@ jobs:
         file: fog-google-src/ci/tasks/run-int.yml
         params:
           rake_task: test:pubsub
+          codecov_token: {{codecov_token}}
           google_project: {{google_project}}
           google_json_key_data: {{google_json_key_data}}
           google_client_email: {{google_client_email}}
@@ -82,6 +85,7 @@ jobs:
         file: fog-google-src/ci/tasks/run-int.yml
         params:
           rake_task: test:sql
+          codecov_token: {{codecov_token}}
           google_project: {{google_project}}
           google_json_key_data: {{google_json_key_data}}
           google_client_email: {{google_client_email}}
@@ -105,6 +109,7 @@ jobs:
         file: fog-google-src/ci/tasks/run-int.yml
         params:
           rake_task: test:storage
+          codecov_token: {{codecov_token}}
           google_project: {{google_project}}
           google_json_key_data: {{google_json_key_data}}
           google_client_email: {{google_client_email}}
