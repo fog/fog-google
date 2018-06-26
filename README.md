@@ -1,6 +1,6 @@
 # Fog::Google
 
-[![Gem Version](https://badge.fury.io/rb/fog-google.svg)](http://badge.fury.io/rb/fog-google) [![Build Status](https://travis-ci.org/fog/fog-google.svg?branch=master)](https://travis-ci.org/fog/fog-google) [![codecov](https://codecov.io/gh/fog/fog-google/branch/master/graph/badge.svg)](https://codecov.io/gh/fog/fog-google) [![Maintainability](https://api.codeclimate.com/v1/badges/18f585fe1b9e6dbb6794/maintainability)](https://codeclimate.com/github/fog/fog-google/maintainability)
+[![Gem Version](https://badge.fury.io/rb/fog-google.svg)](http://badge.fury.io/rb/fog-google) [![Build Status](https://travis-ci.org/fog/fog-google.svg?branch=master)](https://travis-ci.org/fog/fog-google) [![codecov](https://codecov.io/gh/fog/fog-google/branch/master/graph/badge.svg)](https://codecov.io/gh/fog/fog-google) [![Doc coverage](https://inch-ci.org/github/fog/fog-google.svg?branch=master)](https://inch-ci.org/github/fog/fog-google) [![Maintainability](https://api.codeclimate.com/v1/badges/18f585fe1b9e6dbb6794/maintainability)](https://codeclimate.com/github/fog/fog-google/maintainability)
 
 The main maintainers for the Google sections are @icco, @Temikus and @plribeiro3000. Please send pull requests to them.
 
