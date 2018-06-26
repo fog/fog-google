@@ -16,7 +16,10 @@ module Fog
         :google_key_location,
         :google_key_string,
         :google_json_key_location,
-        :google_json_key_string
+        :google_json_key_string,
+        :open_timeout_sec,
+        :read_timeout_sec,
+        :send_timeout_sec
       )
 
       # https://cloud.google.com/storage/docs/json_api/v1/

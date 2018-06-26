@@ -15,6 +15,9 @@ module Fog
 
           @client = initialize_google_client(options)
           @storage_json = ::Google::Apis::StorageV1::StorageService.new
+          @storage_json.client_options.open_timeout_sec = options[:open_timeout_sec] if options[:open_timeout_sec]
+          @storage_json.client_options.read_timeout_sec = options[:read_timeout_sec] if options[:read_timeout_sec]
+          @storage_json.client_options.send_timeout_sec = options[:send_timeout_sec] if options[:send_timeout_sec]
         end
 
         def signature(params)
