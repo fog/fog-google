@@ -10,7 +10,12 @@ The format is loosely based on [Keep a Changelog](http://keepachangelog.com/en/1
 
 #### Added
 
-- \#370 Introducing test coverage back, integrating with codecov.io
+- \#370 Introducing test coverage back, integrating with codecov.io [temikus]
+- \#373 Increase integration test coverage. [temikus]
+  - Add Firewall factory and tests.
+  - Add InstanceGroup factory and tests.
+  - Add MachineType tests.
+- \#376 Add doc coverage tracking. [temikus]
 
 ## 1.6.0
 
