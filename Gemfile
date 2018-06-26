@@ -4,6 +4,7 @@ source "https://rubygems.org"
 gem 'osrcry', :require => false
 gem 'codecov', :require => false
 gem 'rubocop', :require => false
+gem 'inch', :require => false
 
 # Specify your gem's dependencies in fog-google.gemspec
 gemspec
