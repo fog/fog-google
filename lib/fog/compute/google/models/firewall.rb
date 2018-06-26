@@ -8,8 +8,24 @@ module Fog
       class Firewall < Fog::Model
         identity :name
 
+        # Allowed ports in API format
+        #
+        # @example
+        # [
+        #   { :ip_protocol => "TCP",
+        #     :ports => ["201"] }
+        # ]
+        # @return [Array<Hash>]
         attribute :allowed
         attribute :creation_timestamp, :aliases => "creationTimestamp"
+        # Denied ports in API format
+        #
+        # @example
+        # [
+        #   { :ip_protocol => "TCP",
+        #     :ports => ["201"] }
+        # ]
+        # @return [Array<Hash>]
         attribute :denied
         attribute :description
         attribute :destination_ranges, :aliases => "destinationRanges"
@@ -27,6 +43,10 @@ module Fog
 
         def save
           requires :identity
+
+          unless self.allowed || self.denied
+            raise Fog::Errors::Error.new("Firewall needs denied or allowed ports specified")
+          end
 
           id.nil? ? create : update
         end
