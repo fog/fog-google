@@ -10,10 +10,23 @@ module Fog
         attribute :kind, :aliases => "kind"
         attribute :self_link, :aliases => "selfLink"
         attribute :url_map, :aliases => "urlMap"
+        # Array of SSL Certificates
+        # @example
+        #
+        #   [cert_one.self_link', cert_two.self_link]
+        #
+        # , where 'cert_one' and 'cert_two' are instances of
+        # Fog::Compute::Google::SslCertificate
+        #
+        # @return [Array<String>]
         attribute :ssl_certificates, :aliases => "sslCertificates"
 
         def save
           requires :identity, :url_map, :ssl_certificates
+
+          unless ssl_certificates.is_a?(Array)
+            raise Fog::Errors::Error.new("ssl_certificates attribute must be an array")
+          end
 
           data = service.insert_target_https_proxy(
             identity,
@@ -23,7 +36,7 @@ module Fog
           )
           operation = Fog::Compute::Google::Operations.new(:service => service)
                                                       .get(data.name)
-          operation.wait_for { !pending? }
+          operation.wait_for { ready? }
           reload
         end
 
