@@ -40,7 +40,7 @@ module Fog
           operation = Fog::Compute::Google::Operations
                       .new(:service => service)
                       .get(data.name, nil, data.region)
-          operation.wait_for { !pending? }
+          operation.wait_for { ready? }
           reload
         end
 
