@@ -42,5 +42,4 @@ class TestAddresses < FogIntegrationTest
   def test_addresses_in_use
     assert_equal(false, @example.in_use?, "example address should not be in use")
   end
-
 end
