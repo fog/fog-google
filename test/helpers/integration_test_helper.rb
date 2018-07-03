@@ -7,6 +7,8 @@ Fog.credential = :test
 
 # Helpers
 
+TEST_PROJECT = Fog.credentials[:google_project]
+
 TEST_ZONE = "us-central1-f".freeze
 TEST_REGION = "us-central1".freeze
 TEST_SIZE_GB = 10
