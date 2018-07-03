@@ -13,6 +13,10 @@ class TestAddresses < FogIntegrationTest
     @example = @factory.create
   end
 
+  def test_bad_get
+    assert_nil @subject.get("bad-name", TEST_REGION)
+  end
+
   def test_addresses_get_address_by_ip
     found = @subject.get_by_ip_address(@example.address)
 
