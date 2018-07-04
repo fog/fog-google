@@ -1,7 +1,6 @@
 require "integration/factories/collection_factory"
 
 class SubnetworksFactory < CollectionFactory
-
   def initialize(example)
     # We cannot have 2 subnetworks with the same CIDR range so instantiating a
     # class variable holding a generator, ensuring that the factory gives us a
