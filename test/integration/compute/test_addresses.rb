@@ -7,10 +7,6 @@ class TestAddresses < FogIntegrationTest
   def setup
     @subject = Fog::Compute[:google].addresses
     @factory = AddressesFactory.new(namespaced_name)
-
-    # Example for testing collection get methods
-    # Instantiating once to save time
-    @example = @factory.create
   end
 
   def test_bad_get
@@ -18,32 +14,36 @@ class TestAddresses < FogIntegrationTest
   end
 
   def test_addresses_get_address_by_ip
-    found = @subject.get_by_ip_address(@example.address)
+    address = @factory.create
+    found = @subject.get_by_ip_address(address.address)
 
-    assert_equal(@example.name, found.name, "address should have same name")
-    assert_equal(@example.address, found.address, "addresses should match")
+    assert_equal(address.name, found.name, "address should have same name")
+    assert_equal(address.address, found.address, "addresses should match")
   end
 
   def test_addresses_get_address_by_name
-    found = @subject.get_by_name(@example.name)
+    address = @factory.create
+    found = @subject.get_by_name(address.name)
 
-    assert_equal(@example.name, found.name, "address should have same name")
-    assert_equal(@example.address, found.address, "addresses should match")
+    assert_equal(address.name, found.name, "address should have same name")
+    assert_equal(address.address, found.address, "addresses should match")
   end
 
   def test_addresses_get_by_ip_address_or_name
     # Ensure we find the same addresses through both codepaths
-    with_name = @subject.get_by_ip_address_or_name(@example.name)
-    with_ip = @subject.get_by_ip_address_or_name(@example.address)
+    address = @factory.create
+    with_name = @subject.get_by_ip_address_or_name(address.name)
+    with_ip = @subject.get_by_ip_address_or_name(address.address)
 
-    assert_equal(@example.name, with_name.name, "address should have same name")
-    assert_equal(@example.address, with_name.address, "addresses should match")
+    assert_equal(address.name, with_name.name, "address should have same name")
+    assert_equal(address.address, with_name.address, "addresses should match")
 
-    assert_equal(@example.name, with_ip.name, "address should have same name")
-    assert_equal(@example.address, with_ip.address, "addresses should match")
+    assert_equal(address.name, with_ip.name, "address should have same name")
+    assert_equal(address.address, with_ip.address, "addresses should match")
   end
 
   def test_addresses_in_use
-    assert_equal(false, @example.in_use?, "example address should not be in use")
+    address = @factory.create
+    assert_equal(false, address.in_use?, "example address should not be in use")
   end
 end
