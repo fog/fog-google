@@ -8,7 +8,7 @@ The main maintainers for the Google sections are @icco, @Temikus and @plribeiro3
 
 **As of v1.0.0, fog-google includes google-api-client as a dependency**
 
-**See [MIGRATING.md](MIGRATING.MD) for migration between major versions**
+**See [MIGRATING.md](MIGRATING.md) for migration between major versions**
 
 ## Storage
 
