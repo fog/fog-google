@@ -33,7 +33,7 @@ namespace :test do
     t.name = "compute"
     t.description = "Run Compute API tests"
     t.libs << "test"
-    t.pattern = FileList["test/integration/compute/test_*.rb", "test/integration/compute/**/test_*.rb"]
+    t.pattern = FileList["test/integration/compute/test_*.rb"]
     t.warning = false
     t.verbose = true
   end
