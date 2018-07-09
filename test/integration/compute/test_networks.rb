@@ -30,6 +30,7 @@ class TestNetworks < FogIntegrationTest
   end
 
   # TODO: think about simplifying this
+  # Ideally factory should permit to be called with special parameters.
   def test_run_instance
     network = @factory.create
     params = { :name => "#{CollectionFactory::PREFIX}-#{Time.new.to_i}",
