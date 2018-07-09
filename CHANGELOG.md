@@ -6,6 +6,11 @@ The format is loosely based on [Keep a Changelog](http://keepachangelog.com/en/1
 
 ### User-facing
 
+#### Changed
+
+- \#383 `Fog::Compute::Google::Address` resources are now created synchronously
+  by default. [temikus]
+
 ### Development changes
 
 #### Added
@@ -16,7 +21,18 @@ The format is loosely based on [Keep a Changelog](http://keepachangelog.com/en/1
   - Add InstanceGroup factory and tests.
   - Add MachineType tests.
 - \#376 Add doc coverage tracking. [temikus]
-
+- \#383 Increase integration test coverage further. [temikus]
+  - Add collection tests and factories (when mutable) for following resources:
+    - Addresses 
+    - Disks
+    - Projects
+    - Routes
+    - Operations
+    - Networks
+    - Subnetworks
+  - Fix compute tests Rake task.
+  - Remove old tests and helpers for Disk, Addresses and Networks.
+  
 ## 1.6.0
 
 ### User-facing
