@@ -1,12 +1,21 @@
 require "helpers/integration_test_helper"
 require "integration/factories/networks_factory"
+require "integration/factories/servers_factory"
 
 class TestNetworks < FogIntegrationTest
   include TestCollection
 
   def setup
     @subject = Fog::Compute[:google].networks
+    @servers = Fog::Compute[:google].servers
     @factory = NetworksFactory.new(namespaced_name)
+  end
+
+  def teardown
+    # Clean up the server created by calling factory cleanup method
+    # TODO: Think about doing cleanup better as this needs to be invoked only once
+    ServersFactory.new(namespaced_name).cleanup
+    super
   end
 
   def test_valid_range
@@ -18,5 +27,28 @@ class TestNetworks < FogIntegrationTest
 
     assert_match(re, network.ipv4_range,
                  "Network range should be valid")
+  end
+
+  # TODO: think about simplifying this
+  def test_run_instance
+    network = @factory.create
+    params = { :name => "#{CollectionFactory::PREFIX}-#{Time.new.to_i}",
+               :machine_type => "f1-micro",
+               :zone => TEST_ZONE,
+               :disks => [
+                 :boot => true,
+                 :auto_delete => true,
+                 :initialize_params => {
+                   :source_image => "projects/debian-cloud/global/images/family/debian-9"
+                 }
+               ],
+               :network_interfaces => [network.get_as_interface_config] }
+    server = @servers.create(params)
+
+    assert_equal(
+      network.self_link,
+      server.network_interfaces[0][:network],
+      "Created server should have the network specified on boot"
+    )
   end
 end
