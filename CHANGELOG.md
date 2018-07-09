@@ -22,15 +22,16 @@ The format is loosely based on [Keep a Changelog](http://keepachangelog.com/en/1
   - Add MachineType tests.
 - \#376 Add doc coverage tracking. [temikus]
 - \#383 Increase integration test coverage further. [temikus]
-  - Add Addresses collection factory and tests.
+  - Add collection tests and factories (when mutable) for following resources:
+    - Addresses 
+    - Disks
+    - Projects
+    - Routes
+    - Operations
+    - Networks
+    - Subnetworks
   - Fix compute tests Rake task.
-  - Migrated Address tests to canonical model.
-  - Remove old raw request tests and helper.
-  - Add Disks collection tests and remove old requests tests.
-  - Add basic Routes collection tests.
-  - Add basic Projects collection tests.
-  - Add basic Operations collection tests.
-  - Add Subnetworks collection tests and factory.
+  - Remove old tests and helpers for Disk, Addresses and Networks.
   
 ## 1.6.0
 

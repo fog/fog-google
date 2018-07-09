@@ -10,7 +10,7 @@ class NetworksFactory < CollectionFactory
   end
 
   def params
-    {:name => resource_name,
-     :ipv4_range => "172.16.#{@octet_generator.next}.0/24"}
+    { :name => resource_name,
+      :ipv4_range => "172.16.#{@octet_generator.next}.0/24" }
   end
 end
