@@ -29,7 +29,7 @@ class TestAddresses < FogIntegrationTest
                  :boot => true,
                  :auto_delete => true,
                  :initialize_params => {
-                   :source_image => "projects/debian-cloud/global/images/family/debian-8"
+                   :source_image => "projects/debian-cloud/global/images/family/debian-9"
                  }
                ],
                :external_ip => address.address }
