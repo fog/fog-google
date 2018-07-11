@@ -50,7 +50,7 @@ module Fog
 
           if disks.nil? || disks.empty?
             # create the persistent boot disk
-            source_img = service.images.get_from_family("debian-8")
+            source_img = service.images.get_from_family("debian-9")
             disk_defaults = {
               :name => name,
               :size_gb => 10,

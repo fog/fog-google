@@ -13,7 +13,7 @@ def test
     :name => "fog-smoke-test-#{Time.now.to_i}",
     :size_gb => 10,
     :zone => "us-central1-f",
-    :source_image => "debian-8-jessie-v20180329"
+    :source_image => "debian-9-stretch-v20180611"
   )
 
   disk.wait_for { disk.ready? }
