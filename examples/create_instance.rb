@@ -3,12 +3,12 @@
 
 require "bundler"
 Bundler.require(:default, :development)
-# Uncomment this if you want to make real requests to GCE (you _will_ be billed!)
-# WebMock.disable!
 
-def test
+def example
+  p "Connecting to Google API"
   connection = Fog::Compute.new(:provider => "Google")
 
+  p "Creating disk"
   disk = connection.disks.create(
     :name => "fog-smoke-test-#{Time.now.to_i}",
     :size_gb => 10,
@@ -16,8 +16,10 @@ def test
     :source_image => "debian-9-stretch-v20180611"
   )
 
+  p "Waiting for disk to be ready"
   disk.wait_for { disk.ready? }
 
+  p "Creating a server"
   server = connection.servers.create(
     :name => "fog-smoke-test-#{Time.now.to_i}",
     :disks => [disk],
@@ -25,34 +27,47 @@ def test
     :private_key_path => File.expand_path("~/.ssh/id_rsa"),
     :public_key_path => File.expand_path("~/.ssh/id_rsa.pub"),
     :zone => "us-central1-f",
+    # Will be simplified, see https://github.com/fog/fog-google/issues/360
+    :network_interfaces => [{ :network => "global/networks/default",
+                              :access_configs => [{
+                                :name => "External NAT",
+                                :type => "ONE_TO_ONE_NAT"
+                              }] }],
     :username => ENV["USER"],
+    :metadata => { :items => [{ :key => "foo", :value => "bar" }] },
     :tags => ["fog"],
     :service_accounts => { :scopes => %w(sql-admin bigquery https://www.googleapis.com/auth/compute) }
   )
 
-  # Wait_for routine copied here to show errors, if necessary.
-  duration = 0
-  interval = 5
-  timeout = 600
-  start = Time.now
-  until server.sshable? || duration > timeout
-    # puts duration
-    # puts " ----- "
+  p "Waiting for server to be ready"
+  # .sshable? requires 'net-ssh' gem to be added to the gemfile
+  begin
+    duration = 0
+    interval = 5
+    timeout = 600
+    start = Time.now
+    until server.sshable? || duration > timeout
+      puts duration
+      puts " ----- "
 
-    server.reload
+      server.reload
 
-    # p "ready?: #{server.ready?}"
-    # p "public_ip_address: #{server.public_ip_address.inspect}"
-    # p "public_key: #{server.public_key.inspect}"
-    # p "metadata: #{server.metadata.inspect}"
-    # p "sshable?: #{server.sshable?}"
+      p "ready?: #{server.ready?}"
+      p "public_ip_address: #{server.public_ip_address.inspect}"
+      p "public_key: #{server.public_key.inspect}"
+      p "metadata: #{server.metadata.inspect}"
+      p "sshable?: #{server.sshable?}"
 
-    sleep(interval.to_f)
-    duration = Time.now - start
+      sleep(interval.to_f)
+      duration = Time.now - start
+    end
+    raise "Could not bootstrap sshable server." unless server.ssh("whoami")
+  rescue NameError
+    server.wait_for { ready? }
   end
 
-  raise "Could not bootstrap sshable server." unless server.ssh("whoami")
+  p "Deleting server"
   raise "Could not delete server." unless server.destroy
 end
 
-test
+example
