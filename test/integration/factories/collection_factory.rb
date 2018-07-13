@@ -13,8 +13,20 @@ class CollectionFactory
     resources.each { |r| Fog.wait_for { !@subject.all.map(&:identity).include? r.identity } }
   end
 
-  def create
-    @subject.create(params)
+  # Creates a collection object instance e.g. Fog::Compute::Google::Server
+  #
+  # @param [Hash] custom_params - override factory creation parameters or provide
+  #   additional ones. Useful in tests where you need to create a slightly different
+  #   resource than the default one but still want to take advantage of the factory's
+  #   cleanup methods, etc.
+  #
+  # @example Create a custom factory
+  #   @factory = ServersFactory.new(namespaced_name)
+  #   server = @factory.create(:machine_type => "f1-micro")
+  #
+  # @return [Object] - collection object instance
+  def create(custom_params = {})
+    @subject.create(params.merge(custom_params))
   end
 
   def get(identity)

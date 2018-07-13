@@ -7,33 +7,19 @@ class TestAddresses < FogIntegrationTest
 
   def setup
     @subject = Fog::Compute[:google].addresses
-    @servers = Fog::Compute[:google].servers
+    @servers = ServersFactory.new(namespaced_name)
     @factory = AddressesFactory.new(namespaced_name)
   end
 
   def teardown
-    # Clean up the server created by calling factory cleanup method
-    # TODO: Think about doing cleanup better as this needs to be invoked only once
-    ServersFactory.new(namespaced_name).cleanup
+    # Clean up the server resources used in testing
+    @servers.cleanup
     super
   end
 
-  # TODO: think about simplifying this.
-  # Ideally factory should permit to be called with special parameters.
   def test_run_instance
     address = @factory.create
-    params = { :name => "#{CollectionFactory::PREFIX}-#{Time.new.to_i}",
-               :machine_type => "f1-micro",
-               :zone => TEST_ZONE,
-               :disks => [
-                 :boot => true,
-                 :auto_delete => true,
-                 :initialize_params => {
-                   :source_image => "projects/debian-cloud/global/images/family/debian-9"
-                 }
-               ],
-               :external_ip => address.address }
-    server = @servers.create(params)
+    server = @servers.create(:external_ip => address.address)
 
     assert_equal(
       address.address,
