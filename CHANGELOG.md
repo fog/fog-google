@@ -6,6 +6,12 @@ The format is loosely based on [Keep a Changelog](http://keepachangelog.com/en/1
 
 ### User-facing
 
+#### Added
+
+- \#XXX Add some helper methods to `Fog::Compute::Google::Server`:
+  - `.private_ip_address`
+  - `.stopped?`
+
 #### Changed
 
 - \#383 `Fog::Compute::Google::Address` resources are now created synchronously

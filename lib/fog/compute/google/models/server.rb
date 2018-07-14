@@ -428,16 +428,32 @@ module Fog
           reload
         end
 
+        # Check if instance is provisioning. On staging vs. provisioning difference:
+        # https://cloud.google.com/compute/docs/instances/checking-instance-status
+        #
+        # @return [TrueClass or FalseClass]
         def provisioning?
           status == PROVISIONING
         end
 
-        # Check if instance is Staging. On staging vs. provisioning difference:
+        # Check if instance is staging. On staging vs. provisioning difference:
         # https://cloud.google.com/compute/docs/instances/checking-instance-status
+        #
+        # @return [TrueClass or FalseClass]
         def staging?
           status == STAGING
         end
 
+        # Check if instance is stopped.
+        #
+        # @return [TrueClass or FalseClass]
+        def stopped?
+          status == "TERMINATED"
+        end
+
+        # Check if instance is ready.
+        #
+        # @return [TrueClass or FalseClass]
         def ready?
           status == RUNNING
         end
