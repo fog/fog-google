@@ -12,6 +12,7 @@ class DisksFactory < CollectionFactory
   def params
     { :name => resource_name,
       :zone_name => TEST_ZONE,
+      :source_image => TEST_IMAGE,
       :size_gb => TEST_SIZE_GB }
   end
 end
