@@ -1,5 +1,6 @@
 require "helpers/test_helper"
 require "helpers/test_collection"
+require "pry"
 
 # Use :test credentials in ~/.fog for live integration testing
 # XXX not sure if this will work on Travis CI or not
@@ -13,6 +14,8 @@ TEST_ZONE = "us-central1-f".freeze
 TEST_REGION = "us-central1".freeze
 TEST_SIZE_GB = 10
 TEST_MACHINE_TYPE = "n1-standard-1".freeze
+TEST_IMAGE = "debian-9-stretch-v20180611".freeze
+
 # XXX This depends on a public image in gs://fog-test-bucket; there may be a better way to do this
 # The image was created like so: https://cloud.google.com/compute/docs/images#export_an_image_to_google_cloud_storage
 TEST_RAW_DISK_SOURCE = "http://storage.googleapis.com/fog-test-bucket/fog-test-raw-disk-source.image.tar.gz".freeze

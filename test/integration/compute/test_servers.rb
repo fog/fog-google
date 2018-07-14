@@ -1,5 +1,7 @@
 require "helpers/integration_test_helper"
 require "integration/factories/servers_factory"
+require "integration/factories/disks_factory"
+require "resolv"
 
 class TestServers < FogIntegrationTest
   include TestCollection
@@ -8,6 +10,14 @@ class TestServers < FogIntegrationTest
   def setup
     @subject = Fog::Compute[:google].servers
     @factory = ServersFactory.new(namespaced_name)
+    @servers = ServersFactory.new(namespaced_name)
+    @disks = DisksFactory.new(namespaced_name)
+  end
+
+  def teardown
+    # Clean up the server resources used in testing
+    @servers.cleanup
+    super
   end
 
   def test_set_metadata
@@ -50,5 +60,47 @@ class TestServers < FogIntegrationTest
                            :public_key_path => nil)
       }
     end
+  end
+
+  def test_image_name
+    server = @factory.create
+    assert_equal(TEST_IMAGE, server.image_name.split("/")[-1])
+  end
+
+  def test_ip_address_methods
+    # Create a server with ephemeral external IP address
+    server = @factory.create(:network_interfaces => [{ :network => "global/networks/default",
+                                                       :access_configs => [{
+                                                         :name => "External NAT",
+                                                         :type => "ONE_TO_ONE_NAT"
+                                                       }] }])
+    assert_match(Resolv::IPv4::Regex, server.public_ip_address,
+                 "Server.public_ip_address should return a valid IP address")
+    refute_empty(server.public_ip_addresses)
+    assert_match(Resolv::IPv4::Regex, server.public_ip_addresses.pop)
+
+    assert_match(Resolv::IPv4::Regex, server.private_ip_address,
+                 "Server.public_ip_address should return a valid IP address")
+    refute_empty(server.private_ip_addresses)
+    assert_match(Resolv::IPv4::Regex, server.private_ip_addresses.pop)
+  end
+
+  def test_start_stop_reboot
+    server = @factory.create
+
+    server.stop
+    server.wait_for { stopped? }
+
+    assert server.stopped?
+
+    server.start
+    server.wait_for { ready? }
+
+    assert server.ready?
+
+    server.reboot
+    server.wait_for { ready? }
+
+    assert server.ready?
   end
 end
