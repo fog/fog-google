@@ -179,6 +179,9 @@ module Fog
           "userinfo-email" => ["https://www.googleapis.com/auth/userinfo.email"]
         }.freeze
 
+        # Return the source image of the server's boot disk
+        #
+        # @return [String] image self link
         def image_name
           boot_disk = disks.first
           unless boot_disk.is_a?(Disk)
@@ -189,6 +192,10 @@ module Fog
           boot_disk.source_image.nil? ? nil : boot_disk.source_image
         end
 
+        # Destroy a server.
+        #
+        # @param async [TrueClass] execute the command asynchronously
+        # @return [Fog::Compute::Google::Operation]
         def destroy(async = true)
           requires :name, :zone
 
@@ -200,14 +207,17 @@ module Fog
           operation
         end
 
-        # Helper method that returns first public ip address
-        # for Fog::Compute::Server.ssh default behavior
+        # Helper method that returns first public ip address needed for
+        # Fog::Compute::Server.ssh default behavior.
         #
         # @return [String]
         def public_ip_address
           public_ip_addresses.first
         end
 
+        # Helper method that returns all of server's public ip addresses.
+        #
+        # @return [Array]
         def public_ip_addresses
           addresses = []
           if network_interfaces.respond_to? :flat_map
@@ -223,6 +233,9 @@ module Fog
           addresses
         end
 
+        # Helper method that returns all of server's private ip addresses.
+        #
+        # @return [Array]
         def private_ip_addresses
           addresses = []
           if network_interfaces.respond_to? :map
@@ -231,10 +244,21 @@ module Fog
           addresses
         end
 
+        # Helper method that returns all of server's ip addresses,
+        # both private and public.
+        #
+        # @return [Array]
         def addresses
           private_ip_addresses + public_ip_addresses
         end
 
+        # Attach a disk to a running server
+        #
+        # @param disk [Object, String] disk object or a self-link
+        # @param async [TrueClass] execute the api call asynchronously
+        # @param options [Hash]
+        # @return [Object]
+        # TODO: Figure out what options hash is for here.
         def attach_disk(disk, async = true, options = {})
           requires :identity, :zone
 
@@ -252,6 +276,11 @@ module Fog
           reload
         end
 
+        # Detach disk from a running instance
+        #
+        # @param device_name [Object]
+        # @param async [TrueClass]
+        # @returns [Fog::Compute::Google::Server] server object
         def detach_disk(device_name, async = true)
           requires :identity, :zone
 
@@ -264,6 +293,7 @@ module Fog
         end
 
         # Returns metadata items as a Hash.
+        #
         # @return [Hash<String, String>] items
         def metadata_as_h
           if metadata.nil? || metadata[:items].nil? || metadata[:items].empty?
