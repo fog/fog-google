@@ -233,6 +233,14 @@ module Fog
           addresses
         end
 
+        # Helper method that returns the first private ip address of the
+        # instance.
+        #
+        # @return [String]
+        def private_ip_address
+          private_ip_addresses.first
+        end
+
         # Helper method that returns all of server's private ip addresses.
         #
         # @return [Array]
