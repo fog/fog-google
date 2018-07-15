@@ -8,12 +8,15 @@ The format is loosely based on [Keep a Changelog](http://keepachangelog.com/en/1
 
 #### Added
 
-- \#394 Add some helper methods to `Fog::Compute::Google::Server`:
+- \#394 Add some helper methods to `Fog::Compute::Google::Server` [temikus]
   - `.private_ip_address`
   - `.stopped?`
 
 #### Changed
 
+- \#394 `save/update/destroy` and other operations now wait until they are in a 
+  DONE state, instead of !PENDING. This should be a no-op for users but should 
+  safeguard from issues in the future. [temikus]
 - \#383 `Fog::Compute::Google::Address` resources are now created synchronously
   by default. [temikus]
 
@@ -38,7 +41,14 @@ The format is loosely based on [Keep a Changelog](http://keepachangelog.com/en/1
     - Subnetworks
   - Fix compute tests Rake task.
   - Remove old tests and helpers for Disk, Addresses and Networks.
-- \#394 Improve `Server` model test coverage.
+- \#394 Improve `Server` model test coverage + miscellaneous improvements. [temikus]
+  - Add source_image parameter to `DiskFactory` so the Servers factory creates
+    properly running instances.
+  - `CollectionFactory.cleanup` method is now cleaning up resources per-suite
+    instead of using a global prefix.
+  - Add new test formatter improving observability of CI logs.
+  - Add debug logs to test.
+  - Improve doc coverage.
 
 ## 1.6.0
 
