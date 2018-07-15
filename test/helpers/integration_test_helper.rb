@@ -6,7 +6,7 @@ require "helpers/test_collection"
 Fog.credential = :test
 
 # Enable test debugging, providing additional information in some methods
-DEBUG = ENV['DEBUG'] || false
+DEBUG = ENV['FOG_TEST_DEBUG'] || true
 
 # Helpers
 
