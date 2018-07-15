@@ -29,11 +29,46 @@ namespace :test do
     t.verbose = true
   end
 
+  desc "Run Compute API tests"
+  task :compute => ["compute-core_compute",
+                    "compute-core_networking",
+                    "compute-instance_groups",
+                    "compute-loadbalancing"]
+
+  desc "Run all compute integration tests in parallel"
+  multitask :compute_parallel => ["compute-core_compute",
+                                  "compute-core_networking",
+                                  "compute-instance_groups",
+                                  "compute-loadbalancing"]
+
   Rake::TestTask.new do |t|
-    t.name = "compute"
-    t.description = "Run Compute API tests"
+    t.name = "compute-core_compute"
     t.libs << "test"
-    t.pattern = FileList["test/integration/compute/test_*.rb"]
+    t.pattern = FileList["test/integration/compute/core_compute/test_*.rb"]
+    t.warning = false
+    t.verbose = true
+  end
+
+  Rake::TestTask.new do |t|
+    t.name = "compute-core_networking"
+    t.libs << "test"
+    t.pattern = FileList["test/integration/compute/core_networking/test_*.rb"]
+    t.warning = false
+    t.verbose = true
+  end
+
+  Rake::TestTask.new do |t|
+    t.name = "compute-instance_groups"
+    t.libs << "test"
+    t.pattern = FileList["test/integration/compute/instance_groups/test_*.rb"]
+    t.warning = false
+    t.verbose = true
+  end
+
+  Rake::TestTask.new do |t|
+    t.name = "compute-loadbalancing"
+    t.libs << "test"
+    t.pattern = FileList["test/integration/compute/loadbalancing/test_*.rb"]
     t.warning = false
     t.verbose = true
   end
