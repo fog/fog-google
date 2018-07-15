@@ -7,7 +7,7 @@ class CollectionFactory
     @resource_counter = 0
   end
 
-  def cleanup(async = false)
+  def cleanup(async = true)
     resources = @subject.all.select { |resource| resource.name.start_with? PREFIX }
     if DEBUG
       p "Cleanup invoked in #{self} for example: #{@example}"
