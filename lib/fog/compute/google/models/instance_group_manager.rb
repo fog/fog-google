@@ -23,7 +23,7 @@ module Fog
           data = service.insert_instance_group_manager(name, zone.split("/")[-1], instance_template, base_instance_name,
           target_size, target_pools, named_ports, description)
           operation = Fog::Compute::Google::Operations.new(:service => service).get(data.name, zone.split("/")[-1])
-          operation.wait_for { !pending? }
+          operation.wait_for { ready? }
           reload
         end
 

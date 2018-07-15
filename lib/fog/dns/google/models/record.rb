@@ -72,7 +72,7 @@ module Fog
           change = Fog::DNS::Google::Changes
                    .new(:service => service, :zone => zone)
                    .get(data.id)
-          change.wait_for { !pending? }
+          change.wait_for { ready? }
           self
         end
 

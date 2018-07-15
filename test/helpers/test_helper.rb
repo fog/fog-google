@@ -16,5 +16,8 @@ end
 # See https://github.com/seattlerb/minitest/#install
 gem "minitest"
 require "minitest/autorun"
+# Custom formatters
+require "minitest/reporters"
+Minitest::Reporters.use! Minitest::Reporters::SpecReporter.new
 
 require File.join(File.dirname(__FILE__), "../../lib/fog/google")

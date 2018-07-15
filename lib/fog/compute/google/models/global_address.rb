@@ -27,7 +27,7 @@ module Fog
           data = service.insert_global_address(identity, attributes)
           operation = Fog::Compute::Google::Operations.new(:service => service)
                                                       .get(data.name)
-          operation.wait_for { !pending? }
+          operation.wait_for { ready? }
           reload
         end
 
