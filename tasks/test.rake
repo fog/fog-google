@@ -29,49 +29,27 @@ namespace :test do
     t.verbose = true
   end
 
+  # This autogenerates rake tasks based on test folder structures
+  # This is done to simplify running many test suites in parallel
+  COMPUTE_TEST_TASKS = []
+  Dir.glob('test/integration/compute/**').each do |task|
+    suite_collection = task.gsub(/test\/integration\/compute\//, '')
+    component_name = task.gsub(/test\/integration\//, '').split('/').first
+    Rake::TestTask.new(:"#{component_name}-#{suite_collection}") do |t|
+      t.libs << "test"
+      t.description = "Autotask - run #{component_name} integration tests - #{suite_collection}"
+      t.pattern = FileList["test/integration/#{component_name}/#{suite_collection}/test_*.rb"]
+      t.warning = false
+      t.verbose = true
+    end
+    COMPUTE_TEST_TASKS << "#{component_name}-#{suite_collection}"
+  end
+
   desc "Run Compute API tests"
-  task :compute => ["compute-core_compute",
-                    "compute-core_networking",
-                    "compute-instance_groups",
-                    "compute-loadbalancing"]
+  task :compute => COMPUTE_TEST_TASKS
 
-  desc "Run all compute integration tests in parallel"
-  multitask :compute_parallel => ["compute-core_compute",
-                                  "compute-core_networking",
-                                  "compute-instance_groups",
-                                  "compute-loadbalancing"]
-
-  Rake::TestTask.new do |t|
-    t.name = "compute-core_compute"
-    t.libs << "test"
-    t.pattern = FileList["test/integration/compute/core_compute/test_*.rb"]
-    t.warning = false
-    t.verbose = true
-  end
-
-  Rake::TestTask.new do |t|
-    t.name = "compute-core_networking"
-    t.libs << "test"
-    t.pattern = FileList["test/integration/compute/core_networking/test_*.rb"]
-    t.warning = false
-    t.verbose = true
-  end
-
-  Rake::TestTask.new do |t|
-    t.name = "compute-instance_groups"
-    t.libs << "test"
-    t.pattern = FileList["test/integration/compute/instance_groups/test_*.rb"]
-    t.warning = false
-    t.verbose = true
-  end
-
-  Rake::TestTask.new do |t|
-    t.name = "compute-loadbalancing"
-    t.libs << "test"
-    t.pattern = FileList["test/integration/compute/loadbalancing/test_*.rb"]
-    t.warning = false
-    t.verbose = true
-  end
+  desc "Run Compute API tests in parallel"
+  multitask :compute_parallel => COMPUTE_TEST_TASKS
 
   Rake::TestTask.new do |t|
     t.name = "monitoring"
