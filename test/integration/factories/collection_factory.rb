@@ -8,7 +8,10 @@ class CollectionFactory
   end
 
   def cleanup(async = false)
-    resources = @subject.all.select { |resource| resource.name.start_with? PREFIX }
+    # Grab the test suit name from the example
+    suit_name = [@example].join("_").gsub(/\W/, "").tr("_", "-").downcase.split('-')[0]
+    # Select all resources matching the test suite
+    resources = @subject.all.select { |resource| resource.name.match? /#{PREFIX}-[0-9]*-#{suit_name}/ }
     resources.each { |r| r.destroy(async) }
     resources.each { |r| Fog.wait_for { !@subject.all.map(&:identity).include? r.identity } }
   end
