@@ -42,7 +42,7 @@ module Fog
           end
 
           operation = Fog::Google::SQL::Operations.new(:service => service).get(resp.name)
-          operation.wait_for { !pending? }
+          operation.wait_for { ready? }
         end
       end
     end

@@ -53,7 +53,7 @@ module Fog
           data = service.insert_http_health_check(name, opts)
           operation = Fog::Compute::Google::Operations.new(:service => service)
                                                       .get(data.name, data.zone)
-          operation.wait_for { !pending? }
+          operation.wait_for { ready? }
           reload
         end
 
@@ -62,7 +62,7 @@ module Fog
           data = service.update_http_health_check(name, opts)
           operation = Fog::Compute::Google::Operations.new(:service => service)
                                                       .get(data.name, data.zone)
-          operation.wait_for { !pending? }
+          operation.wait_for { ready? }
           reload
         end
 

@@ -30,7 +30,7 @@ module Fog
           data = service.insert_route(identity, network, dest_range, priority, attributes)
           operation = Fog::Compute::Google::Operations.new(:service => service)
                                                       .get(data.name)
-          operation.wait_for { !pending? }
+          operation.wait_for { ready? }
           reload
         end
 

@@ -55,7 +55,7 @@ module Fog
           data = service.insert_firewall(identity, attributes)
           operation = Fog::Compute::Google::Operations.new(:service => service)
                                                       .get(data.name)
-          operation.wait_for { !pending? }
+          operation.wait_for { ready? }
           reload
         end
 
@@ -65,7 +65,7 @@ module Fog
           data = service.update_firewall(identity, attributes)
           operation = Fog::Compute::Google::Operations.new(:service => service)
                                                       .get(data.name)
-          operation.wait_for { !pending? }
+          operation.wait_for { ready? }
           reload
         end
 
@@ -75,7 +75,7 @@ module Fog
           data = service.patch_firewall(identity, diff)
           operation = Fog::Compute::Google::Operations.new(:service => service)
                                                       .get(data.name)
-          operation.wait_for { !pending? }
+          operation.wait_for { ready? }
           reload
         end
 

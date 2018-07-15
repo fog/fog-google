@@ -50,7 +50,7 @@ module Fog
           data = service.insert_disk(name, zone, options[:source_image], options)
           operation = Fog::Compute::Google::Operations.new(:service => service)
                                                       .get(data.name, data.zone)
-          operation.wait_for { !pending? }
+          operation.wait_for { ready? }
           reload
         end
 
@@ -108,7 +108,7 @@ module Fog
           data = service.create_disk_snapshot(snapshot_name, name, zone_name, snapshot)
           operation = Fog::Compute::Google::Operations.new(:service => service)
                                                       .get(data.name, data.zone)
-          operation.wait_for { !pending? }
+          operation.wait_for { ready? }
           service.snapshots.get(snapshot_name)
         end
 
