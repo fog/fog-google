@@ -7,8 +7,12 @@ class CollectionFactory
     @resource_counter = 0
   end
 
-  def cleanup(async = true)
-    resources = @subject.all.select { |resource| resource.name.start_with? PREFIX }
+  # Cleans up all objects created by the factory in the current test suite.
+  #
+  # @param async [FalseClass or TrueClass] perform resource destruction asynchronously
+  def cleanup(async = false)
+    suit_name = @example.gsub(/\W/, "").tr("_", "-").downcase.split('-')[0]
+    resources = @subject.all.select { |resource| resource.name.match? /#{PREFIX}-[0-9]*-#{suit_name}/ }
     if DEBUG
       p "Cleanup invoked in #{self} for example: #{@example}"
       p "Resources to be deleted: #{resources.map { |r| r.name }}"
@@ -20,7 +24,7 @@ class CollectionFactory
 
   # Creates a collection object instance e.g. Fog::Compute::Google::Server
   #
-  # @param [Hash] custom_params - override factory creation parameters or provide
+  # @param custom_params [Hash] override factory creation parameters or provide
   #   additional ones. Useful in tests where you need to create a slightly different
   #   resource than the default one but still want to take advantage of the factory's
   #   cleanup methods, etc.
@@ -29,7 +33,7 @@ class CollectionFactory
   #   @factory = ServersFactory.new(namespaced_name)
   #   server = @factory.create(:machine_type => "f1-micro")
   #
-  # @return [Object] - collection object instance
+  # @return [Object] collection object instance
   def create(custom_params = {})
     @subject.create(params.merge(custom_params))
   end
