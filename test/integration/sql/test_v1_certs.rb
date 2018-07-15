@@ -7,7 +7,7 @@ class TestSQLV1Certs < FogIntegrationTest
   def setup
     @subject = Fog::Google[:sql].ssl_certs
     @factory = SqlV1CertsFactory.new(namespaced_name)
-    @client  = Fog::Google::SQL.new
+    @instances = Fog::Google[:sql].instances
   end
 
   def teardown
@@ -42,7 +42,7 @@ class TestSQLV1Certs < FogIntegrationTest
                  "expected one less SSL cert after deletion")
 
     # Test if SSL config is reset correctly
-    instance = @client.instances.get(instance_name)
+    instance = @instances.get(instance_name)
     instance.reset_ssl_config(:async => false)
     assert_equal(0, @subject.all(instance_name).size,
                  "expected no SSL certs after reset")
