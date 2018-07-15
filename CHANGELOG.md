@@ -8,7 +8,7 @@ The format is loosely based on [Keep a Changelog](http://keepachangelog.com/en/1
 
 #### Added
 
-- \#XXX Add some helper methods to `Fog::Compute::Google::Server`:
+- \#394 Add some helper methods to `Fog::Compute::Google::Server`:
   - `.private_ip_address`
   - `.stopped?`
 
@@ -38,7 +38,8 @@ The format is loosely based on [Keep a Changelog](http://keepachangelog.com/en/1
     - Subnetworks
   - Fix compute tests Rake task.
   - Remove old tests and helpers for Disk, Addresses and Networks.
-  
+- \#394 Improve `Server` model test coverage.
+
 ## 1.6.0
 
 ### User-facing
