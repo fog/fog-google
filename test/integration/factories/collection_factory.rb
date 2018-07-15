@@ -12,7 +12,7 @@ class CollectionFactory
   # @param async [FalseClass or TrueClass] perform resource destruction asynchronously
   def cleanup(async = false)
     suit_name = @example.gsub(/\W/, "").tr("_", "-").downcase.split('-')[0]
-    resources = @subject.all.select { |resource| resource.name.match? /#{PREFIX}-[0-9]*-#{suit_name}/ }
+    resources = @subject.all.select { |resource| resource.name.match /#{PREFIX}-[0-9]*-#{suit_name}/ }
     if DEBUG
       p "Cleanup invoked in #{self} for example: #{@example}"
       p "Resources to be deleted: #{resources.map { |r| r.name }}"
