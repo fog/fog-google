@@ -5,6 +5,9 @@ require "helpers/test_collection"
 # XXX not sure if this will work on Travis CI or not
 Fog.credential = :test
 
+# Enable test debugging, providing additional information in some methods
+DEBUG = ENV['DEBUG'] || false
+
 # Helpers
 
 TEST_PROJECT = Fog.credentials[:google_project]

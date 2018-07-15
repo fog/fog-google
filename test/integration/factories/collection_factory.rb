@@ -9,6 +9,11 @@ class CollectionFactory
 
   def cleanup(async = false)
     resources = @subject.all.select { |resource| resource.name.start_with? PREFIX }
+    if DEBUG
+      p "Cleanup invoked in #{self} for example: #{@example}"
+      p "Resources to be deleted: #{resources.map { |r| r.name }}"
+      p "All subject resources: #{@subject.all.map { |s| s.name }}"
+    end
     resources.each { |r| r.destroy(async) }
     resources.each { |r| Fog.wait_for { !@subject.all.map(&:identity).include? r.identity } }
   end
