@@ -1,3 +1,4 @@
+TESTING TEST TEST
 # Fog::Google
 
 [![Gem Version](https://badge.fury.io/rb/fog-google.svg)](http://badge.fury.io/rb/fog-google) [![Build Status](https://travis-ci.org/fog/fog-google.svg?branch=master)](https://travis-ci.org/fog/fog-google) [![codecov](https://codecov.io/gh/fog/fog-google/branch/master/graph/badge.svg)](https://codecov.io/gh/fog/fog-google) [![Doc coverage](https://inch-ci.org/github/fog/fog-google.svg?branch=master)](https://inch-ci.org/github/fog/fog-google)

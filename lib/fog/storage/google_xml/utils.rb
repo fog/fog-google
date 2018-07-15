@@ -33,7 +33,7 @@ module Fog
           params[:path] = Fog::Google.escape(params[:path]).gsub("%2F", "/")
           query = [params[:query]].compact
           query << "GoogleAccessId=#{@google_storage_access_key_id}"
-          query << "Signature=#{CGI.escape(signature(params))}"
+          query << "Signature=#{Fog::Google.escape(signature(params))}"
           query << "Expires=#{params[:headers]['Date']}"
           "#{params[:host]}/#{params[:path]}?#{query.join('&')}"
         end

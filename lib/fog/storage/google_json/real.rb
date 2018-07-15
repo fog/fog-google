@@ -42,7 +42,7 @@ DATA
 
           canonical_resource = "/"
           if subdomain = params.delete(:subdomain)
-            canonical_resource << "#{CGI.escape(subdomain).downcase}/"
+            canonical_resource << "#{Fog::Google.escape(subdomain).downcase}/"
           end
           canonical_resource << params[:path].to_s
           canonical_resource << "?"
