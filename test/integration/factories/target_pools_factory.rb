@@ -19,6 +19,6 @@ class TargetPoolsFactory < CollectionFactory
     { :name => resource_name,
       :region => TEST_REGION,
       :instances => [@servers.create.self_link],
-      :healthChecks => [@http_health_checks.create.self_link] }
+      :health_checks => [@http_health_checks.create.self_link] }
   end
 end
