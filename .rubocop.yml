@@ -16,6 +16,9 @@ Style/RegexpLiteral:
 Style/FrozenStringLiteralComment:
   Enabled: false
 
+Style/MutableConstant:
+  Enabled: false
+
 Style/HashSyntax:
   EnforcedStyle: no_mixed_keys
 
@@ -30,7 +33,7 @@ AllCops:
     - "vendor/**/*"
     - "db/schema.rb"
   UseCache: false
-  TargetRubyVersion: 2.1
+  TargetRubyVersion: 2.3
 Style/CollectionMethods:
   Description: Preferred collection methods.
   StyleGuide: https://github.com/bbatsov/ruby-style-guide#map-find-select-reduce-size
