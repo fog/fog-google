@@ -54,7 +54,7 @@ class TestServers < FogIntegrationTest
   end
 
   def test_bootstrap_fail
-
+    # Pretend the ssh key does not exist
     File.stub :exist?, nil do
       assert_raises(Fog::Errors::Error) {
         # XXX Small hack - name is set this way so it will be cleaned up by CollectionFactory

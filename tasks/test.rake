@@ -24,7 +24,7 @@ namespace :test do
     t.name = "unit"
     t.description = "Run Unit tests"
     t.libs << "test"
-    t.pattern = FileList['test/unit/**/test_*.rb']
+    t.pattern = FileList["test/unit/**/test_*.rb"]
     t.warning = false
     t.verbose = true
   end
@@ -32,9 +32,9 @@ namespace :test do
   # This autogenerates rake tasks based on test folder structures
   # This is done to simplify running many test suites in parallel
   COMPUTE_TEST_TASKS = []
-  Dir.glob('test/integration/compute/**').each do |task|
-    suite_collection = task.gsub(/test\/integration\/compute\//, '')
-    component_name = task.gsub(/test\/integration\//, '').split('/').first
+  Dir.glob("test/integration/compute/**").each do |task|
+    suite_collection = task.gsub(/test\/integration\/compute\//, "")
+    component_name = task.gsub(/test\/integration\//, "").split("/").first
     Rake::TestTask.new(:"#{component_name}-#{suite_collection}") do |t|
       t.libs << "test"
       t.description = "Autotask - run #{component_name} integration tests - #{suite_collection}"
@@ -68,6 +68,28 @@ namespace :test do
     t.warning = false
     t.verbose = true
   end
+
+  # This autogenerates rake tasks based on test folder structures
+  # This is done to simplify running many test suites in parallel
+  SQL_TEST_TASKS = []
+  Dir.glob("test/integration/sql/**").each do |task|
+    suite_collection = task.gsub(/test\/integration\/sql\//, "")
+    component_name = task.gsub(/test\/integration\//, "").split("/").first
+    Rake::TestTask.new(:"#{component_name}-#{suite_collection}") do |t|
+      t.libs << "test"
+      t.description = "Autotask - run #{component_name} integration tests - #{suite_collection}"
+      t.pattern = FileList["test/integration/#{component_name}/#{suite_collection}/test_*.rb"]
+      t.warning = false
+      t.verbose = true
+    end
+    SQL_TEST_TASKS << "#{component_name}-#{suite_collection}"
+  end
+
+  desc "Run SQL API tests"
+  task :compute => SQL_TEST_TASKS
+
+  desc "Run SQL API tests in parallel"
+  multitask :compute_parallel => SQL_TEST_TASKS
 
   Rake::TestTask.new do |t|
     t.name = "sql"
