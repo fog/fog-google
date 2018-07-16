@@ -2,7 +2,7 @@
 platform: linux
 image_resource:
   type: docker-image
-  source: {repository: everlag/fog-google}
+  source: {repository: rubyfog/fog-google}
 inputs:
 - name: fog-google-src
   path: src/fog-google

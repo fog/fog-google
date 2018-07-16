@@ -13,8 +13,6 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get -y -qq update && apt-get -y -qq insta
   libxslt-dev
 
 # Ubuntu 16.04 will fetch us 2.3.x without any issues.
-RUN DEBIAN_FRONTEND=noninteractive apt-get -y -qq install ruby ruby-dev
-
-RUN apt-get clean
+RUN DEBIAN_FRONTEND=noninteractive apt-get -y -qq install ruby ruby-dev && apt-get clean
 
 RUN gem install bundler
