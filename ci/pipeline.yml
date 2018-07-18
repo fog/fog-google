@@ -1,5 +1,5 @@
 jobs:
-  - name: integration-tests-compute
+  - name: integration-compute-core_compute
     serial: true
     plan:
       - get: fog-google-src
@@ -9,10 +9,10 @@ jobs:
       - put: pull-request
         params: {path: fog-google-src, status: pending}
 
-      - task: full-integration-tests
+      - task: run-integration-tests
         file: fog-google-src/ci/tasks/run-int.yml
         params:
-          rake_task: test:compute
+          rake_task: test:compute-core_compute
           codecov_token: {{codecov_token}}
           google_project: {{google_project}}
           google_json_key_data: {{google_json_key_data}}
@@ -22,7 +22,79 @@ jobs:
           params:
             path: fog-google-src
             status: failure
-            
+
+  - name: integration-compute-core_networking
+    serial: true
+    plan:
+      - get: fog-google-src
+        resource: pull-request
+        version: every
+        trigger: true
+      - put: pull-request
+        params: {path: fog-google-src, status: pending}
+
+      - task: run-integration-tests
+        file: fog-google-src/ci/tasks/run-int.yml
+        params:
+          rake_task: test:compute-core_networking
+          codecov_token: {{codecov_token}}
+          google_project: {{google_project}}
+          google_json_key_data: {{google_json_key_data}}
+          google_client_email: {{google_client_email}}
+        on_failure:
+          put: pull-request
+          params:
+            path: fog-google-src
+            status: failure
+
+  - name: integration-compute-instance_groups
+    serial: true
+    plan:
+      - get: fog-google-src
+        resource: pull-request
+        version: every
+        trigger: true
+      - put: pull-request
+        params: {path: fog-google-src, status: pending}
+
+      - task: run-integration-tests
+        file: fog-google-src/ci/tasks/run-int.yml
+        params:
+          rake_task: test:compute-instance_groups
+          codecov_token: {{codecov_token}}
+          google_project: {{google_project}}
+          google_json_key_data: {{google_json_key_data}}
+          google_client_email: {{google_client_email}}
+        on_failure:
+          put: pull-request
+          params:
+            path: fog-google-src
+            status: failure
+
+  - name: integration-compute-loadbalancing
+    serial: true
+    plan:
+      - get: fog-google-src
+        resource: pull-request
+        version: every
+        trigger: true
+      - put: pull-request
+        params: {path: fog-google-src, status: pending}
+
+      - task: run-integration-tests
+        file: fog-google-src/ci/tasks/run-int.yml
+        params:
+          rake_task: test:compute-loadbalancing
+          codecov_token: {{codecov_token}}
+          google_project: {{google_project}}
+          google_json_key_data: {{google_json_key_data}}
+          google_client_email: {{google_client_email}}
+        on_failure:
+          put: pull-request
+          params:
+            path: fog-google-src
+            status: failure
+
   - name: integration-tests-monitoring
     serial: true
     plan:
@@ -33,7 +105,7 @@ jobs:
       - put: pull-request
         params: {path: fog-google-src, status: pending}
 
-      - task: full-integration-tests
+      - task: run-integration-tests
         file: fog-google-src/ci/tasks/run-int.yml
         params:
           rake_task: test:monitoring
@@ -57,7 +129,7 @@ jobs:
       - put: pull-request
         params: {path: fog-google-src, status: pending}
 
-      - task: full-integration-tests
+      - task: run-integration-tests
         file: fog-google-src/ci/tasks/run-int.yml
         params:
           rake_task: test:pubsub
@@ -71,7 +143,7 @@ jobs:
             path: fog-google-src
             status: failure
 
-  - name: integration-tests-sql
+  - name: integration-sqlv1
     serial: true
     plan:
       - get: fog-google-src
@@ -81,10 +153,34 @@ jobs:
       - put: pull-request
         params: {path: fog-google-src, status: pending}
 
-      - task: full-integration-tests
+      - task: run-integration-tests
         file: fog-google-src/ci/tasks/run-int.yml
         params:
-          rake_task: test:sql
+          rake_task: test:sql-sqlv1
+          codecov_token: {{codecov_token}}
+          google_project: {{google_project}}
+          google_json_key_data: {{google_json_key_data}}
+          google_client_email: {{google_client_email}}
+        on_failure:
+          put: pull-request
+          params:
+            path: fog-google-src
+            status: failure
+
+  - name: integration-sqlv2
+    serial: true
+    plan:
+      - get: fog-google-src
+        resource: pull-request
+        version: every
+        trigger: true
+      - put: pull-request
+        params: {path: fog-google-src, status: pending}
+
+      - task: run-integration-tests
+        file: fog-google-src/ci/tasks/run-int.yml
+        params:
+          rake_task: test:sql-sqlv2
           codecov_token: {{codecov_token}}
           google_project: {{google_project}}
           google_json_key_data: {{google_json_key_data}}
@@ -105,7 +201,7 @@ jobs:
       - put: pull-request
         params: {path: fog-google-src, status: pending}
 
-      - task: full-integration-tests
+      - task: run-integration-tests
         file: fog-google-src/ci/tasks/run-int.yml
         params:
           rake_task: test:storage
@@ -124,10 +220,14 @@ jobs:
       - get: fog-google-src
         resource: pull-request
         passed: [integration-tests-storage,
-                 integration-tests-sql,
                  integration-tests-pubsub,
                  integration-tests-monitoring,
-                 integration-tests-compute]
+                 integration-sqlv1,
+                 integration-sqlv2,
+                 integration-compute-core_compute,
+                 integration-compute-core_networking,
+                 integration-compute-instance_groups,
+                 integration-compute-loadbalancing]
         trigger: true
         on_success:
           put: pull-request
