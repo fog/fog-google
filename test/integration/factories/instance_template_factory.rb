@@ -13,6 +13,7 @@ class InstanceTemplateFactory < CollectionFactory
           :machine_type => TEST_MACHINE_TYPE,
           :disks => [{
                          :boot => true,
+                         :auto_delete => true,
                          :initialize_params =>
                           { :source_image => "projects/ubuntu-os-cloud/global/images/ubuntu-1804-bionic-v20180522" }
                      }],

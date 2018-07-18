@@ -6,7 +6,7 @@ class TestMetricDescriptors < FogIntegrationTest
   # metric propagation (sometimes 80+ seconds) and client returning
   # Google::Apis::ClientError: badRequest if the metric hasn't yet been created instead of a 404.
   RETRIABLE_TRIES = 3
-  RETRIABLE_BASE_INTERVAL = 30
+  RETRIABLE_BASE_INTERVAL = 50
   TEST_METRIC_PREFIX = "custom.googleapis.com/fog-google-test/timeseries".freeze
   LABEL_DESCRIPTORS = [
     {

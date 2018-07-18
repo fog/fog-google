@@ -33,9 +33,10 @@ class TestServers < FogIntegrationTest
     user = "username"
 
     File.stub :read, key do
-      # Name is set this way so it will be cleaned up by CollectionFactory
+      # XXX Small hack - name is set this way so it will be cleaned up by CollectionFactory
+      # Bootstrap is special so this is something that needs to be done only for this method
       # Public_key_path is set to avoid stubbing out File.exist?
-      server = @subject.bootstrap(:name => "#{CollectionFactory::PREFIX}-#{Time.now.to_i}",
+      server = @subject.bootstrap(:name => "#{CollectionFactory.new(nil,namespaced_name).resource_name}",
                                   :username => user,
                                   :public_key_path => "foo")
       boot_disk = server.disks.detect { |disk| disk[:boot] }
@@ -56,7 +57,9 @@ class TestServers < FogIntegrationTest
     # Pretend the ssh key does not exist
     File.stub :exist?, nil do
       assert_raises(Fog::Errors::Error) {
-        @subject.bootstrap(:name => "#{CollectionFactory::PREFIX}-#{Time.now.to_i}",
+        # XXX Small hack - name is set this way so it will be cleaned up by CollectionFactory
+        # Bootstrap is special so this is something that needs to be done only for this method
+        @subject.bootstrap(:name => "#{CollectionFactory.new(nil,namespaced_name).resource_name}",
                            :public_key_path => nil)
       }
     end

@@ -4,11 +4,13 @@
 
 The main maintainers for the Google sections are @icco, @Temikus and @plribeiro3000. Please send pull requests to them.
 
-**As of v0.1.1, Google no longer supports Ruby versions less than 2.0.0.**
+## Important notices
 
-**As of v1.0.0, fog-google includes google-api-client as a dependency**
+ - As of **v0.1.1**, Google no longer supports Ruby versions less than 2.0.0.  
 
-**See [MIGRATING.md](MIGRATING.md) for migration between major versions**
+ - As of **v1.0.0**, fog-google includes google-api-client as a dependency, there is no need to include it separately anymore.
+
+See **[MIGRATING.md](MIGRATING.md)** for migration between major versions.
 
 ## Storage
 
