@@ -31,6 +31,10 @@ module TestCollection
     assert_respond_to @subject, :each
   end
 
+  def test_nil_get
+    assert_nil @subject.get(nil)
+  end
+
   def teardown
     @factory.cleanup
   end
