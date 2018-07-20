@@ -11,9 +11,9 @@ class UnitTestStorageXMLCollections < MiniTest::Test
     # Enumerate all descendants of Fog::Collection
     descendants = ObjectSpace.each_object(Fog::Collection.singleton_class)
 
-    @collections = descendants.select {
-        |x| x.name.match /Fog::Storage::GoogleXML/
-    }
+    @collections = descendants.select do |d|
+      d.name.match /Fog::Storage::GoogleXML/
+    end
   end
 
   def teardown

@@ -9,9 +9,9 @@ class UnitTestStorageJSONCollections < MiniTest::Test
     # Enumerate all descendants of Fog::Collection
     descendants = ObjectSpace.each_object(Fog::Collection.singleton_class)
 
-    @collections = descendants.select {
-        |x| x.name.match /Fog::Storage::GoogleJSON/
-    }
+    @collections = descendants.select do |d|
+      d.name.match /Fog::Storage::GoogleJSON/
+    end
   end
 
   def teardown
