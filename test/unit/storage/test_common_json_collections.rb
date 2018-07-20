@@ -1,18 +1,17 @@
 require "helpers/test_helper"
 require "pry"
 
-class UnitTestCollections < MiniTest::Test
+class UnitTestStorageJSONCollections < MiniTest::Test
   def setup
     Fog.mock!
+    @client = Fog::Storage.new(provider: "google")
 
-    @client = Fog::Compute.new(:provider => "Google", :google_project => "foo")
-
-    # Projects do not have a "list" method in compute API
-    exceptions = [Fog::Compute::Google::Projects]
     # Enumerate all descendants of Fog::Collection
-    descendants = ObjectSpace.each_object(Fog::Collection.singleton_class).to_a
+    descendants = ObjectSpace.each_object(Fog::Collection.singleton_class)
 
-    @collections = descendants.select {|d| d.name.match /Fog::Compute::Google/ } - exceptions
+    @collections = descendants.select {
+        |x| x.name.match /Fog::Storage::GoogleJSON/
+    }
   end
 
   def teardown
@@ -30,8 +29,6 @@ class UnitTestCollections < MiniTest::Test
   end
 
   def test_collection_get_arguments
-    # TODO: Fixture for #352
-    skip
     @collections.each do |klass|
       obj = klass.new
       assert_operator(obj.method(:get).arity, :<=, 1,

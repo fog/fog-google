@@ -1,18 +1,20 @@
 require "helpers/test_helper"
 require "pry"
 
-class UnitTestCollections < MiniTest::Test
+class UnitTestSQLCollections < MiniTest::Test
   def setup
     Fog.mock!
+    @client = Fog::Google::SQL.new
 
-    @client = Fog::Compute.new(:provider => "Google", :google_project => "foo")
-
-    # Projects do not have a "list" method in compute API
-    exceptions = [Fog::Compute::Google::Projects]
+    # SQL Users API doesn't have a get method
+    # SQL Flags API has only a 'list' method
+    exceptions = [Fog::Google::SQL::Users,
+                  Fog::Google::SQL::Tiers,
+                  Fog::Google::SQL::Flags]
     # Enumerate all descendants of Fog::Collection
-    descendants = ObjectSpace.each_object(Fog::Collection.singleton_class).to_a
+    descendants = ObjectSpace.each_object(Fog::Collection.singleton_class)
 
-    @collections = descendants.select {|d| d.name.match /Fog::Compute::Google/ } - exceptions
+    @collections = descendants.select { |x| x.name.match /Fog::Google::SQL/ } - exceptions
   end
 
   def teardown

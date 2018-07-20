@@ -1,18 +1,17 @@
 require "helpers/test_helper"
 require "pry"
 
-class UnitTestCollections < MiniTest::Test
+class UnitTestDNSCollections < MiniTest::Test
   def setup
     Fog.mock!
+    @client = Fog::DNS.new(provider: "google")
 
-    @client = Fog::Compute.new(:provider => "Google", :google_project => "foo")
-
-    # Projects do not have a "list" method in compute API
-    exceptions = [Fog::Compute::Google::Projects]
+    # DNS Projects API does not support 'list', so 'all' method is not possible
+    exceptions = [Fog::DNS::Google::Projects]
     # Enumerate all descendants of Fog::Collection
-    descendants = ObjectSpace.each_object(Fog::Collection.singleton_class).to_a
+    descendants = ObjectSpace.each_object(Fog::Collection.singleton_class)
 
-    @collections = descendants.select {|d| d.name.match /Fog::Compute::Google/ } - exceptions
+    @collections = descendants.select { |x| x.name.match /Fog::DNS::Google/ } - exceptions
   end
 
   def teardown

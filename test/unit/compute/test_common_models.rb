@@ -5,8 +5,6 @@ class UnitTestModels < MiniTest::Test
     Fog.mock!
     @client = Fog::Compute.new(:provider => "Google", :google_project => "foo")
 
-    # Top-level ancestors we do not test
-    common_ancestors = [Fog::Model, Fog::Compute::Server]
     # Do not test models that do not have a create method in API
     exceptions = [ Fog::Compute::Google::MachineType,
                    Fog::Compute::Google::Region,
@@ -18,7 +16,7 @@ class UnitTestModels < MiniTest::Test
     # Enumerate all descendants of Fog::Model
     descendants = ObjectSpace.each_object(Fog::Model.singleton_class).to_a
 
-    @models = descendants - common_ancestors - exceptions
+    @models = descendants.select {|d| d.name.match /Fog::Compute::Google/ } - exceptions
   end
 
   def teardown

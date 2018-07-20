@@ -1,18 +1,17 @@
 require "helpers/test_helper"
 require "pry"
 
-class UnitTestCollections < MiniTest::Test
+class UnitTestMonitoringCollections < MiniTest::Test
   def setup
     Fog.mock!
+    @client = Fog::Monitoring.new(provider: "google")
 
-    @client = Fog::Compute.new(:provider => "Google", :google_project => "foo")
-
-    # Projects do not have a "list" method in compute API
-    exceptions = [Fog::Compute::Google::Projects]
+    # TimeSeries API has no 'get' method
+    exceptions = [Fog::Google::Monitoring::TimeseriesCollection]
     # Enumerate all descendants of Fog::Collection
     descendants = ObjectSpace.each_object(Fog::Collection.singleton_class).to_a
 
-    @collections = descendants.select {|d| d.name.match /Fog::Compute::Google/ } - exceptions
+    @collections = descendants.select { |x| x.name.match /Fog::Google::Monitoring/ } - exceptions
   end
 
   def teardown
