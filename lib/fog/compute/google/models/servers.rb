@@ -31,7 +31,7 @@ module Fog
           response = nil
           if zone
             response = service.get_server(identity, zone).to_h
-          else
+          elseif identity
             server = all(:filter => "name eq .*#{identity}").first
             response = server.attributes if server
           end
