@@ -13,8 +13,15 @@ module TestCollection
     assert_includes @subject.all.map(&:identity), one.identity
     assert_includes @subject.all.map(&:identity), two.identity
 
-    assert_equal one.identity, @factory.get(one.identity).identity
-    assert_equal two.identity, @factory.get(two.identity).identity
+    assert_equal one.identity, @subject.get(one.identity).identity
+    assert_equal two.identity, @subject.get(two.identity).identity
+
+    # Some factories that have scoped parameters (zone, region) have a special
+    # `get` method defined in the factory to pass the correct parameters in
+    if @factory.respond_to?(:get)
+      assert_equal one.identity, @factory.get(one.identity).identity
+      assert_equal two.identity, @factory.get(two.identity).identity
+    end
 
     one.destroy
     two.destroy
