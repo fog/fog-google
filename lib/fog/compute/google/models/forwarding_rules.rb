@@ -4,9 +4,7 @@ module Fog
       class ForwardingRules < Fog::Collection
         model Fog::Compute::Google::ForwardingRule
 
-        def all(region: nil, filter: nil, max_results: nil,
-                order_by: nil, page_token: nil)
-
+        def all(region: nil, filter: nil, max_results: nil, order_by: nil, page_token: nil)
           opts = {
             :filter => filter,
             :max_results => max_results,
@@ -15,7 +13,7 @@ module Fog
           }
 
           if region
-            data = service.list_forwarding_rules(region, opts).items
+            data = service.list_forwarding_rules(region, opts).items || []
           else
             data = []
             service.list_aggregated_forwarding_rules(opts).items
@@ -29,18 +27,16 @@ module Fog
         end
 
         def get(identity, region = nil)
-          response = nil
           if region
-            response = service.get_forwarding_rule(identity, region).to_h
+            forwarding_rule = service.get_forwarding_rule(identity, region).to_h
+            return new(forwarding_rule)
           elsif identity
             response = all(
               :filter => "name eq #{identity}", :max_results => 1
-            ).first
-            response = response.attributes unless response.nil?
+            )
+            forwarding_rule = response.first unless response.empty?
+            return forwarding_rule
           end
-
-          return nil if response.nil?
-          new(response)
         end
       end
     end

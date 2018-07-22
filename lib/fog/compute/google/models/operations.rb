@@ -26,15 +26,15 @@ module Fog
 
         def get(identity, zone = nil, region = nil)
           if !zone.nil?
-            response = service.get_zone_operation(zone, identity)
+            operation = service.get_zone_operation(zone, identity).to_h
+            return new(operation)
           elsif !region.nil?
-            response = service.get_region_operation(region, identity)
-          else
-            response = service.get_global_operation(identity)
+            operation = service.get_region_operation(region, identity).to_h
+            return new(operation)
+          elsif identity
+            operation = service.get_global_operation(identity).to_h
+            return new(operation)
           end
-
-          return nil if response.nil?
-          new(response.to_h)
         rescue ::Google::Apis::ClientError => e
           raise e unless e.status_code == 404
           nil

@@ -32,8 +32,6 @@ module TestCollection
   end
 
   def test_nil_get
-    # Fixture for #33
-    skip
     if @subject.method(:get).arity <= 1
       assert_nil @subject.get(nil)
     elsif @subject.method(:get).arity == 2

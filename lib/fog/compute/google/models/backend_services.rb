@@ -10,8 +10,9 @@ module Fog
         end
 
         def get(identity)
-          if backend_service = service.get_backend_service(identity)
-            new(backend_service.to_h)
+          if identity
+            backend_service = service.get_backend_service(identity).to_h
+            return new(backend_service)
           end
         rescue ::Google::Apis::ClientError => e
           raise e unless e.status_code == 404

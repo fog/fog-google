@@ -23,9 +23,15 @@ module Fog
           load(data || [])
         end
 
-        def get(identity, region)
-          if subnetwork = service.get_subnetwork(identity, region).to_h
-            new(subnetwork)
+        def get(identity, region = nil)
+          if region
+            subnetwork = service.get_subnetwork(identity, region).to_h
+            return new(subnetwork)
+          elsif identity
+            response = all(:filter => "name eq #{identity}",
+                           :max_results => 1)
+            subnetwork = response.first unless response.empty?
+            return subnetwork
           end
         rescue ::Google::Apis::ClientError => e
           raise e unless e.status_code == 404

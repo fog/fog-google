@@ -10,9 +10,10 @@ module Fog
         end
 
         def get(identity)
-          response = service.get_http_health_check(identity)
-          return nil if response.nil?
-          new(response.to_h)
+          if identity
+            http_health_check = service.get_http_health_check(identity).to_h
+            return new(http_health_check)
+          end
         rescue ::Google::Apis::ClientError => e
           raise e unless e.status_code == 404
           nil

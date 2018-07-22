@@ -10,8 +10,9 @@ module Fog
         end
 
         def get(identity)
-          if network = service.get_network(identity).to_h
-            new(network)
+          if identity
+            network = service.get_network(identity).to_h
+            return new(network)
           end
         rescue ::Google::Apis::ClientError => e
           raise e unless e.status_code == 404

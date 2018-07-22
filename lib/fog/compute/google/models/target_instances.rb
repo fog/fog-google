@@ -26,16 +26,16 @@ module Fog
           load(data)
         end
 
-        def get(target_instance, zone = nil)
-          response = nil
+        def get(identity, zone = nil)
           if zone
-            response = service.get_target_instance(target_instance, zone).to_h
-          else
-            response = all(:filter => "name eq #{target_instance}").first
-            response = response.attributes unless response.nil?
+            target_instance = service.get_target_instance(target_instance, zone).to_h
+            return new(target_instance)
+          elsif identity
+            response = all(:filter => "name eq #{identity}",
+                           :max_results => 1)
+            target_instance = response.first unless response.empty?
+            return target_instance
           end
-          return nil if response.nil?
-          new(response)
         rescue ::Google::Apis::ClientError => e
           raise e unless e.status_code == 404
           nil
