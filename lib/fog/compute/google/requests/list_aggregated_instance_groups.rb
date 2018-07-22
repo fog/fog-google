@@ -9,8 +9,7 @@ module Fog
 
       class Real
         def list_aggregated_instance_groups(options = {})
-          @compute.list_aggregated_instance_groups(@project,
-                                                   :filter => options[:filter])
+          @compute.list_aggregated_instance_groups(@project, options)
         end
       end
     end
