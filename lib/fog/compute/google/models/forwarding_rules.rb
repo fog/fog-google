@@ -32,7 +32,7 @@ module Fog
           response = nil
           if region
             response = service.get_forwarding_rule(identity, region).to_h
-          else
+          elsif identity
             response = all(
               :filter => "name eq #{identity}", :max_results => 1
             ).first
