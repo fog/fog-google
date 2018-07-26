@@ -5,7 +5,8 @@ class UnitTestCollections < MiniTest::Test
   def setup
     Fog.mock!
 
-    @client = Fog::Compute.new(:provider => "Google", :google_project => "foo")
+    @client = Fog::Compute.new(provider: "google",
+                               google_project: "foo")
 
     # Projects do not have a "list" method in compute API
     exceptions = [Fog::Compute::Google::Projects]

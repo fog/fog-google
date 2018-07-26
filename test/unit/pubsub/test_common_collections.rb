@@ -4,7 +4,7 @@ require "pry"
 class UnitTestPubsubCollections < MiniTest::Test
   def setup
     Fog.mock!
-    @client = Fog::Google::Pubsub.new
+    @client = Fog::Google::Pubsub.new(google_project: "foo")
 
     exceptions = []
     # Enumerate all descendants of Fog::Collection

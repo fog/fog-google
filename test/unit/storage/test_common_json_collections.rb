@@ -4,7 +4,8 @@ require "pry"
 class UnitTestStorageJSONCollections < MiniTest::Test
   def setup
     Fog.mock!
-    @client = Fog::Storage.new(provider: "google")
+    @client = Fog::Storage.new(provider: "google",
+                               google_project: "foo")
 
     # Enumerate all descendants of Fog::Collection
     descendants = ObjectSpace.each_object(Fog::Collection.singleton_class)

@@ -4,7 +4,7 @@ require "pry"
 class UnitTestSQLCollections < MiniTest::Test
   def setup
     Fog.mock!
-    @client = Fog::Google::SQL.new
+    @client = Fog::Google::SQL.new(google_project: "foo")
 
     # SQL Users API doesn't have a get method
     # SQL Flags API has only a 'list' method

@@ -3,7 +3,8 @@ require "helpers/test_helper"
 class UnitTestModels < MiniTest::Test
   def setup
     Fog.mock!
-    @client = Fog::Compute.new(:provider => "Google", :google_project => "foo")
+    @client = Fog::Compute.new(provider: "google",
+                               google_project: "foo")
 
     # Do not test models that do not have a create method in API
     exceptions = [Fog::Compute::Google::MachineType,

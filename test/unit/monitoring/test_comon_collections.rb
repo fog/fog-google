@@ -4,7 +4,8 @@ require "pry"
 class UnitTestMonitoringCollections < MiniTest::Test
   def setup
     Fog.mock!
-    @client = Fog::Monitoring.new(provider: "google")
+    @client = Fog::Monitoring.new(provider: "google",
+                                  google_project: "foo")
 
     # TimeSeries API has no 'get' method
     exceptions = [Fog::Google::Monitoring::TimeseriesCollection]

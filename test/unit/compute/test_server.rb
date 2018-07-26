@@ -3,7 +3,8 @@ require "helpers/test_helper"
 class UnitTestServer < MiniTest::Test
   def setup
     Fog.mock!
-    @client = Fog::Compute.new(:provider => "Google", :google_project => "foo")
+    @client = Fog::Compute.new(provider: "google",
+                               google_project: "foo")
   end
 
   def teardown

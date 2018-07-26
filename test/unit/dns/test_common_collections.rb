@@ -4,7 +4,8 @@ require "pry"
 class UnitTestDNSCollections < MiniTest::Test
   def setup
     Fog.mock!
-    @client = Fog::DNS.new(provider: "google")
+    @client = Fog::DNS.new(provider: "google",
+                           google_project: "foo")
 
     # DNS Projects API does not support 'list', so 'all' method is not possible
     exceptions = [Fog::DNS::Google::Projects]
