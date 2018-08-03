@@ -7,21 +7,24 @@ class UnitTestDNSCollections < MiniTest::Test
     @client = Fog::DNS.new(provider: "google",
                            google_project: "foo")
 
+    # Exceptions that do not pass test_common_methods:
+    #
     # DNS Projects API does not support 'list', so 'all' method is not possible
-    exceptions = [Fog::DNS::Google::Projects]
+    @common_methods_exceptions = [Fog::DNS::Google::Projects]
     # Enumerate all descendants of Fog::Collection
     descendants = ObjectSpace.each_object(Fog::Collection.singleton_class)
 
-    @collections = descendants.select { |d| d.name.match /Fog::DNS::Google/ } - exceptions
+    @collections = descendants.select { |d| d.name.match /Fog::DNS::Google/ }
   end
 
   def teardown
     Fog.unmock!
   end
 
+  # This tests whether Fog::Compute::Google collections have common lifecycle methods
   def test_common_methods
-    # This tests whether Fog::Compute::Google collections have common lifecycle methods
-    @collections.each do |klass|
+    subjects = @collections - @common_methods_exceptions
+    subjects.each do |klass|
       obj = klass.new
       assert obj.respond_to?(:all), "#{klass} should have an .all method"
       assert obj.respond_to?(:get), "#{klass} should have a .get method"

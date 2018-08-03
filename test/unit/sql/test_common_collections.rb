@@ -6,24 +6,28 @@ class UnitTestSQLCollections < MiniTest::Test
     Fog.mock!
     @client = Fog::Google::SQL.new(google_project: "foo")
 
-    # SQL Users API doesn't have a get method
-    # SQL Flags API has only a 'list' method
-    exceptions = [Fog::Google::SQL::Users,
-                  Fog::Google::SQL::Tiers,
-                  Fog::Google::SQL::Flags]
+    # Exceptions that do not pass test_common_methods:
+    #
+    # SQL Users API doesn't have a 'get' method
+    # SQL Flags API has only one method - 'list'
+    # SQL Tiers API has only one method - 'list'
+    @common_method_exceptions = [Fog::Google::SQL::Users,
+                                 Fog::Google::SQL::Tiers,
+                                 Fog::Google::SQL::Flags]
     # Enumerate all descendants of Fog::Collection
     descendants = ObjectSpace.each_object(Fog::Collection.singleton_class)
 
-    @collections = descendants.select { |d| d.name.match /Fog::Google::SQL/ } - exceptions
+    @collections = descendants.select { |d| d.name.match /Fog::Google::SQL/ }
   end
 
   def teardown
     Fog.unmock!
   end
 
+  # This tests whether Fog::Compute::Google collections have common lifecycle methods
   def test_common_methods
-    # This tests whether Fog::Compute::Google collections have common lifecycle methods
-    @collections.each do |klass|
+    subjects = @collections - @common_method_exceptions
+    subjects.each do |klass|
       obj = klass.new
       assert obj.respond_to?(:all), "#{klass} should have an .all method"
       assert obj.respond_to?(:get), "#{klass} should have a .get method"
