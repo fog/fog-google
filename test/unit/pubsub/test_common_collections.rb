@@ -28,7 +28,6 @@ class UnitTestPubsubCollections < MiniTest::Test
   end
 
   def test_collection_get_arguments
-    # TODO: Fixture for #352
     @collections.each do |klass|
       obj = klass.new
       assert_operator(obj.method(:get).arity, :<=, 1,
