@@ -1,11 +1,12 @@
 require "helpers/test_helper"
 
-class UnitTestXMLRequests < MiniTest::Test
+class UnitTestJsonRequests < MiniTest::Test
   def setup
     Fog.mock!
     @client = Fog::Storage.new(provider: "google",
-                               google_storage_access_key_id: "",
-                               google_storage_secret_access_key: "")
+                               google_client_email: "",
+                               google_project: "",
+                               google_json_key_location: "")
   end
 
   def teardown
@@ -16,9 +17,9 @@ class UnitTestXMLRequests < MiniTest::Test
     url = @client.get_object_url("bucket",
                                  "just some file.json",
                                  Time.now + 2 * 60,
-                                 query: { "Response-Content-Disposition" => 'inline; filename="test.json"' })
+                                 query: { "projection" => 'full, noAcl"' })
 
-    assert_match(/Response-Content-Disposition=inline%3B%20filename%3D%22test.json/, url,
+    assert_match(/projection=full%2C%20noAcl/, url,
                  "query string should be escaped")
   end
 
@@ -26,9 +27,9 @@ class UnitTestXMLRequests < MiniTest::Test
     url = @client.get_object_url("bucket",
                                  "just some file.json",
                                  Time.now + 2 * 60,
-                                 query: { "Response-Content-Disposition" => nil })
+                                 query: { "projection" => nil })
 
-    refute_match(/Response-Content-Disposition/, url,
+    refute_match(/projection/, url,
                  "nil query params should be omitted")
   end
 
