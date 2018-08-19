@@ -2,15 +2,17 @@
 All notable changes to this project will be documented in this file.
 The format is loosely based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## Next release
+## 1.7.0
 
 ### User-facing
 
 #### Added
 
+- \#409 Support query parameters in `Fog::Storage::Google` GET requests [stanhu]
 - \#394 Add some helper methods to `Fog::Compute::Google::Server` [temikus]
   - `.private_ip_address`
   - `.stopped?`
+- \#375 Add timeout options to `Fog::Storage::GoogleJSON` client [dosuken123]
 
 #### Changed
 
@@ -24,6 +26,7 @@ The format is loosely based on [Keep a Changelog](http://keepachangelog.com/en/1
 
 #### Added
 
+- \#409 Expand `Fog::Storage::Google` unit tests [stanhu]
 - \#370 Introducing test coverage back, integrating with codecov.io [temikus]
 - \#373 Increase integration test coverage. [temikus]
   - Add Firewall factory and tests.
