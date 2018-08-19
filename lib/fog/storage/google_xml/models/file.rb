@@ -118,7 +118,7 @@ module Fog
 
         def url(expires, options = {})
           requires :key
-          collection.get_http_url(key, expires, options)
+          collection.get_https_url(key, expires, options)
         end
 
         private
