@@ -6,12 +6,11 @@ module Fog
           raise ArgumentError.new("bucket_name is required") unless bucket_name
           raise ArgumentError.new("object_name is required") unless object_name
 
-          https_url(options.merge(:headers  => {},
-                                  :host     => @host,
-                                  :method   => "GET",
-                                  :path     => "#{bucket_name}/#{object_name}"),
+          http_url(options.merge(:headers  => {},
+                                 :host     => @host,
+                                 :method   => "GET",
+                                 :path     => "#{bucket_name}/#{object_name}"),
                     expires)
-          http_url(url_options, expires)
         end
       end
 

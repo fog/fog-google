@@ -12,6 +12,22 @@ class UnitTestXMLRequests < MiniTest::Test
     Fog.unmock!
   end
 
+  def test_get_http_url
+    url = @client.get_object_http_url("bucket",
+                                      "just some file.json",
+                                      Time.now + 2 * 60)
+    assert_match(/^http:\/\//, url,
+                 "URL starts with HTTP")
+  end
+
+  def test_get_https_url
+    url = @client.get_object_https_url("bucket",
+                                       "just some file.json",
+                                       Time.now + 2 * 60)
+    assert_match(/^https:\/\//, url,
+                 "URL starts with HTTPS")
+  end
+
   def test_get_url_path_has_query_params
     url = @client.get_object_url("bucket",
                                  "just some file.json",
