@@ -13,6 +13,8 @@ module Fog
 
           initialize_google_client(options)
           @compute = ::Google::Apis::ComputeV1::ComputeService.new
+          apply_client_options(@compute, options)
+
           @extra_global_projects = options[:google_extra_global_projects] || []
         end
       end
