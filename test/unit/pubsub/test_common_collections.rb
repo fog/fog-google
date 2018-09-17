@@ -5,11 +5,11 @@ class UnitTestPubsubCollections < MiniTest::Test
   def setup
     Fog.mock!
     @client = Fog::Google::Pubsub.new(google_project: "foo")
-    
+
     # Enumerate all descendants of Fog::Collection
     descendants = ObjectSpace.each_object(Fog::Collection.singleton_class)
 
-    @collections = descendants.select { |d| d.name.match /Fog::Google::Pubsub/ }
+    @collections = descendants.select { |d| d.name.match(/Fog::Google::Pubsub/) }
   end
 
   def teardown

@@ -17,7 +17,7 @@ class UnitTestModels < MiniTest::Test
     # Enumerate all descendants of Fog::Model
     descendants = ObjectSpace.each_object(Fog::Model.singleton_class).to_a
 
-    @models = descendants.select { |d| d.name.match /Fog::Compute::Google/ } - exceptions
+    @models = descendants.select { |d| d.name.match(/Fog::Compute::Google/) } - exceptions
   end
 
   def teardown

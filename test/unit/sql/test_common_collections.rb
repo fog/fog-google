@@ -17,7 +17,7 @@ class UnitTestSQLCollections < MiniTest::Test
     # Enumerate all descendants of Fog::Collection
     descendants = ObjectSpace.each_object(Fog::Collection.singleton_class)
 
-    @collections = descendants.select { |d| d.name.match /Fog::Google::SQL/ }
+    @collections = descendants.select { |d| d.name.match(/Fog::Google::SQL/) }
   end
 
   def teardown

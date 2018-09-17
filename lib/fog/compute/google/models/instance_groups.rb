@@ -6,10 +6,10 @@ module Fog
 
         def all(zone: nil, filter: nil, max_results: nil, order_by: nil, page_token: nil)
           opts = {
-              :filter => filter,
-              :max_results => max_results,
-              :order_by => order_by,
-              :page_token => page_token
+            :filter => filter,
+            :max_results => max_results,
+            :order_by => order_by,
+            :page_token => page_token
           }
 
           if zone
@@ -36,6 +36,7 @@ module Fog
           end
         rescue ::Google::Apis::ClientError => e
           raise e unless e.status_code == 404
+
           nil
         end
 

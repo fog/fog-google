@@ -14,7 +14,7 @@ class UnitTestMonitoringCollections < MiniTest::Test
     # Enumerate all descendants of Fog::Collection
     descendants = ObjectSpace.each_object(Fog::Collection.singleton_class).to_a
 
-    @collections = descendants.select { |d| d.name.match /Fog::Google::Monitoring/ }
+    @collections = descendants.select { |d| d.name.match(/Fog::Google::Monitoring/) }
   end
 
   def teardown

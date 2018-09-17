@@ -6,6 +6,9 @@ Style/ConditionalAssignment:
   SingleLineConditionsOnly: true
   EnforcedStyle: assign_inside_condition
 
+Style/RedundantReturn:
+  Enabled: false
+
 Style/FormatString:
   Enabled: false
 

@@ -14,7 +14,7 @@ class UnitTestDNSCollections < MiniTest::Test
     # Enumerate all descendants of Fog::Collection
     descendants = ObjectSpace.each_object(Fog::Collection.singleton_class)
 
-    @collections = descendants.select { |d| d.name.match /Fog::DNS::Google/ }
+    @collections = descendants.select { |d| d.name.match(/Fog::DNS::Google/) }
   end
 
   def teardown

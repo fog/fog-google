@@ -12,7 +12,7 @@ class UnitTestStorageXMLCollections < MiniTest::Test
     descendants = ObjectSpace.each_object(Fog::Collection.singleton_class)
 
     @collections = descendants.select do |d|
-      d.name.match /Fog::Storage::GoogleXML/
+      d.name.match(/Fog::Storage::GoogleXML/)
     end
   end
 
