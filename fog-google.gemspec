@@ -20,15 +20,14 @@ Gem::Specification.new do |spec|
   # As of 0.1.1
   spec.required_ruby_version = "~> 2.0"
 
-  spec.add_dependency "fog-core"
-  spec.add_dependency "fog-json"
-  spec.add_dependency "fog-xml"
+  # Locked until https://github.com/fog/fog-google/issues/417 is resolved
+  spec.add_dependency "fog-core", ">= 2.0", "<= 2.1.0"
+  spec.add_dependency "fog-json", "~> 1.2.0"
+  spec.add_dependency "fog-xml", "~> 0.1.0"
 
   # Hard Requirement as of 1.0
   spec.add_dependency "google-api-client", "~> 0.23.0"
   
-  spec.add_development_dependency "mime-types"
-
   # Debugger
   spec.add_development_dependency "pry"
   spec.add_development_dependency "pry-byebug"

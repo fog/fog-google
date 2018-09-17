@@ -2,6 +2,15 @@
 All notable changes to this project will be documented in this file.
 The format is loosely based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 1.8.0
+
+### User-facing
+
+#### Fixed
+
+- \#419 Locked down fog upstream dependencies to alleviate deprecation warnings
+  until they can be properly dealt with.
+
 ## 1.7.1
 
 ### User-facing
