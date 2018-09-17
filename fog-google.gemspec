@@ -28,8 +28,6 @@ Gem::Specification.new do |spec|
   # Hard Requirement as of 1.0
   spec.add_dependency "google-api-client", "~> 0.23.0"
   
-  spec.add_development_dependency "mime-types"
-
   # Debugger
   spec.add_development_dependency "pry"
   spec.add_development_dependency "pry-byebug"
