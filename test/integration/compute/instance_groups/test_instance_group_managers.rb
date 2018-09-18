@@ -1,7 +1,7 @@
 require "helpers/integration_test_helper"
 require "integration/factories/instance_group_manager_factory"
 
-class TestInstanceGroupManager < FogIntegrationTest
+class TestInstanceGroupManagers < FogIntegrationTest
   include TestCollection
 
   def setup
