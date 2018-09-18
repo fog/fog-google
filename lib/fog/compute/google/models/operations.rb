@@ -16,7 +16,7 @@ module Fog
           if zone
             data = service.list_zone_operations(zone, opts).to_h[:items]
           elsif region
-            data = service.list_region_operations(regions, opts).to_h[:items]
+            data = service.list_region_operations(region, opts).to_h[:items]
           else
             data = service.list_global_operations(opts).to_h[:items]
           end
