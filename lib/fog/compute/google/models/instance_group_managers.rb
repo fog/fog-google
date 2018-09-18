@@ -12,10 +12,11 @@ module Fog
             :order_by => order_by,
             :page_token => page_token
           }
-          data = []
+
           if zone
-            data += service.list_instance_group_managers(zone, opts).items || []
+            data = service.list_instance_group_managers(zone, opts).items || []
           else
+            data = []
             service.list_aggregated_instance_group_managers(opts).items.each_value do |group|
               data.concat(group.instance_group_managers) if group.instance_group_managers
             end
