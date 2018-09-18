@@ -1,6 +1,6 @@
 require "helpers/integration_test_helper"
 
-class TestRoutes < FogIntegrationTest
+class TestOperations < FogIntegrationTest
   def setup
     @subject = Fog::Compute[:google].operations
   end
