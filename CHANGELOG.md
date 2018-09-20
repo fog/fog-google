@@ -17,7 +17,7 @@ The format is loosely based on [Keep a Changelog](http://keepachangelog.com/en/1
 
 #### Fixed
 
-- \#412 Fixed `Fog::Storage::GoogleXML::GetObjectHttpUrl#get_object_http_url`
+- \#412 Fixed `Fog::Storage::GoogleXML::GetObjectHttpUrl#get_object_http_url` 
   request
 
 ## 1.7.0
@@ -27,17 +27,17 @@ The format is loosely based on [Keep a Changelog](http://keepachangelog.com/en/1
 #### Added
 
 - \#409 Support query parameters in `Fog::Storage::Google` GET requests [stanhu]
-- \#394 Add some helper methods to `Fog::Google::Compute::Server` [temikus]
+- \#394 Add some helper methods to `Fog::Compute::Google::Server` [temikus]
   - `.private_ip_address`
   - `.stopped?`
 - \#375 Add timeout options to `Fog::Storage::GoogleJSON` client [dosuken123]
 
 #### Changed
 
-- \#394 `save/update/destroy` and other operations now wait until they are in a
-  DONE state, instead of !PENDING. This should be a no-op for users but should
+- \#394 `save/update/destroy` and other operations now wait until they are in a 
+  DONE state, instead of !PENDING. This should be a no-op for users but should 
   safeguard from issues in the future. [temikus]
-- \#383 `Fog::Google::Compute::Address` resources are now created synchronously
+- \#383 `Fog::Compute::Google::Address` resources are now created synchronously
   by default. [temikus]
 
 ### Development changes
@@ -53,7 +53,7 @@ The format is loosely based on [Keep a Changelog](http://keepachangelog.com/en/1
 - \#376 Add doc coverage tracking. [temikus]
 - \#383 Increase integration test coverage further. [temikus]
   - Add collection tests and factories (when mutable) for following resources:
-    - Addresses
+    - Addresses 
     - Disks
     - Projects
     - Routes
@@ -77,23 +77,23 @@ The format is loosely based on [Keep a Changelog](http://keepachangelog.com/en/1
 
 #### Changed
 
-- \#338 `Fog::Google::SQL` resources are now created and destroyed synchronously by default.
+- \#338 `Fog::Google::SQL` resources are now created and destroyed synchronously by default. 
 You can override it in a standard manner by passing a parameter to async method, e.g.:
  `Fog::Google::SQL::Instance.create(true)` [temikus]
-- \#367 `Fog::Google::Compute::Server.bootstrap` changes [temikus]
+- \#367 `Fog::Compute::Google::Server.bootstrap` changes [temikus]
   - Now creates instances with disks that automatically delete on instance shutdown.
   - Now creates instances with a public IP address by default.
 
 #### Added
 
-- \#361 `Fog::Google::Compute::Server` now recognises `network_ip` attribute to specify internal IP. [mattimatti]
+- \#361 `Fog::Compute::Google::Server` now recognises `network_ip` attribute to specify internal IP. [mattimatti]
 
 #### Fixed
 
 - \#338 Fixed SQL Users model workflow [temikus]
 - \#359 Fix whitespace escaping in XML Storage methods [temikus]
 - \#366 Fixing `Server` model to properly accept `:private_key_path` and `:public_key_path` attributes again. [temikus]
-- \#367 `Fog::Google::Compute::Server.bootstrap` parameters are now properly merged with default ones. [tesmikus]
+- \#367 `Fog::Compute::Google::Server.bootstrap` parameters are now properly merged with default ones. [tesmikus]
 
 ### Development changes
 
@@ -112,7 +112,7 @@ You can override it in a standard manner by passing a parameter to async method,
 
 - \#348 Added Instance Group Manager and Instance Templates [bpaquet]
 
-  - `Fog::Google::Compute::InstanceGroupManager` model and associated requests:
+  - `Fog::Compute::Google::InstanceGroupManager` model and associated requests:
     - `:get_instance_group_manager`
     - `:insert_instance_group_manager`
     - `:delete_instance_group_manager`
@@ -121,7 +121,7 @@ You can override it in a standard manner by passing a parameter to async method,
     - `:recreate_instances`
     - `:abandon_instances`
 
-  - `Fog::Google::Compute::InstanceTemplate` model and associated requests:
+  - `Fog::Compute::Google::InstanceTemplate` model and associated requests:
     - `:list_instance_templates`
     - `:get_instance_template`
     - `:insert_instance_template`
@@ -145,31 +145,31 @@ You can override it in a standard manner by passing a parameter to async method,
 
 #### Added
 
-- \#336 `Fog::Google::Compute::Server.set_metadata` is now working properly and adopted a simpler format, e.g. `{'foo' => 'bar', 'baz'=>'foo'}`
-- \#334 Added a new helper method: `Fog::Google::Compute::Server.public_ip_address` [temikus]
-- \#314 Added `Fog::Google::Compute::InstanceGroup.add_instance` method back [temikus]
+- \#336 `Fog::Compute::Google::Server.set_metadata` is now working properly and adopted a simpler format, e.g. `{'foo' => 'bar', 'baz'=>'foo'}`
+- \#334 Added a new helper method: `Fog::Compute::Google::Server.public_ip_address` [temikus] 
+- \#314 Added `Fog::Compute::Google::InstanceGroup.add_instance` method back [temikus] 
 - \#326 Added support for using predefined ACLs, refactor valid ACLs [vimutter]
 - \#318 Added fog_public support in Storage JSON API [jayhsu21]
 
 #### Fixed
 
-- \#354 Bump Google API client to 0.23 [temikus]
-- \#346 Fixed get_health when called with an instance name [bpaquet]
-- \#317 Fixed source_image selection to get the image from name if the format is not compatible with new Google API Client [temikus]
-- \#321 Fix string key instead of symbol for subnetworks listing [tumido]
-- \#351 Fixed trailing spaces and added data presence check to `Fog::Storage::GoogleJSON.put_object` [vimutter]
+- \#354 Bump Google API client to 0.23 [temikus] 
+- \#346 Fixed get_health when called with an instance name [bpaquet] 
+- \#317 Fixed source_image selection to get the image from name if the format is not compatible with new Google API Client [temikus] 
+- \#321 Fix string key instead of symbol for subnetworks listing [tumido] 
+- \#351 Fixed trailing spaces and added data presence check to `Fog::Storage::GoogleJSON.put_object` [vimutter] 
 
 ### Development changes
 
 #### Added
 
-- \#353 Added collection/model unit tests to be run by Travis CI [temikus]
-- \#347 Added target pool tests [temikus]
+- \#353 Added collection/model unit tests to be run by Travis CI [temikus] 
+- \#347 Added target pool tests [temikus] 
 
 #### Fixed
 
 - \#322 Fixed all broken integration tests, all tests now pass in CI [temikus]
-- \#344 Updated CI pipeline to run in parallel, broke out test tasks [temikus]
+- \#344 Updated CI pipeline to run in parallel, broke out test tasks [temikus] 
 
 ## 1.0.1
 
