@@ -12,6 +12,10 @@ class ForwardingRulesFactory < CollectionFactory
     @target_pools.cleanup
   end
 
+  def all
+    @subject.all(region: TEST_REGION)
+  end
+
   def params
     { :name => resource_name,
       :port_range => "80-80",

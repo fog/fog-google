@@ -13,6 +13,10 @@ class SubnetworksFactory < CollectionFactory
     @subject.get(identity, TEST_REGION)
   end
 
+  def all
+    @subject.all(region: TEST_REGION)
+  end
+
   def params
     { :name => resource_name,
       :network => "default",

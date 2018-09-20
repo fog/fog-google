@@ -23,6 +23,17 @@ module TestCollection
       assert_equal two.identity, @factory.get(two.identity).identity
     end
 
+    # Some factories that have scoped parameters (zone, region) have a special
+    # `all` method defined in the factory to pass the correct parameters in
+    if @factory.respond_to?(:all)
+      subject_list = @subject.all
+      scoped_subject_list = @factory.all
+
+      # Assert that whatever .all(scope) returns is a subset of .all
+      assert(scoped_subject_list.all? { |x| subject_list.include? x },
+             "Output of @factory.all must be a subset of @subject.all")
+    end
+
     one.destroy
     two.destroy
 
