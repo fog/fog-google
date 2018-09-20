@@ -1,8 +1,8 @@
 module Fog
   module Google
     class Compute < Fog::Service
-      autoload :Mock, 'fog/google/compute/mock'
-      autoload :Real, 'fog/google/compute/real'
+      autoload :Mock, "fog/google/compute/mock"
+      autoload :Real, "fog/google/compute/real"
 
       requires :google_project
       recognizes(

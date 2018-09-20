@@ -1,8 +1,8 @@
 module Fog
   module Google
     class DNS < Fog::Service
-      autoload :Mock, 'fog/google/dns/mock'
-      autoload :Real, 'fog/google/dns/real'
+      autoload :Mock, "fog/google/dns/mock"
+      autoload :Real, "fog/google/dns/real"
 
       requires :google_project
       recognizes(

@@ -1,8 +1,8 @@
 module Fog
   module Google
     class Pubsub < Fog::Service
-      autoload :Mock, 'fog/google/pubsub/mock'
-      autoload :Real, 'fog/google/pubsub/real'
+      autoload :Mock, "fog/google/pubsub/mock"
+      autoload :Real, "fog/google/pubsub/real"
 
       requires :google_project
       recognizes(

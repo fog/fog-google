@@ -5,16 +5,16 @@ require "fog/google/version"
 
 module Fog
   module Google
-    autoload :Compute, 'fog/google/compute/compute'
-    autoload :DNS, 'fog/google/dns/dns'
-    autoload :Mock, 'fog/google/mock'
-    autoload :Monitoring, 'fog/google/monitoring'
-    autoload :Pubsub, 'fog/google/pubsub'
-    autoload :Shared, 'fog/google/shared'
-    autoload :SQL, 'fog/google/sql'
-    autoload :Storage, 'fog/google/storage/storage'
-    autoload :StorageJSON, 'fog/google/storage/storage_json'
-    autoload :StorageXML, 'fog/google/storage/storage_xml'
+    autoload :Compute, "fog/google/compute/compute"
+    autoload :DNS, "fog/google/dns/dns"
+    autoload :Mock, "fog/google/mock"
+    autoload :Monitoring, "fog/google/monitoring"
+    autoload :Pubsub, "fog/google/pubsub"
+    autoload :Shared, "fog/google/shared"
+    autoload :SQL, "fog/google/sql"
+    autoload :Storage, "fog/google/storage/storage"
+    autoload :StorageJSON, "fog/google/storage/storage_json"
+    autoload :StorageXML, "fog/google/storage/storage_xml"
 
     extend Fog::Provider
 
@@ -36,7 +36,7 @@ module Fog
     end
 
     module Parsers
-      autoload :Storage, 'fog/google/parsers/storage/storage'
+      autoload :Storage, "fog/google/parsers/storage/storage"
     end
   end
 end
