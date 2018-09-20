@@ -4,7 +4,7 @@ require "integration/factories/target_http_proxies_factory"
 class GlobalForwardingRulesFactory < CollectionFactory
   def initialize(example)
     @targets = TargetHttpProxiesFactory.new(example)
-    super(Fog::Compute[:google].global_forwarding_rules, example)
+    super(Fog::Google::Compute.new.global_forwarding_rules, example)
   end
 
   def cleanup

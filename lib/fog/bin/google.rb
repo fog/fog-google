@@ -4,7 +4,7 @@ module Google
     def class_for(key)
       case key
       when :compute
-        Fog::Compute::Google
+        Fog::Google::Compute
       when :dns
         Fog::DNS::Google
       when :monitoring

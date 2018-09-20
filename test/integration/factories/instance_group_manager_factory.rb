@@ -3,7 +3,7 @@ require "integration/factories/instance_template_factory"
 
 class InstanceGroupManagerFactory < CollectionFactory
   def initialize(example)
-    super(Fog::Compute[:google].instance_group_managers, example)
+    super(Fog::Google::Compute.new.instance_group_managers, example)
     @instance_template = InstanceTemplateFactory.new(example)
   end
 
