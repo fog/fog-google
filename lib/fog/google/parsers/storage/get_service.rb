@@ -1,7 +1,7 @@
 module Fog
-  module Parsers
-    module Storage
-      module Google
+  module Google
+    module Parsers
+      module Storage
         class GetService < Fog::Parsers::Base
           def reset
             @bucket = {}
