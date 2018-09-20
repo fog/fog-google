@@ -7,12 +7,14 @@ module Fog
   module Google
     autoload :Compute, 'fog/google/compute/compute'
     autoload :DNS, 'fog/google/dns/dns'
-
     autoload :Mock, File.expand_path("../google/mock", __FILE__)
     autoload :Monitoring, File.expand_path("../google/monitoring", __FILE__)
     autoload :Pubsub, File.expand_path("../google/pubsub", __FILE__)
     autoload :Shared, File.expand_path("../google/shared", __FILE__)
     autoload :SQL, File.expand_path("../google/sql", __FILE__)
+    autoload :Storage, 'fog/google/storage/storage'
+    autoload :StorageJSON, 'fog/google/storage/storage_json'
+    autoload :StorageXML, 'fog/google/storage/storage_xml'
 
     extend Fog::Provider
 
@@ -40,9 +42,4 @@ module Fog
     end
   end
 
-  module Storage
-    autoload :Google, File.expand_path("../storage/google", __FILE__)
-    autoload :GoogleJSON, File.expand_path("../storage/google_json", __FILE__)
-    autoload :GoogleXML, File.expand_path("../storage/google_xml", __FILE__)
-  end
 end

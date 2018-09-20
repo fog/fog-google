@@ -43,7 +43,7 @@ module Fog
           require "google/apis/dns_#{Fog::Google::DNS::GOOGLE_DNS_API_VERSION}"
           require "google/apis/pubsub_#{Fog::Google::Pubsub::GOOGLE_PUBSUB_API_VERSION}"
           require "google/apis/sqladmin_#{Fog::Google::SQL::GOOGLE_SQL_API_VERSION}"
-          require "google/apis/storage_#{Fog::Storage::GoogleJSON::GOOGLE_STORAGE_JSON_API_VERSION}"
+          require "google/apis/storage_#{Fog::Google::StorageJSON::GOOGLE_STORAGE_JSON_API_VERSION}"
           require "googleauth"
         rescue LoadError => error
           Fog::Errors::Error.new("Please install the google-api-client (>= 0.9) gem before using this provider")
