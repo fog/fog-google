@@ -4,12 +4,9 @@ require "fog/xml"
 require "fog/google/version"
 
 module Fog
-  module DNS
-    autoload :Google, File.expand_path("../dns/google", __FILE__)
-  end
-
   module Google
-    autoload :Compute, File.expand_path("../google/compute/compute", __FILE__)
+    autoload :Compute, 'fog/google/compute/compute'
+    autoload :DNS, 'fog/google/dns/dns'
 
     autoload :Mock, File.expand_path("../google/mock", __FILE__)
     autoload :Monitoring, File.expand_path("../google/monitoring", __FILE__)

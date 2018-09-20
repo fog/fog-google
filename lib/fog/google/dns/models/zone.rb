@@ -1,6 +1,6 @@
 module Fog
-  module DNS
-    class Google
+  module Google
+    class DNS
       ##
       # Managed Zone resource
       #
@@ -18,10 +18,10 @@ module Fog
         ##
         # Enumerates the list of Changes for the Managed Zone
         #
-        # @return Array<Fog::DNS::Google::Change>] List of Changes for the Managed Zone
+        # @return Array<Fog::Google::DNS::Change>] List of Changes for the Managed Zone
         def changes
           @changes = begin
-            Fog::DNS::Google::Changes.new(
+            Fog::Google::DNS::Changes.new(
               :service => service,
               :zone => self
             )
@@ -42,10 +42,10 @@ module Fog
         ##
         # Enumerates the list of Resource Record Sets for the Managed Zone
         #
-        # @return Array<Fog::DNS::Google::Record>] List of Resource Record Sets for the Managed Zone
+        # @return Array<Fog::Google::DNS::Record>] List of Resource Record Sets for the Managed Zone
         def records
           @records = begin
-            Fog::DNS::Google::Records.new(
+            Fog::Google::DNS::Records.new(
               :service => service,
               :zone => self
             )
@@ -55,7 +55,7 @@ module Fog
         ##
         # Creates a new Managed Zone
         #
-        # @return [Fog::DNS::Google::Zone] Managed Zone
+        # @return [Fog::Google::DNS::Zone] Managed Zone
         # @raise [Fog::Errors::Error] If Managed Zone already exists
         def save
           requires :name, :domain, :description

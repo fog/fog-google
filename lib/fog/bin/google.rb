@@ -6,7 +6,7 @@ module Google
       when :compute
         Fog::Google::Compute
       when :dns
-        Fog::DNS::Google
+        Fog::Google::DNS
       when :monitoring
         Fog::Google::Monitoring
       when :storage
