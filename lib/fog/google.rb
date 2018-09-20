@@ -7,11 +7,11 @@ module Fog
   module Google
     autoload :Compute, 'fog/google/compute/compute'
     autoload :DNS, 'fog/google/dns/dns'
-    autoload :Mock, File.expand_path("../google/mock", __FILE__)
-    autoload :Monitoring, File.expand_path("../google/monitoring", __FILE__)
-    autoload :Pubsub, File.expand_path("../google/pubsub", __FILE__)
-    autoload :Shared, File.expand_path("../google/shared", __FILE__)
-    autoload :SQL, File.expand_path("../google/sql", __FILE__)
+    autoload :Mock, 'fog/google/mock'
+    autoload :Monitoring, 'fog/google/monitoring'
+    autoload :Pubsub, 'fog/google/pubsub'
+    autoload :Shared, 'fog/google/shared'
+    autoload :SQL, 'fog/google/sql'
     autoload :Storage, 'fog/google/storage/storage'
     autoload :StorageJSON, 'fog/google/storage/storage_json'
     autoload :StorageXML, 'fog/google/storage/storage_xml'

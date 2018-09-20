@@ -1,8 +1,8 @@
 module Fog
   module Google
     class Pubsub < Fog::Service
-      autoload :Mock, File.expand_path("../pubsub/mock", __FILE__)
-      autoload :Real, File.expand_path("../pubsub/real", __FILE__)
+      autoload :Mock, 'fog/google/pubsub/mock'
+      autoload :Real, 'fog/google/pubsub/real'
 
       requires :google_project
       recognizes(
