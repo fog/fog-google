@@ -5,7 +5,7 @@ class TestInstanceGroupManager < FogIntegrationTest
   include TestCollection
 
   def setup
-    @subject = Fog::Compute[:google].instance_group_managers
+    @subject = Fog::Google::Compute.new.instance_group_managers
     @factory = InstanceGroupManagerFactory.new(namespaced_name)
   end
 end

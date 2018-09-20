@@ -5,7 +5,7 @@ class TestForwardingRules < FogIntegrationTest
   include TestCollection
 
   def setup
-    @subject = Fog::Compute[:google].forwarding_rules
+    @subject = Fog::Google::Compute.new.forwarding_rules
     @factory = ForwardingRulesFactory.new(namespaced_name)
   end
 end

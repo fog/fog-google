@@ -4,7 +4,7 @@ require "integration/factories/http_health_checks_factory"
 class BackendServicesFactory < CollectionFactory
   def initialize(example)
     @http_health_checks = HttpHealthChecksFactory.new(example)
-    super(Fog::Compute[:google].backend_services, example)
+    super(Fog::Google::Compute.new.backend_services, example)
   end
 
   def cleanup

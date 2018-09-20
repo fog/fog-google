@@ -2,7 +2,7 @@ require "integration/factories/collection_factory"
 
 class ImagesFactory < CollectionFactory
   def initialize(example)
-    super(Fog::Compute[:google].images, example)
+    super(Fog::Google::Compute.new.images, example)
   end
 
   def params

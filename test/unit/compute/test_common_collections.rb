@@ -3,12 +3,12 @@ require "helpers/test_helper"
 class UnitTestCollections < MiniTest::Test
   def setup
     Fog.mock!
-    @client = Fog::Compute.new(:provider => "Google", :google_project => "foo")
+    @client = Fog::Google::Compute.new(:google_project => "foo")
 
     # Top-level ancestors we do not dest
     common_ancestors = [Fog::Collection, Fog::Association, Fog::PagedCollection]
     # Projects do not have a "list" method in compute API
-    exceptions = [Fog::Compute::Google::Projects]
+    exceptions = [Fog::Google::Compute::Projects]
     # Enumerate all descendants of Fog::Collection
     descendants = ObjectSpace.each_object(Fog::Collection.singleton_class).to_a
 
@@ -20,7 +20,7 @@ class UnitTestCollections < MiniTest::Test
   end
 
   def test_common_methods
-    # This tests whether Fog::Compute::Google collections have common lifecycle methods
+    # This tests whether Fog::Google::Compute collections have common lifecycle methods
     @collections.each do |klass|
       obj = klass.new
       assert obj.respond_to?(:all), "#{klass} should have an .all method"
