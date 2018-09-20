@@ -38,7 +38,7 @@ module Fog
                   :host       => "#{bucket_name}.#{@host}",
                   :idempotent => true,
                   :method     => "GET",
-                  :parser     => Fog::Parsers::Storage::Google::AccessControlList.new,
+                  :parser     => Fog::Google::Parsers::Storage::AccessControlList.new,
                   :path       => Fog::Google.escape(object_name),
                   :query      => query)
         end

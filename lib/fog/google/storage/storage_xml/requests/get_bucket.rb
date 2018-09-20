@@ -41,7 +41,7 @@ module Fog
                   :host     => "#{bucket_name}.#{@host}",
                   :idempotent => true,
                   :method   => "GET",
-                  :parser   => Fog::Parsers::Storage::Google::GetBucket.new,
+                  :parser   => Fog::Google::Parsers::Storage::GetBucket.new,
                   :query    => options)
         end
       end

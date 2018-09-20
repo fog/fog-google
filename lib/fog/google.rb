@@ -34,12 +34,9 @@ module Fog
         "%" + Regexp.last_match(1).unpack("H2" * Regexp.last_match(1).bytesize).join("%").upcase
       end
     end
-  end
 
-  module Parsers
-    module Storage
-      autoload :Google, File.expand_path("../parsers/storage/google", __FILE__)
+    module Parsers
+      autoload :Storage, 'fog/google/parsers/storage/storage'
     end
   end
-
 end

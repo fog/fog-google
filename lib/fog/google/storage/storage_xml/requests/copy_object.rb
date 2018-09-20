@@ -28,7 +28,7 @@ module Fog
                   :headers  => headers,
                   :host     => "#{target_bucket_name}.#{@host}",
                   :method   => "PUT",
-                  :parser   => Fog::Parsers::Storage::Google::CopyObject.new,
+                  :parser   => Fog::Google::Parsers::Storage::CopyObject.new,
                   :path     => Fog::Google.escape(target_object_name))
         end
       end

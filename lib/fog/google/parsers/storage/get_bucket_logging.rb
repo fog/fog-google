@@ -1,7 +1,7 @@
 module Fog
-  module Parsers
-    module Storage
-      module Google
+  module Google
+    module Parsers
+      module Storage
         class AccessControlList < Fog::Parsers::Base
           def reset
             @grant = { "Grantee" => {} }
