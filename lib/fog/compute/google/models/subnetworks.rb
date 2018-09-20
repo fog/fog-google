@@ -12,15 +12,15 @@ module Fog
             :page_token => page_token
           }
 
-          if region.nil?
+          if region
+            data = service.list_subnetworks(region, filters).to_h[:items] || []
+          else
             data = []
             service.list_aggregated_subnetworks(filters).to_h[:items].each_value do |region_obj|
               data.concat(region_obj[:subnetworks]) if region_obj[:subnetworks]
             end
-          else
-            data = service.list_subnetworks(region, filters).to_h[:items]
           end
-          load(data || [])
+          load(data)
         end
 
         def get(identity, region = nil)
