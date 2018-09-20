@@ -1,15 +1,15 @@
 module Fog
-  module DNS
-    class Google
+  module Google
+    class DNS
       class Changes < Fog::Collection
-        model Fog::DNS::Google::Change
+        model Fog::Google::DNS::Change
 
         attribute :zone
 
         ##
         # Enumerates the list of Changes
         #
-        # @return [Array<Fog::DNS::Google::Change>] List of Changes resources
+        # @return [Array<Fog::Google::DNS::Change>] List of Changes resources
         def all
           requires :zone
 
@@ -24,7 +24,7 @@ module Fog
         # Fetches the representation of an existing Change
         #
         # @param [String] identity Change identity
-        # @return [Fog::DNS::Google::Change] Change resource
+        # @return [Fog::Google::DNS::Change] Change resource
         def get(identity)
           requires :zone
           if change = service.get_change(zone.identity, identity).to_h
@@ -38,7 +38,7 @@ module Fog
         ##
         # Creates a new instance of a Change
         #
-        # @return [Fog::DNS::Google::Change] Change resource
+        # @return [Fog::Google::DNS::Change] Change resource
         def new(attributes = {})
           requires :zone
 

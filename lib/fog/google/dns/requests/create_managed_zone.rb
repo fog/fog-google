@@ -1,7 +1,7 @@
 require "date"
 module Fog
-  module DNS
-    class Google
+  module Google
+    class DNS
       ##
       # Creates a new Managed Zone.
       #

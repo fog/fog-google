@@ -1,6 +1,6 @@
 module Fog
-  module DNS
-    class Google
+  module Google
+    class DNS
       ##
       # Deletes a previously created Managed Zone.
       #

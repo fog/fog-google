@@ -1,6 +1,6 @@
 module Fog
-  module DNS
-    class Google
+  module Google
+    class DNS
       ##
       # Represents a Project resource
       #

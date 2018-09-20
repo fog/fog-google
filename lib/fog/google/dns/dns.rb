@@ -1,8 +1,8 @@
 module Fog
-  module DNS
-    class Google < Fog::Service
-      autoload :Mock, File.expand_path("../google/mock", __FILE__)
-      autoload :Real, File.expand_path("../google/real", __FILE__)
+  module Google
+    class DNS < Fog::Service
+      autoload :Mock, 'fog/google/dns/mock'
+      autoload :Real, 'fog/google/dns/real'
 
       requires :google_project
       recognizes(
@@ -24,7 +24,7 @@ module Fog
 
       ##
       # MODELS
-      model_path "fog/dns/google/models"
+      model_path "fog/google/dns/models"
 
       # Zone
       model :zone
@@ -44,7 +44,7 @@ module Fog
 
       ##
       # REQUESTS
-      request_path "fog/dns/google/requests"
+      request_path "fog/google/dns/requests"
 
       # Zone
       request :create_managed_zone
