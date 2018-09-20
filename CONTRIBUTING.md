@@ -72,7 +72,7 @@ $ inch
 
 Or view suggestions on a specific method:
 ```
-$ inch show Fog::Google::Compute::Server#set_metadata
+$ inch show Fog::Compute::Google::Server#set_metadata
 ```
 
 ### Testing
