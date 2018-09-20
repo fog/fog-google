@@ -1,9 +1,9 @@
 module Fog
   module Google
     class StorageXML < Fog::Service
-      autoload :Mock, 'fog/google/storage/storage_xml/mock'
-      autoload :Real, 'fog/google/storage/storage_xml/real'
-      autoload :Utils, 'fog/google/storage/storage_xml/utils'
+      autoload :Mock, "fog/google/storage/storage_xml/mock"
+      autoload :Real, "fog/google/storage/storage_xml/real"
+      autoload :Utils, "fog/google/storage/storage_xml/utils"
 
       requires :google_storage_access_key_id, :google_storage_secret_access_key
       recognizes :host, :port, :scheme, :persistent, :path_style

@@ -1,9 +1,9 @@
 module Fog
   module Google
     class StorageJSON < Fog::Service
-      autoload :Mock, 'fog/google/storage/storage_json/mock'
-      autoload :Real, 'fog/google/storage/storage_json/real'
-      autoload :Utils, 'fog/google/storage/storage_json/utils'
+      autoload :Mock, "fog/google/storage/storage_json/mock"
+      autoload :Real, "fog/google/storage/storage_json/real"
+      autoload :Utils, "fog/google/storage/storage_json/utils"
 
       requires :google_project
       recognizes(

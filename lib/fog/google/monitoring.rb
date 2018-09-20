@@ -1,8 +1,8 @@
 module Fog
   module Google
     class Monitoring < Fog::Service
-      autoload :Mock, 'fog/google/monitoring/mock'
-      autoload :Real, 'fog/google/monitoring/real'
+      autoload :Mock, "fog/google/monitoring/mock"
+      autoload :Real, "fog/google/monitoring/real"
 
       requires :google_project
       recognizes(
