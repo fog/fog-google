@@ -1,8 +1,8 @@
 module Fog
   module Google
     class Monitoring < Fog::Service
-      autoload :Mock, File.expand_path("../monitoring/mock", __FILE__)
-      autoload :Real, File.expand_path("../monitoring/real", __FILE__)
+      autoload :Mock, "fog/google/monitoring/mock"
+      autoload :Real, "fog/google/monitoring/real"
 
       requires :google_project
       recognizes(

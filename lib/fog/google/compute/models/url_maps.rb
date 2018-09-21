@@ -1,0 +1,23 @@
+module Fog
+  module Google
+    class Compute
+      class UrlMaps < Fog::Collection
+        model Fog::Google::Compute::UrlMap
+
+        def all
+          data = service.list_url_maps.to_h[:items] || []
+          load(data)
+        end
+
+        def get(identity)
+          if url_map = service.get_url_map(identity).to_h
+            new(url_map)
+          end
+        rescue ::Google::Apis::ClientError => e
+          raise e unless e.status_code == 404
+          nil
+        end
+      end
+    end
+  end
+end

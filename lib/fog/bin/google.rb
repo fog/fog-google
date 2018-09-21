@@ -4,15 +4,15 @@ module Google
     def class_for(key)
       case key
       when :compute
-        Fog::Compute::Google
+        Fog::Google::Compute
       when :dns
-        Fog::DNS::Google
+        Fog::Google::DNS
       when :monitoring
         Fog::Google::Monitoring
       when :storage
-        Fog::Storage::Google
+        Fog::Google::Storage
       when :storage_json
-        Fog::Storage::Google
+        Fog::Google::Storage
       when :sql
         Fog::Google::SQL
       else
