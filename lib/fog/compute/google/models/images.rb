@@ -47,23 +47,26 @@ module Fog
 
         def get(identity, project = nil)
           if project
-            # TODO: Remove this - see #405
-            image = service.get_image(identity, project).to_h
-            image[:project] = project
-            return new(image)
+            begin
+              image = service.get_image(identity, project).to_h
+              # TODO: Remove response modification - see #405
+              image[:project] = project
+              return new(image)
+            rescue ::Google::Apis::ClientError => e
+              raise e unless e.status_code == 404
+              nil
+            end
           elsif identity
-            project.nil? ? projects = all_projects : projects = [project]
+            projects = all_projects
             projects.each do |proj|
               begin
                 response = service.get_image(identity, proj).to_h
-                # TODO: Remove this - see #405
+                # TODO: Remove response modification - see #405
                 response[:project] = proj
                 image = response
                 return new(image)
               rescue ::Google::Apis::ClientError => e
                 next if e.status_code == 404
-                break
-              else
                 break
               end
             end
