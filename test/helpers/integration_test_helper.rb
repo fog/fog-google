@@ -17,6 +17,8 @@ TEST_REGION = "us-central1".freeze
 TEST_SIZE_GB = 10
 TEST_MACHINE_TYPE = "n1-standard-1".freeze
 TEST_IMAGE = "debian-9-stretch-v20180611".freeze
+TEST_IMAGE_PROJECT = "debian-cloud".freeze
+TEST_IMAGE_FAMILY = "debian-9".freeze
 
 # XXX This depends on a public image in gs://fog-test-bucket; there may be a better way to do this
 # The image was created like so: https://cloud.google.com/compute/docs/images#export_an_image_to_google_cloud_storage
