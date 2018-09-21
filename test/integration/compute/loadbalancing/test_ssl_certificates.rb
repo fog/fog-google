@@ -5,7 +5,7 @@ class TestSslCertificates < FogIntegrationTest
   include TestCollection
 
   def setup
-    @subject = Fog::Google::Compute.new.ssl_certificates
+    @subject = Fog::Compute[:google].ssl_certificates
     @factory = SslCertificatesFactory.new(namespaced_name)
   end
 end

@@ -1,6 +1,6 @@
 module TestCollection
   # Anything that includes TestCollection must, during setup, assign @subject and @factory, where
-  #   @subject is the collection under test, (e.g. Fog::Google::Compute.new.servers)
+  #   @subject is the collection under test, (e.g. Fog::Compute[:google].servers)
   #   @factory is a CollectionFactory
 
   def test_lifecycle

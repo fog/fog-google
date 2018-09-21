@@ -8,7 +8,7 @@ class TestServers < FogIntegrationTest
 
   # Cleanup is handled by TestCollection
   def setup
-    @subject = Fog::Google::Compute.new.servers
+    @subject = Fog::Compute[:google].servers
     @factory = ServersFactory.new(namespaced_name)
     @servers = ServersFactory.new(namespaced_name)
     @disks = DisksFactory.new(namespaced_name)

@@ -6,7 +6,7 @@ class TargetHttpsProxiesFactory < CollectionFactory
   def initialize(example)
     @ssl_certificates = SslCertificatesFactory.new(example)
     @url_maps = UrlMapsFactory.new(example)
-    super(Fog::Google::Compute.new.target_https_proxies, example)
+    super(Fog::Compute[:google].target_https_proxies, example)
   end
 
   def cleanup

@@ -4,7 +4,7 @@ require "integration/factories/backend_services_factory"
 class UrlMapsFactory < CollectionFactory
   def initialize(example)
     @backend_services = BackendServicesFactory.new(example)
-    super(Fog::Google::Compute.new.url_maps, example)
+    super(Fog::Compute[:google].url_maps, example)
   end
 
   def cleanup

@@ -15,7 +15,7 @@ class TestMachineTypes < FogIntegrationTest
              us-central1-c us-east1-b us-east4-a us-west1-c).freeze
 
   def setup
-    @subject = Fog::Google::Compute.new.machine_types
+    @subject = Fog::Compute[:google].machine_types
   end
 
   def test_all

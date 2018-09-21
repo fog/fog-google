@@ -4,7 +4,7 @@ require "integration/factories/target_pools_factory"
 class ForwardingRulesFactory < CollectionFactory
   def initialize(example)
     @target_pools = TargetPoolsFactory.new(example)
-    super(Fog::Google::Compute.new.forwarding_rules, example)
+    super(Fog::Compute[:google].forwarding_rules, example)
   end
 
   def cleanup

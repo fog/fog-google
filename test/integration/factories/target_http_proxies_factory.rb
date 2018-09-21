@@ -4,7 +4,7 @@ require "integration/factories/url_maps_factory"
 class TargetHttpProxiesFactory < CollectionFactory
   def initialize(example)
     @url_maps = UrlMapsFactory.new(example)
-    super(Fog::Google::Compute.new.target_http_proxies, example)
+    super(Fog::Compute[:google].target_http_proxies, example)
   end
 
   def cleanup

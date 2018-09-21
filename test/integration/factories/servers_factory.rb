@@ -4,7 +4,7 @@ require "integration/factories/disks_factory"
 class ServersFactory < CollectionFactory
   def initialize(example)
     @disks = DisksFactory.new(example)
-    super(Fog::Google::Compute.new.servers, example)
+    super(Fog::Compute[:google].servers, example)
   end
 
   def cleanup

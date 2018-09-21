@@ -5,7 +5,7 @@ class TestImages < FogIntegrationTest
   include TestCollection
 
   def setup
-    @subject = Fog::Google::Compute.new.images
+    @subject = Fog::Compute[:google].images
     @factory = ImagesFactory.new(namespaced_name)
   end
 end

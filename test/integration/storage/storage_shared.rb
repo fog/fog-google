@@ -6,7 +6,7 @@ require "tempfile"
 
 class StorageShared < FogIntegrationTest
   def setup
-    @client = Fog::Google::Storage.new
+    @client = Fog::Storage::Google.new
     # Enable retries during the suite. This prevents us from
     # having to manually rate limit our requests.
     ::Google::Apis::RequestOptions.default.retries = 5

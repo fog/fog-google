@@ -5,7 +5,7 @@ class TestHttpHealthChecks < FogIntegrationTest
   include TestCollection
 
   def setup
-    @subject = Fog::Google::Compute.new.http_health_checks
+    @subject = Fog::Compute[:google].http_health_checks
     @factory = HttpHealthChecksFactory.new(namespaced_name)
   end
 end

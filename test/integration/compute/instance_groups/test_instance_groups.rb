@@ -5,7 +5,7 @@ class TestInstanceGroups < FogIntegrationTest
   include TestCollection
 
   def setup
-    @subject = Fog::Google::Compute.new.instance_groups
+    @subject = Fog::Compute[:google].instance_groups
     @factory = InstanceGroupsFactory.new(namespaced_name)
   end
 end

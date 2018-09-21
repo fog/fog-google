@@ -4,7 +4,7 @@ require "base64"
 
 class TestComputeSnapshots < FogIntegrationTest
   def setup
-    @client = Fog::Google::Compute.new
+    @client = Fog::Compute::Google.new
     # Ensure any resources we create with test prefixes are removed
     Minitest.after_run do
       delete_test_resources

@@ -3,7 +3,8 @@ require "helpers/test_helper"
 class UnitTestXMLRequests < MiniTest::Test
   def setup
     Fog.mock!
-    @client = Fog::Google::Storage.new(google_storage_access_key_id: "",
+    @client = Fog::Storage.new(provider: "google",
+                               google_storage_access_key_id: "",
                                google_storage_secret_access_key: "")
   end
 

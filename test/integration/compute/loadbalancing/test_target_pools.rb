@@ -5,9 +5,9 @@ class TestTargetPools < FogIntegrationTest
   include TestCollection
 
   def setup
-    @subject = Fog::Google::Compute.new.target_pools
+    @subject = Fog::Compute[:google].target_pools
     @factory = TargetPoolsFactory.new(namespaced_name)
-    @servers = Fog::Google::Compute.new.servers
+    @servers = Fog::Compute[:google].servers
   end
 
   # Override to include zone in get request

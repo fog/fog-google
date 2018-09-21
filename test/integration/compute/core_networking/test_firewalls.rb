@@ -5,7 +5,7 @@ class TestFirewalls < FogIntegrationTest
   include TestCollection
 
   def setup
-    @subject = Fog::Google::Compute.new.firewalls
+    @subject = Fog::Compute[:google].firewalls
     @factory = FirewallsFactory.new(namespaced_name)
   end
 end

@@ -2,7 +2,7 @@ require "integration/factories/collection_factory"
 
 class InstanceGroupsFactory < CollectionFactory
   def initialize(example)
-    super(Fog::Google::Compute.new.instance_groups, example)
+    super(Fog::Compute[:google].instance_groups, example)
   end
 
   def get(identity)
