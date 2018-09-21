@@ -1,5 +1,4 @@
 require "helpers/test_helper"
-require "pry"
 
 class UnitTestMonitoringCollections < MiniTest::Test
   def setup

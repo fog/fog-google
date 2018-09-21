@@ -2,15 +2,62 @@
 All notable changes to this project will be documented in this file.
 The format is loosely based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## Next release
+## 1.8.0
+
+### User-facing
+
+#### Fixed
+
+- \#419 Locked down fog upstream dependencies to alleviate deprecation warnings
+  until they can be properly dealt with. [temikus]
+- \#400 Small `%Collection%.get` and `%Collection%.all` behaviour fixes [temikus]
+  - `Fog::Google::SQL::Instances.get(nil)` no longer returns an invalid 
+    `sql#instancesList` object.
+  - `Fog::Compute::Google::InstanceGroups.get` and `.all` methods now support more than
+    just `:filter` option, fixed `.all` output if zone wasn't provided.
+  - Fix a typo causing `Operations.get(region:REGION)` to fail.
+  - `Fog::Compute::Google::Images.get(IMAGE, PROJECT)`, now returns `nil` if image is not
+    found rather than throwing `Google::Apis::ClientError`.
+
+### Development changes
+
+#### Added
+
+- \#400 Additional test coverage [temikus]
+  - Expanded tests for `%Collection%.get` behavior - scoped requests (e.g. `get(zone:ZONE)`)
+    and their corresponding code paths are now also tested.
+  - Increase `Fog::Compute::Google::Images` integration test coverage.
+  - Unit tests now work without a `~/.fog` config file set up.
+  - Expanded unit test coverage.
+
+#### Changed
+
+- \#400 Refactored most compute `get()` and `all()` methods to common format. [temikus]
+
+#### Fixed
+
+- \#400 Removed the Travis Ruby 2.5 workaround. [temikus]
+
+## 1.7.1
+
+### User-facing
+
+#### Fixed
+
+- \#412 Fixed `Fog::Storage::GoogleXML::GetObjectHttpUrl#get_object_http_url` 
+  request
+
+## 1.7.0
 
 ### User-facing
 
 #### Added
 
+- \#409 Support query parameters in `Fog::Storage::Google` GET requests [stanhu]
 - \#394 Add some helper methods to `Fog::Compute::Google::Server` [temikus]
   - `.private_ip_address`
   - `.stopped?`
+- \#375 Add timeout options to `Fog::Storage::GoogleJSON` client [dosuken123]
 
 #### Changed
 
@@ -24,6 +71,7 @@ The format is loosely based on [Keep a Changelog](http://keepachangelog.com/en/1
 
 #### Added
 
+- \#409 Expand `Fog::Storage::Google` unit tests [stanhu]
 - \#370 Introducing test coverage back, integrating with codecov.io [temikus]
 - \#373 Increase integration test coverage. [temikus]
   - Add Firewall factory and tests.

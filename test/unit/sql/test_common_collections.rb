@@ -1,5 +1,4 @@
 require "helpers/test_helper"
-require "pry"
 
 class UnitTestSQLCollections < MiniTest::Test
   def setup
