@@ -42,7 +42,8 @@ module TestCollection
   end
 
   def test_get_returns_nil_if_resource_does_not_exist
-    assert_nil @factory.get("fog-test-fake-identity")
+    assert_nil @factory.get("fog-test-fake-identity") if @factory.respond_to?(:get)
+    assert_nil @subject.get("fog-test-fake-identity")
   end
 
   def test_enumerable
