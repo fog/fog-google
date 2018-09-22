@@ -30,7 +30,7 @@ module Fog
       # @option options [String] :app_name The app name to set in the user agent
       # @option options [String] :app_version The app version to set in the user agent
       # @option options [Google::APIClient] :google_client Existing Google API Client
-      # @option options [Hash] :google_client_options A hash to send adition options to Google API Client
+      # @option options [Hash] :google_client_options A hash to send additional options to Google API Client
       # @return [Google::APIClient] Google API Client
       # @raises [ArgumentError] If there is any missing argument
       def initialize_google_client(options)
@@ -117,6 +117,20 @@ module Fog
 
         ::Google::Apis::RequestOptions.default.authorization = auth
         auth
+      end
+
+      ##
+      # Applies given options to the client instance
+      #
+      # @param [Google::Apis::Core::BaseService] service API service client instance
+      # @param [Hash] google_client_options Service client options to apply
+      # @param [Hash] _ignored Rest of the options (for convenience, ignored)
+      # @return [void]
+      def apply_client_options(service, google_client_options: nil, **_ignored)
+        return if google_client_options.nil? || google_client_options.empty?
+        (service.client_options.members & google_client_options.keys).each do |option|
+          service.client_options[option] = google_client_options[option]
+        end
       end
 
       ##
