@@ -13,6 +13,7 @@ module Fog
 
           @client = initialize_google_client(options)
           @pubsub = ::Google::Apis::PubsubV1::PubsubService.new
+          apply_client_options(@pubsub, options)
         end
       end
     end

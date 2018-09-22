@@ -13,6 +13,7 @@ module Fog
 
           initialize_google_client(options)
           @sql = ::Google::Apis::SqladminV1beta4::SQLAdminService.new
+          apply_client_options(@sql, options)
         end
       end
     end

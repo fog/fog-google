@@ -12,6 +12,7 @@ module Fog
 
           initialize_google_client(options)
           @monitoring = ::Google::Apis::MonitoringV3::MonitoringService.new
+          apply_client_options(@monitoring, options)
         end
       end
     end

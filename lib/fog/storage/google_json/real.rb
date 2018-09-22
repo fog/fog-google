@@ -15,6 +15,8 @@ module Fog
 
           @client = initialize_google_client(options)
           @storage_json = ::Google::Apis::StorageV1::StorageService.new
+          apply_client_options(@storage_json, options)
+
           @storage_json.client_options.open_timeout_sec = options[:open_timeout_sec] if options[:open_timeout_sec]
           @storage_json.client_options.read_timeout_sec = options[:read_timeout_sec] if options[:read_timeout_sec]
           @storage_json.client_options.send_timeout_sec = options[:send_timeout_sec] if options[:send_timeout_sec]
