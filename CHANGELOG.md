@@ -1,10 +1,15 @@
 # Changelog
 All notable changes to this project will be documented in this file.
-The format is loosely based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
+The format is loosely based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
+
+This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## 1.8.0
 
 ### User-facing
+
+#### Added
+- \#418 Reintroduce client options for proxy support, etc. [AlexanderZagaynov]
 
 #### Fixed
 
@@ -13,22 +18,25 @@ The format is loosely based on [Keep a Changelog](http://keepachangelog.com/en/1
 - \#400 Small `%Collection%.get` and `%Collection%.all` behaviour fixes [temikus]
   - `Fog::Google::SQL::Instances.get(nil)` no longer returns an invalid 
     `sql#instancesList` object.
-  - `Fog::Compute::Google::InstanceGroups.get` and `.all` methods now support more than
-    just `:filter` option, fixed `.all` output if zone wasn't provided.
+  - `Fog::Compute::Google::InstanceGroups.get` and `.all` methods now support 
+    more than just `:filter` option, fixed `.all` output without `zone` option.
   - Fix a typo causing `Operations.get(region:REGION)` to fail.
-  - `Fog::Compute::Google::Images.get(IMAGE, PROJECT)`, now returns `nil` if image is not
-    found rather than throwing `Google::Apis::ClientError`.
+  - `Fog::Compute::Google::Images.get(IMAGE, PROJECT)`, now returns `nil` if 
+    image is not found rather than throwing `Google::Apis::ClientError`.
 
 ### Development changes
 
 #### Added
 
 - \#400 Additional test coverage [temikus]
-  - Expanded tests for `%Collection%.get` behavior - scoped requests (e.g. `get(zone:ZONE)`)
-    and their corresponding code paths are now also tested.
+  - Expanded tests for `%Collection%.get` behavior - scoped requests 
+    (e.g. `get(zone:ZONE)`) and their corresponding code paths are now also 
+    properly tested.
   - Increase `Fog::Compute::Google::Images` integration test coverage.
   - Unit tests now work without a `~/.fog` config file set up.
   - Expanded unit test coverage.
+- \#424 Add simple integration tests to check client proxy options being 
+  applied.
 
 #### Changed
 
