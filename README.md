@@ -42,8 +42,6 @@ We are always looking for people to improve our code and test coverage, so pleas
 
 ## Pubsub
 
-Note: You **must** have a version of google-api-client > 0.8.5 to use the Pub/Sub API; previous versions will not work.
-
 Fog mostly implements [v1](https://cloud.google.com/pubsub/docs/reference/rest/) of the Google Cloud Pub/Sub API; however some less common API methods are missing. Pull requests for additions would be greatly appreciated.
 
 ## Installation

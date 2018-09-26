@@ -15,6 +15,8 @@ module Google
         Fog::Storage::Google
       when :sql
         Fog::Google::SQL
+      when :pubsub
+        Fog::Google::Pubsub
       else
         raise ArgumentError, "Unsupported #{self} service: #{key}"
       end
@@ -33,6 +35,8 @@ module Google
                       Fog::Google::Monitoring.new
                     when :sql
                       Fog::Google::SQL.new
+                    when :pubsub
+                      Fog::Google::Pubsub.new
                     when :storage
                       Fog::Logger.warning("Google[:storage] is not recommended, use Storage[:google] for portability")
                       Fog::Storage.new(:provider => "Google")

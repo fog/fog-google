@@ -101,20 +101,26 @@ test:
 Then you can run all the live tests:
 
 ```shell
-$ rake test
+$ bundle exec rake test
 ```
 
 or just one API:
 
 ```
-$ rake test:compute
+$ bundle exec rake test:compute
 ```
 (See `rake -T` for all available tasks)
 
-or just one file:
+or just one test:
 
 ```shell
-$ rake test TEST=test/integration/compute/test_servers.rb TESTOPTS="--name=TestServers#test_bootstrap_ssh_destroy"
+$ bundle exec rake test TESTOPTS="--name=TestServers#test_bootstrap_ssh_destroy"
+```
+
+or a series of tests by name:
+
+```
+$ bundle exec rake test TESTOPTS="--name=/test_nil_get/"
 ```
 
 #### Unit tests
@@ -133,7 +139,7 @@ We're in progress of extending the library with more unit tests and contribution
 #### The transition from `shindo` to Minitest
 
 Previously, [shindo](https://github.com/geemus/shindo) was the primary testing framework. 
-We've started moving away from it, and to Minitest, but some artifacts may remain.
+We've moved away from it, and to Minitest, but some artifacts may remain.
 
 For more information on transition, read [#50](https://github.com/fog/fog-google/issues/50).
 

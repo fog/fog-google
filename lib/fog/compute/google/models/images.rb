@@ -46,22 +46,33 @@ module Fog
         end
 
         def get(identity, project = nil)
-          project.nil? ? projects = all_projects : projects = [project]
-          data = nil
-          projects.each do |proj|
+          if project
             begin
-              data = service.get_image(identity, proj).to_h
-              data[:project] = proj
+              image = service.get_image(identity, project).to_h
+              # TODO: Remove response modification - see #405
+              image[:project] = project
+              return new(image)
             rescue ::Google::Apis::ClientError => e
-              next if e.status_code == 404
-              break
-            else
-              break
+              raise e unless e.status_code == 404
+              nil
             end
+          elsif identity
+            projects = all_projects
+            projects.each do |proj|
+              begin
+                response = service.get_image(identity, proj).to_h
+                # TODO: Remove response modification - see #405
+                response[:project] = proj
+                image = response
+                return new(image)
+              rescue ::Google::Apis::ClientError => e
+                next if e.status_code == 404
+                break
+              end
+            end
+            # If nothing is found - return nil
+            nil
           end
-
-          return nil if data.nil?
-          new(data)
         end
 
         def get_from_family(family, project = nil)

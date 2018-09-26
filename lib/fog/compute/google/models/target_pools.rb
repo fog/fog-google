@@ -25,17 +25,14 @@ module Fog
         end
 
         def get(identity, region = nil)
-          response = nil
-          if region.nil?
-            data = all(:filter => "name eq #{identity}").first
-            unless data.nil?
-              response = data.attributes
-            end
-          else
-            response = service.get_target_pool(identity, region).to_h
+          if region
+            target_pool = service.get_target_pool(identity, region).to_h
+            return new(target_pool)
+          elsif identity
+            response = all(:filter => "name eq #{identity}")
+            target_pool = response.first unless response.empty?
+            return target_pool
           end
-          return nil if response.nil?
-          new(response)
         rescue ::Google::Apis::ClientError => e
           raise e unless e.status_code = 404
           nil

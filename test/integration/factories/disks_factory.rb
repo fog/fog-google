@@ -9,6 +9,10 @@ class DisksFactory < CollectionFactory
     @subject.get(identity, TEST_ZONE)
   end
 
+  def all
+    @subject.all(zone: TEST_ZONE)
+  end
+
   def params
     { :name => resource_name,
       :zone_name => TEST_ZONE,

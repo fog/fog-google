@@ -24,15 +24,14 @@ module Fog
         end
 
         def get(identity, zone = nil)
-          response = nil
           if zone
-            response = service.get_disk_type(identity, zone).to_h
+            disk_type = service.get_disk_type(identity, zone).to_h
+            return new(disk_type)
           else
-            disk_types = all(:filter => "name eq .*#{identity}")
-            response = disk_types.first.attributes unless disk_types.empty?
+            response = all(:filter => "name eq .*#{identity}")
+            disk_type = response.first unless response.empty?
+            return disk_type
           end
-          return nil if response.nil?
-          new(response)
         rescue ::Google::Apis::ClientError => e
           raise e unless e.status_code == 404
           nil

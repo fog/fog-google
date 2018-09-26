@@ -23,7 +23,10 @@ module Fog
         # @return [Fog::Google::SQL::Instance] Instance resource
         def get(instance_id)
           instance = service.get_instance(instance_id).to_h
-          if instance
+          # XXX if we pass `nil` to get() it returns empty DB object with
+          # kind set to "sql#instancesList"
+          # see https://github.com/google/google-api-ruby-client/issues/699
+          if instance[:kind].eql?("sql#instance")
             new(instance)
           end
         rescue ::Google::Apis::ClientError => e

@@ -1,20 +1,22 @@
 require "helpers/test_helper"
 
-class UnitTestCollections < MiniTest::Test
+class UnitTestSQLCollections < MiniTest::Test
   def setup
     Fog.mock!
-
-    @client = Fog::Compute.new(provider: "google",
-                               google_project: "foo")
+    @client = Fog::Google::SQL.new(google_project: "foo")
 
     # Exceptions that do not pass test_common_methods:
     #
-    # Projects do not have a "list" method in compute API, so 'all' is not implemented
-    @common_method_exceptions = [Fog::Compute::Google::Projects]
+    # SQL Users API doesn't have a 'get' method
+    # SQL Flags API has only one method - 'list'
+    # SQL Tiers API has only one method - 'list'
+    @common_method_exceptions = [Fog::Google::SQL::Users,
+                                 Fog::Google::SQL::Tiers,
+                                 Fog::Google::SQL::Flags]
     # Enumerate all descendants of Fog::Collection
-    descendants = ObjectSpace.each_object(Fog::Collection.singleton_class).to_a
+    descendants = ObjectSpace.each_object(Fog::Collection.singleton_class)
 
-    @collections = descendants.select { |d| d.name.match(/Fog::Compute::Google/) }
+    @collections = descendants.select { |d| d.name.match(/Fog::Google::SQL/) }
   end
 
   def teardown
@@ -33,6 +35,8 @@ class UnitTestCollections < MiniTest::Test
   end
 
   def test_collection_get_arguments
+    # TODO: Fixture for #352
+    skip
     @collections.each do |klass|
       obj = klass.new
       assert_operator(obj.method(:get).arity, :<=, 1,

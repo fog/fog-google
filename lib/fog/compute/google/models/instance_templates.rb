@@ -10,8 +10,9 @@ module Fog
         end
 
         def get(identity)
-          if instance_template = service.get_instance_template(identity)
-            new(instance_template.to_h)
+          if identity
+            instance_template = service.get_instance_template(identity).to_h
+            return new(instance_template)
           end
         rescue ::Google::Apis::ClientError => e
           raise e unless e.status_code == 404

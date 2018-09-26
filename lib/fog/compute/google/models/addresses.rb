@@ -23,9 +23,15 @@ module Fog
           load(data.map(&:to_h))
         end
 
-        def get(identity, region)
-          if address = service.get_address(identity, region).to_h
-            new(address)
+        def get(identity, region = nil)
+          if region
+            address = service.get_address(identity, region).to_h
+            return new(address)
+          elsif identity
+            response = all(:filter => "name eq #{identity}",
+                           :max_results => 1)
+            address = response.first unless response.empty?
+            return address
           end
         rescue ::Google::Apis::ClientError => e
           raise e unless e.status_code == 404

@@ -3,22 +3,21 @@ require "helpers/test_helper"
 class UnitTestModels < MiniTest::Test
   def setup
     Fog.mock!
-    @client = Fog::Compute.new(:provider => "Google", :google_project => "foo")
+    @client = Fog::Compute.new(provider: "google",
+                               google_project: "foo")
 
-    # Top-level ancestors we do not test
-    common_ancestors = [Fog::Model, Fog::Compute::Server]
     # Do not test models that do not have a create method in API
-    exceptions = [ Fog::Compute::Google::MachineType,
-                   Fog::Compute::Google::Region,
-                   Fog::Compute::Google::DiskType,
-                   Fog::Compute::Google::Operation,
-                   Fog::Compute::Google::Zone,
-                   Fog::Compute::Google::Snapshot,
-                   Fog::Compute::Google::Project ]
+    exceptions = [Fog::Compute::Google::MachineType,
+                  Fog::Compute::Google::Region,
+                  Fog::Compute::Google::DiskType,
+                  Fog::Compute::Google::Operation,
+                  Fog::Compute::Google::Zone,
+                  Fog::Compute::Google::Snapshot,
+                  Fog::Compute::Google::Project]
     # Enumerate all descendants of Fog::Model
     descendants = ObjectSpace.each_object(Fog::Model.singleton_class).to_a
 
-    @models = descendants - common_ancestors - exceptions
+    @models = descendants.select { |d| d.name.match(/Fog::Compute::Google/) } - exceptions
   end
 
   def teardown

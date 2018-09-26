@@ -17,10 +17,11 @@ module Fog
           load(items)
         end
 
-        def get(snap_id)
-          response = service.get_snapshot(snap_id)
-          return nil if response.nil?
-          new(response.to_h)
+        def get(identity)
+          if identity
+            snapshot = service.get_snapshot(identity).to_h
+            return new(snapshot)
+          end
         rescue ::Google::Apis::ClientError => e
           raise e unless e.status_code == 404
           nil

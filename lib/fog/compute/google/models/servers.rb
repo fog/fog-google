@@ -28,15 +28,15 @@ module Fog
 
         # TODO: This method needs to take self_links as well as names
         def get(identity, zone = nil)
-          response = nil
           if zone
-            response = service.get_server(identity, zone).to_h
-          else
-            server = all(:filter => "name eq .*#{identity}").first
-            response = server.attributes if server
+            server = service.get_server(identity, zone).to_h
+            return new(server)
+          elsif identity
+            response = all(:filter => "name eq .*#{identity}",
+                           :max_results => 1)
+            server = response.first unless response.empty?
+            return server
           end
-          return nil if response.nil?
-          new(response)
         rescue ::Google::Apis::ClientError => e
           raise e unless e.status_code == 404
           nil

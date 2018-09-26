@@ -4,9 +4,10 @@ module Fog
       class SslCertificates < Fog::Collection
         model Fog::Compute::Google::SslCertificate
 
-        def get(certificate_name)
-          if certificate = service.get_ssl_certificate(certificate_name)
-            new(certificate.to_h)
+        def get(identity)
+          if identity
+            ssl_certificate = service.get_ssl_certificate(identity).to_h
+            return new(ssl_certificate)
           end
         rescue ::Google::Apis::ClientError => e
           raise e unless e.status_code == 404

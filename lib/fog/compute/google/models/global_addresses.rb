@@ -10,8 +10,9 @@ module Fog
         end
 
         def get(identity)
-          if address = service.get_global_address(identity).to_h
-            new(address)
+          if identity
+            address = service.get_global_address(identity).to_h
+            return new(address)
           end
         rescue ::Google::Apis::ClientError => e
           raise e unless e.status_code == 404

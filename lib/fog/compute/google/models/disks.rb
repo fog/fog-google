@@ -23,10 +23,16 @@ module Fog
           load(data.map(&:to_h))
         end
 
-        def get(identity, zone)
-          response = service.get_disk(identity, zone)
-          return nil if response.nil?
-          new(response.to_h)
+        def get(identity, zone = nil)
+          if zone
+            disk = service.get_disk(identity, zone).to_h
+            return new(disk)
+          elsif identity
+            response = all(:filter => "name eq #{identity}",
+                           :max_results => 1)
+            disk = response.first unless response.empty?
+            return disk
+          end
         rescue ::Google::Apis::ClientError => e
           raise e unless e.status_code == 404
           nil

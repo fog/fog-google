@@ -9,7 +9,34 @@ The format is loosely based on [Keep a Changelog](http://keepachangelog.com/en/1
 #### Fixed
 
 - \#419 Locked down fog upstream dependencies to alleviate deprecation warnings
-  until they can be properly dealt with.
+  until they can be properly dealt with. [temikus]
+- \#400 Small `%Collection%.get` and `%Collection%.all` behaviour fixes [temikus]
+  - `Fog::Google::SQL::Instances.get(nil)` no longer returns an invalid 
+    `sql#instancesList` object.
+  - `Fog::Compute::Google::InstanceGroups.get` and `.all` methods now support more than
+    just `:filter` option, fixed `.all` output if zone wasn't provided.
+  - Fix a typo causing `Operations.get(region:REGION)` to fail.
+  - `Fog::Compute::Google::Images.get(IMAGE, PROJECT)`, now returns `nil` if image is not
+    found rather than throwing `Google::Apis::ClientError`.
+
+### Development changes
+
+#### Added
+
+- \#400 Additional test coverage [temikus]
+  - Expanded tests for `%Collection%.get` behavior - scoped requests (e.g. `get(zone:ZONE)`)
+    and their corresponding code paths are now also tested.
+  - Increase `Fog::Compute::Google::Images` integration test coverage.
+  - Unit tests now work without a `~/.fog` config file set up.
+  - Expanded unit test coverage.
+
+#### Changed
+
+- \#400 Refactored most compute `get()` and `all()` methods to common format. [temikus]
+
+#### Fixed
+
+- \#400 Removed the Travis Ruby 2.5 workaround. [temikus]
 
 ## 1.7.1
 

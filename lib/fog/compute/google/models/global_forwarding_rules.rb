@@ -10,8 +10,9 @@ module Fog
         end
 
         def get(identity)
-          if rule = service.get_global_forwarding_rule(identity).to_h
-            new(rule)
+          if identity
+            rule = service.get_global_forwarding_rule(identity).to_h
+            return new(rule)
           end
         rescue ::Google::Apis::ClientError => e
           raise e unless e.status_code == 404

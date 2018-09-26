@@ -10,8 +10,9 @@ module Fog
         end
 
         def get(identity)
-          if target_http_proxy = service.get_target_http_proxy(identity).to_h
-            new(target_http_proxy)
+          if identity
+            target_http_proxy = service.get_target_http_proxy(identity).to_h
+            return new(target_http_proxy)
           end
         rescue ::Google::Apis::ClientError => e
           raise e unless e.status_code == 404

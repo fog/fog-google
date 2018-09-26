@@ -12,10 +12,11 @@ module Fog
             :order_by => order_by,
             :page_token => page_token
           }
-          data = []
+
           if zone
-            data += service.list_instance_group_managers(zone, opts).items || []
+            data = service.list_instance_group_managers(zone, opts).items || []
           else
+            data = []
             service.list_aggregated_instance_group_managers(opts).items.each_value do |group|
               data.concat(group.instance_group_managers) if group.instance_group_managers
             end
@@ -26,11 +27,13 @@ module Fog
 
         def get(identity, zone = nil)
           if zone
-            if instance_group_manager = service.get_instance_group_manager(identity, zone)
-              new(instance_group_manager.to_h)
-            end
-          else
-            all(:filter => "name eq .*#{identity}").first
+            instance_group_manager = service.get_instance_group_manager(identity, zone).to_h
+            return new(instance_group_manager)
+          elsif identity
+            response = all(:filter => "name eq .*#{identity}",
+                           :max_results => 1)
+            instance_group_manager = response.first unless response.empty?
+            return instance_group_manager
           end
         rescue ::Google::Apis::ClientError => e
           raise e unless e.status_code == 404

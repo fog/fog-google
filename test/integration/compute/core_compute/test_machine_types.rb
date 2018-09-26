@@ -23,6 +23,15 @@ class TestMachineTypes < FogIntegrationTest
                     "Number of all machine types should be greater or equal to test zones * machine_types")
   end
 
+  def test_scoped_all
+    subject_list = @subject.all
+    scoped_subject_list = @subject.all(zone: TEST_ZONE)
+
+    # Assert that whatever .all(scope) returns is a subset of .all
+    assert(scoped_subject_list.all? { |x| subject_list.include? x },
+           "Output of @subject.all(zone:#{TEST_ZONE}) must be a subset of @subject.all")
+  end
+
   def test_get
     # This tests only in last zone since not all zones contain all machine types
     NAMES.each do |name|
@@ -38,5 +47,9 @@ class TestMachineTypes < FogIntegrationTest
 
   def test_enumerable
     assert_respond_to @subject, :each
+  end
+
+  def test_nil_get
+    assert_nil @subject.get(nil)
   end
 end

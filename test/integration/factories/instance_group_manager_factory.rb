@@ -12,6 +12,14 @@ class InstanceGroupManagerFactory < CollectionFactory
     @instance_template.cleanup
   end
 
+  def get(identity)
+    @subject.get(identity, TEST_ZONE)
+  end
+
+  def all
+    @subject.all(zone: TEST_ZONE)
+  end
+
   def params
     { :name => resource_name,
       :zone => TEST_ZONE,

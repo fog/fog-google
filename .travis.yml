@@ -12,9 +12,6 @@ matrix:
     - rvm: 2.5
     - rvm: jruby-head
   allow_failures:
-  # allow 2.5 to fail until Travis CI is fixed.
-  # See travis-ci/travis-ci#8969
-    - rvm: 2.5
     - rvm: jruby-head
 notifications:
   email: false
