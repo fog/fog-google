@@ -4,6 +4,14 @@ The format is loosely based on [Keep a Changelog](http://keepachangelog.com/en/1
 
 This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 1.8.1
+
+### User-facing
+
+#### Fixed
+
+- \#428 Relax fog-core lower version constraint for ManageIQ [temikus]
+
 ## 1.8.0
 
 ### User-facing
