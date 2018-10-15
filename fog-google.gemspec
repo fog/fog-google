@@ -30,7 +30,6 @@ Gem::Specification.new do |spec|
   
   # Debugger
   spec.add_development_dependency "pry"
-  spec.add_development_dependency "pry-byebug"
 
   # Testing gems
   spec.add_development_dependency "retriable"
