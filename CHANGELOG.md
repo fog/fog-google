@@ -4,6 +4,15 @@ The format is loosely based on [Keep a Changelog](http://keepachangelog.com/en/1
 
 This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## Next
+
+### Development changes
+
+#### Fixed
+
+- \#425 Fix bundling in development environment on JRuby [temikus]
+  - Adding JRuby 9.1 into Travis
+
 ## 1.8.1
 
 ### User-facing
