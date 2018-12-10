@@ -102,8 +102,15 @@ module Fog
           collection.attached_disk_obj(self_link, opts)
         end
 
+        # A legacy shorthand for attached_disk_obj
+        #
+        # @param [Object]  writable  The mode in which to attach this disk.
+        #   (defaults to READ_WRITE)
+        # @param [Object]  auto_delete  Specifies whether the disk will be
+        #   auto-deleted when the instance is deleted. (defaults to false)
+        # @return [Hash]
         def get_as_boot_disk(writable = true, auto_delete = false)
-          attached_disk_obj(boot:true,
+          attached_disk_obj(boot: true,
                             writable: writable,
                             auto_delete: auto_delete)
         end
