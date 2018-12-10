@@ -67,7 +67,7 @@ module Fog
         def zone_name
           zone.nil? ? nil : zone.split("/")[-1]
         end
-        
+
         # Returns an attached disk configuration hash.
         #
         # Compute API needs attached disks to be specified in a custom format.
@@ -103,13 +103,9 @@ module Fog
         end
 
         def get_as_boot_disk(writable = true, auto_delete = false)
-          {
-            :auto_delete => auto_delete,
-            :boot => true,
-            :source => self_link,
-            :mode =>  writable ? "READ_WRITE" : "READ_ONLY",
-            :type => "PERSISTENT"
-          }
+          attached_disk_obj(boot:true,
+                            writable: writable,
+                            auto_delete: auto_delete)
         end
 
         def ready?
