@@ -95,7 +95,7 @@ module Fog
         #     using a customer-supplied encryption key.
         #   @option opts [Object]  :auto_delete  Specifies whether the disk will
         #     be auto-deleted when the instance is deleted. (defaults to false)
-        # 
+        #
         # @return [Hash] Attached disk configuration hash
         def attached_disk_obj(opts = {})
           requires :self_link
