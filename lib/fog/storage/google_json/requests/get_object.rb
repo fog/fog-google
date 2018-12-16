@@ -68,6 +68,8 @@ module Fog
           end
 
           object
+        ensure
+          buf.close! rescue nil
         end
       end
 
