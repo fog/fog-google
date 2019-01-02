@@ -74,9 +74,13 @@ module Fog
         end
 
         def get_as_boot_disk(writable = true, auto_delete = false)
+          get_as_disk(writable, true, auto_delete)
+        end
+
+        def get_as_disk(writable = true, boot = false, auto_delete = false)
           {
             :auto_delete => auto_delete,
-            :boot => true,
+            :boot => boot,
             :source => self_link,
             :mode =>  writable ? "READ_WRITE" : "READ_ONLY",
             :type => "PERSISTENT"
