@@ -29,4 +29,25 @@ class TestDisks < FogIntegrationTest
                            :type => "PERSISTENT" }
     assert_equal(example_with_params, config_with_params)
   end
+
+  def test_create_snapshot
+    disk = @factory.create
+    disk.wait_for { ready? }
+
+    snapshot = disk.create_snapshot("fog-test-snapshot")
+
+    assert(snapshot.is_a?(Fog::Compute::Google::Snapshot),
+           "Resulting snapshot should be a snapshot object.")
+
+    assert_raises(ArgumentError) { snapshot.set_labels(["bar", "test"]) }
+
+    snapshot.set_labels(foo: "bar", fog: "test")
+
+    assert_equal(snapshot.labels[:foo], "bar")
+    assert_equal(snapshot.labels[:fog], "test")
+
+    # Clean up the snapshot
+    operation = snapshot.destroy
+    operation.wait_for { ready? }
+  end
 end
