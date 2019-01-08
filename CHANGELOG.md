@@ -17,6 +17,7 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 - \#425 Miscellaneous dev improvements around JRuby and disk handling [temikus]
   - Fix bundling in development environment on JRuby
   - Adding JRuby 9.1 into Travis
+  - Remove EOL versions of ruby from Travis
   - Consolidated logic of `Disk.get_as_boot_disk` and increase doc coverage of
     disk-associated methods.
   - Added integration tests for disk snapshots + a guard method for 
