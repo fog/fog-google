@@ -6,24 +6,37 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 
 ## Next
 
+## 1.8.2
+
 ### User-facing
+
+#### Added
 
 - \#435 Added additional examples for attached disks usage. [temikus]
 
+#### Fixed
+
+- \#433 Allow the api to close Tempfiles inline, improving disk utilization. 
+        [itopalov]
+
 ### Development changes
+
+#### Added
+
+- \#425 Integration on Jruby + disk snapshot tests: [temikus]
+  - Adding JRuby 9.1 into Travis
+  - Added integration tests for disk snapshots
 
 #### Fixed
 
-- \#425 Miscellaneous dev improvements around JRuby and disk handling [temikus]
+- \#432 Relax fog-json constraint to minor version. [pravi]
+
+- \#425 Miscellaneous dev improvements around JRuby and disk handling: [temikus]
   - Fix bundling in development environment on JRuby
-  - Adding JRuby 9.1 into Travis
   - Remove EOL versions of ruby from Travis
   - Consolidated logic of `Disk.get_as_boot_disk` and increase doc coverage of
     disk-associated methods.
-  - Added integration tests for disk snapshots + a guard method for 
-    `Snapshot.add_labels`
-
-- \#435 
+  - Add a guard a guard method for `Snapshot.add_labels`
 
 ## 1.8.1
 
