@@ -38,6 +38,34 @@ module Fog
           nil
         end
 
+        # Returns an attached disk configuration hash.
+        #
+        # Compute API needs attached disks to be specified in a custom format.
+        # This provides a handy shortcut for generating a preformatted config.
+        #
+        # Example output:
+        # {:auto_delete=>false,
+        #  :boot=>true,
+        #  :mode=>"READ_WRITE",
+        #  :source=>"https://www.googleapis.com/compute/v1/projects/myproj/zones/us-central1-f/disks/mydisk",
+        #  :type=>"PERSISTENT"}
+        #
+        # See Instances.insert API docs for more info:
+        # https://cloud.google.com/compute/docs/reference/rest/v1/instances/insert
+        #
+        # @param [String]  source  self_link of an existing disk resource
+        # @param [Boolean]  writable  The mode in which to attach this disk.
+        #   (defaults to READ_WRITE)
+        # @param [Boolean]  boot  Indicates whether this is a boot disk.
+        #   (defaults to false)
+        # @param [String]  device_name  Specifies a unique device name of your
+        #   choice that is reflected into the /dev/disk/by-id/google-* tree of
+        #   a Linux operating system running within the instance.
+        # @param [Object]  encryption_key  Encrypts or decrypts a disk using
+        #   a customer-supplied encryption key.
+        # @param [Object]  auto_delete  Specifies whether the disk will be
+        #   auto-deleted when the instance is deleted. (defaults to false)
+        # @return [Hash]
         def attached_disk_obj(source,
                               writable: true,
                               boot: false,

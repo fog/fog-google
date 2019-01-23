@@ -39,6 +39,12 @@ module Fog
 
         def set_labels(new_labels)
           requires :identity, :label_fingerprint
+
+          unless new_labels.is_a? Hash
+            raise ArgumentError,
+                  "Labels should be a hash, e.g. {foo: \"bar\",fog: \"test\"}"
+          end
+
           service.set_snapshot_labels(identity, label_fingerprint, new_labels)
           reload
         end
