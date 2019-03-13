@@ -9,8 +9,6 @@ PR when the test completes.
 
 In order to run the fog-google Concourse Pipeline you must have an existing
 [Concourse](http://concourse.ci) environment.
-See [Deploying Concourse on Google Compute Engine](https://github.com/cloudfoundry-incubator/bosh-google-cpi-release/blob/master/docs/concourse/README.md)
-for instructions.
 
 To deploy the pipeline:
 
@@ -28,13 +26,13 @@ file. See [Credentials Requirements](#credentials-requirements) for specific ins
 * Set the fog-google pipeline:
 
 ```
-fly -t fog-ci set-pipeline -p fog-google -c pipeline.yml -l credentials.yml
+fly -t fog-ci set-pipeline -p pr-integration -c pipeline.yml -l credentials.yml
 ```
 
 * Unpause the fog-google pipeline:
 
 ```
-fly -t fog-ci unpause-pipeline -p fog-google
+fly -t fog-ci unpause-pipeline -p pr-integration
 ```
 
 ## Credentials Requirements
@@ -42,18 +40,19 @@ fly -t fog-ci unpause-pipeline -p fog-google
 Several external pieces of authentication are needed for credentials.yml
 
 1. A JSON Service Account File for a service account with at least Editor access to the project.
-    * To get a Service Account File, see [here](https://developers.google.com/identity/protocols/OAuth2ServiceAccount#creatinganaccount) 
+    * To get a Service Account File, see [here](https://developers.google.com/identity/protocols/OAuth2ServiceAccount#creatinganaccount)
       and create using the Project/Editor role.
 
 1. A [Github Access Token](https://github.com/blog/1509-personal-api-tokens) with at least
 `repo:status` access and a private key with push access to the `fog/fog-google` repositoy.
 
+1. A [Codecov.io](https://codecov.io/) token for tracking test coverage.
+
 These items are equivalent to your login credentials for their resources.
 
 ## Login Gotchas
 
-* If your Concourse deployment is using a self-signed certificate, use `--insecure` to
-trust the provided certificate.
+* Our concourse pipeline is using GitHub auth, providing access to manipulate the pipeline to the members of the [fog-google team](https://github.com/orgs/fog/teams/fog-google), managed through the OAuth application managed by [fog-google bot](https://github.com/fog-google-bot).
 
 * If logging into a specific team, ie `fog-google`, use `--team-name fog-google` to specify that.
 
