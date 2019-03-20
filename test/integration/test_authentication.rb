@@ -27,13 +27,6 @@ class TestAuthentication < FogIntegrationTest
     assert_raises(ArgumentError) { Fog::Compute::Google.new(:google_project => nil) }
   end
 
-  def test_raises_argument_error_when_google_client_email_is_missing
-    assert_raises(ArgumentError) do
-      Fog::Compute::Google.new(:google_client_email => nil,
-                               :google_json_key_location => nil)
-    end # JSON key overrides google_client_email
-  end
-
   def test_raises_argument_error_when_google_keys_are_given
     assert_raises(ArgumentError) do
       Fog::Compute::Google.new(:google_key_location => nil,
