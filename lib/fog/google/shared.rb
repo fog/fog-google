@@ -21,7 +21,6 @@ module Fog
       #
       # @param [Hash] options Google API options
       # @option options [Google::Auth|Signet] :google_auth Manually created authorization to use
-      # @option options [String] :google_client_email A @developer.gserviceaccount.com email address to use
       # @option options [String] :google_key_location The location of a pkcs12 key file
       # @option options [String] :google_key_string The content of the pkcs12 key file
       # @option options [String] :google_json_key_location The location of a JSON key file
@@ -65,6 +64,11 @@ module Fog
           raise ArgumentError.new("Deprecated argument no longer works: google_key_string")
         end
 
+
+        if options[:google_client_email]
+          Fog::Logger.warning("Deprecated argument no longer required: google_client_email")
+        end
+
         # Validate required arguments
         unless options[:google_api_scope_url]
           raise ArgumentError.new("Missing required arguments: google_api_scope_url")
@@ -95,11 +99,6 @@ module Fog
           json_key_hash = Fog::JSON.decode(json_key)
           unless json_key_hash.key?("client_email") || json_key_hash.key?("private_key")
             raise ArgumentError.new("Invalid Google JSON key")
-          end
-
-          options[:google_client_email] = json_key_hash["client_email"]
-          unless options[:google_client_email]
-            raise ArgumentError.new("Missing required arguments: google_client_email")
           end
 
           auth = ::Google::Auth::ServiceAccountCredentials.make_creds(

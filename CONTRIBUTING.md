@@ -94,7 +94,6 @@ make sure you have a `:test` credential in `~/.fog`, something like:
 ```
 test:
   google_project: my-project
-  google_client_email: xxxxxxxxxxxxx-xxxxxxxxxxxxx@developer.gserviceaccount.com
   google_json_key_location: /path/to/my-project-xxxxxxxxxxxxx.json
 ```
 

@@ -9,7 +9,6 @@ module Fog
         :app_name,
         :app_version,
         :google_client,
-        :google_client_email,
         :google_client_options,
         :google_key_location,
         :google_key_string,

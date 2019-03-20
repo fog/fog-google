@@ -12,6 +12,5 @@ params:
   rake_task: replace-me
   codecov_token: replace-me
   google_project: replace-me
-  google_client_email: replace-me
   google_json_key_data: |
     replace-me

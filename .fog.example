@@ -15,7 +15,6 @@
 # START GOOGLE CONFIG
 my_google_credentials:
     google_project: my-project-id
-    google_client_email: xxxxxxxxxxx-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx@developer.gserviceaccount.com
     google_json_key_location: /path/to/my-project-xxxxxxxxxxxx.json
     # You can also provide service account credentials with `google_json_key_string` or 
     # with `google_key_location` and `google_key_string` for P12 private keys.
