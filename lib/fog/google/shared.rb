@@ -168,20 +168,20 @@ module Fog
       # @return [Google::Auth::DefaultCredentials] - google auth object
       def process_fallback_auth(options)
         Fog::Logger.warning(
-            "Didn't detect any client auth settings, " \
-              "trying to fall back to application default credentials..."
+          "Didn't detect any client auth settings, " \
+          "trying to fall back to application default credentials..."
         )
         begin
           return process_application_default_auth(options)
         rescue
           raise Fog::Errors::Error.new(
-              "Fallback auth failed, could not configure authentication for Fog client.\n" \
-                "Check your auth options, must be one of:\n" \
-                "- :google_json_key_location,\n" \
-                "- :google_json_key_string,\n" \
-                "- :google_auth,\n" \
-                "- :google_application_default,\n" \
-                "If credentials are valid - please, file a bug to fog-google." \
+            "Fallback auth failed, could not configure authentication for Fog client.\n" \
+              "Check your auth options, must be one of:\n" \
+              "- :google_json_key_location,\n" \
+              "- :google_json_key_string,\n" \
+              "- :google_auth,\n" \
+              "- :google_application_default,\n" \
+              "If credentials are valid - please, file a bug to fog-google." \
           )
         end
       end
@@ -200,8 +200,8 @@ module Fog
         validate_json_credentials(json_key)
 
         ::Google::Auth::ServiceAccountCredentials.make_creds(
-            :json_key_io => StringIO.new(json_key),
-            :scope => options[:google_api_scope_url]
+          :json_key_io => StringIO.new(json_key),
+          :scope => options[:google_api_scope_url]
         )
       end
 
