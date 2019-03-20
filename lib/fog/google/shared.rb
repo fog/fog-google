@@ -73,23 +73,7 @@ module Fog
         elsif options[:application_default]
           auth = process_application_default_auth(options)
         else
-          Fog::Logger.warning(
-              "Didn't detect any explicit auth settings, " \
-              "trying to use application default credentials."
-          )
-          auth = process_application_default_auth(options)
-        end
-
-        if auth.nil?
-          raise Fog::Errors::Error.new(
-              "Failed to configure authentication for Fog client.\n" \
-                "Check your auth options, must be one of:\n" \
-                "- :google_json_key_location,\n" \
-                "- :google_json_key_string,\n" \
-                "- :google_auth,\n" \
-                "- :application_default,\n" \
-                "If credentials are valid - please, file a bug to fog-google." \
-          )
+          auth = process_fallback_auth(options)
         end
 
         ::Google::Apis::RequestOptions.default.authorization = auth
@@ -173,11 +157,31 @@ module Fog
       # @param [Hash]  options - client options hash
       # @return [Google::Auth::DefaultCredentials] - google auth object
       def process_application_default_auth(options)
+        ::Google::Auth.get_application_default(options[:google_api_scope_url])
+      end
+
+      # Helper method to process fallback authentication
+      # Current fallback is application default authentication
+      #
+      # @param [Hash]  options - client options hash
+      # @return [Google::Auth::DefaultCredentials] - google auth object
+      def process_fallback_auth(options)
+        Fog::Logger.warning(
+            "Didn't detect any client auth settings, " \
+              "trying to fall back to application default credentials..."
+        )
         begin
-          return ::Google::Auth.get_application_default(options[:google_api_scope_url])
-        rescue RuntimeError => e
-          # Google API Client returns runtime error if it cannot load up creds
-          nil
+          return process_application_default_auth(options)
+        rescue
+          raise Fog::Errors::Error.new(
+              "Fallback auth failed, could not configure authentication for Fog client.\n" \
+                "Check your auth options, must be one of:\n" \
+                "- :google_json_key_location,\n" \
+                "- :google_json_key_string,\n" \
+                "- :google_auth,\n" \
+                "- :application_default,\n" \
+                "If credentials are valid - please, file a bug to fog-google." \
+          )
         end
       end
 
