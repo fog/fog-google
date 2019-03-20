@@ -49,30 +49,7 @@ module Fog
           raise error
         end
 
-        # Users can no longer provide their own clients due to rewrite of auth
-        # in https://github.com/google/google-api-ruby-client/ version 0.9.
-        if options[:google_client]
-          raise ArgumentError.new("Deprecated argument no longer works: google_client")
-        end
-
-        # They can also no longer use pkcs12 files, because Google's new auth
-        # library doesn't support them either.
-        if options[:google_key_location]
-          raise ArgumentError.new("Deprecated argument no longer works: google_key_location")
-        end
-        if options[:google_key_string]
-          raise ArgumentError.new("Deprecated argument no longer works: google_key_string")
-        end
-
-
-        if options[:google_client_email]
-          Fog::Logger.warning("Deprecated argument no longer required: google_client_email")
-        end
-
-        # Validate required arguments
-        unless options[:google_api_scope_url]
-          raise ArgumentError.new("Missing required arguments: google_api_scope_url")
-        end
+        validate_client_options(options)
 
         application_name = "fog"
         unless options[:app_name].nil?
@@ -88,36 +65,31 @@ module Fog
         end
 
         auth = nil
+
         if options[:google_json_key_location] || options[:google_json_key_string]
-          if options[:google_json_key_location]
-            json_key_location = File.expand_path(options[:google_json_key_location])
-            json_key = File.open(json_key_location, "r", &:read)
-          else
-            json_key = options[:google_json_key_string]
-          end
-
-          json_key_hash = Fog::JSON.decode(json_key)
-          unless json_key_hash.key?("client_email") || json_key_hash.key?("private_key")
-            raise ArgumentError.new("Invalid Google JSON key")
-          end
-
-          auth = ::Google::Auth::ServiceAccountCredentials.make_creds(
-            :json_key_io => StringIO.new(json_key_hash.to_json),
-            :scope => options[:google_api_scope_url]
-          )
+          auth = process_key_auth(options)
         elsif options[:google_auth]
           auth = options[:google_auth]
+        elsif options[:application_default]
+          auth = process_application_default_auth(options)
         else
-          # fall back to Application Default Credentials before erroring
-          auth = ::Google::Auth.get_application_default(
-            options[:google_api_scope_url]
+          Fog::Logger.warning(
+              "Didn't detect any explicit auth settings, " \
+              "trying to use application default credentials."
           )
-          if auth.nil?
-            raise ArgumentError.new(
-              "Missing required arguments: google_json_key_location, " \
-              "google_json_key_string or google_auth"
-            )
-          end
+          auth = process_application_default_auth(options)
+        end
+
+        if auth.nil?
+          raise Fog::Errors::Error.new(
+              "Failed to configure authentication for Fog client.\n" \
+                "Check your auth options, must be one of:\n" \
+                "- :google_json_key_location,\n" \
+                "- :google_json_key_string,\n" \
+                "- :google_auth,\n" \
+                "- :application_default,\n" \
+                "If credentials are valid - please, file a bug to fog-google." \
+          )
         end
 
         ::Google::Apis::RequestOptions.default.authorization = auth
@@ -192,6 +164,82 @@ module Fog
         end
 
         response
+      end
+
+      private
+
+      # Helper method to process application default authentication
+      #
+      # @param [Hash]  options - client options hash
+      # @return [Google::Auth::DefaultCredentials] - google auth object
+      def process_application_default_auth(options)
+        begin
+          return ::Google::Auth.get_application_default(options[:google_api_scope_url])
+        rescue RuntimeError => e
+          # Google API Client returns runtime error if it cannot load up creds
+          nil
+        end
+      end
+
+      # Helper method to process key authentication
+      #
+      # @param [Hash]  options - client options hash
+      # @return [Google::Auth::ServiceAccountCredentials] - google auth object
+      def process_key_auth(options)
+        if options[:google_json_key_location]
+          json_key = File.read(File.expand_path(options[:google_json_key_location]))
+        elsif options[:google_json_key_string]
+          json_key = options[:google_json_key_string]
+        end
+
+        validate_json_credentials(json_key)
+
+        ::Google::Auth::ServiceAccountCredentials.make_creds(
+            :json_key_io => StringIO.new(json_key),
+            :scope => options[:google_api_scope_url]
+        )
+      end
+
+      # Helper method to sort out deprecated and missing auth options
+      #
+      # @param [Hash]  options - client options hash
+      def validate_client_options(options)
+        # Users can no longer provide their own clients due to rewrite of auth
+        # in https://github.com/google/google-api-ruby-client/ version 0.9.
+        if options[:google_client]
+          raise ArgumentError.new("Deprecated argument no longer works: google_client")
+        end
+
+        # They can also no longer use pkcs12 files, because Google's new auth
+        # library doesn't support them either.
+        if options[:google_key_location]
+          raise ArgumentError.new("Deprecated auth method no longer works: google_key_location")
+        end
+        if options[:google_key_string]
+          raise ArgumentError.new("Deprecated auth method no longer works: google_key_string")
+        end
+
+        # Google client email option is no longer needed
+        if options[:google_client_email]
+          Fog::Logger.deprecation("Argument no longer needed for auth: google_client_email")
+        end
+
+        # Validate required arguments
+        unless options[:google_api_scope_url]
+          raise ArgumentError.new("Missing required arguments: google_api_scope_url")
+        end
+      end
+
+      # Helper method to checks whether the necessary fields are present in
+      # JSON key credentials
+      #
+      # @param [String]  json_key - Google json auth key string
+      def validate_json_credentials(json_key)
+        json_key_hash = Fog::JSON.decode(json_key)
+
+        unless json_key_hash.key?("client_email") || json_key_hash.key?("private_key")
+          raise ArgumentError.new("Invalid Google JSON key")
+        end
       end
     end
   end
