@@ -110,14 +110,13 @@ module Fog
           auth = options[:google_auth]
         else
           # fall back to Application Default Credentials before erroring
-          begin
-            auth = ::Google::Auth::DefaultCredentials.from_well_known_path(
-              options[:google_api_scope_url]
-            )
-          rescue StandardError
+          auth = ::Google::Auth.get_application_default(
+            options[:google_api_scope_url]
+          )
+          if auth.nil?
             raise ArgumentError.new(
-              "Application Default Credentials not found; Missing required " \
-              "arguments: google_json_key_location, google_json_key_string or google_auth"
+              "Missing required arguments: google_json_key_location, " \
+              "google_json_key_string or google_auth"
             )
           end
         end
