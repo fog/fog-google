@@ -20,6 +20,7 @@ module Fog
       # Initializes the Google API Client
       #
       # @param [Hash] options Google API options
+      # @option options [Bool]   :google_application_default Explicitly use application default credentials
       # @option options [Google::Auth|Signet] :google_auth Manually created authorization to use
       # @option options [String] :google_key_location The location of a pkcs12 key file
       # @option options [String] :google_key_string The content of the pkcs12 key file
@@ -70,7 +71,7 @@ module Fog
           auth = process_key_auth(options)
         elsif options[:google_auth]
           auth = options[:google_auth]
-        elsif options[:application_default]
+        elsif options[:google_application_default]
           auth = process_application_default_auth(options)
         else
           auth = process_fallback_auth(options)
@@ -179,7 +180,7 @@ module Fog
                 "- :google_json_key_location,\n" \
                 "- :google_json_key_string,\n" \
                 "- :google_auth,\n" \
-                "- :application_default,\n" \
+                "- :google_application_default,\n" \
                 "If credentials are valid - please, file a bug to fog-google." \
           )
         end
