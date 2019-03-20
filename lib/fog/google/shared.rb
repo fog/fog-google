@@ -78,6 +78,11 @@ module Fog
         ::Google::Apis::ClientOptions.default.application_name = application_name
         ::Google::Apis::ClientOptions.default.application_version = Fog::Google::VERSION
 
+        if ENV["DEBUG"]
+          ::Google::Apis.logger = ::Logger.new(::STDERR)
+          ::Google::Apis.logger.level = ::Logger::DEBUG
+        end
+
         auth = nil
         if options[:google_json_key_location] || options[:google_json_key_string]
           if options[:google_json_key_location]
@@ -97,11 +102,6 @@ module Fog
             raise ArgumentError.new("Missing required arguments: google_client_email")
           end
 
-          if ENV["DEBUG"]
-            ::Google::Apis.logger = ::Logger.new(::STDERR)
-            ::Google::Apis.logger.level = ::Logger::DEBUG
-          end
-
           auth = ::Google::Auth::ServiceAccountCredentials.make_creds(
             :json_key_io => StringIO.new(json_key_hash.to_json),
             :scope => options[:google_api_scope_url]
@@ -109,10 +109,16 @@ module Fog
         elsif options[:google_auth]
           auth = options[:google_auth]
         else
-          raise ArgumentError.new(
-            "Missing required arguments: google_json_key_location, "\
-            "google_json_key_string or google_auth"
+          # fall back to Application Default Credentials before erroring
+          auth = ::Google::Auth.get_application_default(
+            options[:google_api_scope_url]
           )
+          if auth.nil?
+            raise ArgumentError.new(
+              "Missing required arguments: google_json_key_location, " \
+              "google_json_key_string or google_auth"
+            )
+          end
         end
 
         ::Google::Apis::RequestOptions.default.authorization = auth
