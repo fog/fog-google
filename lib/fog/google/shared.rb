@@ -22,14 +22,11 @@ module Fog
       # @param [Hash] options Google API options
       # @option options [Bool]   :google_application_default Explicitly use application default credentials
       # @option options [Google::Auth|Signet] :google_auth Manually created authorization to use
-      # @option options [String] :google_key_location The location of a pkcs12 key file
-      # @option options [String] :google_key_string The content of the pkcs12 key file
       # @option options [String] :google_json_key_location The location of a JSON key file
       # @option options [String] :google_json_key_string The content of the JSON key file
       # @option options [String] :google_api_scope_url The access scope URLs
       # @option options [String] :app_name The app name to set in the user agent
       # @option options [String] :app_version The app version to set in the user agent
-      # @option options [Google::APIClient] :google_client Existing Google API Client
       # @option options [Hash] :google_client_options A hash to send additional options to Google API Client
       # @return [Google::APIClient] Google API Client
       # @raises [ArgumentError] If there is any missing argument
