@@ -9,6 +9,7 @@ module Fog
       recognizes(
         :app_name,
         :app_version,
+        :google_application_default,
         :google_auth,
         :google_client,
         :google_client_options,
