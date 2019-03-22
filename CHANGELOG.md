@@ -6,6 +6,35 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 
 ## Next
 
+## 1.9.0
+
+### User-facing
+
+#### Added
+
+- \#442 Add support for Application Default credentials [mavin]
+  - This change allows the use of Application Default Credentials so that end 
+    users can authenticate without a service account for development, testing,
+    and one-off interactions by using `:google_application_default`client 
+    option. See README for more details.
+
+### Fixed
+
+- \#444 Remove deprecated `google_client_email` option from client parameters 
+  [temikus]
+- \#446 Updating service parameters to avoid "unrecognised parameter" warnings
+  when initializing Fog client with application default auth [temikus]
+
+### Development changes
+
+#### Fixed
+
+- \#441 Update CI pipeline to Concourse V4 [temikus]
+- \#444 Rework client authentication workflow [temikus]
+  - Separate different auth streams into private helper methods
+  - Add a fallback auth option - Google Application Default credentials
+  - Minor fixes and performance optimizations
+
 ## 1.8.2
 
 ### User-facing

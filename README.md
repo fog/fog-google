@@ -94,6 +94,20 @@ cat .fog.example >> ~/.fog # appends the sample configuration
 vim ~/.fog                 # edit file with yout config
 ```
 
+As of `1.9.0` fog-google supports Google [application default credentials (ADC)](https://cloud.google.com/docs/authentication/production) 
+The auth method uses [Google::Auth.get_application_default](https://www.rubydoc.info/gems/googleauth/0.6.7/Google%2FAuth.get_application_default)
+under the hood.
+
+Example workflow for a GCE instance with [service account scopes](https://cloud.google.com/compute/docs/access/create-enable-service-accounts-for-instances)
+defined: 
+
+```
+> connection = Fog::Compute::Google.new(:google_project => "my-project", :google_application_default => true)
+=> #<Fog::Compute::Google::Real:32157700...
+> connection.servers
+=> [  <Fog::Compute::Google::Server ...  ]
+```
+
 #### SSH-ing into instances
 
 If you want to be able to bootstrap SSH-able instances, (using `servers.bootstrap`,) be sure you have a key in `~/.ssh/id_rsa` and `~/.ssh/id_rsa.pub`
