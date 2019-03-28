@@ -1,0 +1,58 @@
+jobs:
+  - name: integration-tests-monitoring
+    serial: true
+    plan:
+      - get: fog-google-src
+        resource: pull-request
+        version: every
+        trigger: true
+      - put: pull-request
+        params: {path: fog-google-src, status: pending}
+
+      - task: run-integration-tests
+        file: fog-google-src/ci/tasks/run-int.yml
+        params:
+          rake_task: test:monitoring
+          codecov_token: {{codecov_token}}
+          google_project: {{google_project}}
+          google_json_key_data: {{google_json_key_data}}
+        on_failure:
+          put: pull-request
+          params:
+            path: fog-google-src
+            status: failure
+
+  - name: github-pr-aggregator
+    plan:
+      - get: fog-google-src
+        resource: pull-request
+        passed: [integration-tests-monitoring]
+        trigger: true
+        on_success:
+          put: pull-request
+          params:
+            path: fog-google-src
+            status: success
+        on_failure:
+          put: pull-request
+          params:
+            path: fog-google-src
+            status: failure
+
+resources:
+  - name: pull-request
+    type: pull-request
+    source:
+      access_token: {{github_access_token}}
+      private_key: {{github_private_key}}
+      label: integrate-dev
+      repo: fog/fog-google
+
+resource_types:
+  # This is a third party resource.
+  # The referenced docker-image is maintained externally
+  # https://github.com/jtarchie/pullrequest-resource
+  - name: pull-request
+    type: docker-image
+    source:
+      repository: jtarchie/pr
