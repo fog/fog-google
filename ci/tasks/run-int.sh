@@ -27,8 +27,18 @@ EOL
 
 pushd ${release_dir} > /dev/null
 
-bundle install --jobs=3 --retry=3
+echo "Exporting bundler options..."
 
+# Setting via local config options as BUNDLE_PATH appears to not work
+# see https://github.com/rails/spring/issues/339
+bundle config --local path ../../bundle
+bundle config --local bin ../../bundle/bin
+
+echo "Checking dependencies..."
+# Check if dependencies are satisfied, otherwise kick off bundle install
+bundle check || bundle install --jobs=3 --retry=3
+
+echo "Starting test run..."
 FOG_MOCK=false COVERAGE=true CODECOV_TOKEN=${codecov_token} rake ${rake_task}
 
 popd > /dev/null

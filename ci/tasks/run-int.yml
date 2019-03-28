@@ -8,6 +8,8 @@ inputs:
   path: src/fog-google
 run:
   path: src/fog-google/ci/tasks/run-int.sh
+caches:
+- path: bundle
 params:
   rake_task: replace-me
   codecov_token: replace-me
