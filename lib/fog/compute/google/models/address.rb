@@ -86,7 +86,7 @@ module Fog
           operation.wait_for { ready? } unless async
         end
 
-        def disassociate
+        def disassociate(async = false)
           requires :address
 
           return nil if !in_use? || users.nil? || users.empty?
