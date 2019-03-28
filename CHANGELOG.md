@@ -6,6 +6,21 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 
 ## Next
 
+## 1.9.1
+
+### User-facing
+
+#### Fixed
+
+- \#448 Add `:google_application_default` as recognized argument in 
+  Fog::Compute::Google client [mavin]
+
+### Development changes
+
+#### Added
+
+- \#449 Add a helper rake task to populate changelog [temikus]
+
 ## 1.9.0
 
 ### User-facing
@@ -322,8 +337,6 @@ Rapid-releasing 0.5.2 due to regression fixed by #190 still present in v0.5.1
 We encourage people using 0.5.1 to upgrade.
 
 ## Template to use
-
-## Next release
 
 ### User-facing
 
