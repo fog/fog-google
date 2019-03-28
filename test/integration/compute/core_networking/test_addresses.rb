@@ -47,6 +47,14 @@ class TestAddresses < FogIntegrationTest
       address.server,
       "Address should not be associated with a server after disassociation"
     )
+
+    address.server = server
+    address.reload
+    assert_equal(
+        server,
+        address.server,
+        "Address should be associated with a server after association"
+    )
   end
 
   def test_bad_get

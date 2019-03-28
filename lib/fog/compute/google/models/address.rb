@@ -74,7 +74,15 @@ module Fog
 
         private
 
-        def associate(nic_name, async = true)
+        # Associates the ip address to a given server
+        #
+        # @param [String]  server - GCE instance name
+        # @param [String]  nic_name - NIC interface name, defaults to GCE
+        #                             standard primary nic - "nic0"
+        # @param [Boolean]  async - whether to run the operation asynchronously
+        #
+        # @return [Fog::Compute::Google::Operation]
+        def associate(server, nic_name = "nic0", async = false)
           requires :address
 
           data = service.add_server_access_config(
@@ -86,6 +94,11 @@ module Fog
           operation.wait_for { ready? } unless async
         end
 
+        # Disassociates the ip address from a resource it's attached to
+        #
+        # @param [Boolean]  async - whether to run the operation asynchronously
+        #
+        # @return [Fog::Compute::Google::Operation]
         def disassociate(async = false)
           requires :address
 
