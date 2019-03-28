@@ -32,6 +32,21 @@ class TestAddresses < FogIntegrationTest
       @subject.get(address.name, TEST_REGION).status,
       "Address should now be in use"
     )
+
+    address.reload
+
+    assert_equal(
+      server,
+      address.server,
+      "Address.server should return an associated server object"
+    )
+
+    address.server = nil
+    address.reload
+    assert_nil(
+      address.server,
+      "Address should not be associated with a server after disassociation"
+    )
   end
 
   def test_bad_get
