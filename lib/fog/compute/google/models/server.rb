@@ -554,7 +554,7 @@ module Fog
 
           ssh_keys = metadata_map["ssh-keys"] || metadata_map["sshKeys"] || ""
           ssh_keys += "\n" unless ssh_keys.empty?
-          ssh_keys += "#{username}:#{key.strip}"
+          ssh_keys += "#{username}:#{key.strip} #{username}"
 
           metadata_map["ssh-keys"] = ssh_keys
           metadata[:items] = metadata_to_item_list(metadata_map)
