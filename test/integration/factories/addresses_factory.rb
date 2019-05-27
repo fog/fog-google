@@ -2,7 +2,7 @@ require "integration/factories/collection_factory"
 
 class AddressesFactory < CollectionFactory
   def initialize(example)
-    super(Fog::Compute[:google].addresses, example)
+    super(Fog::Google::Compute.new.addresses, example)
   end
 
   def get(identity)

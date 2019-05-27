@@ -3,14 +3,13 @@ require "helpers/test_helper"
 class UnitTestStorageJSONCollections < MiniTest::Test
   def setup
     Fog.mock!
-    @client = Fog::Storage.new(provider: "google",
-                               google_project: "foo")
+    @client = Fog::Google::Storage.new(google_project: "foo")
 
     # Enumerate all descendants of Fog::Collection
     descendants = ObjectSpace.each_object(Fog::Collection.singleton_class)
 
     @collections = descendants.select do |d|
-      d.name.match(/Fog::Storage::GoogleJSON/)
+      d.name.match(/Fog::Google::StorageJSON/)
     end
   end
 

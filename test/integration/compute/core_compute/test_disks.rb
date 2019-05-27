@@ -5,7 +5,7 @@ class TestDisks < FogIntegrationTest
   include TestCollection
 
   def setup
-    @subject = Fog::Compute[:google].disks
+    @subject = Fog::Google::Compute.new.disks
     @factory = DisksFactory.new(namespaced_name)
   end
 

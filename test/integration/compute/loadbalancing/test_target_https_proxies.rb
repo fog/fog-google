@@ -5,7 +5,7 @@ class TestTargetHttpsProxies < FogIntegrationTest
   include TestCollection
 
   def setup
-    @subject = Fog::Compute[:google].target_https_proxies
+    @subject = Fog::Google::Compute.new.target_https_proxies
     @factory = TargetHttpsProxiesFactory.new(namespaced_name)
   end
 end

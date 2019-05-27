@@ -3,9 +3,9 @@ require "helpers/test_helper"
 class UnitTestJsonRequests < MiniTest::Test
   def setup
     Fog.mock!
-    @client = Fog::Storage.new(provider: "google",
-                               google_project: "",
-                               google_json_key_location: "")
+    @client = Fog::Google::Storage.new(google_client_email: "",
+                                       google_project: "",
+                                       google_json_key_location: "")
   end
 
   def teardown
