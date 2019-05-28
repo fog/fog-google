@@ -5,7 +5,7 @@ class TestSubnetworks < FogIntegrationTest
   include TestCollection
 
   def setup
-    @subject = Fog::Compute[:google].subnetworks
+    @subject = Fog::Google::Compute.new.subnetworks
     @factory = SubnetworksFactory.new(namespaced_name)
   end
 end

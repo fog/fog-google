@@ -6,7 +6,7 @@ class TestNetworks < FogIntegrationTest
   include TestCollection
 
   def setup
-    @subject = Fog::Compute[:google].networks
+    @subject = Fog::Google::Compute.new.networks
     @servers = ServersFactory.new(namespaced_name)
     @factory = NetworksFactory.new(namespaced_name)
   end

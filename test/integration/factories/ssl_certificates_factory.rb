@@ -2,7 +2,7 @@ require "integration/factories/collection_factory"
 
 class SslCertificatesFactory < CollectionFactory
   def initialize(example)
-    super(Fog::Compute[:google].ssl_certificates, example)
+    super(Fog::Google::Compute.new.ssl_certificates, example)
   end
 
   def params

@@ -2,7 +2,7 @@ require "integration/factories/collection_factory"
 
 class DisksFactory < CollectionFactory
   def initialize(example)
-    super(Fog::Compute[:google].disks, example)
+    super(Fog::Google::Compute.new.disks, example)
   end
 
   def get(identity)

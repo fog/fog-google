@@ -3,13 +3,12 @@ require "helpers/test_helper"
 class UnitTestDNSCollections < MiniTest::Test
   def setup
     Fog.mock!
-    @client = Fog::DNS.new(provider: "google",
-                           google_project: "foo")
+    @client = Fog::Google::DNS.new(google_project: "foo")
 
     # Exceptions that do not pass test_common_methods:
     #
     # DNS Projects API does not support 'list', so 'all' method is not possible
-    @common_methods_exceptions = [Fog::DNS::Google::Projects]
+    @common_methods_exceptions = [Fog::Google::DNS::Projects]
     # Enumerate all descendants of Fog::Collection
     descendants = ObjectSpace.each_object(Fog::Collection.singleton_class)
 

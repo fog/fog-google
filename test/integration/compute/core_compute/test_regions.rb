@@ -4,7 +4,7 @@ class TestRegions < FogIntegrationTest
   EXAMPLE_NAMES = %w(asia-east1 asia-northeast1 europe-west1 us-central1 us-east1 us-west1).freeze
 
   def setup
-    @subject = Fog::Compute[:google].regions
+    @subject = Fog::Google::Compute.new.regions
   end
 
   def test_all

@@ -4,13 +4,12 @@ class UnitTestCollections < MiniTest::Test
   def setup
     Fog.mock!
 
-    @client = Fog::Compute.new(provider: "google",
-                               google_project: "foo")
+    @client = Fog::Google::Compute.new(google_project: "foo")
 
     # Exceptions that do not pass test_common_methods:
     #
     # Projects do not have a "list" method in compute API, so 'all' is not implemented
-    @common_method_exceptions = [Fog::Compute::Google::Projects]
+    @common_method_exceptions = [Fog::Google::Compute::Projects]
     # Enumerate all descendants of Fog::Collection
     descendants = ObjectSpace.each_object(Fog::Collection.singleton_class).to_a
 

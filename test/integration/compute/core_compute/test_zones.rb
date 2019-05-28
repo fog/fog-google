@@ -8,7 +8,7 @@ class TestZones < FogIntegrationTest
              us-central1-c us-east1-b us-east4-a us-west1-c).freeze
 
   def setup
-    @subject = Fog::Compute[:google].zones
+    @subject = Fog::Google::Compute.new.zones
   end
 
   def test_all

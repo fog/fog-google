@@ -5,7 +5,7 @@ class TestBackendServices < FogIntegrationTest
   include TestCollection
 
   def setup
-    @subject = Fog::Compute[:google].backend_services
+    @subject = Fog::Google::Compute.new.backend_services
     @factory = BackendServicesFactory.new(namespaced_name)
   end
 end

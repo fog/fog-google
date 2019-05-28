@@ -2,7 +2,7 @@ require "helpers/integration_test_helper"
 
 class TestProjects < FogIntegrationTest
   def setup
-    @subject = Fog::Compute[:google].projects
+    @subject = Fog::Google::Compute.new.projects
   end
 
   def test_get

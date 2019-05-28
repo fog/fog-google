@@ -1,5 +1,5 @@
 def test
-  connection = Fog::DNS::Google.new
+  connection = Fog::Google::DNS.new
 
   puts "Create a Zone..."
   puts "----------------"

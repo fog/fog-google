@@ -6,7 +6,7 @@ class TargetPoolsFactory < CollectionFactory
   def initialize(example)
     @http_health_checks = HttpHealthChecksFactory.new(example)
     @servers = ServersFactory.new(example)
-    super(Fog::Compute[:google].target_pools, example)
+    super(Fog::Google::Compute.new.target_pools, example)
   end
 
   def cleanup

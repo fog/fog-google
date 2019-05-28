@@ -6,7 +6,7 @@ class NetworksFactory < CollectionFactory
     # class variable holding a generator, ensuring that the factory gives
     # us a new network every time it's called
     @octet_generator = (0..255).each
-    super(Fog::Compute[:google].networks, example)
+    super(Fog::Google::Compute.new.networks, example)
   end
 
   def params

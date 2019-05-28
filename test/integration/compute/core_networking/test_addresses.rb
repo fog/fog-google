@@ -6,7 +6,7 @@ class TestAddresses < FogIntegrationTest
   include TestCollection
 
   def setup
-    @subject = Fog::Compute[:google].addresses
+    @subject = Fog::Google::Compute.new.addresses
     @servers = ServersFactory.new(namespaced_name)
     @factory = AddressesFactory.new(namespaced_name)
   end

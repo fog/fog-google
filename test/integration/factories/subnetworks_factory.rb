@@ -6,7 +6,7 @@ class SubnetworksFactory < CollectionFactory
     # class variable holding a generator, ensuring that the factory gives us a
     # new subnet every time it's called
     @octet_generator = (0..255).each
-    super(Fog::Compute[:google].subnetworks, example)
+    super(Fog::Google::Compute.new.subnetworks, example)
   end
 
   def get(identity)

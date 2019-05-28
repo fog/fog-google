@@ -3,15 +3,14 @@ require "helpers/test_helper"
 class UnitTestStorageXMLCollections < MiniTest::Test
   def setup
     Fog.mock!
-    @client = Fog::Storage.new(provider: "google",
-                               google_storage_access_key_id: "",
+    @client = Fog::Google::Storage.new(google_storage_access_key_id: "",
                                google_storage_secret_access_key: "")
 
     # Enumerate all descendants of Fog::Collection
     descendants = ObjectSpace.each_object(Fog::Collection.singleton_class)
 
     @collections = descendants.select do |d|
-      d.name.match(/Fog::Storage::GoogleXML/)
+      d.name.match(/Fog::Google::StorageXML/)
     end
   end
 

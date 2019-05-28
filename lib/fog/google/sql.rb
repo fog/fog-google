@@ -1,8 +1,8 @@
 module Fog
   module Google
     class SQL < Fog::Service
-      autoload :Mock, File.expand_path("../sql/mock", __FILE__)
-      autoload :Real, File.expand_path("../sql/real", __FILE__)
+      autoload :Mock, "fog/google/sql/mock"
+      autoload :Real, "fog/google/sql/real"
 
       requires :google_project
       recognizes(
