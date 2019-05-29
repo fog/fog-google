@@ -15,6 +15,9 @@ class SqlV1UsersFactory < CollectionFactory
   def params
     # Username should not be longer than 16 characters
     { :name => resource_name[0..15],
+      # TODO: Consider removing host when Users.list API issue is resolved
+      # See https://github.com/fog/fog-google/issues/462
+      :host => "%",
       :instance => @instances.create.name }
   end
 end

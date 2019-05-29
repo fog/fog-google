@@ -31,6 +31,8 @@ module Fog
         end
 
         def save(password: nil)
+          # TODO(2.0): make :host a required parameter
+          # See: https://github.com/fog/fog-google/issues/462
           requires :instance, :name
 
           data = attributes
