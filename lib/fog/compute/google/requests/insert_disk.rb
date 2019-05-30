@@ -20,7 +20,7 @@ module Fog
         # @option options [String] source_snapshot Snapshot to create the disk from
         # @option options [String] description Human friendly description of the disk
         # @option options [String] type URL of the disk type resource describing which disk type to use
-        # TODO: change source_image to keyword argument in 2.0 and properly deprecate
+        # TODO(2.0): change source_image to keyword argument in 2.0 and gracefully deprecate
         def insert_disk(disk_name, zone, source_image = nil,
                         description: nil, type: nil, size_gb: nil,
                         source_snapshot: nil, **_opts)
