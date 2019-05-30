@@ -3,7 +3,9 @@ module Fog
     class Google
       class Mock
         def insert_subnetwork(_subnetwork_name, _region_name, _network, _ip_range, _options = {})
+          # :no-coverage:
           Fog::Mock.not_implemented
+          # :no-coverage:
         end
       end
 

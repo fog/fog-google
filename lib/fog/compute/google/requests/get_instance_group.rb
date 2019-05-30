@@ -3,7 +3,9 @@ module Fog
     class Google
       class Mock
         def get_instance_group(_group_name, _zone, _project = @project)
+          # :no-coverage:
           Fog::Mock.not_implemented
+          # :no-coverage:
         end
       end
 

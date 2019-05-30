@@ -45,7 +45,9 @@ module Fog
 
       class Mock
         def list_timeseries(_options = {})
+          # :no-coverage:
           Fog::Mock.not_implemented
+          # :no-coverage:
         end
       end
     end

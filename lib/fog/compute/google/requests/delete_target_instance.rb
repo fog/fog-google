@@ -3,7 +3,9 @@ module Fog
     class Google
       class Mock
         def delete_target_instance(_target_name, _zone)
+          # :no-coverage:
           Fog::Mock.not_implemented
+          # :no-coverage:
         end
       end
 

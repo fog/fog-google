@@ -3,7 +3,9 @@ module Fog
     class Google
       class Mock
         def list_http_health_checks
+          # :no-coverage:
           Fog::Mock.not_implemented
+          # :no-coverage:
         end
       end
 

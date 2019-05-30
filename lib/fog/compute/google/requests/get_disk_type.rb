@@ -3,7 +3,9 @@ module Fog
     class Google
       class Mock
         def get_disk_type(_disk, _zone)
+          # :no-coverage:
           Fog::Mock.not_implemented
+          # :no-coverage:
         end
       end
 

@@ -3,7 +3,9 @@ module Fog
     class Google
       class Mock
         def set_snapshot_labels(_snap_name)
+          # :no-coverage:
           Fog::Mock.not_implemented
+          # :no-coverage:
         end
       end
 

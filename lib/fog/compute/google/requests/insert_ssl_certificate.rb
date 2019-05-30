@@ -3,7 +3,9 @@ module Fog
     class Google
       class Mock
         def insert_ssl_certificate(_certificate_name, _certificate, _private_key, _options = {})
+          # :no-coverage:
           Fog::Mock.not_implemented
+          # :no-coverage:
         end
       end
 

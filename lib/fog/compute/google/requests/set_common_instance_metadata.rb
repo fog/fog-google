@@ -3,7 +3,9 @@ module Fog
     class Google
       class Mock
         def set_common_instance_metadata(_project, _current_fingerprint, _metadata = {})
+          # :no-coverage:
           Fog::Mock.not_implemented
+          # :no-coverage:
         end
       end
 

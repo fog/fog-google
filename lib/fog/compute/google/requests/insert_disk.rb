@@ -3,7 +3,9 @@ module Fog
     class Google
       class Mock
         def insert_disk(_disk_name, _zone, _image_name = nil, _options = {})
+          # :no-coverage:
           Fog::Mock.not_implemented
+          # :no-coverage:
         end
       end
 

@@ -20,7 +20,9 @@ module Fog
 
       class Mock
         def list_changes(_zone_name_or_id, _opts = {})
+          # :no-coverage:
           Fog::Mock.not_implemented
+          # :no-coverage:
         end
       end
     end

@@ -14,7 +14,9 @@ module Fog
 
       class Mock
         def delete_user(_instance_id, _host, _name)
+          # :no-coverage:
           Fog::Mock.not_implemented
+          # :no-coverage:
         end
       end
     end

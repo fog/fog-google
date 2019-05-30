@@ -20,7 +20,9 @@ module Fog
 
       class Mock
         def list_resource_record_sets(_zone_name_or_id, _options = {})
+          # :no-coverage:
           Fog::Mock.not_implemented
+          # :no-coverage:
         end
       end
     end

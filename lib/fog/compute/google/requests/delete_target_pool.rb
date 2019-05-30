@@ -3,7 +3,9 @@ module Fog
     class Google
       class Mock
         def delete_target_pool(_target_pool, _region)
+          # :no-coverage:
           Fog::Mock.not_implemented
+          # :no-coverage:
         end
       end
 

@@ -3,7 +3,9 @@ module Fog
     class Google
       class Mock
         def attach_disk(_instance, _zone, _disk = {})
+          # :no-coverage:
           Fog::Mock.not_implemented
+          # :no-coverage:
         end
       end
 

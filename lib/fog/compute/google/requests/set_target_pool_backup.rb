@@ -4,7 +4,9 @@ module Fog
       class Mock
         def set_target_pool_backup(_target_pool, _region, _backup_target,
                                    _failover_ratio: nil)
+          # :no-coverage:
           Fog::Mock.not_implemented
+          # :no-coverage:
         end
       end
 

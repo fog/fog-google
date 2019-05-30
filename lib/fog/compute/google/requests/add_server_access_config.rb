@@ -3,7 +3,9 @@ module Fog
     class Google
       class Mock
         def add_server_access_config(_identity, _zone, _nic, _options = {})
+          # :no-coverage:
           Fog::Mock.not_implemented
+          # :no-coverage:
         end
       end
 

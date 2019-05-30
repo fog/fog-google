@@ -3,7 +3,9 @@ module Fog
     class Google
       class Mock
         def add_target_pool_instances(_target_pool, _region, _instances)
+          # :no-coverage:
           Fog::Mock.not_implemented
+          # :no-coverage:
         end
       end
 

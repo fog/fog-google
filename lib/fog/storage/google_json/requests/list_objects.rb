@@ -38,7 +38,9 @@ module Fog
 
       class Mock
         def list_objects(_bucket, _options = {})
+          # :no-coverage:
           Fog::Mock.not_implemented
+          # :no-coverage:
         end
       end
     end

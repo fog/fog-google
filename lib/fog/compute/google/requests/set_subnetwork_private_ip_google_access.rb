@@ -5,7 +5,9 @@ module Fog
         def set_subnetwork_private_ip_google_access(_subnetwork_name,
                                                     _region_name,
                                                     _private_ip_google_access)
+          # :no-coverage:
           Fog::Mock.not_implemented
+          # :no-coverage:
         end
       end
 

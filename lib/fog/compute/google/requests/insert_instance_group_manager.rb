@@ -4,7 +4,9 @@ module Fog
       class Mock
         def insert_instance_group_manager(_name, _zone, _instance_template, _base_instance_name,
                                           _target_size, _target_pools, _named_ports, _description)
+          # :no-coverage:
           Fog::Mock.not_implemented
+          # :no-coverage:
         end
       end
 

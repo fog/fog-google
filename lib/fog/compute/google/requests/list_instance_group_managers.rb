@@ -3,7 +3,9 @@ module Fog
     class Google
       class Mock
         def list_instance_group_managers(_zone, _opts = {})
+          # :no-coverage:
           Fog::Mock.not_implemented
+          # :no-coverage:
         end
       end
 

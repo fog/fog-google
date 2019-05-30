@@ -3,7 +3,9 @@ module Fog
     class Google
       class Mock
         def set_forwarding_rule_target(_rule_name, _region, _target_opts)
+          # :no-coverage:
           Fog::Mock.not_implemented
+          # :no-coverage:
         end
       end
 

@@ -3,7 +3,9 @@ module Fog
     class Google
       class Mock
         def detach_disk(_instance, _zone, _device_name)
+          # :no-coverage:
           Fog::Mock.not_implemented
+          # :no-coverage:
         end
       end
 

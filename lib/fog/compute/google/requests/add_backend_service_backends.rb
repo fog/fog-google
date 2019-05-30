@@ -3,7 +3,9 @@ module Fog
     class Google
       class Mock
         def add_backend_service_backends(_backend_service, _new_backends)
+          # :no-coverage:
           Fog::Mock.not_implemented
+          # :no-coverage:
         end
       end
 

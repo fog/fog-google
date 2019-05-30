@@ -92,7 +92,9 @@ module Fog
 
       class Mock
         def put_object(_bucket_name, _object_name, _data, _options = {})
+          # :no-coverage:
           Fog::Mock.not_implemented
+          # :no-coverage:
         end
       end
     end

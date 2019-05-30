@@ -3,7 +3,9 @@ module Fog
     class Google
       class Mock
         def create_disk_snapshot(_snapshot_name, _disk, _zone, _snapshot = {})
+          # :no-coverage:
           Fog::Mock.not_implemented
+          # :no-coverage:
         end
       end
 

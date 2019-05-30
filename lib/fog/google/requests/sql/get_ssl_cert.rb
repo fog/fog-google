@@ -14,7 +14,9 @@ module Fog
 
       class Mock
         def get_ssl_cert(_instance_id, _sha1_fingerprint)
+          # :no-coverage:
           Fog::Mock.not_implemented
+          # :no-coverage:
         end
       end
     end

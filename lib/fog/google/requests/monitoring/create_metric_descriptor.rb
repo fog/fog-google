@@ -41,7 +41,9 @@ module Fog
 
       class Mock
         def create_metric_descriptor(**_args)
+          # :no-coverage:
           Fog::Mock.not_implemented
+          # :no-coverage:
         end
       end
     end

@@ -3,7 +3,9 @@ module Fog
     class Google
       class Mock
         def get_network(_network_name)
+          # :no-coverage:
           Fog::Mock.not_implemented
+          # :no-coverage:
         end
       end
 

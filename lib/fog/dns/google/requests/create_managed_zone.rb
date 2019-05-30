@@ -19,7 +19,9 @@ module Fog
 
       class Mock
         def create_managed_zone(_name, _dns_name, _description)
+          # :no-coverage:
           Fog::Mock.not_implemented
+          # :no-coverage:
         end
       end
     end

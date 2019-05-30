@@ -3,7 +3,9 @@ module Fog
     class Google
       class Mock
         def insert_image(_image_name, _image = {})
+          # :no-coverage:
           Fog::Mock.not_implemented
+          # :no-coverage:
         end
       end
 

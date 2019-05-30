@@ -22,7 +22,9 @@ module Fog
 
       class Mock
         def get_object_metadata(_bucket_name, _object_name, _options = {})
+          # :no-coverage:
           Fog::Mock.not_implemented
+          # :no-coverage:
         end
       end
     end

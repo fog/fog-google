@@ -19,7 +19,9 @@ module Fog
 
       class Mock
         def create_timeseries(_timeseries: [])
+          # :no-coverage:
           Fog::Mock.not_implemented
+          # :no-coverage:
         end
       end
     end

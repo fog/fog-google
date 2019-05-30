@@ -4,7 +4,9 @@ module Fog
       class Mock
         def insert_target_https_proxy(_proxy_name, _description: nil,
                                       _url_map: nil, _ssl_certificates: nil)
+          # :no-coverage:
           Fog::Mock.not_implemented
+          # :no-coverage:
         end
       end
 

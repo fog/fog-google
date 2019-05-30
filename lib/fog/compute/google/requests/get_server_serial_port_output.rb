@@ -3,7 +3,9 @@ module Fog
     class Google
       class Mock
         def get_server_serial_port_output(_identity, _zone)
+          # :no-coverage:
           Fog::Mock.not_implemented
+          # :no-coverage:
         end
       end
 

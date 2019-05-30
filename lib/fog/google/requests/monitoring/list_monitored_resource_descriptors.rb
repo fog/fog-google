@@ -19,7 +19,9 @@ module Fog
 
       class Mock
         def list_monitored_resource_descriptors(_filter, _page_size, _page_token)
+          # :no-coverage:
           Fog::Mock.not_implemented
+          # :no-coverage:
         end
       end
     end

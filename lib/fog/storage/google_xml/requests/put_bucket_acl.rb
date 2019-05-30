@@ -3,7 +3,9 @@ module Fog
     class GoogleXML
       class Mock
         def put_bucket_acl(_bucket_name, _acl)
+          # :no-coverage:
           Fog::Mock.not_implemented
+          # :no-coverage:
         end
       end
 

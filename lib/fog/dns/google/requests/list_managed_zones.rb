@@ -16,7 +16,9 @@ module Fog
 
       class Mock
         def list_managed_zones(_opts = {})
+          # :no-coverage:
           Fog::Mock.not_implemented
+          # :no-coverage:
         end
       end
     end
