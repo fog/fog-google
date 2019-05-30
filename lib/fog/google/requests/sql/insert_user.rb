@@ -15,7 +15,9 @@ module Fog
 
       class Mock
         def insert_user(_instance_id, _user)
+          # :no-coverage:
           Fog::Mock.not_implemented
+          # :no-coverage:
         end
       end
     end

@@ -5,6 +5,7 @@ if ENV["COVERAGE"]
 
   require 'codecov'
   SimpleCov.formatter = SimpleCov::Formatter::Codecov
+  SimpleCov.skip_token('no-coverage')
 
   SimpleCov.start do
     add_filter "/test/"

@@ -18,7 +18,9 @@ module Fog
 
       class Mock
         def insert_instance(_name, _tier, _options = {})
+          # :no-coverage:
           Fog::Mock.not_implemented
+          # :no-coverage:
         end
       end
     end

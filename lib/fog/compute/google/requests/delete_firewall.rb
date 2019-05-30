@@ -3,7 +3,9 @@ module Fog
     class Google
       class Mock
         def delete_firewall(_firewall_name)
+          # :no-coverage:
           Fog::Mock.not_implemented
+          # :no-coverage:
         end
       end
 

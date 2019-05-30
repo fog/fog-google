@@ -32,7 +32,9 @@ module Fog
       class Mock
         def clone_instance(_instance_id, _destination_name,
                            _log_filename: nil, _log_position: nil)
+          # :no-coverage:
           Fog::Mock.not_implemented
+          # :no-coverage:
         end
       end
     end

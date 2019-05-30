@@ -3,7 +3,9 @@ module Fog
     class Google
       class Mock
         def set_server_tags(_instance, _zone, _tags = [])
+          # :no-coverage:
           Fog::Mock.not_implemented
+          # :no-coverage:
         end
       end
 

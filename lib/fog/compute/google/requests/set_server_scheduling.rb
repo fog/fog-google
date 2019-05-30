@@ -3,7 +3,9 @@ module Fog
     class Google
       class Mock
         def set_server_scheduling(_identity, _zone, _on_host_maintenance, _automatic_restart, _preemptible)
+          # :no-coverage:
           Fog::Mock.not_implemented
+          # :no-coverage:
         end
       end
 

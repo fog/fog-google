@@ -20,7 +20,9 @@ module Fog
 
       class Mock
         def insert_ssl_cert(_instance_id, _common_name)
+          # :no-coverage:
           Fog::Mock.not_implemented
+          # :no-coverage:
         end
       end
     end

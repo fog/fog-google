@@ -3,7 +3,9 @@ module Fog
     class Google
       class Mock
         def insert_http_health_check(_check_name, _options = {})
+          # :no-coverage:
           Fog::Mock.not_implemented
+          # :no-coverage:
         end
       end
 

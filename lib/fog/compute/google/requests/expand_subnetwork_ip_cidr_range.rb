@@ -3,7 +3,9 @@ module Fog
     class Google
       class Mock
         def expand_subnetwork_ip_cidr_range(_subnetwork, _region, _ip_cidr_range)
+          # :no-coverage:
           Fog::Mock.not_implemented
+          # :no-coverage:
         end
       end
 

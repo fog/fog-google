@@ -3,7 +3,9 @@ module Fog
     class Google
       class Mock
         def set_instance_template(_instance_group_manager, _instance_template)
+          # :no-coverage:
           Fog::Mock.not_implemented
+          # :no-coverage:
         end
       end
 

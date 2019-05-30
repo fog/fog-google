@@ -3,7 +3,9 @@ module Fog
     class Google
       class Mock
         def start_server(_identity, _zone)
+          # :no-coverage:
           Fog::Mock.not_implemented
+          # :no-coverage:
         end
       end
 

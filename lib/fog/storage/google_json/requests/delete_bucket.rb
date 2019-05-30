@@ -13,7 +13,9 @@ module Fog
 
       class Mock
         def delete_bucket(_bucket_name)
+          # :no-coverage:
           Fog::Mock.not_implemented
+          # :no-coverage:
         end
       end
     end

@@ -13,7 +13,9 @@ module Fog
 
       class Mock
         def get_change(_zone_name_or_id, _identity)
+          # :no-coverage:
           Fog::Mock.not_implemented
+          # :no-coverage:
         end
       end
     end

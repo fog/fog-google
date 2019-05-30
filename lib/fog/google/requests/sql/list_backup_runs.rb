@@ -17,7 +17,9 @@ module Fog
 
       class Mock
         def list_backup_runs(_instance_id, _backup_configuration_id)
+          # :no-coverage:
           Fog::Mock.not_implemented
+          # :no-coverage:
         end
       end
     end

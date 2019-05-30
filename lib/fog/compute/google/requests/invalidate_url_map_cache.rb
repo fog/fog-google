@@ -3,7 +3,9 @@ module Fog
     class Google
       class Mock
         def invalidate_url_map_cache(_url_map_name, _path, _host = nil)
+          # :no-coverage:
           Fog::Mock.not_implemented
+          # :no-coverage:
         end
       end
 

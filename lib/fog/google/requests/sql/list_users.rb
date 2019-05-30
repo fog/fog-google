@@ -14,7 +14,9 @@ module Fog
 
       class Mock
         def list_operations(_instance_id)
+          # :no-coverage:
           Fog::Mock.not_implemented
+          # :no-coverage:
         end
       end
     end

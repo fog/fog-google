@@ -21,7 +21,9 @@ module Fog
 
       class Mock
         def restore_instance_backup(_instance_id, _backup_run_id)
+          # :no-coverage:
           Fog::Mock.not_implemented
+          # :no-coverage:
         end
       end
     end

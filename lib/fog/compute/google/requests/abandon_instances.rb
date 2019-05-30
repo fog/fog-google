@@ -3,7 +3,9 @@ module Fog
     class Google
       class Mock
         def abandon_instances(_instance_group_manager, _instances)
+          # :no-coverage:
           Fog::Mock.not_implemented
+          # :no-coverage:
         end
       end
 

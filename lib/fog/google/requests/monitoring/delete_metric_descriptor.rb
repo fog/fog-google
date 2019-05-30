@@ -9,7 +9,9 @@ module Fog
 
       class Mock
         def delete_metric_descriptor(_metric_type)
+          # :no-coverage:
           Fog::Mock.not_implemented
+          # :no-coverage:
         end
       end
     end

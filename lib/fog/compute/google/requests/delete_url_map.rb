@@ -3,7 +3,9 @@ module Fog
     class Google
       class Mock
         def delete_url_map(_url_map_name)
+          # :no-coverage:
           Fog::Mock.not_implemented
+          # :no-coverage:
         end
       end
 

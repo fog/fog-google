@@ -23,7 +23,9 @@ module Fog
       class Mock
         def copy_object(_source_bucket, _source_object,
                         _target_bucket, _target_object, _options = {})
+          # :no-coverage:
           Fog::Mock.not_implemented
+          # :no-coverage:
         end
       end
     end

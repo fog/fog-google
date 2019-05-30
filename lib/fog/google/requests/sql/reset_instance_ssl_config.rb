@@ -16,7 +16,9 @@ module Fog
 
       class Mock
         def reset_instance_ssl_config(_instance_id)
+          # :no-coverage:
           Fog::Mock.not_implemented
+          # :no-coverage:
         end
       end
     end

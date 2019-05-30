@@ -3,7 +3,9 @@ module Fog
     class Google
       class Mock
         def delete_global_forwarding_rule(_rule)
+          # :no-coverage:
           Fog::Mock.not_implemented
+          # :no-coverage:
         end
       end
 

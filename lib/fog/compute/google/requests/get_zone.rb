@@ -3,7 +3,9 @@ module Fog
     class Google
       class Mock
         def get_zone(_zone_name)
+          # :no-coverage:
           Fog::Mock.not_implemented
+          # :no-coverage:
         end
       end
 

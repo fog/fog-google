@@ -19,7 +19,9 @@ module Fog
 
       class Mock
         def list_object_acl(_bucket_name, _object_name)
+          # :no-coverage:
           Fog::Mock.not_implemented
+          # :no-coverage:
         end
       end
     end

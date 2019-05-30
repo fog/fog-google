@@ -3,7 +3,9 @@ module Fog
     class Google
       class Mock
         def list_disks(_zone_name, _opts = {})
+          # :no-coverage:
           Fog::Mock.not_implemented
+          # :no-coverage:
         end
       end
 

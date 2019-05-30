@@ -3,7 +3,9 @@ module Fog
     class Google
       class Mock
         def set_server_metadata(_instance, _zone, _fingerprint, _metadata_items = {})
+          # :no-coverage:
           Fog::Mock.not_implemented
+          # :no-coverage:
         end
       end
 

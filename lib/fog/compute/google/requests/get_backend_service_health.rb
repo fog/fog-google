@@ -3,7 +3,9 @@ module Fog
     class Google
       class Mock
         def get_backend_service_health(_backend_service)
+          # :no-coverage:
           Fog::Mock.not_implemented
+          # :no-coverage:
         end
       end
 

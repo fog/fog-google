@@ -3,7 +3,9 @@ module Fog
     class Google
       class Mock
         def get_global_operation(_operation)
+          # :no-coverage:
           Fog::Mock.not_implemented
+          # :no-coverage:
         end
       end
 

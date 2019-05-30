@@ -3,7 +3,9 @@ module Fog
     class Google
       class Mock
         def insert_target_http_proxy(_proxy_name, _description: nil, _url_map: nil)
+          # :no-coverage:
           Fog::Mock.not_implemented
+          # :no-coverage:
         end
       end
 

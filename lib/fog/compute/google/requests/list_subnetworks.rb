@@ -4,7 +4,9 @@ module Fog
       class Mock
         def list_subnetworks(_region_name, _filter: nil, _max_results: nil,
                              _order_by: nil, _page_token: nil)
+          # :no-coverage:
           Fog::Mock.not_implemented
+          # :no-coverage:
         end
       end
 

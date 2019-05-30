@@ -13,7 +13,9 @@ module Fog
 
       class Mock
         def delete_managed_zone(_name_or_id)
+          # :no-coverage:
           Fog::Mock.not_implemented
+          # :no-coverage:
         end
       end
     end

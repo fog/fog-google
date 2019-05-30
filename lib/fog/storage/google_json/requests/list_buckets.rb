@@ -20,7 +20,9 @@ module Fog
       end
       class Mock
         def list_buckets
+          # :no-coverage:
           Fog::Mock.not_implemented
+          # :no-coverage:
         end
       end
     end

@@ -3,7 +3,9 @@ module Fog
     class Google
       class Mock
         def get_machine_type(_machine_type, _zone)
+          # :no-coverage:
           Fog::Mock.not_implemented
+          # :no-coverage:
         end
       end
 
