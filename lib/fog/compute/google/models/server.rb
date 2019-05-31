@@ -554,11 +554,17 @@ module Fog
 
           ssh_keys = metadata_map["ssh-keys"] || metadata_map["sshKeys"] || ""
           ssh_keys += "\n" unless ssh_keys.empty?
-          ssh_keys += "#{username}:#{key.strip} #{username}"
+          ssh_keys += "#{username}:#{ensure_key_comment(key, username)}"
 
           metadata_map["ssh-keys"] = ssh_keys
           metadata[:items] = metadata_to_item_list(metadata_map)
           metadata
+        end
+
+        def ensure_key_comment(key, default_comment = "fog-user")
+          parts = key.strip.split
+          parts << default_comment if parts.size < 3
+          parts.join(" ")
         end
 
         private
