@@ -40,7 +40,7 @@ module Fog
           nil
         end
 
-        # TODO: To be deprecated
+        # TODO(2.0): To be deprecated
         def add_instance(params)
           Fog::Logger.deprecation(
             "#{self.class}.#{__method__} is deprecated, use Fog::Compute::Google::InstanceGroup.#{__method__} instead [light_black](#{caller(0..0)})[/]"
@@ -49,7 +49,7 @@ module Fog
           service.add_instance_group_instances(params[:group], params[:zone], params[:instance])
         end
 
-        # TODO: To be deprecated
+        # TODO(2.0): To be deprecated
         def remove_instance(params)
           Fog::Logger.deprecation(
             "#{self.class}.#{__method__} is deprecated, use Fog::Compute::Google::InstanceGroup.#{__method__} instead [light_black](#{caller(0..0)})[/]"

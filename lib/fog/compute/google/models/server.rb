@@ -266,14 +266,13 @@ module Fog
         # @param async [TrueClass] execute the api call asynchronously
         # @param options [Hash]
         # @return [Object]
-        # TODO: Figure out what options hash is for here.
-        def attach_disk(disk, async = true, options = {})
+        def attach_disk(disk, async = true, attached_disk_options = {})
           requires :identity, :zone
 
           if disk.is_a? Disk
             disk_obj = disk.get_attached_disk
           elsif disk.is_a? String
-            disk_obj = service.disks.attached_disk_obj(disk, options)
+            disk_obj = service.disks.attached_disk_obj(disk, attached_disk_options)
           end
 
           data = service.attach_disk(identity, zone_name, disk_obj)
