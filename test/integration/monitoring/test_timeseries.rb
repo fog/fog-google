@@ -151,6 +151,9 @@ class TestMetricDescriptors < FogIntegrationTest
         :page_size => 1
       )
     end
+
+    mu_pp_for_diff(resp)
+    refute_nil(resp.time_series, "expected timeseries to not be nil")
     assert_equal(resp.time_series.size, 1,
                  "expected timeseries count to be equal to page size 1")
 
