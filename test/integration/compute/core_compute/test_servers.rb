@@ -28,6 +28,15 @@ class TestServers < FogIntegrationTest
                   { :key => "baz", :value => "foo" }], server.metadata[:items]
   end
 
+  def test_add_ssh_key
+    key = "ssh-rsa IAMNOTAREALSSHKEYAMA=="
+    username = "test_user"
+    server = @factory.create
+    server.add_ssh_key(username, key)
+    assert_equal [{ :key => "ssh-keys",
+                    :value => "test_user:ssh-rsa IAMNOTAREALSSHKEYAMA== test_user" }], server.metadata[:items]
+  end
+
   def test_bootstrap
     key = "ssh-rsa IAMNOTAREALSSHKEYAMA== user@host.subdomain.example.com"
     user = "username"
