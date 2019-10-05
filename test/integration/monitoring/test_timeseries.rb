@@ -151,6 +151,8 @@ class TestMetricDescriptors < FogIntegrationTest
         :page_size => 1
       )
     end
+
+    refute_nil(resp.time_series, "expected timeseries to not be nil")
     assert_equal(resp.time_series.size, 1,
                  "expected timeseries count to be equal to page size 1")
 
@@ -164,7 +166,7 @@ class TestMetricDescriptors < FogIntegrationTest
                  "expected timeseries count to be equal to page size 1")
     labels = resp.time_series.first.metric.labels
     labels_next = next_resp.time_series.first.metric.labels
-    assert(labels != labels_next,
+    refute_equal(labels, labels_next,
            "expected different timeseries when using page_token")
 
     # Test filter

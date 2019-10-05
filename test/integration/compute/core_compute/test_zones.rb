@@ -20,7 +20,7 @@ class TestZones < FogIntegrationTest
     # This tests only in last zone since not all zones contain all machine types
     ZONES.each do |name|
       zone = @subject.get(name)
-      refute_nil(zone, "zones.get() should not return nil")
+      refute_nil(zone, "zones.get(#{name}) should not return nil")
       assert(zone.up?, "zones.up? should return up, unless there's an outage")
     end
   end
