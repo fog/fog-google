@@ -107,8 +107,6 @@ class TestMetricDescriptors < FogIntegrationTest
   end
 
   def test_metric_descriptors_all_page_size
-    skip("Skipping until API-side issue is resolved, see #451")
-
     descriptors = @client.metric_descriptors.all(
       :filter => 'metric.type = starts_with("compute.googleapis.com")',
       :page_size => 5
