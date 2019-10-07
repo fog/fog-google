@@ -1,0 +1,173 @@
+jobs:
+  - name: manual-trigger
+    plan:
+    - get: master
+      trigger: false
+
+  - name: integration-compute-core_compute
+    serial: true
+    plan:
+      - get: fog-google-src
+        resource: master
+        version: every
+        trigger: true
+        passed:
+          - manual-trigger
+
+      - task: run-integration-tests
+        file: fog-google-src/ci/tasks/run-int.yml
+        params:
+          rake_task: test:compute-core_compute
+          codecov_token: {{codecov_token}}
+          google_project: {{google_project}}
+          google_json_key_data: {{google_json_key_data}}
+
+  - name: integration-compute-core_networking
+    serial: true
+    plan:
+      - get: fog-google-src
+        resource: master
+        version: every
+        trigger: true
+        passed:
+          - manual-trigger
+
+      - task: run-integration-tests
+        file: fog-google-src/ci/tasks/run-int.yml
+        params:
+          rake_task: test:compute-core_networking
+          codecov_token: {{codecov_token}}
+          google_project: {{google_project}}
+          google_json_key_data: {{google_json_key_data}}
+
+  - name: integration-compute-instance_groups
+    serial: true
+    plan:
+      - get: fog-google-src
+        resource: master
+        version: every
+        trigger: true
+        passed:
+          - manual-trigger
+
+      - task: run-integration-tests
+        file: fog-google-src/ci/tasks/run-int.yml
+        params:
+          rake_task: test:compute-instance_groups
+          codecov_token: {{codecov_token}}
+          google_project: {{google_project}}
+          google_json_key_data: {{google_json_key_data}}
+
+  - name: integration-compute-loadbalancing
+    serial: true
+    plan:
+      - get: fog-google-src
+        resource: master
+        version: every
+        trigger: true
+        passed:
+          - manual-trigger
+
+      - task: run-integration-tests
+        file: fog-google-src/ci/tasks/run-int.yml
+        params:
+          rake_task: test:compute-loadbalancing
+          codecov_token: {{codecov_token}}
+          google_project: {{google_project}}
+          google_json_key_data: {{google_json_key_data}}
+
+  - name: integration-tests-monitoring
+    serial: true
+    plan:
+      - get: fog-google-src
+        resource: master
+        version: every
+        trigger: true
+        passed:
+          - manual-trigger
+
+      - task: run-integration-tests
+        file: fog-google-src/ci/tasks/run-int.yml
+        params:
+          rake_task: test:monitoring
+          codecov_token: {{codecov_token}}
+          google_project: {{google_project}}
+          google_json_key_data: {{google_json_key_data}}
+
+  - name: integration-tests-pubsub
+    serial: true
+    plan:
+      - get: fog-google-src
+        resource: master
+        version: every
+        trigger: true
+        passed:
+          - manual-trigger
+
+      - task: run-integration-tests
+        file: fog-google-src/ci/tasks/run-int.yml
+        params:
+          rake_task: test:pubsub
+          codecov_token: {{codecov_token}}
+          google_project: {{google_project}}
+          google_json_key_data: {{google_json_key_data}}
+
+  - name: integration-sqlv1
+    serial: true
+    plan:
+      - get: fog-google-src
+        resource: master
+        version: every
+        trigger: true
+        passed:
+          - manual-trigger
+
+      - task: run-integration-tests
+        file: fog-google-src/ci/tasks/run-int.yml
+        params:
+          rake_task: test:sql-sqlv1
+          codecov_token: {{codecov_token}}
+          google_project: {{google_project}}
+          google_json_key_data: {{google_json_key_data}}
+
+  - name: integration-sqlv2
+    serial: true
+    plan:
+      - get: fog-google-src
+        resource: master
+        version: every
+        trigger: true
+        passed:
+          - manual-trigger
+
+      - task: run-integration-tests
+        file: fog-google-src/ci/tasks/run-int.yml
+        params:
+          rake_task: test:sql-sqlv2
+          codecov_token: {{codecov_token}}
+          google_project: {{google_project}}
+          google_json_key_data: {{google_json_key_data}}
+
+  - name: integration-tests-storage
+    serial: true
+    plan:
+      - get: fog-google-src
+        resource: master
+        version: every
+        trigger: true
+        passed:
+          - manual-trigger
+      - task: run-integration-tests
+        file: fog-google-src/ci/tasks/run-int.yml
+        params:
+          rake_task: test:storage
+          codecov_token: {{codecov_token}}
+          google_project: {{google_project}}
+          google_json_key_data: {{google_json_key_data}}
+
+resources:
+  - name: master
+    type: git
+    source:
+      uri: https://github.com/fog/fog-google.git
+      branch: master

@@ -23,10 +23,11 @@ fly -t fog-ci login -c <YOUR CONCOURSE URL>
 * Update the [credentials.yml](https://github.com/fog/fog-google/blob/master/ci/credentials.yml.tpl)
 file. See [Credentials Requirements](#credentials-requirements) for specific instructions.
 
-* Set the fog-google pipeline:
+* Set the fog-google pipelines:
 
 ```
-fly -t fog-ci set-pipeline -p pr-integration -c pipeline.yml -l credentials.yml
+fly -t fog set-pipeline -p build-head -c build-head-pipeline.yml -l credentials.yml
+fly -t fog-ci set-pipeline -p pr-integration -c integration-pipeline.yml -l credentials.yml
 ```
 
 * Unpause the fog-google pipeline:
