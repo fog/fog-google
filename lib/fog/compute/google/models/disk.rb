@@ -17,6 +17,9 @@ module Fog
         attribute :source_snapshot, :aliases => "sourceSnapshot"
         attribute :source_snapshot_id, :aliases => "sourceSnapshotId"
         attribute :type
+        attribute :labels
+        attribute :label_fingerprint, :aliases => "labelFingerprint"
+        attribute :users
 
         def default_description
           if !source_image.nil?
@@ -36,7 +39,8 @@ module Fog
             :type => type,
             :size_gb => size_gb,
             :source_image => source_image,
-            :source_snapshot => source_snapshot
+            :source_snapshot => source_snapshot,
+            :labels => labels
           }
 
           if options[:source_image]

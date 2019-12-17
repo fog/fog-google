@@ -25,7 +25,7 @@ module Fog
         # TODO(2.0): change source_image to keyword argument in 2.0 and gracefully deprecate
         def insert_disk(disk_name, zone, source_image = nil,
                         description: nil, type: nil, size_gb: nil,
-                        source_snapshot: nil, **_opts)
+                        source_snapshot: nil, labels: nil, **_opts)
 
           if source_image && !source_image.include?("projects/")
             raise ArgumentError.new("source_image needs to be self-link formatted or specify a family")
@@ -37,7 +37,8 @@ module Fog
             :type => type,
             :size_gb => size_gb,
             :source_snapshot => source_snapshot,
-            :source_image => source_image
+            :source_image => source_image,
+            :labels => labels
           )
           @compute.insert_disk(@project, zone.split("/")[-1], disk)
         end
