@@ -41,7 +41,7 @@ module Fog
             :source_image => source_image,
             :source_snapshot => source_snapshot,
             :labels => labels
-          }
+          }.reject { |_, v| v.nil? }
 
           if options[:source_image]
             unless source_image.include?("projects/")
