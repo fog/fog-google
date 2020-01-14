@@ -14,10 +14,10 @@ module Fog
         def delete_object(bucket_name, object_name)
           request(:expects    => 204,
                   :headers    => {},
-                  :host       => "#{bucket_name}.#{@host}",
+                  :host       => @host,
                   :idempotent => true,
                   :method     => "DELETE",
-                  :path       => Fog::Google.escape(object_name))
+                  :path       => "#{bucket_name}/#{Fog::Google.escape(object_name)}")
         end
       end
 

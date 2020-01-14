@@ -28,10 +28,10 @@ module Fog
           request(:body       => data[:body],
                   :expects    => 200,
                   :headers    => headers,
-                  :host       => "#{bucket_name}.#{@host}",
+                  :host       => @host,
                   :idempotent => true,
                   :method     => "PUT",
-                  :path       => Fog::Google.escape(object_name))
+                  :path       => "#{bucket_name}/#{Fog::Google.escape(object_name)}")
         end
       end
 

@@ -26,10 +26,10 @@ module Fog
           headers = { "x-goog-copy-source" => "/#{source_bucket_name}/#{source_object_name}" }.merge(options)
           request(:expects  => 200,
                   :headers  => headers,
-                  :host     => "#{target_bucket_name}.#{@host}",
+                  :host     => @host,
                   :method   => "PUT",
                   :parser   => Fog::Parsers::Storage::Google::CopyObject.new,
-                  :path     => Fog::Google.escape(target_object_name))
+                  :path     => "#{target_bucket_name}/#{Fog::Google.escape(target_object_name)}")
         end
       end
 
