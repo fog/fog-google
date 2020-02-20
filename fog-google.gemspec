@@ -26,7 +26,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "fog-xml", "~> 0.1.0"
 
   # Hard Requirement as of 1.0
-  spec.add_dependency "google-api-client", ">= 0.23", "< 0.34"
+  spec.add_dependency "google-api-client", ">= 0.32", "< 0.34"
   
   # Debugger
   spec.add_development_dependency "pry"
