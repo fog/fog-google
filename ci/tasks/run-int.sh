@@ -27,6 +27,12 @@ EOL
 
 pushd ${release_dir} > /dev/null
 
+echo "Ruby version:"
+ruby --version
+
+echo "Bundler version:"
+bundler --version
+
 echo "Exporting bundler options..."
 
 # Setting via local config options as BUNDLE_PATH appears to not work
@@ -37,6 +43,9 @@ bundle config --local bin ../../bundle/bin
 echo "Checking dependencies..."
 # Check if dependencies are satisfied, otherwise kick off bundle install
 bundle check || bundle install --jobs=3 --retry=3
+
+echo "Dependencies resolved to:"
+bundle list
 
 echo "Starting test run..."
 FOG_MOCK=false COVERAGE=true CODECOV_TOKEN=${codecov_token} rake ${rake_task}
