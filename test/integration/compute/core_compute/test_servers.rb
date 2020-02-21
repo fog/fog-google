@@ -32,7 +32,7 @@ class TestServers < FogIntegrationTest
     key = "ssh-rsa IAMNOTAREALSSHKEYAMA=="
     username = "test_user"
     server = @factory.create
-    server.add_ssh_key(username, key)
+    server.add_ssh_key(username, key, false)
     assert_equal [{ :key => "ssh-keys",
                     :value => "test_user:ssh-rsa IAMNOTAREALSSHKEYAMA== test_user" }], server.metadata[:items]
   end
