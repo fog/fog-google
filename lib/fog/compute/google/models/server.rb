@@ -414,6 +414,21 @@ module Fog
           reload
         end
 
+        def set_machine_type(new_machine_type, async = true)
+          requires :identity, :zone
+
+          raise Fog::Errors::Error.new("Instance must be stopped to change machine type") unless stopped?
+
+          data = service.set_server_machine_type(
+            identity, zone_name, new_machine_type
+          )
+          operation = Fog::Compute::Google::Operations
+                      .new(:service => service)
+                      .get(data.name, data.zone)
+          operation.wait_for { ready? } unless async
+          reload
+        end
+
         def set_tags(new_tags = [], async = true)
           requires :identity, :zone
 
