@@ -24,8 +24,16 @@ class TestServers < FogIntegrationTest
     server = @factory.create
     server.stop
     server.wait_for { stopped? }
-    server.set_machine_type('n1-standard-2', false)
-    assert_equal 'n1-standard-2', server.machine_type
+    server.set_machine_type("n1-standard-2", false)
+    assert_equal "n1-standard-2", server.machine_type
+  end
+
+  def test_set_machine_type_fail
+    server = @factory.create
+    server.wait_for { ready? }
+    assert_raises Fog::Errors::Error do
+      server.set_machine_type("n1-standard-2", false)
+    end
   end
 
   def test_set_metadata
