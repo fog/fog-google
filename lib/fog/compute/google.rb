@@ -170,6 +170,7 @@ module Fog
       request :set_forwarding_rule_target
       request :set_global_forwarding_rule_target
       request :set_server_disk_auto_delete
+      request :set_server_machine_type
       request :set_server_metadata
       request :set_server_scheduling
       request :set_server_tags
