@@ -25,7 +25,7 @@ class TestServers < FogIntegrationTest
     server.stop
     server.wait_for { stopped? }
     server.set_machine_type("n1-standard-2", false)
-    assert_equal "n1-standard-2", server.machine_type
+    assert_equal "n1-standard-2", server.machine_type.split("/")[-1]
   end
 
   def test_set_machine_type_fail
