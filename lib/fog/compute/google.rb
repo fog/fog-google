@@ -13,6 +13,7 @@ module Fog
         :google_client,
         :google_client_options,
         :google_extra_global_projects,
+        :google_exclude_projects,
         :google_key_location,
         :google_key_string,
         :google_json_key_location,
