@@ -14,6 +14,7 @@ module Fog
           coreos-cloud
           debian-cloud
           rhel-cloud
+          rhel-sap-cloud
           suse-cloud
           suse-sap-cloud
           ubuntu-os-cloud
