@@ -137,29 +137,6 @@ jobs:
             path: fog-google-src
             status: failure
 
-  - name: integration-sqlv1
-    serial: true
-    plan:
-      - get: fog-google-src
-        resource: pull-request
-        version: every
-        trigger: true
-      - put: pull-request
-        params: {path: fog-google-src, status: pending}
-
-      - task: run-integration-tests
-        file: fog-google-src/ci/tasks/run-int.yml
-        params:
-          rake_task: test:sql-sqlv1
-          codecov_token: {{codecov_token}}
-          google_project: {{google_project}}
-          google_json_key_data: {{google_json_key_data}}
-        on_failure:
-          put: pull-request
-          params:
-            path: fog-google-src
-            status: failure
-
   - name: integration-sqlv2
     serial: true
     plan:
@@ -213,7 +190,6 @@ jobs:
         passed: [integration-tests-storage,
                  integration-tests-pubsub,
                  integration-tests-monitoring,
-                 integration-sqlv1,
                  integration-sqlv2,
                  integration-compute-core_compute,
                  integration-compute-core_networking,
