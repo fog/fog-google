@@ -1,12 +1,13 @@
 require "helpers/integration_test_helper"
-require "integration/factories/sql_v1_certs_factory"
+require "integration/factories/sql_certs_factory"
+require "pry"
 
-class TestSQLV1Certs < FogIntegrationTest
+class TestSQLCerts < FogIntegrationTest
   # This test doesn't include TestCollection as certs are not an independent resource.
 
   def setup
     @subject = Fog::Google[:sql].ssl_certs
-    @factory = SqlV1CertsFactory.new(namespaced_name)
+    @factory = SqlCertsFactory.new(namespaced_name)
     @client  = Fog::Google::SQL.new
   end
 

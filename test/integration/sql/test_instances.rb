@@ -1,5 +1,5 @@
 require "helpers/integration_test_helper"
-require "integration/factories/sql_v2_instances_factory"
+require "integration/factories/sql_instances_factory"
 # Client helper is imported for `wait_until_complete`
 # TODO: Remove when fog-google#339 or fog-google#340 is resolved
 require "helpers/client_helper"
@@ -12,11 +12,31 @@ class TestSQLV2Instances < FogIntegrationTest
 
   def setup
     @subject = Fog::Google[:sql].instances
-    @factory = SqlV2InstancesFactory.new(namespaced_name)
+    @factory = SqlInstancesFactory.new(namespaced_name)
     @backup_runs = Fog::Google[:sql].backup_runs
     # TODO: Remove after BackupRuns get save/reload - fog-google#339
     # See https://github.com/fog/fog-google/issues/339
     @client = Fog::Google::SQL.new
+  end
+
+  def test_update
+    instance = @factory.create
+
+    settings_version = instance.settings_version
+    labels = {
+      :foo => "bar"
+    }
+    instance.settings[:user_labels] = labels
+    instance.save
+
+    updated = @subject.get(instance.name)
+    assert_equal(labels, updated.settings[:user_labels])
+    assert_operator(updated.settings_version, :>, settings_version)
+  end
+
+  def test_default_settings
+    instance = @factory.create
+    assert_equal([], instance.ssl_certs, "new instance should have 0 initial ssl certs")
   end
 
   def test_restore_backup_run
