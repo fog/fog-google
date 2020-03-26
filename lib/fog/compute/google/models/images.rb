@@ -97,7 +97,11 @@ module Fog
 
         def all_projects
           # Search own project before global projects
-          [service.project] + GLOBAL_PROJECTS + service.extra_global_projects
+          project_list = [service.project] + GLOBAL_PROJECTS + service.extra_global_projects
+          unless service.exclude_projects.empty?
+            project_list.delete_if { |project| service.exclude_projects.include?(project) }
+          end
+          project_list
         end
       end
     end

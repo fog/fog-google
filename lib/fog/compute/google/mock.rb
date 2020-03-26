@@ -3,11 +3,12 @@ module Fog
     class Google
       class Mock
         include Fog::Google::Shared
-        attr_reader :extra_global_projects
+        attr_reader :extra_global_projects, :exclude_projects
 
         def initialize(options)
           shared_initialize(options[:google_project], GOOGLE_COMPUTE_API_VERSION, GOOGLE_COMPUTE_BASE_URL)
           @extra_global_projects = options.fetch(:google_extra_global_projects, [])
+          @exclude_projects = options.fetch(:google_exclude_projects, [])
         end
 
         def self.data(api_version)

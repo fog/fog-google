@@ -5,7 +5,7 @@ module Fog
         include Fog::Google::Shared
 
         attr_accessor :client
-        attr_reader :compute, :extra_global_projects
+        attr_reader :compute, :extra_global_projects, :exclude_projects
 
         def initialize(options)
           shared_initialize(options[:google_project], GOOGLE_COMPUTE_API_VERSION, GOOGLE_COMPUTE_BASE_URL)
@@ -16,6 +16,7 @@ module Fog
           apply_client_options(@compute, options)
 
           @extra_global_projects = options[:google_extra_global_projects] || []
+          @exclude_projects = options[:google_exclude_projects] || []
         end
       end
     end
