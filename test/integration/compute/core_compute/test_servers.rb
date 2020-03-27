@@ -131,4 +131,19 @@ class TestServers < FogIntegrationTest
 
     assert server.ready?
   end
+
+  def test_reset_windows_password
+    win_disk = @disks.create(
+      :name => "fog-test-1-testservers-test-reset-windows-password-2",
+      :source_image => "windows-server-1909-dc-core-v20200310",
+      :size_gb => 32
+    )
+    server = @factory.create(:disks => [win_disk])
+    server.wait_for { ready? }
+    server.reset_windows_password("test_user")
+    serial_output = server.serial_port_output(:port => 4)
+
+    assert_includes(serial_output, "encryptedPassword")
+    assert_includes(serial_output, "\"userName\":\"test_user\"")
+  end
 end
