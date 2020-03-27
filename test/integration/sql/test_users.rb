@@ -1,8 +1,8 @@
 require "helpers/integration_test_helper"
-require "integration/factories/sql_v1_instances_factory"
-require "integration/factories/sql_v1_users_factory"
+require "integration/factories/sql_instances_factory"
+require "integration/factories/sql_users_factory"
 
-class TestSQLV1Users < FogIntegrationTest
+class TestSQLUsers < FogIntegrationTest
   # This test doesn't include TestCollection as Users is not a
   # classical Fog model, as it's tied to a particular instance
   # I.e.:
@@ -12,7 +12,7 @@ class TestSQLV1Users < FogIntegrationTest
 
   def setup
     @subject = Fog::Google[:sql].users
-    @factory = SqlV1UsersFactory.new(namespaced_name)
+    @factory = SqlUsersFactory.new(namespaced_name)
   end
 
   def teardown

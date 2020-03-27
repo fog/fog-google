@@ -1,20 +1,24 @@
-def test
-  connection = Fog::Google::SQL.new
+# All examples presume that you have a ~/.fog credentials file set up.
+# More info on it can be found here: http://fog.io/about/getting_started.html
 
-  puts "Create a Instance..."
-  puts "--------------------"
-  instance = connection.instances.create(:name => Fog::Mock.random_letters(16), :tier => "D1")
-  instance.wait_for { ready? }
+require "bundler"
+Bundler.require(:default, :development)
 
-  puts "Delete the Instance..."
-  puts "----------------------"
-  operation = instance.destroy
+connection = Fog::Google::SQL.new
 
-  puts "Get the Operation..."
-  puts "--------------------"
-  connection.operations.get(operation.identity)
+puts "Create a Instance..."
+puts "--------------------"
+instance = connection.instances.create(:name => Fog::Mock.random_letters(16), :tier => "D1")
+instance.wait_for { ready? }
 
-  puts "Listing all Operations..."
-  puts "-------------------------"
-  connection.operations.all(instance.identity)
-end
+puts "Delete the Instance..."
+puts "----------------------"
+operation = instance.destroy
+
+puts "Get the Operation..."
+puts "--------------------"
+connection.operations.get(operation.identity)
+
+puts "Listing all Operations..."
+puts "-------------------------"
+connection.operations.all(instance.identity)

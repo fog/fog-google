@@ -54,12 +54,18 @@ module Fog
         # Creates a SSL certificate. The new certificate will not be usable until the instance is restarted.
         #
         # @raise [Fog::Errors::Error] If SSL certificate already exists
-        def save
+        def save(async: false)
           requires :instance, :common_name
 
           raise Fog::Errors::Error.new("Resaving an existing object may create a duplicate") if persisted?
 
           data = service.insert_ssl_cert(instance, common_name)
+          # data.operation.name is used here since InsertSslCert returns a
+          # special object, not an operation, as usual. See documentation:
+          # https://cloud.google.com/sql/docs/mysql/admin-api/rest/v1beta4/sslCerts/insert#response-body
+          operation = Fog::Google::SQL::Operations.new(:service => service).get(data.operation.name)
+          operation.wait_for { ready? } unless async
+
           merge_attributes(data.client_cert.cert_info.to_h)
           self.server_ca_cert = Fog::Google::SQL::SslCert.new(data.server_ca_cert.to_h)
           self.cert_private_key = data.client_cert.cert_private_key

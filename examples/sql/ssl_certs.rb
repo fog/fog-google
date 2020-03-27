@@ -1,28 +1,32 @@
-def test
-  connection = Fog::Google::SQL.new
+# All examples presume that you have a ~/.fog credentials file set up.
+# More info on it can be found here: http://fog.io/about/getting_started.html
 
-  puts "Create a Instance..."
-  puts "--------------------"
-  instance = connection.instances.create(:name => Fog::Mock.random_letters(16), :tier => "D1")
-  instance.wait_for { ready? }
+require "bundler"
+Bundler.require(:default, :development)
 
-  puts "Create a SSL certificate..."
-  puts "---------------------------"
-  ssl_cert = connection.ssl_certs.create(:instance => instance.name, :common_name => Fog::Mock.random_letters(16))
+connection = Fog::Google::SQL.new
 
-  puts "Get the SSL certificate..."
-  puts "--------------------------"
-  connection.ssl_certs.get(instance.name, ssl_cert.sha1_fingerprint)
+puts "Create a Instance..."
+puts "--------------------"
+instance = connection.instances.create(:name => Fog::Mock.random_letters(16), :tier => "db-n1-standard-1")
+instance.wait_for { ready? }
 
-  puts "List all SSL certificate..."
-  puts "---------------------------"
-  connection.ssl_certs.all(instance.name)
+puts "Create a SSL certificate..."
+puts "---------------------------"
+ssl_cert = connection.ssl_certs.create(:instance => instance.name, :common_name => Fog::Mock.random_letters(16))
 
-  puts "Delete the SSL certificate..."
-  puts "-----------------------------"
-  ssl_cert.destroy
+puts "Get the SSL certificate..."
+puts "--------------------------"
+connection.ssl_certs.get(instance.name, ssl_cert.sha1_fingerprint)
 
-  puts "Delete the Instance..."
-  puts "----------------------"
-  instance.destroy
-end
+puts "List all SSL certificate..."
+puts "---------------------------"
+connection.ssl_certs.all(instance.name)
+
+puts "Delete the SSL certificate..."
+puts "-----------------------------"
+ssl_cert.destroy
+
+puts "Delete the Instance..."
+puts "----------------------"
+instance.destroy

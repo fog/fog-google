@@ -86,10 +86,14 @@ namespace :test do
   end
 
   desc "Run SQL API tests"
-  task :compute => SQL_TEST_TASKS
+  task :sql => SQL_TEST_TASKS
 
   desc "Run SQL API tests in parallel"
-  multitask :compute_parallel => SQL_TEST_TASKS
+  multitask :sql_parallel => SQL_TEST_TASKS
+
+  # TODO(temikus): Remove after v1 is renamed in pipeline
+  desc "Run SQL API tests - v1 compat alias"
+  task :"sql-sqlv2" => :sql
 
   Rake::TestTask.new do |t|
     t.name = "sql"

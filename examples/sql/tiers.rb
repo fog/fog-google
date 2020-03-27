@@ -1,7 +1,11 @@
-def test
-  connection = Fog::Google::SQL.new
+# All examples presume that you have a ~/.fog credentials file set up.
+# More info on it can be found here: http://fog.io/about/getting_started.html
 
-  puts "Listing all Tiers..."
-  puts "--------------------"
-  connection.tiers
-end
+require "bundler"
+Bundler.require(:default, :development)
+
+connection = Fog::Google::SQL.new
+
+puts "Listing all Tiers..."
+puts "--------------------"
+connection.tiers

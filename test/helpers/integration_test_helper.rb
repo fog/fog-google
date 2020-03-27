@@ -24,11 +24,8 @@ TEST_IMAGE_FAMILY = "debian-9".freeze
 # The image was created like so: https://cloud.google.com/compute/docs/images#export_an_image_to_google_cloud_storage
 TEST_RAW_DISK_SOURCE = "http://storage.googleapis.com/fog-test-bucket/fog-test-raw-disk-source.image.tar.gz".freeze
 
-TEST_SQL_TIER_FIRST = "D1".freeze
-TEST_SQL_REGION_FIRST = "us-central".freeze
-
-TEST_SQL_TIER_SECOND = "db-n1-standard-1".freeze
-TEST_SQL_REGION_SECOND = TEST_REGION
+TEST_SQL_TIER = "db-n1-standard-1".freeze
+TEST_SQL_REGION = TEST_REGION
 
 # Test certificate/key for SSL Proxy tests, generated via:
 # $ openssl genrsa -out example.key 2048

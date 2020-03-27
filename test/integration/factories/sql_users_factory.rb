@@ -1,9 +1,9 @@
 require "integration/factories/collection_factory"
-require "integration/factories/sql_v1_instances_factory"
+require "integration/factories/sql_instances_factory"
 
-class SqlV1UsersFactory < CollectionFactory
+class SqlUsersFactory < CollectionFactory
   def initialize(example)
-    @instances = SqlV1InstancesFactory.new(example)
+    @instances = SqlInstancesFactory.new(example)
     super(Fog::Google[:sql].users, example)
   end
 
