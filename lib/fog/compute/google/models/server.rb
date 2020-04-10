@@ -343,10 +343,10 @@ module Fog
           operation
         end
 
-        def serial_port_output
+        def serial_port_output(port: 1)
           requires :identity, :zone
 
-          service.get_server_serial_port_output(identity, zone_name).to_h[:contents]
+          service.get_server_serial_port_output(identity, zone_name, :port => port).to_h[:contents]
         end
 
         def set_disk_auto_delete(auto_delete, device_name = nil, async = true)
@@ -579,6 +579,10 @@ module Fog
           parts = key.strip.split
           parts << default_comment if parts.size < 3
           parts.join(" ")
+        end
+
+        def reset_windows_password(user)
+          service.reset_windows_password(:server => self, :user => user)
         end
 
         private

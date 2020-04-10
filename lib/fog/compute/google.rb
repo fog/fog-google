@@ -214,6 +214,8 @@ module Fog
 
       request :deprecate_image
 
+      request :reset_windows_password
+
       model_path "fog/compute/google/models"
       model :server
       collection :servers
