@@ -6,6 +6,46 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 
 ## Next
 
+
+## 1.10.0
+
+### User-facing
+
+#### Added
+
+- \#480 Add label support to `Disk` model [militarpancho]
+- \#485 Add a `Server#set_server_machine_type` request [gscho]
+- \#490 Add RHEL SAP cloud image project [kgaikwad]
+- \#491 Add `exclude_projects` option to exclude any global project [kgaikwad]
+- \#495 Add support to perform Windows passwords reset procedure through Fog [dvanbrug]
+
+#### Fixed
+- \#455 Fix metadata format for `Server#add_ssh_key()` [kgaikwad]
+- \#452 Fix `Address.{associate,disassociate}` methods [temikus]
+- \#486 Fix `Monitoring#create_time_series` method [temikus]
+- \#493 Add sync/async support to `Google::SQL::SslCert` model init [temikus]
+
+### Development changes
+
+#### Added
+
+- \#474 Added a manually-triggered pipeline to build from HEAD [temikus]
+- \#470 Added tests for `Server#add_ssh_key()` [kgaikwad]
+- \#461 Added dependabot integration [temikus]
+- \#458 Add SECURITY.md, outlining the lib security policy [icco]
+- \#457 Added Ruby 2.6 to travis, switch to default distro [icco]
+- \#453 Implemented worker-side caching of dependencies between jobs [temikus]
+- \#452 Increase `Address` model test coverage [temikus]
+
+#### Fixed
+
+- \#469 Zone/Monitoring test logging/style improvements [icco]
+- \#465 Stopped counting non-implemented mocks in code coverage [temikus]
+- \#463 Fixed SQL tests broken by the API change [temikus]
+- \#476 Re-enabled Stackdriver pagination tests [temikus]
+- \#488 Tiny fix to ssh key tests to remove a race condition [temikus]
+- \#493 Removing SQLv1 API support from tests [temikus]
+
 ## 1.9.1
 
 ### User-facing
