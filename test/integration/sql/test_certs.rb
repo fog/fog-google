@@ -1,6 +1,5 @@
 require "helpers/integration_test_helper"
 require "integration/factories/sql_certs_factory"
-require "pry"
 
 class TestSQLCerts < FogIntegrationTest
   # This test doesn't include TestCollection as certs are not an independent resource.
