@@ -105,7 +105,7 @@ module Fog
           
           options[:predefined_acl] ||= @predefined_acl
 
-          service.put_object(directory.key, key, body, options)
+          service.put_object(directory.key, key, body, predefined_acl: options.delete(:predefined_acl), options)
           self.content_length = Fog::Storage.get_body_size(body)
           self.content_type ||= Fog::Storage.get_content_type(body)
           true
