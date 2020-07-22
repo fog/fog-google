@@ -1,5 +1,6 @@
 require "helpers/test_helper"
 require "helpers/test_collection"
+require "retriable"
 
 # Use :test credentials in ~/.fog for live integration testing
 # XXX not sure if this will work on Travis CI or not
@@ -87,8 +88,21 @@ wLjafhPTSAIS0jijglJ7uzaSbFUW11fw1/EIqIFNe0R0Xf9lsyPxFA==
 -----END RSA PRIVATE KEY-----
 KEY
 
+# Retry module config - standard retriable gem settings
+# see: https://github.com/kamui/retriable
+RETRIABLE_TRIES = 3
+RETRIABLE_BASE_INTERVAL = 50
+
 class FogIntegrationTest < MiniTest::Test
   def namespaced_name
     "#{self.class}_#{name}"
+  end
+
+  def retry_on(klass)
+    Retriable.retriable(on: klass,
+                        tries: RETRIABLE_TRIES,
+                        base_interval: RETRIABLE_BASE_INTERVAL) do
+      yield
+    end
   end
 end

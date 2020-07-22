@@ -1,12 +1,11 @@
 require "helpers/integration_test_helper"
-require "retriable"
 
 class TestMetricDescriptors < FogIntegrationTest
-  # Retriable is used to wrap each request in this test due to Stackdriver API being slow with
-  # metric propagation (sometimes 80+ seconds) and client returning
-  # Google::Apis::ClientError: badRequest if the metric hasn't yet been created instead of a 404.
-  RETRIABLE_TRIES = 3
-  RETRIABLE_BASE_INTERVAL = 50
+  # This module has a decent amount of retry wrappers as the Stackdriver API
+  # can be quite slow with metric propagation (sometimes 80+ seconds) and client
+  # returning errors, e.g. Google::Apis::ClientError: badRequest if the metric
+  # hasn't yet been created instead of a 404.
+
   TEST_METRIC_PREFIX = "custom.googleapis.com/fog-google-test/timeseries".freeze
   LABEL_DESCRIPTORS = [
     {
@@ -51,10 +50,7 @@ class TestMetricDescriptors < FogIntegrationTest
     assert_empty(resp.to_h)
 
     # Wait for metric to be created
-    # TODO: Dedup retries into a helper method
-    Retriable.retriable(on: Google::Apis::ClientError,
-                        tries: RETRIABLE_TRIES,
-                        base_interval: RETRIABLE_BASE_INTERVAL) do
+    retry_on(Google::Apis::ClientError) do
       @client.list_timeseries(
           :filter => "metric.type = \"#{metric_type}\"",
           :interval => {
@@ -67,9 +63,7 @@ class TestMetricDescriptors < FogIntegrationTest
       ).time_series
     end
 
-    series = Retriable.retriable(on: Google::Apis::ClientError,
-                                 tries: RETRIABLE_TRIES,
-                                 base_interval: RETRIABLE_BASE_INTERVAL) do
+    series = retry_on(Google::Apis::ClientError) do
       @client.timeseries_collection.all(
         :filter => "metric.type = \"#{metric_type}\"",
         :interval => {
@@ -115,9 +109,7 @@ class TestMetricDescriptors < FogIntegrationTest
       _some_timeseries(start_time, metric_type, labels)
     end
 
-    Retriable.retriable(on: Google::Apis::ServerError,
-                        tries: RETRIABLE_TRIES,
-                        base_interval: RETRIABLE_BASE_INTERVAL) do
+    retry_on(Google::Apis::ServerError) do
       @client.create_timeseries(:timeseries => timeseries)
     end
     interval = {
@@ -132,9 +124,7 @@ class TestMetricDescriptors < FogIntegrationTest
     # Wait for metric to be created
     # Retriable is used instead of wait_for due to API client returning Google::Apis::ClientError: badRequest if the
     # metric hasn't yet been created
-    Retriable.retriable(on: Google::Apis::ClientError,
-                        tries: RETRIABLE_TRIES,
-                        base_interval: RETRIABLE_BASE_INTERVAL) do
+    retry_on(Google::Apis::ClientError) do
       @client.list_timeseries(
         :filter => "metric.type = \"#{metric_type}\"",
         :interval => interval
@@ -142,9 +132,7 @@ class TestMetricDescriptors < FogIntegrationTest
     end
 
     # Test page size
-    resp = Retriable.retriable(on: Google::Apis::ClientError,
-                               tries: RETRIABLE_TRIES,
-                               base_interval: RETRIABLE_BASE_INTERVAL) do
+    resp = retry_on(Google::Apis::ClientError) do
       @client.list_timeseries(
         :filter => "metric.type = \"#{metric_type}\"",
         :interval => interval,
@@ -170,9 +158,7 @@ class TestMetricDescriptors < FogIntegrationTest
            "expected different timeseries when using page_token")
 
     # Test filter
-    series = Retriable.retriable(on: Google::Apis::ClientError,
-                                 tries: RETRIABLE_TRIES,
-                                 base_interval: RETRIABLE_BASE_INTERVAL) do
+    series = retry_on(Google::Apis::ClientError) do
       @client.timeseries_collection.all(
         :filter => %[
           metric.type = "#{metric_type}" AND
