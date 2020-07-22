@@ -102,7 +102,7 @@ class TestPubsubModels < PubSubShared
                                                 :topic => some_topic_name)
     @client.topics.get(some_topic_name).publish(["data" => message_bytes])
 
-    result = subscription.pull
+    result = subscription.pull(:return_immediately => false)
     assert_operator(result.length, :>, 0)
 
     contained = result.any? { |received| received.message[:data] == message_bytes }
@@ -115,7 +115,7 @@ class TestPubsubModels < PubSubShared
                                                 :topic => some_topic_name)
     @client.topics.get(some_topic_name).publish(["data" => Base64.strict_encode64("some message")])
 
-    result = subscription.pull
+    result = subscription.pull(:return_immediately => false)
     assert_operator(result.length, :>, 0)
 
     subscription.acknowledge([result[0].ack_id])
@@ -127,7 +127,7 @@ class TestPubsubModels < PubSubShared
                                                 :topic => some_topic_name)
     @client.topics.get(some_topic_name).publish(["data" => Base64.strict_encode64("some message")])
 
-    result = subscription.pull
+    result = subscription.pull(:return_immediately => false)
     assert_operator(result.length, :>, 0)
 
     result[0].acknowledge
