@@ -447,7 +447,7 @@ module Fog
         #
         # @return [TrueClass or FalseClass]
         def provisioning?
-          status == PROVISIONING
+          status == "PROVISIONING"
         end
 
         # Check if instance is staging. On staging vs. provisioning difference:
@@ -455,7 +455,7 @@ module Fog
         #
         # @return [TrueClass or FalseClass]
         def staging?
-          status == STAGING
+          status == "STAGING"
         end
 
         # Check if instance is stopped.
@@ -469,7 +469,7 @@ module Fog
         #
         # @return [TrueClass or FalseClass]
         def ready?
-          status == RUNNING
+          status == "RUNNING"
         end
 
         def zone_name
