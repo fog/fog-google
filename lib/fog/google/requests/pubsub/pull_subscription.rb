@@ -16,7 +16,11 @@ module Fog
         # @option options [Number] :max_messages maximum number of messages to
         #   retrieve (defaults to 10)
         # @see https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/pull
-        def pull_subscription(subscription, options = { :return_immediately => true, :max_messages => 10 })
+        def pull_subscription(subscription, options = {})
+          defaults = { :return_immediately => true,
+                       :max_messages => 10 }
+          options = defaults.merge(options)
+
           pull_request = ::Google::Apis::PubsubV1::PullRequest.new(
             :return_immediately => options[:return_immediately],
             :max_messages => options[:max_messages]
