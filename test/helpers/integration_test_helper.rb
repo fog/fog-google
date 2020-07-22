@@ -22,7 +22,7 @@ TEST_IMAGE_FAMILY = "debian-9".freeze
 
 # XXX This depends on a public image in gs://fog-test-bucket; there may be a better way to do this
 # The image was created like so: https://cloud.google.com/compute/docs/images#export_an_image_to_google_cloud_storage
-TEST_RAW_DISK_SOURCE = "http://storage.googleapis.com/fog-test-bucket/fog-test-raw-disk-source.image.tar.gz".freeze
+TEST_RAW_DISK_SOURCE = "https://storage.googleapis.com/fog-testing-bucket/fog-test-raw-disk-source.image.tar.gz".freeze
 
 TEST_SQL_TIER = "db-n1-standard-1".freeze
 TEST_SQL_REGION = TEST_REGION

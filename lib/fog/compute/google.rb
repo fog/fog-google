@@ -27,10 +27,6 @@ module Fog
                                           https://www.googleapis.com/auth/ndev.cloudman
                                           https://www.googleapis.com/auth/cloud-platform).freeze
       GOOGLE_COMPUTE_DEFAULT_NETWORK = "default".freeze
-      # TODO: Do we need those constants?
-      RUNNING = "RUNNING".freeze
-      PROVISIONING = "PROVISIONING".freeze
-      STAGING = "STAGING".freeze
 
       request_path "fog/compute/google/requests"
       request :add_backend_service_backends

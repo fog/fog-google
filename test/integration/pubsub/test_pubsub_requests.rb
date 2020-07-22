@@ -86,7 +86,7 @@ class TestPubsubRequests < PubSubShared
     @client.create_subscription(subscription_name, some_topic_name)
     @client.publish_topic(some_topic_name, [:data => message_bytes])
 
-    result = @client.pull_subscription(subscription_name)
+    result = @client.pull_subscription(subscription_name, {:return_immediately => false})
 
     contained = result.received_messages.any? { |received| received.message.data == message_bytes }
     assert_equal(true, contained, "sent messsage not contained within pulled responses")
@@ -96,7 +96,7 @@ class TestPubsubRequests < PubSubShared
     subscription_name = new_subscription_name
     @client.create_subscription(subscription_name, some_topic_name)
     @client.publish_topic(some_topic_name, [:data => Base64.strict_encode64("some message")])
-    pull_result = @client.pull_subscription(subscription_name)
+    pull_result = @client.pull_subscription(subscription_name, {:return_immediately => false})
     assert_operator(pull_result.received_messages.length, :>, 0)
 
     @client.acknowledge_subscription(subscription_name,
