@@ -108,6 +108,43 @@ defined:
 => [  <Fog::Compute::Google::Server ...  ]
 ```
 
+#### CarrierWave integration
+
+It is common to integrate Fog with Carrierwave. Here's a minimal config that's commonly put in `config/initializers/carrierwave.rb`:
+
+```
+CarrierWave.configure do |config|
+    config.fog_provider = 'fog/google'
+    config.fog_credentials = {
+        provider: 'Google',
+        google_project: Rails.application.secrets.google_cloud_storage_project_name,
+        google_json_key_string: Rails.application.secrets.google_cloud_storage_credential_content
+        # can optionally use google_json_key_location if using an actual file;
+    }
+    config.fog_directory = Rails.application.secrets.google_cloud_storage_bucket_name
+end
+```
+
+This needs a corresponding secret in `config/secrets.yml`, e.g.:
+
+```
+development:
+    google_cloud_storage_project_name: your-project-name
+    google_cloud_storage_credential_content: '{
+        "type": "service_account",
+        "project_id": "your-project-name",
+        "private_key_id": "REDACTED",
+        "private_key": "-----BEGIN PRIVATE KEY-----REDACTED-----END PRIVATE KEY-----\n",
+        "client_email": "REDACTED@your-project-name.iam.gserviceaccount.com",
+        "client_id": "REDACTED",
+        "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+        "token_uri": "https://accounts.google.com/o/oauth2/token",
+        "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+        "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/REDACTED%40your-project-name.iam.gserviceaccount.com"
+    }'
+    google_cloud_storage_bucket_name: your-bucket-name
+```
+
 #### SSH-ing into instances
 
 If you want to be able to bootstrap SSH-able instances, (using `servers.bootstrap`,) be sure you have a key in `~/.ssh/id_rsa` and `~/.ssh/id_rsa.pub`
