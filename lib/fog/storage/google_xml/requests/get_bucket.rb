@@ -1,4 +1,3 @@
-require "pp"
 module Fog
   module Storage
     class GoogleXML
