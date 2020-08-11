@@ -13,7 +13,14 @@ module Fog
           options[:google_api_scope_url] = GOOGLE_STORAGE_JSON_API_SCOPE_URLS.join(" ")
           @host = options[:host] || "storage.googleapis.com"
 
+          # TODO(temikus): Do we even need this client?
           @client = initialize_google_client(options)
+          # IAM client used for SignBlob API
+          @iam_service = ::Google::Apis::IamcredentialsV1::IAMCredentialsService.new
+          apply_client_options(@iam_service, {
+                                 google_api_scope_url: GOOGLE_STORAGE_JSON_IAM_API_SCOPE_URLS.join(" ")
+                               })
+
           @storage_json = ::Google::Apis::StorageV1::StorageService.new
           apply_client_options(@storage_json, options)
 
@@ -56,11 +63,107 @@ DATA
           canonical_resource.chop!
           string_to_sign << canonical_resource.to_s
 
-          key = OpenSSL::PKey::RSA.new(@client.signing_key)
-          digest = OpenSSL::Digest::SHA256.new
-          signed_string = key.sign(digest, string_to_sign)
+          # TODO(temikus): make signer configurable or add ability to supply your own via lambda
+          if !@storage_json.authorization.signing_key.nil?
+            signed_string = default_signer(string_to_sign)
+          else
+            # If client doesn't contain signing key attempt to auth via IAM SignBlob API
+            signed_string = iam_signer(string_to_sign)
+          end
 
           Base64.encode64(signed_string).chomp!
+        end
+
+        private
+
+        def google_access_id
+          @google_access_id ||= get_google_access_id
+        end
+
+        ##
+        # Fetches the google service account name
+        #
+        # @return [String] Service account name, typically needed for GoogleAccessId, e.g.
+        #   my-account@project.iam.gserviceaccount
+        # @raises [Fog::Errors::Error] If authorisation is incorrect or inapplicable for current action
+        def get_google_access_id
+          if @storage_json.authorization.is_a?(::Google::Auth::UserRefreshCredentials)
+            raise Fog::Errors::Error.new("User / Application Default Credentials are not supported for storage"\
+                                         "url signing, please use a service account or metadata authentication.")
+          end
+
+          if !@storage_json.authorization.issuer.nil?
+            return @storage_json.authorization.issuer
+          else
+            get_access_id_from_metadata
+          end
+        end
+
+        ##
+        # Attempts to fetch the google service account name from metadata using Google::Cloud::Env
+        #
+        # @return [String] Service account name, typically needed for GoogleAccessId, e.g.
+        #   my-account@project.iam.gserviceaccount
+        # @raises [Fog::Errors::Error] If Metadata service is not available or returns an invalid response
+        def get_access_id_from_metadata
+          if @google_cloud_env.metadata?
+            access_id = @google_cloud_env.lookup_metadata("instance", "service-accounts/default/email")
+          else
+            raise Fog::Errors::Error.new("Metadata service not available, unable to retrieve service account info.")
+          end
+
+          if access_id.nil?
+            raise Fog::Errors::Error.new("Metadata service found but didn't return data." \
+               "Please file a bug: https://github.com/fog/fog-google")
+          end
+
+          return access_id
+        end
+
+        ##
+        # Default url signer using service account keys
+        #
+        # @param [String] string_to_sign Special collection of headers and options for V2 storage signing, e.g.:
+        #
+        #   StringToSign = HTTP_Verb + "\n" +
+        #                  Content_MD5 + "\n" +
+        #                  Content_Type + "\n" +
+        #                  Expires + "\n" +
+        #                  Canonicalized_Extension_Headers +
+        #                  Canonicalized_Resource
+        #
+        #   See https://cloud.google.com/storage/docs/access-control/signed-urls-v2
+        # @return [String] Signature binary blob
+        def default_signer(string_to_sign)
+          key = OpenSSL::PKey::RSA.new(@storage_json.authorization.signing_key)
+          digest = OpenSSL::Digest::SHA256.new
+          return key.sign(digest, string_to_sign)
+        end
+
+        ##
+        # Fallback URL signer using the IAM SignServiceAccountBlob API, see
+        #   Google::Apis::IamcredentialsV1::IAMCredentialsService#sign_service_account_blob
+        #
+        # @param [String] string_to_sign Special collection of headers and options for V2 storage signing, e.g.:
+        #
+        #   StringToSign = HTTP_Verb + "\n" +
+        #                  Content_MD5 + "\n" +
+        #                  Content_Type + "\n" +
+        #                  Expires + "\n" +
+        #                  Canonicalized_Extension_Headers +
+        #                  Canonicalized_Resource
+        #
+        #   See https://cloud.google.com/storage/docs/access-control/signed-urls-v2
+        # @return [String] Signature binary blob
+        def iam_signer(string_to_sign)
+          request = {
+            "payload": string_to_sign
+          }
+
+          resource = "projects/-/serviceAccounts/#{google_access_id}"
+          response = @iam_service.sign_service_account_blob resource, request, {}
+
+          return response.signed_blob
         end
       end
     end

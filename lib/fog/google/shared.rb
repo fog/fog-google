@@ -1,3 +1,5 @@
+require "google-cloud-env"
+
 module Fog
   module Google
     module Shared
@@ -14,6 +16,9 @@ module Fog
         @project = project
         @api_version = api_version
         @api_url = base_url + api_version + "/projects/"
+        # google-cloud-env allows us to figure out which GCP runtime we're running in and query metadata
+        # e.g. whether we're running in GCE/GKE/AppEngine or what region the instance is running in
+        @google_cloud_env = ::Google::Cloud::Env.get
       end
 
       ##
@@ -33,14 +38,14 @@ module Fog
       def initialize_google_client(options)
         # NOTE: loaded here to avoid requiring this as a core Fog dependency
         begin
-          # Because of how Google API gem was rewritten, we get to do all sorts
-          # of funky things, like this nonsense.
+          # TODO: google-api-client is in gemspec now, re-assess if this initialization logic is still needed
           require "google/apis/monitoring_#{Fog::Google::Monitoring::GOOGLE_MONITORING_API_VERSION}"
           require "google/apis/compute_#{Fog::Compute::Google::GOOGLE_COMPUTE_API_VERSION}"
           require "google/apis/dns_#{Fog::DNS::Google::GOOGLE_DNS_API_VERSION}"
           require "google/apis/pubsub_#{Fog::Google::Pubsub::GOOGLE_PUBSUB_API_VERSION}"
           require "google/apis/sqladmin_#{Fog::Google::SQL::GOOGLE_SQL_API_VERSION}"
           require "google/apis/storage_#{Fog::Storage::GoogleJSON::GOOGLE_STORAGE_JSON_API_VERSION}"
+          require "google/apis/iamcredentials_#{Fog::Storage::GoogleJSON::GOOGLE_STORAGE_JSON_IAM_API_VERSION}"
           require "googleauth"
         rescue LoadError => error
           Fog::Errors::Error.new("Please install the google-api-client (>= 0.9) gem before using this provider")
