@@ -27,7 +27,7 @@ module Fog
             query = filtered.map { |k, v| [k.to_s, Fog::Google.escape(v)].join("=") }
           end
 
-          query << "GoogleAccessId=#{@client.issuer}"
+          query << "GoogleAccessId=#{google_access_id}"
           query << "Signature=#{CGI.escape(signature(params))}"
           query << "Expires=#{params[:headers]['Date']}"
           "#{params[:host]}/#{params[:path]}?#{query.join('&')}"
