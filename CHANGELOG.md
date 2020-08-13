@@ -6,6 +6,26 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 
 ## Next
 
+## 1.11.0
+
+### User-facing
+
+#### Added
+
+- \#503 - Add fallback URL signing mechanism via IAM SignBlob API [temikus]
+
+#### Fixed
+
+- \#498 Add `:idempotent` flag to Fog::Storage::GoogleXML::Real#head_object, fixing
+          `Excon::Error::Socket: end of file reached (EOFError)` in certain scenarios, see \#416 [temikus]
+- \#500 Set default options automatically if missing in `Pubsub#pull_subscription`
+
+### Development changes
+
+#### Fixed
+
+- \#501 DRY'ed up the retry methods in monitoring tests [temikus]
+- \#500 Cleanup unneeded constants in Server model, fix flaky PubSub tests [temikus]
 
 ## 1.10.0
 
