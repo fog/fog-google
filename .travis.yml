@@ -10,7 +10,9 @@ matrix:
     - rvm: 2.6
     - rvm: jruby-9.1
     - rvm: jruby-head
+    - rvm: truffleruby-head
   allow_failures:
     - rvm: jruby-head
+    - rvm: truffleruby-head
 notifications:
   email: false
