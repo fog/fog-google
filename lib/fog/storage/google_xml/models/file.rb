@@ -51,7 +51,7 @@ module Fog
 
         remove_method :metadata
         def metadata
-          attributes.reject { |key, _value| key.to_s =~ /^x-goog-meta-/ }
+          attributes.select { |key, _value| key.to_s =~ /^x-goog-meta-/ }
         end
 
         remove_method :metadata=
