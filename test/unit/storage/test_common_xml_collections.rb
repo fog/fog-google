@@ -6,6 +6,7 @@ class UnitTestStorageXMLCollections < MiniTest::Test
     @client = Fog::Storage.new(provider: "google",
                                google_storage_access_key_id: "",
                                google_storage_secret_access_key: "")
+    @bucket = @client.directories.create(key: "testbucket-#{SecureRandom.hex}")
 
     # Enumerate all descendants of Fog::Collection
     descendants = ObjectSpace.each_object(Fog::Collection.singleton_class)
@@ -35,5 +36,15 @@ class UnitTestStorageXMLCollections < MiniTest::Test
       assert_operator(obj.method(:get).arity, :<=, 1,
                       "#{klass} should have at most 1 required parameter in get()")
     end
+  end
+
+  def test_metadata
+    attr = { key: 'test-file', body: "hello world\x00" }
+    f = @bucket.files.new(attr)
+    assert_equal({}, f.metadata)
+
+    metadata = { 'x-goog-meta-my-header' => 'hello world' }
+    f = @bucket.files.new(attr.merge(metadata))
+    assert_equal(metadata, f.metadata)
   end
 end
