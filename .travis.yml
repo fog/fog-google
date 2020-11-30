@@ -4,11 +4,11 @@ sudo: false
 matrix:
   fast_finish: true
   include:
-    - rvm: 2.3
     - rvm: 2.4
     - rvm: 2.5
     - rvm: 2.6
-    - rvm: jruby-9.1
+    - rvm: 2.7
+    - rvm: jruby-9.2
     - rvm: jruby-head
     - rvm: truffleruby-head
   allow_failures:
