@@ -8,7 +8,7 @@ module Fog
 
       class Real
         def delete_user(instance_id, host, name)
-          @sql.delete_user(@project, instance_id, host, name)
+          @sql.delete_user(@project, instance_id, host: host, name: name)
         end
       end
 

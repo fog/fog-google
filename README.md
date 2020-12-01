@@ -8,7 +8,7 @@ The main maintainers for the Google sections are @icco, @Temikus and @plribeiro3
 
 - As of **v1.0.0**, fog-google includes google-api-client as a dependency, there is no need to include it separately anymore.
 
-- Fog-google is currently supported on Ruby 2.3+ See [supported ruby versions](#supported-ruby-versions) for more info.
+- Fog-google is currently supported on Ruby 2.4+ See [supported ruby versions](#supported-ruby-versions) for more info.
 
 See **[MIGRATING.md](MIGRATING.md)** for migration between major versions.
 
@@ -27,8 +27,8 @@ As of 2017-12-15, we are still working on making Fog for Google Compute engine (
 
 ## SQL
 
-Fog implements [v1beta4](https://cloud.google.com/sql/docs/mysql/admin-api/v1beta4/) of the Google Cloud SQL Admin API. As of 2017-11-06, Cloud SQL is mostly feature-complete. Please [file issues](https://github.com/fog/fog-google/issues) for any anomalies you see or features you would like as we finish 
-adding remaining features. 
+Fog implements [v1beta4](https://cloud.google.com/sql/docs/mysql/admin-api/v1beta4/) of the Google Cloud SQL Admin API. As of 2017-11-06, Cloud SQL is mostly feature-complete. Please [file issues](https://github.com/fog/fog-google/issues) for any anomalies you see or features you would like as we finish
+adding remaining features.
 
 ## DNS
 
@@ -36,8 +36,8 @@ Fog implements [v1](https://cloud.google.com/dns/api/v1/) of the Google Cloud DN
 
 ## Monitoring
 
-Fog implements [v3](https://cloud.google.com/monitoring/api/v3/) of the Google Cloud Monitoring API. As of 2017-10-05, we believe Fog for Google Cloud Monitoring is feature complete for metric-related resources and are working on supporting groups. 
- 
+Fog implements [v3](https://cloud.google.com/monitoring/api/v3/) of the Google Cloud Monitoring API. As of 2017-10-05, we believe Fog for Google Cloud Monitoring is feature complete for metric-related resources and are working on supporting groups.
+
 We are always looking for people to improve our code and test coverage, so please [file issues](https://github.com/fog/fog-google/issues) for any anomalies you see or features you would like.
 
 ## Pubsub
@@ -94,12 +94,12 @@ cat .fog.example >> ~/.fog # appends the sample configuration
 vim ~/.fog                 # edit file with yout config
 ```
 
-As of `1.9.0` fog-google supports Google [application default credentials (ADC)](https://cloud.google.com/docs/authentication/production) 
+As of `1.9.0` fog-google supports Google [application default credentials (ADC)](https://cloud.google.com/docs/authentication/production)
 The auth method uses [Google::Auth.get_application_default](https://www.rubydoc.info/gems/googleauth/0.6.7/Google%2FAuth.get_application_default)
 under the hood.
 
 Example workflow for a GCE instance with [service account scopes](https://cloud.google.com/compute/docs/access/create-enable-service-accounts-for-instances)
-defined: 
+defined:
 
 ```
 > connection = Fog::Compute::Google.new(:google_project => "my-project", :google_application_default => true)
@@ -165,10 +165,10 @@ $ bundle exec pry
 
 ## Supported Ruby Versions
 
-Fog-google is currently supported on Ruby 2.3+.
+Fog-google is currently supported on Ruby 2.4+.
 
 In general we support (and run our CI) for Ruby versions that are actively supported
-by Ruby Core - that is, Ruby versions that are not end of life. Older versions of 
+by Ruby Core - that is, Ruby versions that are not end of life. Older versions of
 Ruby _may_ still work, but are unsupported and not recommended. See https://www.ruby-lang.org/en/downloads/branches/
 for details about the Ruby support schedule.
 

@@ -100,6 +100,10 @@ module Fog
             data[:scheduling] = ::Google::Apis::ComputeV1::Scheduling.new(options[:scheduling])
           end
 
+          if data[:shielded_instance_config]
+            data[:shielded_instance_config] = ::Google::Apis::ComputeV1::ShieldedInstanceConfig.new(options[:shielded_instance_config])
+          end
+
           if data[:tags]
             if options[:tags].is_a?(Array)
               # Process classic tag notation, i.e. ["fog"]
