@@ -6,6 +6,28 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 
 ## Next
 
+
+## 1.12.0
+
+### User-facing
+
+#### Added
+
+- \#509 Add ShieldedInstanceConfig support to `Server#insert` [lcy0321]
+
+#### Fixed
+
+- \#508 Fix GoogleXML::File#save incorrectly passing body to headers [stanhu]
+
+- \#506 Add Trufferuby head to CI [gogainda]
+
+### Development changes
+
+#### Fixed
+
+- \#510 Upgrade CI docker image to Ubuntu 18.04 [temikus]
+
+
 ## 1.11.0
 
 ### User-facing
