@@ -14,9 +14,10 @@ module Fog
         def copy_object(source_bucket, source_object,
                         target_bucket, target_object, options = {})
           request_options = ::Google::Apis::RequestOptions.default.merge(options)
+
           @storage_json.copy_object(source_bucket, source_object,
                                     target_bucket, target_object,
-                                    request_options)
+                                    request_options, **options)
         end
       end
 
