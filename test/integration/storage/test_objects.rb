@@ -3,6 +3,7 @@ require "integration/storage/storage_shared"
 require "securerandom"
 require "base64"
 require "tempfile"
+require "net/http"
 
 class TestStorageRequests < StorageShared
   def test_put_object_string
@@ -93,8 +94,23 @@ class TestStorageRequests < StorageShared
 
     @client.copy_object(some_bucket_name, some_object_name,
                         some_bucket_name, target_object_name)
+
     object = @client.get_object(some_bucket_name, target_object_name)
+
     assert_equal(temp_file_content, object[:body])
+  end
+
+  def test_copy_object_predefined_acl
+    target_object_name = new_object_name
+
+    res = @client.copy_object(some_bucket_name, some_object_name,
+                              some_bucket_name, target_object_name, destination_predefined_acl: "publicRead")
+
+    result = @client.get_object(some_bucket_name, target_object_name)
+
+    response = Net::HTTP.get_response(URI(result[:self_link]))
+
+    assert_kind_of(Net::HTTPOK, response)
   end
 
   def test_list_objects
