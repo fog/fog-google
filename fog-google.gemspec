@@ -18,7 +18,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   # As of 0.1.1
-  spec.required_ruby_version = "~> 2.0"
+  spec.required_ruby_version = ">= 2.0"
 
   # Locked until https://github.com/fog/fog-google/issues/417 is resolved
   spec.add_dependency "fog-core", "<= 2.1.0"

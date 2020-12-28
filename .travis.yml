@@ -8,6 +8,7 @@ matrix:
     - rvm: 2.5
     - rvm: 2.6
     - rvm: 2.7
+    - rvm: 3.0
     - rvm: jruby-9.2
     - rvm: jruby-head
     - rvm: truffleruby-head
@@ -19,6 +20,8 @@ matrix:
     - rvm: 2.6
       arch: ppc64le
     - rvm: 2.7
+      arch: ppc64le
+    - rvm: 3.0
       arch: ppc64le
     - rvm: jruby-9.2
       arch: ppc64le
