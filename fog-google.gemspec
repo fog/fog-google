@@ -28,6 +28,8 @@ Gem::Specification.new do |spec|
   spec.add_dependency "google-api-client", ">= 0.44.2", "< 0.51"
   spec.add_dependency "google-cloud-env", "~> 1.2"
 
+  spec.add_dependency "addressable", ">= 2.7.0"
+
   # Debugger
   spec.add_development_dependency "pry"
 

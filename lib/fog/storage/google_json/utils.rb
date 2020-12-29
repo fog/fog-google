@@ -1,3 +1,5 @@
+require 'addressable'
+
 module Fog
   module Storage
     class GoogleJSON
@@ -19,7 +21,7 @@ module Fog
 
         def host_path_query(params, expires)
           params[:headers]["Date"] = expires.to_i
-          params[:path] = URI.encode(params[:path]).gsub("%2F", "/")
+          params[:path] = ::Addressable::URI.encode_component(params[:path], Addressable::URI::CharacterClasses::PATH)
           query = []
 
           if params[:query]
