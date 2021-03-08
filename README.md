@@ -1,3 +1,12 @@
+# ⚠️ ATTENTION ⚠️ HELP NEEDED WITH CI
+
+With both me and icco@ departing Google **fog-google no longer has a CI stack** as we don't have access to a sponsored GCP account anymore and I've been unsuccessful in finding someone who would volunteer to maintain this project or CI at the time of my departure.
+
+There is no easy way to say this but we need help as costs of running a CI stack that touches almost all GCP resources is significant. We know there's a lot of companies out there that are using this lib, as well as tooling based on it so if you want to help us with running a CI stack or provide sponsorship for a GCP account - please contact me at code \<at\> temik.me
+    
+--  
+Artem (temikus@) - Lead maintainer
+
 # Fog::Google
 
 [![Gem Version](https://badge.fury.io/rb/fog-google.svg)](http://badge.fury.io/rb/fog-google) [![Build Status](https://travis-ci.org/fog/fog-google.svg?branch=master)](https://travis-ci.org/fog/fog-google) [![codecov](https://codecov.io/gh/fog/fog-google/branch/master/graph/badge.svg)](https://codecov.io/gh/fog/fog-google) [![Dependabot Status](https://api.dependabot.com/badges/status?host=github&repo=fog/fog-google)](https://dependabot.com) [![Doc coverage](https://inch-ci.org/github/fog/fog-google.svg?branch=master)](https://inch-ci.org/github/fog/fog-google)
