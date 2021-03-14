@@ -15,9 +15,19 @@ module Fog
                         target_bucket, target_object, options = {})
           request_options = ::Google::Apis::RequestOptions.default.merge(options)
 
+          object = ::Google::Apis::StorageV1::Object.new(options)
+
           @storage_json.copy_object(source_bucket, source_object,
                                     target_bucket, target_object,
-                                    request_options, **options)
+                                    object, options: request_options, **filter_keyword_args(options))
+        end
+
+        private
+
+        def filter_keyword_args(options)
+          method = @storage_json.method(:copy_object)
+          allowed = method.parameters.filter { |param| %i(key keyreq).include?(param[0]) }.map { |param| param[1] }.compact
+          options.filter { |key, _| allowed.include?(key) }
         end
       end
 
