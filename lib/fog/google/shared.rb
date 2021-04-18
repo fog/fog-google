@@ -90,7 +90,8 @@ module Fog
       # @param [Hash] google_client_options Service client options to apply
       # @param [Hash] _ignored Rest of the options (for convenience, ignored)
       # @return [void]
-      def apply_client_options(service, google_client_options: nil, **_ignored)
+      def apply_client_options(service, options = {})
+        google_client_options = options[:google_client_options]
         return if google_client_options.nil? || google_client_options.empty?
         (service.client_options.members & google_client_options.keys).each do |option|
           service.client_options[option] = google_client_options[option]
