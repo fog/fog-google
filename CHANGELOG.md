@@ -6,6 +6,21 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 
 ## Next
 
+## 1.13.0
+
+### User-facing
+
+### Fixed
+
+fix deprecated URI.escape usage to support Ruby 3.0
+fix apply_client_options def to support Ruby 3.0
+
+### Development Changes
+
+Add github actions config and dependabot
+Drop travis usage
+
+### Added
 
 ## 1.12.1
 
