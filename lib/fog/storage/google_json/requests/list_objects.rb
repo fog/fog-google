@@ -31,7 +31,7 @@ module Fog
 
           @storage_json.list_objects(
             bucket,
-            options.select { |k, _| allowed_opts.include? k }
+            **options.select { |k, _| allowed_opts.include? k }
           )
         end
       end

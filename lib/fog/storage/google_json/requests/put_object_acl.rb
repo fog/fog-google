@@ -15,7 +15,7 @@ module Fog
           raise ArgumentError.new("object_name is required") unless object_name
           raise ArgumentError.new("acl is required") unless acl
 
-          acl_object = ::Google::Apis::StorageV1::ObjectAccessControl.new(acl)
+          acl_object = ::Google::Apis::StorageV1::ObjectAccessControl.new(**acl)
 
           @storage_json.insert_object_access_control(
             bucket_name, object_name, acl_object

@@ -53,11 +53,11 @@ module Fog
             :options => request_options
           }
 
-          object = @storage_json.get_object(bucket_name, object_name, all_opts).to_h
+          object = @storage_json.get_object(bucket_name, object_name, **all_opts).to_h
           @storage_json.get_object(
             bucket_name,
             object_name,
-            all_opts.merge(:download_dest => buf.path)
+            **all_opts.merge(:download_dest => buf.path)
           )
 
           if block_given?

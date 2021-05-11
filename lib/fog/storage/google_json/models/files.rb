@@ -33,7 +33,7 @@ module Fog
 
         def get(key, options = {}, &block)
           requires :directory
-          data = service.get_object(directory.key, key, options, &block).to_h
+          data = service.get_object(directory.key, key, **options, &block).to_h
           new(data)
         rescue ::Google::Apis::ClientError => e
           raise e unless e.status_code == 404

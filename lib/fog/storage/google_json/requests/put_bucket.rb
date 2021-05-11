@@ -19,7 +19,7 @@ module Fog
                        predefined_default_object_acl: nil,
                        **options)
           bucket = ::Google::Apis::StorageV1::Bucket.new(
-            options.merge(:name => bucket_name)
+            **options.merge(:name => bucket_name)
           )
 
           @storage_json.insert_bucket(

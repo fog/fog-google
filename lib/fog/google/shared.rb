@@ -87,8 +87,7 @@ module Fog
       # Applies given options to the client instance
       #
       # @param [Google::Apis::Core::BaseService] service API service client instance
-      # @param [Hash] google_client_options Service client options to apply
-      # @param [Hash] _ignored Rest of the options (for convenience, ignored)
+      # @param [Hash] options (all ignored a.t.m., except :google_client_options)
       # @return [void]
       def apply_client_options(service, options = {})
         google_client_options = options[:google_client_options]

@@ -51,7 +51,7 @@ module Fog
           data, options = normalize_data(data, options)
 
           object_config = ::Google::Apis::StorageV1::Object.new(
-            options.merge(:name => object_name)
+            **options.merge(:name => object_name)
           )
 
           @storage_json.insert_object(
