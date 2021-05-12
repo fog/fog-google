@@ -51,7 +51,7 @@ module Fog
           requires :name
 
           data = service.insert_http_health_check(name, opts)
-          operation = Fog::Compute::Google::Operations.new(:service => service)
+          operation = Fog::Compute::Google::Operations.new(service: service)
                                                       .get(data.name, data.zone)
           operation.wait_for { ready? }
           reload
@@ -60,7 +60,7 @@ module Fog
         def update(opts)
           requires :name
           data = service.update_http_health_check(name, opts)
-          operation = Fog::Compute::Google::Operations.new(:service => service)
+          operation = Fog::Compute::Google::Operations.new(service: service)
                                                       .get(data.name, data.zone)
           operation.wait_for { ready? }
           reload

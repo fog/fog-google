@@ -13,7 +13,7 @@ module Fog
         def attach_disk(instance, zone, disk = {})
           @compute.attach_disk(
             @project, zone.split("/")[-1], instance,
-            ::Google::Apis::ComputeV1::AttachedDisk.new(disk)
+            ::Google::Apis::ComputeV1::AttachedDisk.new(**disk)
           )
         end
       end

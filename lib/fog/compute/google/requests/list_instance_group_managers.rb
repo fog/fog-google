@@ -13,8 +13,8 @@ module Fog
         def list_instance_group_managers(zone, filter: nil, max_results: nil,
                                          order_by: nil, page_token: nil)
           @compute.list_instance_group_managers(
-            @project, zone, :filter => filter, :max_results => max_results,
-                            :order_by => order_by, :page_token => page_token)
+            @project, zone, filter: filter, max_results: max_results,
+                            order_by: order_by, page_token: page_token)
         end
       end
     end

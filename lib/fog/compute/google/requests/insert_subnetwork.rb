@@ -52,7 +52,7 @@ module Fog
             data
           end
 
-          subnetwork = ::Google::Apis::ComputeV1::Subnetwork.new(params)
+          subnetwork = ::Google::Apis::ComputeV1::Subnetwork.new(**params)
           @compute.insert_subnetwork(@project, region_name, subnetwork)
         end
       end

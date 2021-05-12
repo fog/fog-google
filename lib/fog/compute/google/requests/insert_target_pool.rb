@@ -12,7 +12,7 @@ module Fog
       class Real
         def insert_target_pool(target_pool_name, region, target_pool = {})
           pool_obj = ::Google::Apis::ComputeV1::TargetPool.new(
-            target_pool.merge(:name => target_pool_name)
+            **target_pool.merge(name: target_pool_name)
           )
           @compute.insert_target_pool(@project, region.split("/")[-1], pool_obj)
         end

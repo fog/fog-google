@@ -40,7 +40,7 @@ module Fog
           opts = opts.select { |k, _| UPDATABLE_FIREWALL_FIELDS.include? k }
           @compute.update_firewall(
             @project, firewall_name,
-            ::Google::Apis::ComputeV1::Firewall.new(opts)
+            ::Google::Apis::ComputeV1::Firewall.new(**opts)
           )
         end
       end

@@ -13,10 +13,10 @@ module Fog
             :page_token => page_token
           }
           if zone
-            data = service.list_disks(zone, opts).items || []
+            data = service.list_disks(zone, **opts).items || []
           else
             data = []
-            service.list_aggregated_disks(opts).items.each_value do |scoped_list|
+            service.list_aggregated_disks(**opts).items.each_value do |scoped_list|
               data.concat(scoped_list.disks) if scoped_list.disks
             end
           end

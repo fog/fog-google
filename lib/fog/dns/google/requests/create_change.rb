@@ -10,8 +10,8 @@ module Fog
           @dns.create_change(
             @project, zone_name_or_id,
             ::Google::Apis::DnsV1::Change.new(
-              :additions => additions,
-              :deletions => deletions
+              additions: additions,
+              deletions: deletions
             )
           )
         end

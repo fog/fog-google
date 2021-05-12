@@ -14,10 +14,10 @@ module Fog
           }
 
           if zone
-            data = service.list_servers(zone, opts).to_h[:items] || []
+            data = service.list_servers(zone, **opts).to_h[:items] || []
           else
             data = []
-            service.list_aggregated_servers(opts).items.each_value do |scoped_lst|
+            service.list_aggregated_servers(**opts).items.each_value do |scoped_lst|
               if scoped_lst && scoped_lst.instances
                 data.concat(scoped_lst.instances.map(&:to_h))
               end
@@ -57,7 +57,7 @@ module Fog
               :zone_name => zone_name,
               :source_image => source_img.self_link
             }
-            disk = service.disks.create(disk_defaults.merge(opts))
+            disk = service.disks.create(**disk_defaults.merge(opts))
             disk.wait_for { disk.ready? }
 
             disks = [disk]

@@ -15,7 +15,7 @@ module Fog
           @compute.insert_target_instance(
             @project, zone,
             ::Google::Apis::ComputeV1::TargetInstance.new(
-              target_instance.merge(:name => target_name)
+              **target_instance.merge(name: target_name)
             )
           )
         end

@@ -19,7 +19,7 @@ module Fog
           @compute.insert_forwarding_rule(
             @project, region,
             ::Google::Apis::ComputeV1::ForwardingRule.new(
-              opts.merge(:name => rule_name)
+              **opts.merge(:name => rule_name)
             )
           )
         end

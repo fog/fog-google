@@ -21,7 +21,7 @@ module Fog
 
           disk_lst = disks.map do |d|
             d = d.attached_disk_obj if d.is_a? Disk
-            ::Google::Apis::ComputeV1::AttachedDisk.new(d)
+            ::Google::Apis::ComputeV1::AttachedDisk.new(**d)
           end
           disk_lst.first.boot = true
           disk_lst
@@ -32,7 +32,7 @@ module Fog
             network_interfaces = [default_network_interface]
           end
           network_interfaces.map do |network|
-            ::Google::Apis::ComputeV1::NetworkInterface.new(network)
+            ::Google::Apis::ComputeV1::NetworkInterface.new(**network)
           end
         end
 
@@ -88,32 +88,32 @@ module Fog
           # Optional subclassed attributes
           if data[:guest_accelerators]
             data[:guest_accelerators] = data[:guest_accelerators].map do |acc_config|
-              ::Google::Apis::ComputeV1::AcceleratorConfig.new(acc_config)
+              ::Google::Apis::ComputeV1::AcceleratorConfig.new(**acc_config)
             end
           end
 
           if data[:metadata]
-            data[:metadata] = ::Google::Apis::ComputeV1::Metadata.new(options[:metadata])
+            data[:metadata] = ::Google::Apis::ComputeV1::Metadata.new(**options[:metadata])
           end
 
           if data[:scheduling]
-            data[:scheduling] = ::Google::Apis::ComputeV1::Scheduling.new(options[:scheduling])
+            data[:scheduling] = ::Google::Apis::ComputeV1::Scheduling.new(**options[:scheduling])
           end
 
           if data[:shielded_instance_config]
-            data[:shielded_instance_config] = ::Google::Apis::ComputeV1::ShieldedInstanceConfig.new(options[:shielded_instance_config])
+            data[:shielded_instance_config] = ::Google::Apis::ComputeV1::ShieldedInstanceConfig.new(**options[:shielded_instance_config])
           end
 
           if data[:tags]
             if options[:tags].is_a?(Array)
               # Process classic tag notation, i.e. ["fog"]
-              data[:tags] = ::Google::Apis::ComputeV1::Tags.new({ :items => options[:tags] })
+              data[:tags] = ::Google::Apis::ComputeV1::Tags.new(items: options[:tags])
             else
-              data[:tags] = ::Google::Apis::ComputeV1::Tags.new(options[:tags])
+              data[:tags] = ::Google::Apis::ComputeV1::Tags.new(**options[:tags])
             end
           end
 
-          instance = ::Google::Apis::ComputeV1::Instance.new(data)
+          instance = ::Google::Apis::ComputeV1::Instance.new(**data)
           @compute.insert_instance(@project, zone, instance)
         end
       end

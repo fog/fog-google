@@ -14,7 +14,7 @@ module Fog
           image = image.merge(:name => image_name)
           @compute.insert_image(
             project,
-            ::Google::Apis::ComputeV1::Image.new(image)
+            ::Google::Apis::ComputeV1::Image.new(**image)
           )
         end
       end

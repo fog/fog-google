@@ -15,7 +15,7 @@ module Fog
         # @param options [Hash] Optional hash of options
         # @option options [String] :filter Filter expression for filtering listed resources
         def list_aggregated_addresses(options = {})
-          @compute.list_aggregated_addresses(@project, options)
+          @compute.list_aggregated_addresses(@project, **options)
         end
       end
     end

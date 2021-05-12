@@ -14,7 +14,7 @@ module Fog
           @compute.insert_http_health_check(
             @project,
             ::Google::Apis::ComputeV1::HttpHealthCheck.new(
-              opts.merge(:name => check_name)
+              **opts.merge(:name => check_name)
             )
           )
         end

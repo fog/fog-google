@@ -68,7 +68,7 @@ class TestMetricDescriptors < FogIntegrationTest
       :labels => [label]
     }
 
-    created = @client.create_metric_descriptor(options)
+    created = @client.create_metric_descriptor(**options)
 
     # Check created metric descriptor
     assert_equal(_full_name(metric_type), created.name)

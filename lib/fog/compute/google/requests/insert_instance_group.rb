@@ -18,9 +18,9 @@ module Fog
           end
 
           instance_group = ::Google::Apis::ComputeV1::InstanceGroup.new(
-            :description => options["description"],
-            :name => group_name,
-            :network => "https://www.googleapis.com/compute/#{api_version}/projects/#{@project}/global/networks/#{network_name}"
+            description: options["description"],
+            name: group_name,
+            network: "https://www.googleapis.com/compute/#{api_version}/projects/#{@project}/global/networks/#{network_name}"
           )
 
           @compute.insert_instance_group(@project,

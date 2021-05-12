@@ -14,7 +14,7 @@ module Fog
           options = opts.reject { |_k, v| v.nil? }
                         .merge(:name => backend_service_name)
 
-          be_service = ::Google::Apis::ComputeV1::BackendService.new(options)
+          be_service = ::Google::Apis::ComputeV1::BackendService.new(**options)
           @compute.insert_backend_service(@project, be_service)
         end
       end

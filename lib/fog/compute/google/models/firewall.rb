@@ -53,7 +53,7 @@ module Fog
 
         def create
           data = service.insert_firewall(identity, attributes)
-          operation = Fog::Compute::Google::Operations.new(:service => service)
+          operation = Fog::Compute::Google::Operations.new(service: service)
                                                       .get(data.name)
           operation.wait_for { ready? }
           reload
@@ -63,7 +63,7 @@ module Fog
           requires :identity, :allowed, :network
 
           data = service.update_firewall(identity, attributes)
-          operation = Fog::Compute::Google::Operations.new(:service => service)
+          operation = Fog::Compute::Google::Operations.new(service: service)
                                                       .get(data.name)
           operation.wait_for { ready? }
           reload

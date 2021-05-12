@@ -14,8 +14,8 @@ module Fog
           @compute.set_snapshot_labels(
             project, snap_name,
             ::Google::Apis::ComputeV1::GlobalSetLabelsRequest.new(
-              :label_fingerprint => label_fingerprint,
-              :labels => labels
+              label_fingerprint: label_fingerprint,
+              labels: labels
             )
           )
         end

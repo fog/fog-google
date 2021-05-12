@@ -38,7 +38,7 @@ module Fog
 
           data = service.insert_address(identity, region, attributes)
           operation = Fog::Compute::Google::Operations
-                      .new(:service => service)
+                      .new(service: service)
                       .get(data.name, nil, data.region)
           operation.wait_for { ready? }
           reload

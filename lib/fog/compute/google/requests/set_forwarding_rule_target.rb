@@ -14,7 +14,7 @@ module Fog
           region = region.split("/")[-1] if region.start_with? "http"
           @compute.set_forwarding_rule_target(
             @project, region, rule_name,
-            ::Google::Apis::ComputeV1::TargetReference.new(target_opts)
+            ::Google::Apis::ComputeV1::TargetReference.new(**target_opts)
           )
         end
       end

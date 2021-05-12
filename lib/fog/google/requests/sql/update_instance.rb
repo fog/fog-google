@@ -7,14 +7,14 @@ module Fog
       # @see https://cloud.google.com/sql/docs/mysql/admin-api/v1beta4/instances/update
       class Real
         def update_instance(instance_id, settings_version, tier, settings = {})
-          settings = ::Google::Apis::SqladminV1beta4::Settings.new(settings)
+          settings = ::Google::Apis::SqladminV1beta4::Settings.new(**settings)
           settings.tier = tier
           settings.settings_version = settings_version
 
           @sql.update_instance(
             @project,
             instance_id,
-            ::Google::Apis::SqladminV1beta4::DatabaseInstance.new(:settings => settings)
+            ::Google::Apis::SqladminV1beta4::DatabaseInstance.new(settings: settings)
           )
         end
       end

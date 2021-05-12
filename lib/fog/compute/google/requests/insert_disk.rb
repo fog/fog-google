@@ -39,7 +39,7 @@ module Fog
             :source_image => source_image
           }
           disk_opts[:labels] = labels if labels
-          disk = ::Google::Apis::ComputeV1::Disk.new(disk_opts)
+          disk = ::Google::Apis::ComputeV1::Disk.new(**disk_opts)
           @compute.insert_disk(@project, zone.split("/")[-1], disk)
         end
       end

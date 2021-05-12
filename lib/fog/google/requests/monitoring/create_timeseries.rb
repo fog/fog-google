@@ -11,7 +11,7 @@ module Fog
         #
         def create_timeseries(timeseries: [])
           request = ::Google::Apis::MonitoringV3::CreateTimeSeriesRequest.new(
-            :time_series => timeseries
+            time_series: timeseries
           )
           @monitoring.create_project_time_series("projects/#{@project}", request)
         end

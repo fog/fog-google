@@ -25,7 +25,7 @@ module Fog
 
           @compute.insert_network(
             @project,
-            ::Google::Apis::ComputeV1::Network.new(opts)
+            ::Google::Apis::ComputeV1::Network.new(**opts)
           )
         end
       end

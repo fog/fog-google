@@ -98,7 +98,7 @@ module Fog
           requires :identity
 
           data = service.insert_instance(identity, attributes[:tier], attributes)
-          operation = Fog::Google::SQL::Operations.new(:service => service).get(data.name)
+          operation = Fog::Google::SQL::Operations.new(service: service).get(data.name)
           operation.wait_for { ready? } unless async
           reload
         end
@@ -271,7 +271,7 @@ module Fog
           requires :identity
 
           data = service.restore_instance_backup(identity, backup_run_id)
-          operation = Fog::Google::SQL::Operations.new(:service => service).get(data.name)
+          operation = Fog::Google::SQL::Operations.new(service: service).get(data.name)
           operation.tap { |o| o.wait_for { ready? } unless async }
         end
 

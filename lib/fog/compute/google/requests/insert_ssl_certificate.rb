@@ -14,10 +14,10 @@ module Fog
           @compute.insert_ssl_certificate(
             @project,
             ::Google::Apis::ComputeV1::SslCertificate.new(
-              :certificate => certificate,
-              :name => certificate_name,
-              :private_key => private_key,
-              :description => description
+              certificate: certificate,
+              name: certificate_name,
+              private_key: private_key,
+              description: description
             )
           )
         end

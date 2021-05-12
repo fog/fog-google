@@ -11,7 +11,7 @@ module Fog
 
       class Real
         def list_aggregated_instance_groups(options = {})
-          @compute.list_aggregated_instance_groups(@project, options)
+          @compute.list_aggregated_instance_groups(@project, **options)
         end
       end
     end

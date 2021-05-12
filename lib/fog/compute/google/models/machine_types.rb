@@ -13,10 +13,10 @@ module Fog
           }
 
           if zone
-            data = service.list_machine_types(zone, opts).items
+            data = service.list_machine_types(zone, **opts).items
           else
             data = []
-            service.list_aggregated_machine_types(opts).items.each_value do |scoped_list|
+            service.list_aggregated_machine_types(**opts).items.each_value do |scoped_list|
               data.concat(scoped_list.machine_types) if scoped_list && scoped_list.machine_types
             end
           end

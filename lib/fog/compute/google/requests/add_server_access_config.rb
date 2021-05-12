@@ -20,9 +20,9 @@ module Fog
             identity,
             network_interface,
             ::Google::Apis::ComputeV1::AccessConfig.new(
-              :name => access_config_name,
-              :nat_ip => nat_ip,
-              :type => "ONE_TO_ONE_NAT"
+              name: access_config_name,
+              nat_ip: nat_ip,
+              type: "ONE_TO_ONE_NAT"
             )
           )
         end

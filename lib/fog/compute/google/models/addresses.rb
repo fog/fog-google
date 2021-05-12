@@ -13,10 +13,10 @@ module Fog
           }
 
           if region
-            data = service.list_addresses(region, opts).items || []
+            data = service.list_addresses(region, **opts).items || []
           else
             data = []
-            service.list_aggregated_addresses(opts).items.each_value do |scoped_list|
+            service.list_aggregated_addresses(**opts).items.each_value do |scoped_list|
               data.concat(scoped_list.addresses) if scoped_list && scoped_list.addresses
             end
           end
@@ -28,8 +28,8 @@ module Fog
             address = service.get_address(identity, region).to_h
             return new(address)
           elsif identity
-            response = all(:filter => "name eq #{identity}",
-                           :max_results => 1)
+            response = all(filter: "name eq #{identity}",
+                           max_results: 1)
             address = response.first unless response.empty?
             return address
           end
@@ -39,7 +39,7 @@ module Fog
         end
 
         def get_by_ip_address(ip_address)
-          addresses = service.list_aggregated_addresses(:filter => "address eq .*#{ip_address}").items
+          addresses = service.list_aggregated_addresses(filter: "address eq .*#{ip_address}").items
           address = addresses.each_value.select(&:addresses)
 
           return nil if address.empty?
@@ -47,7 +47,7 @@ module Fog
         end
 
         def get_by_name(ip_name)
-          names = service.list_aggregated_addresses(:filter => "name eq .*#{ip_name}").items
+          names = service.list_aggregated_addresses(filter: "name eq .*#{ip_name}").items
           name = names.each_value.select(&:addresses)
 
           return nil if name.empty?

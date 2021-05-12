@@ -12,7 +12,7 @@ module Fog
       class Real
         def get_backend_service_health(backend_service)
           health_results = backend_service.backends.map do |backend|
-            group = ::Google::Apis::ComputeV1::ResourceGroupReference.new(:group => backend[:group])
+            group = ::Google::Apis::ComputeV1::ResourceGroupReference.new(group: backend[:group])
             resp = @compute.get_backend_service_health(@project, backend_service.name, group)
             [backend[:group], resp.health_status]
           end

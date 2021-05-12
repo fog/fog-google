@@ -12,7 +12,7 @@ module Fog
       class Real
         def abandon_instances(instance_group_manager, instances)
           request = ::Google::Apis::ComputeV1::InstanceGroupManagersAbandonInstancesRequest.new(
-            :instances => instances.map{ |i| i.class == String ? i : i.self_link }
+            instances: instances.map{ |i| i.class == String ? i : i.self_link }
           )
           if instance_group_manager.zone
             zone = instance_group_manager.zone.split("/")[-1]

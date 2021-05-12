@@ -13,14 +13,14 @@ module Fog
         def remove_target_pool_instances(target_pool, region, instances)
           instance_lst = instances.map do |link|
             ::Google::Apis::ComputeV1::InstanceReference.new(
-              :instance => link
+              instance: link
             )
           end
 
           @compute.remove_target_pool_instance(
             @project, region.split("/")[-1], target_pool,
             ::Google::Apis::ComputeV1::RemoveTargetPoolsInstanceRequest.new(
-              :instances => instance_lst
+              instances: instance_lst
             )
           )
         end

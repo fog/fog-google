@@ -5,7 +5,7 @@ module Fog
         model Fog::Compute::Google::Firewall
 
         def all(opts = {})
-          data = service.list_firewalls(opts).to_h[:items]
+          data = service.list_firewalls(**opts).to_h[:items]
           load(data || [])
         end
 

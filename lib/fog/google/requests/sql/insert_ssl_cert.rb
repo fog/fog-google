@@ -12,7 +12,7 @@ module Fog
             @project,
             instance_id,
             ::Google::Apis::SqladminV1beta4::InsertSslCertsRequest.new(
-              :common_name => common_name
+              common_name: common_name
             )
           )
         end

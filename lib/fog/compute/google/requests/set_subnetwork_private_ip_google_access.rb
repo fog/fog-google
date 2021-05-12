@@ -32,7 +32,7 @@ module Fog
           @compute.set_subnetwork_private_ip_google_access(
             @project, region_name, subnetwork_name,
             ::Google::Apis::ComputeV1::SubnetworksSetPrivateIpGoogleAccessRequest.new(
-              :private_ip_google_access => private_ip_google_access
+              private_ip_google_access: private_ip_google_access
             )
           )
         end

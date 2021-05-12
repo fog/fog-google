@@ -9,7 +9,7 @@ module Fog
       class Real
         def insert_user(instance_id, user)
           @sql.insert_user(@project, instance_id,
-                           ::Google::Apis::SqladminV1beta4::User.new(user))
+                           ::Google::Apis::SqladminV1beta4::User.new(**user))
         end
       end
 

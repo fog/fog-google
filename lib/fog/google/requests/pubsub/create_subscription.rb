@@ -18,9 +18,9 @@ module Fog
         # @see https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/create
         def create_subscription(subscription_name, topic, push_config = {}, ack_deadline_seconds = nil)
           subscription = ::Google::Apis::PubsubV1::Subscription.new(
-            :topic => topic,
-            :ack_deadline_seconds => ack_deadline_seconds,
-            :push_config => push_config
+            topic: topic,
+            ack_deadline_seconds: ack_deadline_seconds,
+            push_config: push_config
           )
 
           @pubsub.create_subscription(subscription_name, subscription)

@@ -14,9 +14,9 @@ module Fog
           @compute.insert_target_http_proxy(
             @project,
             ::Google::Apis::ComputeV1::TargetHttpProxy.new(
-              :name => proxy_name,
-              :description => description,
-              :url_map => url_map
+              name: proxy_name,
+              description: description,
+              url_map: url_map
             )
           )
         end

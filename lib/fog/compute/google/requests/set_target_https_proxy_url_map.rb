@@ -14,7 +14,7 @@ module Fog
           @compute.set_target_https_proxy_url_map(
             @project, proxy_name,
             ::Google::Apis::ComputeV1::UrlMapReference.new(
-              :url_map => url_map.class == String ? url_map : url_map.self_link
+              url_map: url_map.class == String ? url_map : url_map.self_link
             )
           )
         end
