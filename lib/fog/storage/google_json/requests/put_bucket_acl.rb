@@ -12,7 +12,7 @@ module Fog
           raise ArgumentError.new("bucket_name is required") unless bucket_name
           raise ArgumentError.new("acl is required") unless acl
 
-          acl_update = ::Google::Apis::StorageV1::BucketAccessControl.new(acl)
+          acl_update = ::Google::Apis::StorageV1::BucketAccessControl.new(**acl)
           @storage_json.insert_bucket_access_control(bucket_name, acl_update)
         end
       end

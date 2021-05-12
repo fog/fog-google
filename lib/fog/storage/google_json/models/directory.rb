@@ -52,7 +52,7 @@ module Fog
 
         def save
           requires :key
-          service.put_bucket(key, attributes)
+          service.put_bucket(key, **attributes)
           true
         end
       end

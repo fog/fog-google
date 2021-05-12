@@ -5,7 +5,7 @@ module Fog
         model Fog::Storage::GoogleJSON::Directory
 
         def all(opts = {})
-          data = service.list_buckets(opts).to_h[:items] || []
+          data = service.list_buckets(**opts).to_h[:items] || []
           load(data)
         end
 

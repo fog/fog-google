@@ -109,7 +109,7 @@ module Fog
           options["Expires"] = expires if expires
           options.merge!(metadata)
 
-          data = service.put_object(directory.key, key, body, options)
+          data = service.put_object(directory.key, key, body, **options)
           merge_attributes(data.headers.reject { |key, _value| ["Content-Length", "Content-Type"].include?(key) })
           self.content_length = Fog::Storage.get_body_size(body)
           self.content_type ||= Fog::Storage.get_content_type(body)

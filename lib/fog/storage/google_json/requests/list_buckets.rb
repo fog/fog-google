@@ -11,10 +11,10 @@ module Fog
                          prefix: nil, projection: nil)
           @storage_json.list_buckets(
             @project,
-            :max_results => max_results,
-            :page_token => page_token,
-            :prefix => prefix,
-            :projection => projection
+            max_results: max_results,
+            page_token: page_token,
+            prefix: prefix,
+            projection: projection
           )
         end
       end
