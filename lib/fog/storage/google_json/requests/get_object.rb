@@ -39,6 +39,7 @@ module Fog
           raise ArgumentError.new("object_name is required") unless object_name
 
           buf = Tempfile.new("fog-google-storage-temp")
+          buf.unlink
 
           # Two requests are necessary, first for metadata, then for content.
           # google-api-ruby-client doesn't allow fetching both metadata and content
@@ -57,14 +58,15 @@ module Fog
           @storage_json.get_object(
             bucket_name,
             object_name,
-            **all_opts.merge(:download_dest => buf.path)
+            **all_opts.merge(:download_dest => buf)
           )
+
+          buf.seek(0)
 
           if block_given?
             yield buf.read, nil, nil
           else
             object[:body] = buf.read
-            buf.unlink
           end
 
           object
