@@ -28,7 +28,7 @@ module Fog
           @compute.expand_subnetwork_ip_cidr_range(
             @project, region, subnetwork,
             ::Google::Apis::ComputeV1::SubnetworksExpandIpCidrRangeRequest.new(
-              :ip_cidr_range => ip_cidr_range
+              ip_cidr_range: ip_cidr_range
             )
           )
         end

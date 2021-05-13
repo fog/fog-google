@@ -14,7 +14,7 @@ module Fog
           @compute.set_target_https_proxy_ssl_certificates(
             @project, proxy_name,
             ::Google::Apis::ComputeV1::TargetHttpsProxiesSetSslCertificatesRequest.new(
-              :ssl_certificates => certs
+              ssl_certificates: certs
             )
           )
         end

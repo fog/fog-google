@@ -14,7 +14,7 @@ module Fog
           @compute.invalidate_url_map_cache(
             @project, url_map_name,
             ::Google::Apis::ComputeV1::CacheInvalidationRule.new(
-              :path => path, :host => host
+              path: path, host: host
             )
           )
         end

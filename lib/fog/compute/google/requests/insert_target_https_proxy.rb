@@ -16,10 +16,10 @@ module Fog
           @compute.insert_target_https_proxy(
             @project,
             ::Google::Apis::ComputeV1::TargetHttpsProxy.new(
-              :name => proxy_name,
-              :description => description,
-              :url_map => url_map,
-              :ssl_certificates => ssl_certificates
+              name: proxy_name,
+              description: description,
+              url_map: url_map,
+              ssl_certificates: ssl_certificates
             )
           )
         end

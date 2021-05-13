@@ -28,8 +28,8 @@ module Fog
             @project,
             zone.split("/")[-1],
             identity,
-            :port => port,
-            :start => start
+            port: port,
+            start: start
           )
         end
       end

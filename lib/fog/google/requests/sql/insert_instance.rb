@@ -8,9 +8,9 @@ module Fog
 
       class Real
         def insert_instance(name, tier, options = {})
-          instance = ::Google::Apis::SqladminV1beta4::DatabaseInstance.new(options)
+          instance = ::Google::Apis::SqladminV1beta4::DatabaseInstance.new(**options)
           instance.name = name
-          instance.settings = ::Google::Apis::SqladminV1beta4::Settings.new(instance.settings || {})
+          instance.settings = ::Google::Apis::SqladminV1beta4::Settings.new(**instance.settings || {})
           instance.settings.tier = tier
           @sql.insert_instance(@project, instance)
         end

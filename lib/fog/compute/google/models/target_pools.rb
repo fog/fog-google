@@ -13,13 +13,13 @@ module Fog
           }
           if region.nil?
             data = []
-            service.list_aggregated_target_pools(opts).items.each_value do |lst|
+            service.list_aggregated_target_pools(**opts).items.each_value do |lst|
               unless lst.nil? || lst.target_pools.nil?
                 data += lst.to_h[:target_pools]
               end
             end
           else
-            data = service.list_target_pools(region, opts).to_h[:items]
+            data = service.list_target_pools(region, **opts).to_h[:items]
           end
           load(data)
         end

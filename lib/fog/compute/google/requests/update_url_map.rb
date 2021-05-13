@@ -18,7 +18,7 @@ module Fog
           @compute.update_url_map(
             @project, url_map_name,
             ::Google::Apis::ComputeV1::UrlMap.new(
-              url_map.merge(:name => url_map_name)
+              url_map.merge(name: url_map_name)
             )
           )
         end

@@ -16,7 +16,7 @@ module Fog
           opts = options.select { |k, _| INSERTABLE_ADDRESS_FIELDS.include? k }
                         .merge(:name => address_name)
           @compute.insert_global_address(
-            @project, ::Google::Apis::ComputeV1::Address.new(opts)
+            @project, ::Google::Apis::ComputeV1::Address.new(**opts)
           )
         end
       end

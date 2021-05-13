@@ -19,14 +19,14 @@ module Fog
           data[:import_user] = import_user unless import_user.nil?
           unless csv_import_options.nil?
             data[:csv_import_options] =
-              ::Google::Apis::SqladminV1beta4::ImportContext::CsvImportOptions.new(csv_import_options)
+              ::Google::Apis::SqladminV1beta4::ImportContext::CsvImportOptions.new(**csv_import_options)
           end
 
           @sql.import_instance(
             @project,
             instance_id,
             ::Google::Apis::SqladminV1beta4::ImportInstancesRequest.new(
-              :import_context => ::Google::Apis::SqladminV1beta4::ImportContext.new(data)
+              import_context: ::Google::Apis::SqladminV1beta4::ImportContext.new(**data)
             )
           )
         end

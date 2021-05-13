@@ -14,7 +14,7 @@ module Fog
           @compute.get_target_pool_health(
             @project, region.split("/")[-1], target_pool,
             ::Google::Apis::ComputeV1::InstanceReference.new(
-              :instance => instance
+              instance: instance
             )
           )
         end

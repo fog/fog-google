@@ -13,10 +13,10 @@ module Fog
           }
 
           if region
-            data = service.list_forwarding_rules(region, opts).items || []
+            data = service.list_forwarding_rules(region, **opts).items || []
           else
             data = []
-            service.list_aggregated_forwarding_rules(opts).items
+            service.list_aggregated_forwarding_rules(**opts).items
                    .each_value do |scoped_list|
               if scoped_list && scoped_list.forwarding_rules
                 data.concat(scoped_list.forwarding_rules)

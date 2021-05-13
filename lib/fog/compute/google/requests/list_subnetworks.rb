@@ -28,10 +28,10 @@ module Fog
             region_name = region_name.split("/")[-1]
           end
           @compute.list_subnetworks(@project, region_name,
-                                    :filter => filter,
-                                    :max_results => max_results,
-                                    :order_by => order_by,
-                                    :page_token => page_token)
+                                    filter: filter,
+                                    max_results: max_results,
+                                    order_by: order_by,
+                                    page_token: page_token)
         end
       end
     end

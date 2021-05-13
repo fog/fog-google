@@ -5,7 +5,7 @@ module Fog
         model Fog::Compute::Google::GlobalAddress
 
         def all(options = {})
-          data = service.list_global_addresses(options).to_h[:items] || []
+          data = service.list_global_addresses(**options).to_h[:items] || []
           load(data)
         end
 

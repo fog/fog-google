@@ -56,7 +56,7 @@ module Fog
                      .merge(:name => firewall_name)
 
           @compute.insert_firewall(
-            @project, ::Google::Apis::ComputeV1::Firewall.new(opts)
+            @project, ::Google::Apis::ComputeV1::Firewall.new(**opts)
           )
         end
       end

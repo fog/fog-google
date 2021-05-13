@@ -25,14 +25,14 @@ module Fog
         def create_metric_descriptor(metric_type: nil, unit: nil, value_type: nil,
                                      description: nil, display_name: nil, labels: [], metric_kind: nil)
           metric_descriptor = ::Google::Apis::MonitoringV3::MetricDescriptor.new(
-            :name => "projects/#{@project}/metricDescriptors/#{metric_type}",
-            :type => metric_type,
-            :unit => unit,
-            :value_type => value_type,
-            :description => description,
-            :display_name => display_name,
-            :labels => labels.map { |l| ::Google::Apis::MonitoringV3::LabelDescriptor.new(l) },
-            :metric_kind => metric_kind
+            name: "projects/#{@project}/metricDescriptors/#{metric_type}",
+            type: metric_type,
+            unit: unit,
+            value_type: value_type,
+            description: description,
+            display_name: display_name,
+            labels: labels.map { |l| ::Google::Apis::MonitoringV3::LabelDescriptor.new(**l) },
+            metric_kind: metric_kind
           )
 
           @monitoring.create_project_metric_descriptor("projects/#{@project}", metric_descriptor)

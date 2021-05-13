@@ -14,7 +14,7 @@ module Fog
           @compute.create_disk_snapshot(
             @project, zone, disk,
             ::Google::Apis::ComputeV1::Snapshot.new(
-              snapshot.merge(:name => snapshot_name)
+              **snapshot.merge(name: snapshot_name)
             )
           )
         end

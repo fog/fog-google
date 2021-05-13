@@ -24,10 +24,10 @@ module Fog
                                         page_token: nil, order_by: nil)
           @compute.aggregated_subnetwork_list(
             @project,
-            :filter => filter,
-            :max_results => max_results,
-            :page_token => page_token,
-            :order_by => order_by
+            filter: filter,
+            max_results: max_results,
+            page_token: page_token,
+            order_by: order_by
           )
         end
       end

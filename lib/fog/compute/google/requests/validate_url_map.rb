@@ -14,7 +14,7 @@ module Fog
           @compute.validate_url_map(
             @project, url_map_name,
             ::Google::Apis::ComputeV1::ValidateUrlMapsRequest.new(
-              :url_map => ::Google::Apis::ComputeV1::UrlMap.new(url_map)
+              url_map: ::Google::Apis::ComputeV1::UrlMap.new(**url_map)
             )
           )
         end

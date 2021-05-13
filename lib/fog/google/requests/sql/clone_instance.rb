@@ -15,14 +15,14 @@ module Fog
 
           unless log_filename.nil? || log_position.nil?
             context[:bin_log_coordinates] = ::Google::Apis::SqladminV1beta4::BinLogCoordinates.new(
-              :kind => "sql#binLogCoordinates",
-              :log_filename => log_filename,
-              :log_position => log_position
+              kind: "sql#binLogCoordinates",
+              log_filename: log_filename,
+              log_position: log_position
             )
           end
 
           clone_request = ::Google::Apis::SqladminV1beta4::CloneInstancesRequest.new(
-            :clone_context => ::Google::Apis::SqladminV1beta4::CloneContext.new(context)
+            clone_context: ::Google::Apis::SqladminV1beta4::CloneContext.new(**context)
           )
 
           @sql.clone_instance(@project, instance_id, clone_request)

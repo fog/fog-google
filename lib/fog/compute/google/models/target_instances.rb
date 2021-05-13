@@ -14,10 +14,10 @@ module Fog
           }
 
           if zone
-            data = service.list_target_instances(zone, opts).to_h[:items] || []
+            data = service.list_target_instances(zone, **opts).to_h[:items] || []
           else
             data = []
-            service.list_aggregated_target_instances(opts).items.each_value do |scoped_list|
+            service.list_aggregated_target_instances(**opts).items.each_value do |scoped_list|
               unless scoped_list.nil? || scoped_list.target_instances.nil?
                 data += scoped_list.target_instances.map(&:to_h)
               end

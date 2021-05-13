@@ -17,7 +17,7 @@ module Fog
         def insert_global_forwarding_rule(rule_name, opts = {})
           opts = opts.merge(:name => rule_name)
           @compute.insert_global_forwarding_rule(
-            @project, ::Google::Apis::ComputeV1::ForwardingRule.new(opts)
+            @project, ::Google::Apis::ComputeV1::ForwardingRule.new(**opts)
           )
         end
       end

@@ -14,7 +14,7 @@ module Fog
         def set_target_pool_backup(target_pool, region, backup_target,
                                    failover_ratio: nil)
           target_ref = ::Google::Apis::ComputeV1::TargetReference.new(
-            :target => backup_target
+            target: backup_target
           )
 
           @compute.set_target_pool_backup(
@@ -22,7 +22,7 @@ module Fog
             region.split("/")[-1],
             target_pool,
             target_ref,
-            :failover_ratio => failover_ratio
+            failover_ratio: failover_ratio
           )
         end
       end

@@ -11,7 +11,7 @@ module Fog
           @sql.insert_backup_run(
             @project,
             instance_id,
-            ::Google::Apis::SqladminV1beta4::BackupRun.new(backup_run)
+            ::Google::Apis::SqladminV1beta4::BackupRun.new(**backup_run)
           )
         end
       end

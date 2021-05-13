@@ -51,8 +51,8 @@ module Fog
 
           # Request needs backward compatibility so source image is specified in
           # method arguments
-          data = service.insert_disk(name, zone, options[:source_image], options)
-          operation = Fog::Compute::Google::Operations.new(:service => service)
+          data = service.insert_disk(name, zone, options[:source_image], **options)
+          operation = Fog::Compute::Google::Operations.new(service: service)
                                                       .get(data.name, data.zone)
           operation.wait_for { ready? }
           reload
@@ -103,7 +103,7 @@ module Fog
         # @return [Hash] Attached disk configuration hash
         def attached_disk_obj(opts = {})
           requires :self_link
-          collection.attached_disk_obj(self_link, opts)
+          collection.attached_disk_obj(self_link, **opts)
         end
 
         # A legacy shorthand for attached_disk_obj

@@ -25,11 +25,11 @@ module Fog
         #
         # @returns [::Google::Apis::ComputeV1::Operation] set operation
         def set_server_metadata(instance, zone, fingerprint, metadata_items = [])
-          items = metadata_items.map { |item| ::Google::Apis::ComputeV1::Metadata::Item.new(item) }
+          items = metadata_items.map { |item| ::Google::Apis::ComputeV1::Metadata::Item.new(**item) }
           @compute.set_instance_metadata(
             @project, zone.split("/")[-1], instance,
             ::Google::Apis::ComputeV1::Metadata.new(
-              :fingerprint => fingerprint, :items => items
+              fingerprint: fingerprint, items: items
             )
           )
         end

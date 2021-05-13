@@ -19,8 +19,8 @@ module Fog
         # @option options [String] :description Description of resource
         def insert_address(address_name, region_name, options = {})
           address = ::Google::Apis::ComputeV1::Address.new(
-            :name => address_name,
-            :description => options[:description]
+            name: address_name,
+            description: options[:description]
           )
           @compute.insert_address(@project, region_name, address)
         end

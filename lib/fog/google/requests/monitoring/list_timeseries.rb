@@ -39,7 +39,7 @@ module Fog
             end
           end
 
-          @monitoring.list_project_time_series("projects/#{@project}", options)
+          @monitoring.list_project_time_series("projects/#{@project}", **options)
         end
       end
 

@@ -12,8 +12,8 @@ module Fog
       class Real
         def set_common_instance_metadata(project, current_fingerprint, metadata = {})
           metadata_obj = ::Google::Apis::ComputeV1::Metadata.new(
-            :fingerprint => current_fingerprint,
-            :items => metadata.map { |k, v| { :key => k, :value => v } }
+            fingerprint: current_fingerprint,
+            items: metadata.map { |k, v| { :key => k, :value => v } }
           )
           @compute.set_common_instance_metadata(project, metadata_obj)
         end

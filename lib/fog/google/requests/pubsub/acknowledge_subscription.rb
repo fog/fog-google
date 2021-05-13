@@ -12,7 +12,7 @@ module Fog
             ack_ids = [ack_ids]
           end
           ack_request = ::Google::Apis::PubsubV1::AcknowledgeRequest.new(
-            :ack_ids => ack_ids
+            ack_ids: ack_ids
           )
 
           @pubsub.acknowledge_subscription(subscription, ack_request)

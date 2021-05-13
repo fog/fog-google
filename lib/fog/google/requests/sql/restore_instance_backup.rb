@@ -9,10 +9,10 @@ module Fog
       class Real
         def restore_instance_backup(instance_id, backup_run_id)
           request = ::Google::Apis::SqladminV1beta4::RestoreInstancesBackupRequest.new(
-            :restore_backup_context => ::Google::Apis::SqladminV1beta4::RestoreBackupContext.new(
-              :backup_run_id => backup_run_id,
-              :instance_id => instance_id,
-              :kind => "sql#restoreBackupContext"
+            restore_backup_context: ::Google::Apis::SqladminV1beta4::RestoreBackupContext.new(
+              backup_run_id: backup_run_id,
+              instance_id: instance_id,
+              kind: "sql#restoreBackupContext"
             )
           )
           @sql.restore_instance_backup(@project, instance_id, request)

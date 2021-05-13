@@ -12,7 +12,7 @@ module Fog
       class Real
         def remove_target_pool_instances(target_pool, region, instances)
           instance_lst = instances.map do |instance|
-            ::Google::Apis::ComputeV1::InstanceReference.new(:instance => instance)
+            ::Google::Apis::ComputeV1::InstanceReference.new(instance: instance)
           end
 
           @compute.remove_target_pool_instance(
@@ -20,7 +20,7 @@ module Fog
             region.split("/")[-1],
             target_pool,
             ::Google::Apis::ComputeV1::RemoveTargetPoolsInstanceRequest.new(
-              :instances => instance_lst
+              instances: instance_lst
             )
           )
         end

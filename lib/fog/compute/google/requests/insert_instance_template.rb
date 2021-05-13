@@ -25,9 +25,9 @@ module Fog
         #   response object that represents the insertion operation.
         def insert_instance_template(name, properties, description)
           instance_template = ::Google::Apis::ComputeV1::InstanceTemplate.new(
-            :description => description,
-            :name => name,
-            :properties => properties,
+            description: description,
+            name: name,
+            properties: properties,
           )
 
           @compute.insert_instance_template(@project, instance_template)

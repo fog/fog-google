@@ -14,8 +14,8 @@ module Fog
           @compute.set_instance_tags(
             @project, zone.split("/")[-1], instance,
             ::Google::Apis::ComputeV1::Tags.new(
-              :fingerprint => fingerprint,
-              :items => tags
+              fingerprint: fingerprint,
+              items: tags
             )
           )
         end

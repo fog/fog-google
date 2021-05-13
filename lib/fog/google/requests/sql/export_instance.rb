@@ -24,12 +24,12 @@ module Fog
 
           unless csv_export_options.empty?
             data[:csv_export_options] =
-              ::Google::Apis::SqladminV1beta4::ExportContext::CsvExportOptions.new(csv_export_options)
+              ::Google::Apis::SqladminV1beta4::ExportContext::CsvExportOptions.new(**csv_export_options)
           end
 
           unless sql_export_options.nil?
             data[:sql_export_options] =
-              ::Google::Apis::SqladminV1beta4::ExportContext::SqlExportOptions.new(sql_export_options)
+              ::Google::Apis::SqladminV1beta4::ExportContext::SqlExportOptions.new(**sql_export_options)
           end
 
           export_context = ::Google::Apis::SqladminV1beta4::ExportContext.new(export_context)
@@ -37,7 +37,7 @@ module Fog
             @project,
             instance_id,
             ::Google::Apis::SqladminV1beta4::ExportInstancesRequest.new(
-              :export_context => export_context
+              export_context: export_context
             )
           )
         end
