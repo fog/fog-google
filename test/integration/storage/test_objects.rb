@@ -113,6 +113,26 @@ class TestStorageRequests < StorageShared
     assert_kind_of(Net::HTTPOK, response)
   end
 
+  def test_copy_object_with_request_options
+    assert_raises(Google::Apis::AuthorizationError) do
+      target_object_name = new_object_name
+
+      @client.copy_object(some_bucket_name, some_object_name,
+                          some_bucket_name, target_object_name, authorization: false)
+    end
+  end
+
+  def test_copy_object_with_object_property
+    target_object_name = new_object_name
+
+    @client.copy_object(some_bucket_name, some_object_name,
+                        some_bucket_name, target_object_name, content_type: 'text/plain')
+
+    object = @client.get_object(some_bucket_name, target_object_name)
+
+    assert_equal("text/plain", object[:content_type])
+  end
+
   def test_list_objects
     expected_object = some_object_name
 
