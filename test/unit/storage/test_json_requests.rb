@@ -41,4 +41,12 @@ class UnitTestJsonRequests < MiniTest::Test
     assert_match(/just%20some%20file\.json/, url,
                  "space should be escaped with '%20'")
   end
+
+  def test_unescaped_slashes_in_url
+    url = @client.get_object_https_url("bucket",
+                                      "a/b/c.ext",
+                                      Time.now + 2 * 60)
+    assert_match(/a\/b\/c/, url,
+                 "slashes should not be escaped with '%2F'")
+  end
 end
