@@ -20,9 +20,10 @@ module Fog
         def host_path_query(params, expires)
           params[:headers]["Date"] = expires.to_i
           # implementation from CGI.escape, but without ' ' to  '+' conversion
-          params[:path] = params[:path].b.gsub(/([^a-zA-Z0-9_.\-~]+)/) do |m|
+          params[:path] = params[:path].b.gsub(/([^a-zA-Z0-9_.\-~]+)/) { |m|
             '%' + m.unpack('H2' * m.bytesize).join('%').upcase
-          end
+          }.gsub("%2F", "/")
+
           query = []
 
           if params[:query]
