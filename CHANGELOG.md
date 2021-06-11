@@ -6,6 +6,33 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 
 ## Next
 
+## 1.14.0
+
+### User-facing
+
+#### Added
+
+- \#520 Support passing object properties to #copy_object [mshibuya]
+
+#### Fixed
+
+- \#530 Unescape slashes in urls [krokodaxl]
+
+- \#528 Fix Ruby 3.0 kwargs error in `#copy_object` [deeeki]
+
+- \#521 Unlink file temp file immediately [stanhu]
+
+- \#527 \#523 Fix Ruby 3.0 kwargs failures [stanhu]
+
+### Development changes
+
+#### Fixed
+
+- \#525 - Bump actions/checkout from 2 to 2.3.4
+
+- \#524 - Bump actions/stale from 3 to 3.0.18
+
+
 ## 1.13.0
 
 ### User-facing
