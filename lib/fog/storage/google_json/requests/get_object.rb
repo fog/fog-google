@@ -39,6 +39,7 @@ module Fog
           raise ArgumentError.new("object_name is required") unless object_name
 
           buf = Tempfile.new("fog-google-storage-temp")
+          buf.binmode
           buf.unlink
 
           # Two requests are necessary, first for metadata, then for content.

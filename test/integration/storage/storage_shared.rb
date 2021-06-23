@@ -86,9 +86,14 @@ class StorageShared < FogIntegrationTest
     "hello world"
   end
 
-  def some_temp_file
+  def binary_file_content
+    "PK\x03\x04\x14\x00\x00\x00\b\x00\x18\x89\x8AM\xE7!\xB7\x1C\x1C\x15j\x00\xB4\xB9".force_encoding(Encoding::ASCII_8BIT)
+  end
+
+  def some_temp_file(content = temp_file_content)
     @some_temp_file ||= Tempfile.new("fog-google-storage").tap do |t|
-      t.write(temp_file_content)
+      t.binmode
+      t.write(content)
       t.close
     end
     File.open(@some_temp_file.path, "r")

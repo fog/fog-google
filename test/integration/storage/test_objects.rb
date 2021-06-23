@@ -34,13 +34,15 @@ class TestStorageRequests < StorageShared
 
   def test_put_object_paperclip
     object_name = new_object_name
-    paperclip_file = OpenStruct.new(:path => some_temp_file,
+    paperclip_file = OpenStruct.new(:path => some_temp_file(binary_file_content),
                                     :content_type => "image/png")
     @client.put_object(some_bucket_name, object_name, paperclip_file, :content_type => "image/png")
 
     object = @client.get_object(some_bucket_name, object_name)
 
     assert_equal(object_name, object[:name])
+    assert_equal(Encoding::ASCII_8BIT, object[:body].encoding)
+    assert_equal(binary_file_content, object[:body])
     assert_equal("image/png", object[:content_type])
   end
 
