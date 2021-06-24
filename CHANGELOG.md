@@ -6,6 +6,14 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 
 ## Next
 
+## 1.15.0
+
+### User-facing
+
+#### Fixed
+
+- \#534 Fix get_object not working with binary files [stanhu]
+
 ## 1.14.0
 
 ### User-facing
