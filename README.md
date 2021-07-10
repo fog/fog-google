@@ -1,12 +1,3 @@
-# ⚠️ ATTENTION ⚠️ HELP NEEDED WITH CI
-
-With both me and icco@ departing Google **fog-google no longer has a CI stack** as we don't have access to a sponsored GCP account anymore and I've been unsuccessful in finding someone who would volunteer to maintain this project or CI at the time of my departure.
-
-There is no easy way to say this but we need help as costs of running a CI stack that touches almost all GCP resources is significant. We know there's a lot of companies out there that are using this lib, as well as tooling based on it so if you want to help us with running a CI stack or provide sponsorship for a GCP account - please contact me at code \<at\> temik.me
-    
---  
-Artem (temikus@) - Lead maintainer
-
 # Fog::Google
 
 [![Gem Version](https://badge.fury.io/rb/fog-google.svg)](http://badge.fury.io/rb/fog-google) [![Build Status](https://github.com/fog/fog-google/actions/workflows/ruby.yml/badge.svg)](https://github.com/fog/fog-google/actions/workflows/ruby.yml) [![codecov](https://codecov.io/gh/fog/fog-google/branch/master/graph/badge.svg)](https://codecov.io/gh/fog/fog-google) [![Dependabot Status](https://api.dependabot.com/badges/status?host=github&repo=fog/fog-google)](https://dependabot.com) [![Doc coverage](https://inch-ci.org/github/fog/fog-google.svg?branch=master)](https://inch-ci.org/github/fog/fog-google)
@@ -20,6 +11,16 @@ The main maintainers for the Google sections are @icco, @Temikus and @plribeiro3
 - Fog-google is currently supported on Ruby 2.4+ See [supported ruby versions](#supported-ruby-versions) for more info.
 
 See **[MIGRATING.md](MIGRATING.md)** for migration between major versions.
+
+# Sponsors
+
+We're proud to be sponsored by MeisterLabs who are generously funding our CI stack. A small message from them:
+
+<img align="right" width=100 height=100 src="https://user-images.githubusercontent.com/2083229/125146917-d965a680-e16b-11eb-8ad2-611b39056ca2.png">
+
+*"This gem is sponsored by Meister, the company behind your favourite productivity tools, MindMeister & MeisterTask. Meister is a Vienna-based software company with a heart for Ruby on Rails and all its developers. They have a very international team and are constantly looking for great talent in engineering. If you feel like taking on a new Ruby or Elixir challenge. get in touch, open jobs can be found here[https://www.meisterlabs.com/jobs/]."*
+
+# Usage
 
 ## Storage
 
