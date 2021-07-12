@@ -18,7 +18,7 @@ We're proud to be sponsored by MeisterLabs who are generously funding our CI sta
 
 <img align="right" width=100 height=100 src="https://user-images.githubusercontent.com/2083229/125146917-d965a680-e16b-11eb-8ad2-611b39056ca2.png">
 
-*"This gem is sponsored by Meister, the company behind your favourite productivity tools, MindMeister & MeisterTask. Meister is a Vienna-based software company with a heart for Ruby on Rails and all its developers. They have a very international team and are constantly looking for great talent in engineering. If you feel like taking on a new Ruby or Elixir challenge. get in touch, open jobs can be found [here](https://www.meisterlabs.com/jobs/)."*
+*"As extensive users of fog-google we are excited to help! Meister is the company behind the productivity tools [MindMeister](https://www.mindmeister.com/), [MeisterTask](https://www.meistertask.com), and [MeisterNote](https://www.meisternote.com/). We are based in Vienna, Austria and we have a very talented international team who build our products on top of Ruby on Rails, Elixir, React and Redux. We are constantly looking for great talent in Engineering, so If you feel like taking on a new Ruby or Elixir challenge. get in touch, open jobs can be found [here](https://www.meisterlabs.com/jobs/)."*
 
 # Usage
 
