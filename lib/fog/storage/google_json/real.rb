@@ -161,7 +161,7 @@ DATA
           }
 
           resource = "projects/-/serviceAccounts/#{google_access_id}"
-          response = @iam_service.sign_service_account_blob resource, request, {}
+          response = @iam_service.sign_service_account_blob resource, request
 
           return response.signed_blob
         end
