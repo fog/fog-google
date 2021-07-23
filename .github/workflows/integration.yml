@@ -5,11 +5,10 @@ on:
     branches: [ master ]
   pull_request:
     branches: [ master ]
-    types: [ labeled ]
+    types: [ assigned, opened, synchronize, reopened, labeled ]
 
 jobs:
   test-compute-core:
-    if: github.event.label.name == 'integrate' || github.ref == 'refs/heads/master'
     runs-on: self-hosted
     strategy:
       matrix:
@@ -37,7 +36,6 @@ jobs:
           bundle exec rake test:compute-core_compute
 
   test-compute-networking:
-    if: github.event.label.name == 'integrate' || github.ref == 'refs/heads/master'
     runs-on: self-hosted
     strategy:
       matrix:
@@ -65,7 +63,6 @@ jobs:
           bundle exec rake test:compute-core_networking
 
   test-compute-instance_groups:
-    if: github.event.label.name == 'integrate' || github.ref == 'refs/heads/master'
     runs-on: self-hosted
     strategy:
       matrix:
@@ -93,7 +90,6 @@ jobs:
           bundle exec rake test:compute-instance_groups
 
   test-compute-loadbalancing:
-    if: github.event.label.name == 'integrate' || github.ref == 'refs/heads/master'
     runs-on: self-hosted
     strategy:
       matrix:
@@ -121,7 +117,6 @@ jobs:
           bundle exec rake test:compute-loadbalancing
 
   test-monitoring:
-    if: github.event.label.name == 'integrate' || github.ref == 'refs/heads/master'
     runs-on: self-hosted
     strategy:
       matrix:
@@ -149,7 +144,6 @@ jobs:
           bundle exec rake test:monitoring
 
   test-storage:
-    if: github.event.label.name == 'integrate' || github.ref == 'refs/heads/master'
     runs-on: self-hosted
     strategy:
       matrix:
@@ -177,7 +171,6 @@ jobs:
           bundle exec rake test:storage
 
   test-pubsub:
-    if: github.event.label.name == 'integrate' || github.ref == 'refs/heads/master'
     runs-on: self-hosted
     strategy:
       matrix:
@@ -205,7 +198,6 @@ jobs:
           bundle exec rake test:pubsub
 
   test-sql:
-    if: github.event.label.name == 'integrate' || github.ref == 'refs/heads/master'
     runs-on: self-hosted
     strategy:
       matrix:
