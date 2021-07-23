@@ -14,7 +14,6 @@ module Fog
           auto_create_subnetworks
           description
           gateway_i_pv4
-          i_pv4_range
           name
           routing_config
         }.freeze
