@@ -36,7 +36,9 @@ Gem::Specification.new do |spec|
   spec.add_dependency "google-cloud-env", "~> 1.2"
 
   # Debugger
-  spec.add_development_dependency "pry"
+  # Locked because pry-byebug is broken with 13+
+  # see: https://github.com/deivid-rodriguez/pry-byebug/issues/343
+  spec.add_development_dependency "pry", "= 0.13.0"
 
   # Testing gems
   spec.add_development_dependency "retriable"
