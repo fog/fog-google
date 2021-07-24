@@ -17,8 +17,12 @@ end
 # See https://github.com/seattlerb/minitest/#install
 gem "minitest"
 require "minitest/autorun"
-# Custom formatters
-require "minitest/reporters"
-Minitest::Reporters.use! Minitest::Reporters::SpecReporter.new
+
+# This is a workaround for RubyMine debugger that doesn't play nice with Minitest::Reporters
+unless ENV['RM_INFO']
+  # Custom formatters to make the tests more legible in CI
+  require "minitest/reporters"
+  Minitest::Reporters.use! Minitest::Reporters::SpecReporter.new
+end
 
 require File.join(File.dirname(__FILE__), "../../lib/fog/google")
