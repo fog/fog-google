@@ -84,7 +84,10 @@ module Fog
           server.wait_for { ready? }
 
           # Set the disk to be autodeleted
-          server.set_disk_auto_delete(true)
+          # true - autodelete setting
+          # nil - device name (not needed if there's only one disk)
+          # false - set async to false so set the property synchronously
+          server.set_disk_auto_delete(true, nil, false)
 
           server
         end
