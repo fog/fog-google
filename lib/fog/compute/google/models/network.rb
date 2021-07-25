@@ -27,7 +27,7 @@ module Fog
         alias_method :ipv4_range, :i_pv4_range
 
         def save
-          requires :identity, :ipv4_range
+          requires :identity
 
           data = service.insert_network(identity, attributes)
           operation = Fog::Compute::Google::Operations.new(:service => service)

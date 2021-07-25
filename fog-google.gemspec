@@ -25,11 +25,20 @@ Gem::Specification.new do |spec|
   spec.add_dependency "fog-json", "~> 1.2"
   spec.add_dependency "fog-xml", "~> 0.1.0"
 
-  spec.add_dependency "google-api-client", ">= 0.44.2", "< 0.51"
+  spec.add_dependency "google-apis-storage_v1", "~> 0.6"
+  spec.add_dependency "google-apis-iamcredentials_v1", "~> 0.6"
+  spec.add_dependency "google-apis-compute_v1", "~> 0.14"
+  spec.add_dependency "google-apis-monitoring_v3", "~> 0.12"
+  spec.add_dependency "google-apis-dns_v1", "~> 0.12"
+  spec.add_dependency "google-apis-pubsub_v1", "~> 0.7"
+  spec.add_dependency "google-apis-sqladmin_v1beta4", "~> 0.13"
+
   spec.add_dependency "google-cloud-env", "~> 1.2"
 
   # Debugger
-  spec.add_development_dependency "pry"
+  # Locked because pry-byebug is broken with 13+
+  # see: https://github.com/deivid-rodriguez/pry-byebug/issues/343
+  spec.add_development_dependency "pry", "= 0.13.0"
 
   # Testing gems
   spec.add_development_dependency "retriable"

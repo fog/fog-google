@@ -156,12 +156,12 @@ DATA
         #   See https://cloud.google.com/storage/docs/access-control/signed-urls-v2
         # @return [String] Signature binary blob
         def iam_signer(string_to_sign)
-          request = {
-            "payload": string_to_sign
-          }
+          request = ::Google::Apis::IamcredentialsV1::SignBlobRequest.new(
+            payload: string_to_sign
+          )
 
           resource = "projects/-/serviceAccounts/#{google_access_id}"
-          response = @iam_service.sign_service_account_blob resource, request, {}
+          response = @iam_service.sign_service_account_blob(resource, request)
 
           return response.signed_blob
         end

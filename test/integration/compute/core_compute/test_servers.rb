@@ -135,8 +135,8 @@ class TestServers < FogIntegrationTest
   def test_reset_windows_password
     win_disk = @disks.create(
       :name => "fog-test-1-testservers-test-reset-windows-password-2",
-      :source_image => "windows-server-1909-dc-core-v20200310",
-      :size_gb => 32
+      :source_image => "windows-server-2019-dc-v20210713",
+      :size_gb => 64
     )
     server = @factory.create(:disks => [win_disk])
     server.wait_for { ready? }

@@ -42,12 +42,12 @@ module Fog
 
         def get_https_url(key, expires, options = {})
           requires :directory
-          service.get_object_https_url(directory.key, key, expires, options)
+          service.get_object_https_url(directory.key, key, expires, **options)
         end
 
         def metadata(key, options = {})
           requires :directory
-          data = service.get_object_metadata(directory.key, key, options).to_h
+          data = service.get_object_metadata(directory.key, key, **options).to_h
           new(data)
         rescue ::Google::Apis::ClientError
           nil
