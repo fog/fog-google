@@ -17,9 +17,11 @@ module Fog
         def put_bucket(bucket_name,
                        predefined_acl: nil,
                        predefined_default_object_acl: nil,
-                       **options)
+                       # **options.transform_keys(&:to_sym) is needed so paperclip doesn't break on Ruby 2.6
+                       # TODO(temikus): remove this once Ruby 2.6 is deprecated for good
+                       **options.transform_keys(&:to_sym))
           bucket = ::Google::Apis::StorageV1::Bucket.new(
-            **options.merge(:name => bucket_name)
+            **options.transform_keys(&:to_sym).merge(:name => bucket_name)
           )
 
           @storage_json.insert_bucket(

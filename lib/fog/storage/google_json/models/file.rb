@@ -105,7 +105,9 @@ module Fog
           
           options[:predefined_acl] ||= @predefined_acl
 
-          service.put_object(directory.key, key, body, **options)
+          # **options.transform_keys(&:to_sym) is needed so paperclip doesn't break on Ruby 2.6
+          # TODO(temikus): remove this once Ruby 2.6 is deprecated for good
+          service.put_object(directory.key, key, body, **options.transform_keys(&:to_sym))
           self.content_length = Fog::Storage.get_body_size(body)
           self.content_type ||= Fog::Storage.get_content_type(body)
           true

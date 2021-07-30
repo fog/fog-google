@@ -31,7 +31,9 @@ module Fog
 
           @storage_json.list_objects(
             bucket,
-            **options.select { |k, _| allowed_opts.include? k }
+            # **options.transform_keys(&:to_sym) is needed so paperclip doesn't break on Ruby 2.6
+            # TODO(temikus): remove this once Ruby 2.6 is deprecated for good
+            **options.transform_keys(&:to_sym).select { |k, _| allowed_opts.include? k }
           )
         end
       end

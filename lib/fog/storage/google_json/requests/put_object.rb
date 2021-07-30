@@ -47,11 +47,13 @@ module Fog
                        if_metageneration_not_match: nil,
                        kms_key_name: nil,
                        predefined_acl: nil,
-                       **options)
+                       # **options.transform_keys(&:to_sym) is needed so paperclip doesn't break on Ruby 2.6
+                       # TODO(temikus): remove this once Ruby 2.6 is deprecated for good
+                       **options.transform_keys(&:to_sym))
           data, options = normalize_data(data, options)
 
           object_config = ::Google::Apis::StorageV1::Object.new(
-            **options.merge(:name => object_name)
+            **options.transform_keys(&:to_sym).merge(:name => object_name)
           )
 
           @storage_json.insert_object(

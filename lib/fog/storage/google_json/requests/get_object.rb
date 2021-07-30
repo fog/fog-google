@@ -34,7 +34,9 @@ module Fog
                        if_metageneration_match: nil,
                        if_metageneration_not_match: nil,
                        projection: nil,
-                       **options, &_block)
+                       # **options.transform_keys(&:to_sym) is needed so paperclip doesn't break on Ruby 2.6
+                       # TODO(temikus): remove this once Ruby 2.6 is deprecated for good
+                       **options.transform_keys(&:to_sym), &_block)
           raise ArgumentError.new("bucket_name is required") unless bucket_name
           raise ArgumentError.new("object_name is required") unless object_name
 

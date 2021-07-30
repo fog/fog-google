@@ -15,7 +15,9 @@ module Fog
                         target_bucket, target_object, options = {})
           request_options = ::Google::Apis::RequestOptions.default.merge(options)
 
-          object = ::Google::Apis::StorageV1::Object.new(**options)
+          # **options.transform_keys(&:to_sym) is needed so paperclip doesn't break on Ruby 2.6
+          # TODO(temikus): remove this once Ruby 2.6 is deprecated for good
+          object = ::Google::Apis::StorageV1::Object.new(**options.transform_keys(&:to_sym))
 
           @storage_json.copy_object(source_bucket, source_object,
                                     target_bucket, target_object,

@@ -109,7 +109,9 @@ module Fog
           options["Expires"] = expires if expires
           options.merge!(metadata)
 
-          data = service.put_object(directory.key, key, body, **options)
+          # **options.transform_keys(&:to_sym) is needed so paperclip doesn't break on Ruby 2.6
+          # TODO(temikus): remove this once Ruby 2.6 is deprecated for good
+          data = service.put_object(directory.key, key, body, **options.transform_keys(&:to_sym))
           merge_attributes(data.headers.reject { |key, _value| ["Content-Length", "Content-Type"].include?(key) })
           self.content_length = Fog::Storage.get_body_size(body)
           self.content_type ||= Fog::Storage.get_content_type(body)
