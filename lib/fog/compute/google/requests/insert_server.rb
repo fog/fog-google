@@ -104,6 +104,10 @@ module Fog
             data[:shielded_instance_config] = ::Google::Apis::ComputeV1::ShieldedInstanceConfig.new(**options[:shielded_instance_config])
           end
 
+          if data[:display_device]
+            data[:display_device] = ::Google::Apis::ComputeV1::DisplayDevice.new(**options[:display_device])
+          end
+
           if data[:tags]
             if options[:tags].is_a?(Array)
               # Process classic tag notation, i.e. ["fog"]
