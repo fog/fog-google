@@ -6,6 +6,16 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 
 ## Next
 
+
+## 1.16.1
+
+### User-facing
+
+#### Fixed
+
+- \#545 Avoid duplicate GET requests when retrieving body [stanhu]
+- \#547 Remove exec bit from non_scripts [kbrock]
+
 ## 1.16.0
 
 ### User-facing
