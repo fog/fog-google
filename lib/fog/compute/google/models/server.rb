@@ -50,6 +50,13 @@ module Fog
         # @return [Array<Hash>]
         attribute :disks
 
+        # @example Enable the display device
+        #   {
+        #     :enable_display => true
+        #   }
+        # @return [Hash<String,Boolean>]
+        attribute :display_device, :aliases => "displayDevice"
+
         # @example Guest accelerators
         #   [
         #     {
