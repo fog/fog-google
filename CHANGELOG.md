@@ -7,6 +7,14 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 ## Next
 
 
+## 1.17.0
+
+### User-facing
+
+#### Added
+
+- \#550 Add support for instance display device [dcode]
+
 ## 1.16.1
 
 ### User-facing
