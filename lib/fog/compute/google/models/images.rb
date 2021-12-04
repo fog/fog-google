@@ -11,16 +11,17 @@ module Fog
         GLOBAL_PROJECTS = %w(
           centos-cloud
           cos-cloud
-          coreos-cloud
           debian-cloud
+          fedora-coreos-cloud
           rhel-cloud
           rhel-sap-cloud
+          rocky-linux-cloud
           suse-cloud
           suse-sap-cloud
           ubuntu-os-cloud
+          ubuntu-os-pro-cloud
           windows-cloud
           windows-sql-cloud
-          opensuse-cloud
         ).freeze
 
         def all
