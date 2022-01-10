@@ -13,11 +13,13 @@ module Fog
         attribute :page_token,      :aliases => %w(pageToken page_token)
         attribute :max_results,     :aliases => ["MaxKeys", "max-keys"]
         attribute :prefix,          :aliases => "Prefix"
+        attribute :next_page_token
 
         def all(options = {})
           requires :directory
-          data = service.list_objects(directory.key, attributes.merge(options))
-                        .to_h[:items] || []
+          parent = service.list_objects(directory.key, attributes.merge(options))
+          attributes[:next_page_token] = parent.next_page_token
+          data = parent.to_h[:items] || []
           load(data)
         end
 
@@ -27,6 +29,10 @@ module Fog
             subset = dup.all
 
             subset.each_file_this_page { |f| yield f }
+            while subset.next_page_token
+              subset = subset.all(:page_token => subset.next_page_token)
+              subset.each_file_this_page { |f| yield f }
+            end
           end
           self
         end
