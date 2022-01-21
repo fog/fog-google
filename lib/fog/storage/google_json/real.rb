@@ -26,7 +26,7 @@ module Fog
 
           @storage_json.client_options.open_timeout_sec = options[:open_timeout_sec] if options[:open_timeout_sec]
           @storage_json.client_options.read_timeout_sec = options[:read_timeout_sec] if options[:read_timeout_sec]
-          @storage_json.client_options.send_timeout_sec = options[:send_timeout_sec] if options[:send_timeout_sec]
+          @storage_json.client_options.send_timeout_sec = options[:send_timeout_sec] || 0
         end
 
         def signature(params)
