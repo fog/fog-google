@@ -6,6 +6,16 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 
 ## Next
 
+## 1.18.0
+
+### User-facing
+
+#### Fixed
+
+- \#556 Correct conflicting Ruby version info in readme [gdubicki]
+- \#557 Update current images projects list [gdubicki]
+- \#558 Fix page iteration when using #files with block [jgigault]
+- \#562 Loosen fog-core dependency
 
 ## 1.17.0
 
