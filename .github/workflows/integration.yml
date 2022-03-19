@@ -17,7 +17,7 @@ jobs:
       max-parallel: 1
 
     steps:
-      - uses: actions/checkout@v2.4.0
+      - uses: actions/checkout@v3
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         env:
@@ -44,7 +44,7 @@ jobs:
       max-parallel: 1
 
     steps:
-      - uses: actions/checkout@v2.4.0
+      - uses: actions/checkout@v3
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         env:
@@ -71,7 +71,7 @@ jobs:
       max-parallel: 1
 
     steps:
-      - uses: actions/checkout@v2.4.0
+      - uses: actions/checkout@v3
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         env:
@@ -98,7 +98,7 @@ jobs:
       max-parallel: 1
 
     steps:
-      - uses: actions/checkout@v2.4.0
+      - uses: actions/checkout@v3
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         env:
@@ -125,7 +125,7 @@ jobs:
       max-parallel: 1
 
     steps:
-      - uses: actions/checkout@v2.4.0
+      - uses: actions/checkout@v3
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         env:
@@ -152,7 +152,7 @@ jobs:
       max-parallel: 1
 
     steps:
-      - uses: actions/checkout@v2.4.0
+      - uses: actions/checkout@v3
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         env:
@@ -179,7 +179,7 @@ jobs:
       max-parallel: 1
 
     steps:
-      - uses: actions/checkout@v2.4.0
+      - uses: actions/checkout@v3
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         env:
@@ -206,7 +206,7 @@ jobs:
       max-parallel: 1
 
     steps:
-      - uses: actions/checkout@v2.4.0
+      - uses: actions/checkout@v3
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         env:
