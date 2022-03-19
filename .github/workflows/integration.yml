@@ -12,7 +12,7 @@ jobs:
     runs-on: self-hosted
     strategy:
       matrix:
-        ruby-version: [ '2.7', '3.0' ]
+        ruby-version: [ '2.7', '3.0', '3.1' ]
       # Integration tests from the same task cannot run in parallel yet due to cleanup
       max-parallel: 1
 
@@ -39,7 +39,7 @@ jobs:
     runs-on: self-hosted
     strategy:
       matrix:
-        ruby-version: [ '2.7', '3.0' ]
+        ruby-version: [ '2.7', '3.0', '3.1' ]
       # Integration tests from the same task cannot run in parallel yet due to cleanup
       max-parallel: 1
 
@@ -66,7 +66,7 @@ jobs:
     runs-on: self-hosted
     strategy:
       matrix:
-        ruby-version: [ '2.7', '3.0' ]
+        ruby-version: [ '2.7', '3.0', '3.1' ]
       # Integration tests from the same task cannot run in parallel yet due to cleanup
       max-parallel: 1
 
@@ -93,7 +93,7 @@ jobs:
     runs-on: self-hosted
     strategy:
       matrix:
-        ruby-version: [ '2.7', '3.0' ]
+        ruby-version: [ '2.7', '3.0', '3.1' ]
       # Integration tests from the same task cannot run in parallel yet due to cleanup
       max-parallel: 1
 
@@ -120,7 +120,7 @@ jobs:
     runs-on: self-hosted
     strategy:
       matrix:
-        ruby-version: [ '2.7', '3.0' ]
+        ruby-version: [ '2.7', '3.0', '3.1' ]
       # Integration tests from the same task cannot run in parallel yet due to cleanup
       max-parallel: 1
 
@@ -147,7 +147,7 @@ jobs:
     runs-on: self-hosted
     strategy:
       matrix:
-        ruby-version: [ '2.7', '3.0' ]
+        ruby-version: [ '2.7', '3.0', '3.1' ]
       # Integration tests from the same task cannot run in parallel yet due to cleanup
       max-parallel: 1
 
@@ -174,7 +174,7 @@ jobs:
     runs-on: self-hosted
     strategy:
       matrix:
-        ruby-version: [ '2.7', '3.0' ]
+        ruby-version: [ '2.7', '3.0', '3.1' ]
       # Integration tests from the same task cannot run in parallel yet due to cleanup
       max-parallel: 1
 
@@ -201,7 +201,7 @@ jobs:
     runs-on: self-hosted
     strategy:
       matrix:
-        ruby-version: [ '2.7', '3.0' ]
+        ruby-version: [ '2.7', '3.0', '3.1' ]
       # Integration tests from the same task cannot run in parallel yet due to cleanup
       max-parallel: 1
 
