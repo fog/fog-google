@@ -24,7 +24,7 @@ module Fog
         #     * 'ETag'<~String> - Etag of object
         #     * 'Last-Modified'<~String> - Last modified timestamp for object
         #
-        def get_object(bucket_name, object_name, options = {}, &_block)
+        def get_object(bucket_name, object_name, options = {}, &block)
           raise ArgumentError.new("bucket_name is required") unless bucket_name
           raise ArgumentError.new("object_name is required") unless object_name
 
@@ -40,7 +40,7 @@ module Fog
             params[:headers]["If-Unmodified-Since"] = Fog::Time.at(options["If-Unmodified-Since"].to_i).to_date_header
           end
 
-          params[:response_block] = Proc.new if block_given?
+          params[:response_block] = block if block_given?
 
           request(params.merge!(:expects        => [200, 206],
                                 :host           => "#{bucket_name}.#{@host}",
