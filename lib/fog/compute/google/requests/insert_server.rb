@@ -52,7 +52,7 @@ module Fog
         #       :disks => [
         #         {
         #           :initialize_params => {
-        #             :source_image => "projects/debian-cloud/global/images/family/debian-9"
+        #             :source_image => "projects/debian-cloud/global/images/family/debian-11"
         #           }
         #         }
         #       ]
