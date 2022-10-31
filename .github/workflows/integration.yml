@@ -196,30 +196,3 @@ jobs:
         run: >-
           ./.github/scripts/setup_creds.sh &&
           bundle exec rake test:pubsub
-
-  test-sql:
-    runs-on: self-hosted
-    strategy:
-      matrix:
-        ruby-version: [ '2.7', '3.0', '3.1' ]
-      # Integration tests from the same task cannot run in parallel yet due to cleanup
-      max-parallel: 1
-
-    steps:
-      - uses: actions/checkout@v3.1.0
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        env:
-          # Needs to be set up for self-hosted runners, see:
-          # https://github.com/ruby/setup-ruby#using-self-hosted-runners
-          # Image used in runners: summerwind/actions-runner
-          ImageOS: ubuntu20
-        with:
-          ruby-version: ${{ matrix.ruby-version }}
-          bundler-cache: true # runs 'bundle install' and caches installed gems automatically
-      - name: Install dependencies
-        run: bundle install
-      - name: Run tests
-        run: >-
-          ./.github/scripts/setup_creds.sh &&
-          bundle exec rake test:sql
