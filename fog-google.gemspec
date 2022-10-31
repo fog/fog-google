@@ -24,13 +24,13 @@ Gem::Specification.new do |spec|
   spec.add_dependency "fog-json", "~> 1.2"
   spec.add_dependency "fog-xml", "~> 0.1.0"
 
-  spec.add_dependency "google-apis-storage_v1", "~> 0.6"
-  spec.add_dependency "google-apis-iamcredentials_v1", "~> 0.6"
-  spec.add_dependency "google-apis-compute_v1", "~> 0.14"
-  spec.add_dependency "google-apis-monitoring_v3", "~> 0.12"
-  spec.add_dependency "google-apis-dns_v1", "~> 0.12"
-  spec.add_dependency "google-apis-pubsub_v1", "~> 0.7"
-  spec.add_dependency "google-apis-sqladmin_v1beta4", "~> 0.13"
+  spec.add_dependency "google-apis-storage_v1", "~> 0.20"
+  spec.add_dependency "google-apis-iamcredentials_v1", "~> 0.15"
+  spec.add_dependency "google-apis-compute_v1", "~> 0.53"
+  spec.add_dependency "google-apis-monitoring_v3", "~> 0.37"
+  spec.add_dependency "google-apis-dns_v1", "~> 0.28"
+  spec.add_dependency "google-apis-pubsub_v1", "~> 0.30"
+  spec.add_dependency "google-apis-sqladmin_v1beta4", "~> 0.38"
 
   spec.add_dependency "google-cloud-env", "~> 1.2"
 
