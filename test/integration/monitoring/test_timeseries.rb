@@ -49,9 +49,11 @@ class TestMetricDescriptors < FogIntegrationTest
     resp = @client.create_timeseries(:timeseries => [expected])
     assert_empty(resp.to_h)
 
-    # Wait for metric to be created
-    retry_on(Google::Apis::ClientError) do
-      @client.list_timeseries(
+    # Wait for TimeSeries to be created
+    # Google Monitoring backend is not exactly designed for synchronous retrieval so this retry is necessary
+    Fog.wait_for(30) do
+      begin
+        test_ts = @client.list_timeseries(
           :filter => "metric.type = \"#{metric_type}\"",
           :interval => {
             # Subtracting one second because timeSeries.list API
@@ -60,7 +62,11 @@ class TestMetricDescriptors < FogIntegrationTest
             :start_time => (start_time - 1).to_datetime.rfc3339,
             :end_time => Time.now.to_datetime.rfc3339
           }
-      ).time_series
+        ).time_series
+        return !test_ts.nil?
+      rescue
+        return false
+      end
     end
 
     series = retry_on(Google::Apis::ClientError) do
@@ -120,15 +126,18 @@ class TestMetricDescriptors < FogIntegrationTest
       :end_time => Time.now.to_datetime.rfc3339
     }
 
-
-    # Wait for metric to be created
-    # Retriable is used instead of wait_for due to API client returning Google::Apis::ClientError: badRequest if the
-    # metric hasn't yet been created
-    retry_on(Google::Apis::ClientError) do
-      @client.list_timeseries(
-        :filter => "metric.type = \"#{metric_type}\"",
-        :interval => interval
-      ).time_series
+    # Wait for TimeSeries to be created
+    # Google Monitoring backend is not exactly designed for synchronous retrieval so this retry is necessary
+    Fog.wait_for(30) do
+      begin
+        test_ts = @client.list_timeseries(
+          :filter => "metric.type = \"#{metric_type}\"",
+          :interval => interval
+        ).time_series
+        return !test_ts.nil?
+      rescue
+        return false
+      end
     end
 
     # Test page size
