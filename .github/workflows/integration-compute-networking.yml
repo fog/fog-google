@@ -2,7 +2,7 @@
 # is no need to run them if SQL code or deps haven't changed and you cannot
 # trigger jobs based on file changes in the same workflow.
 # See: https://github.com/actions/runner/issues/456
-name: integration-tests-sql
+name: integration-tests-compute-networking
 
 on:
   push:
@@ -13,9 +13,8 @@ on:
     # Only run SQL integration tests if SQL code or deps have changed
     paths:
       # Module-specific paths
-      - 'lib/fog/google/sql.rb'
-      - 'lib/fog/google/sql/**'
-      - 'test/integration/sql/**'
+      - 'lib/fog/compute/**'
+      - 'test/integration/compute/core_networking/**'
       # Common deps & shared paths
       - 'fog-google.gemspec'
       - 'lib/fog/bin/google.rb'
@@ -50,4 +49,4 @@ jobs:
       - name: Run tests
         run: >-
           ./.github/scripts/setup_creds.sh &&
-          bundle exec rake test:sql
+          bundle exec rake test:compute-core_networking
