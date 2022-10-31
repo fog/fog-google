@@ -13,7 +13,7 @@ def example
     :name => "fog-smoke-test-#{Time.now.to_i}",
     :size_gb => 10,
     :zone => "us-central1-f",
-    :source_image => "debian-9-stretch-v20180611"
+    :source_image => "debian-11-bullseye-v20220920"
   )
 
   p "Creating a second disk"

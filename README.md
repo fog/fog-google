@@ -8,7 +8,7 @@ The main maintainers for the Google sections are @icco, @Temikus and @plribeiro3
 
 - As of **v1.0.0**, fog-google includes google-api-client as a dependency, there is no need to include it separately anymore.
 
-- Fog-google is currently supported on Ruby 2.6+ See [supported ruby versions](#supported-ruby-versions) for more info.
+- Fog-google is currently supported on Ruby 2.7+ See [supported ruby versions](#supported-ruby-versions) for more info.
 
 See **[MIGRATING.md](MIGRATING.md)** for migration between major versions.
 
@@ -175,7 +175,7 @@ $ bundle exec pry
 
 ## Supported Ruby Versions
 
-Fog-google is currently supported on Ruby 2.6+.
+Fog-google is currently supported on Ruby 2.7+.
 
 In general we support (and run our CI) for Ruby versions that are actively supported
 by Ruby Core - that is, Ruby versions that are not end of life. Older versions of
