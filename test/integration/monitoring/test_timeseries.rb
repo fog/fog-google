@@ -46,7 +46,11 @@ class TestMetricDescriptors < FogIntegrationTest
     }
 
     expected = _some_timeseries(start_time, metric_type, labels)
-    resp = @client.create_timeseries(:timeseries => [expected])
+    # Retrying since this is prone to errors in test environment due to
+    # constant creation/deletion of resources
+    resp = retry_on(Google::Apis::ServerError) do
+      @client.create_timeseries(:timeseries => [expected])
+    end
     assert_empty(resp.to_h)
 
     # Wait for TimeSeries to be created
@@ -115,6 +119,8 @@ class TestMetricDescriptors < FogIntegrationTest
       _some_timeseries(start_time, metric_type, labels)
     end
 
+    # Retrying since this is prone to errors in test environment due to
+    # constant creation/deletion of resources
     retry_on(Google::Apis::ServerError) do
       @client.create_timeseries(:timeseries => timeseries)
     end
