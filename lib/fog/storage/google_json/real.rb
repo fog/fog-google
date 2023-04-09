@@ -135,7 +135,8 @@ DATA
         #   See https://cloud.google.com/storage/docs/access-control/signed-urls-v2
         # @return [String] Signature binary blob
         def default_signer(string_to_sign)
-          key = OpenSSL::PKey::RSA.new(@storage_json.authorization.signing_key)
+          key = @storage_json.authorization.signing_key
+          key = OpenSSL::PKey::RSA.new(@storage_json.authorization.signing_key) unless key.respond_to?(:sign)
           digest = OpenSSL::Digest::SHA256.new
           return key.sign(digest, string_to_sign)
         end
