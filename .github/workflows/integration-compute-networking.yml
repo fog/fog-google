@@ -39,8 +39,6 @@ jobs:
         with:
           ruby-version: ${{ matrix.ruby-version }}
           bundler-cache: true # runs 'bundle install' and caches installed gems automatically
-      - name: Install dependencies
-        run: bundle install
       - name: Run tests
         run: >-
           ./.github/scripts/setup_creds.sh &&
