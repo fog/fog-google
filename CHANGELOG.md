@@ -6,6 +6,22 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 
 ## Next
 
+## 1.20.0
+
+### User-facing
+
+#### Fixed
+
+- update google client dependencies
+- \#591 only create new RSA keys if needed for faster signing
+
+### Development changes
+
+#### Fixed
+
+- bump actions/checkout from 2.4.0 to 3.1.0
+- fixes and refinements for integration tests
+
 ## 1.19.0
 
 ### User-facing
