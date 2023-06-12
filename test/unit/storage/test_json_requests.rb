@@ -49,4 +49,12 @@ class UnitTestJsonRequests < MiniTest::Test
     assert_match(/a\/b\/c/, url,
                  "slashes should not be escaped with '%2F'")
   end
+
+  def test_unescaped_pluses_in_url
+    url = @client.get_object_https_url("bucket",
+                                      "a+c.ext",
+                                      Time.now + 2 * 60)
+    assert_match(/a\+c/, url,
+      "pluses should not be escaped with '%2B'")
+  end
 end
