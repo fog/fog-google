@@ -1,5 +1,5 @@
 module Fog
   module Google
-    VERSION = "1.20.0".freeze
+    VERSION = "1.21.0".freeze
   end
 end
