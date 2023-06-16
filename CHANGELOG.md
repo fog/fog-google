@@ -6,6 +6,21 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 
 ## Next
 
+## 1.21.1
+
+### User-facing
+
+#### Fixed
+
+- \#597 loosen dependencies to avoid conflict
+
+### Development changes
+
+#### Fixed
+
+- bump actions/checkout from 2.4.0 to 3.1.0
+- fixes and refinements for integration tests
+
 ## 1.21.0
 
 ### User-facing
