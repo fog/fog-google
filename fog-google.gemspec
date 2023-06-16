@@ -24,7 +24,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "fog-json", "~> 1.2"
   spec.add_dependency "fog-xml", "~> 0.1.0"
 
-  spec.add_dependency "google-apis-storage_v1", "~> 0.20"
+  spec.add_dependency "google-apis-storage_v1", [">= 0.19", "< 1"]
   spec.add_dependency "google-apis-iamcredentials_v1", "~> 0.15"
   spec.add_dependency "google-apis-compute_v1", "~> 0.53"
   spec.add_dependency "google-apis-monitoring_v3", "~> 0.37"
