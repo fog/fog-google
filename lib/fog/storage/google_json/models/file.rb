@@ -5,6 +5,7 @@ module Fog
         identity :key, :aliases => ["Key", :name]
 
         attribute :acl
+        attribute :uniform
         attribute :predefined_acl,      :aliases => ["predefinedAcl", :predefined_acl]
         attribute :cache_control,       :aliases => ["cacheControl", :cache_control]
         attribute :content_disposition, :aliases => ["contentDisposition", :content_disposition]
@@ -36,6 +37,10 @@ module Fog
           "publicRead",
           "publicReadWrite"
         ].freeze
+
+        def uniform=(enable)
+          @uniform=enable
+        end
 
         def predefined_acl=(new_predefined_acl)
           unless VALID_PREDEFINED_ACLS.include?(new_predefined_acl)
@@ -111,8 +116,8 @@ module Fog
             FILE_INSERTABLE_FIELDS.map { |k| [k, attributes[k]] }
                                   .reject { |pair| pair[1].nil? }
           ]
-          
-          options[:predefined_acl] ||= @predefined_acl
+
+          options[:predefined_acl] ||= @predefined_acl unless @uniform
 
           service.put_object(directory.key, key, body, **options)
           self.content_length = Fog::Storage.get_body_size(body)
