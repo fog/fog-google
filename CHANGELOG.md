@@ -6,6 +6,20 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 
 ## Next
 
+## 1.22.0
+
+### User-facing
+
+#### Added
+
+- #600 - Add uniform attr to inserting file [cwjenkins]
+
+### Development changes
+
+#### Fixed
+
+- #601 Remove deprecated ruby versions from unit tests [temikus]
+
 ## 1.21.1
 
 ### User-facing
