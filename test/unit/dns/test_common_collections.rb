@@ -1,6 +1,6 @@
 require "helpers/test_helper"
 
-class UnitTestDNSCollections < MiniTest::Test
+class UnitTestDNSCollections < Minitest::Test
   def setup
     Fog.mock!
     @client = Fog::DNS.new(provider: "google",

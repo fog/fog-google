@@ -1,6 +1,6 @@
 require "helpers/test_helper"
 
-class UnitTestPubsubCollections < MiniTest::Test
+class UnitTestPubsubCollections < Minitest::Test
   def setup
     Fog.mock!
     @client = Fog::Google::Pubsub.new(google_project: "foo")

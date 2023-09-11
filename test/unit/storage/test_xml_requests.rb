@@ -1,6 +1,6 @@
 require "helpers/test_helper"
 
-class UnitTestXMLRequests < MiniTest::Test
+class UnitTestXMLRequests < Minitest::Test
   def setup
     Fog.mock!
     @client = Fog::Storage.new(provider: "google",

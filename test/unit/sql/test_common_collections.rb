@@ -1,6 +1,6 @@
 require "helpers/test_helper"
 
-class UnitTestSQLCollections < MiniTest::Test
+class UnitTestSQLCollections < Minitest::Test
   def setup
     Fog.mock!
     @client = Fog::Google::SQL.new(google_project: "foo")

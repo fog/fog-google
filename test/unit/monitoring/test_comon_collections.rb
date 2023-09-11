@@ -1,6 +1,6 @@
 require "helpers/test_helper"
 
-class UnitTestMonitoringCollections < MiniTest::Test
+class UnitTestMonitoringCollections < Minitest::Test
   def setup
     Fog.mock!
     @client = Fog::Monitoring.new(provider: "google",

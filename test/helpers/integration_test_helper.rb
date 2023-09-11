@@ -93,7 +93,7 @@ KEY
 RETRIABLE_TRIES = 3
 RETRIABLE_BASE_INTERVAL = 50
 
-class FogIntegrationTest < MiniTest::Test
+class FogIntegrationTest < Minitest::Test
   def namespaced_name
     "#{self.class}_#{name}"
   end
