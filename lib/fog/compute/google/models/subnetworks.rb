@@ -11,16 +11,24 @@ module Fog
             :order_by => order_by,
             :page_token => page_token
           }
-
-          if region
-            data = service.list_subnetworks(region, **filters).to_h[:items] || []
-          else
-            data = []
-            service.list_aggregated_subnetworks(**filters).to_h[:items].each_value do |region_obj|
-              data.concat(region_obj[:subnetworks]) if region_obj[:subnetworks]
+          items = []
+          next_page_token = nil
+          loop do
+            if region
+              data = service.list_subnetworks(region, **filters)
+              next_items = data.items || []
+              items.concat(next_items)
+              next_page_token = data.next_page_token
+            else
+              data = service.list_aggregated_subnetworks(**filters)
+              data.items.each_value do |region_obj|
+                items.concat(region_obj.subnetworks) if region_obj && region_obj.subnetworks
+              end
             end
+            break if next_page_token.nil? || next_page_token.empty?
+            filters[:page_token] = next_page_token
           end
-          load(data)
+          load(items.map(&:to_h))
         end
 
         def get(identity, region = nil)

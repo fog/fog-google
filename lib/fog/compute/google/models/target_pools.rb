@@ -11,17 +11,25 @@ module Fog
             :order_by => order_by,
             :page_token => page_token
           }
-          if region.nil?
-            data = []
-            service.list_aggregated_target_pools(**opts).items.each_value do |lst|
-              unless lst.nil? || lst.target_pools.nil?
-                data += lst.to_h[:target_pools]
+          items = []
+          next_page_token = nil
+          loop do
+            if region.nil?
+              data = service.list_aggregated_target_pools(**opts)
+              data.items.each_value do |lst|
+                items.concat(lst.to_h[:target_pools]) if lst && lst.target_pools
               end
+              next_page_token = data.next_page_token
+            else
+              data = service.list_target_pools(region, **opts)
+              next_items = data.to_h[:items] || []
+              items.concat(next_items)
+              next_page_token = data.next_page_token
             end
-          else
-            data = service.list_target_pools(region, **opts).to_h[:items]
+            break if next_page_token.nil? || next_page_token.empty?
+            opts[:page_token] = next_page_token
           end
-          load(data)
+          load(items)
         end
 
         def get(identity, region = nil)

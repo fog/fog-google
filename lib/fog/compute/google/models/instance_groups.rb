@@ -11,17 +11,25 @@ module Fog
             :order_by => order_by,
             :page_token => page_token
           }
-
-          if zone
-            data = service.list_instance_groups(zone).items || []
-          else
-            data = []
-            service.list_aggregated_instance_groups(opts).items.each_value do |group|
-              data.concat(group.instance_groups) if group && group.instance_groups
+          items = []
+          next_page_token = nil
+          loop do
+            if zone
+              data = service.list_instance_groups(zone)
+              next_items = data.items || []
+              items.concat(next_items)
+            else
+              data = service.list_aggregated_instance_groups(opts)
+              data.items.each_value do |group|
+                items.concat(group.instance_groups) if group && group.instance_groups
+              end
+              next_page_token = data.next_page_token
             end
+            break if next_page_token.nil? || next_page_token.empty?
+            opts[:page_token] = next_page_token
           end
 
-          load(data.map(&:to_h))
+          load(items.map(&:to_h))
         end
 
         def get(identity, zone = nil)

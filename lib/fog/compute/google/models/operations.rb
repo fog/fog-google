@@ -12,16 +12,30 @@ module Fog
             :order_by => order_by,
             :page_token => page_token
           }
-
-          if zone
-            data = service.list_zone_operations(zone, **opts).to_h[:items]
-          elsif region
-            data = service.list_region_operations(region, **opts).to_h[:items]
-          else
-            data = service.list_global_operations(**opts).to_h[:items]
+          items = []
+          next_page_token = nil
+          loop do
+            if zone
+              data = service.list_zone_operations(zone, **opts)
+              next_items = data.to_h[:items] || []
+              items.concat(next_items)
+              next_page_token = data.next_page_token
+            elsif region
+              data = service.list_region_operations(region, **opts)
+              next_items = data.to_h[:items] || []
+              items.concat(next_items)
+              next_page_token = data.next_page_token
+            else
+              data = service.list_global_operations(**opts)
+              next_items = data.to_h[:items] || []
+              items.concat(next_items)
+              next_page_token = data.next_page_token
+            end
+            break if next_page_token.nil? || next_page_token.empty?
+            opts[:page_token] = next_page_token
           end
 
-          load(data || [])
+          load(items)
         end
 
         def get(identity, zone = nil, region = nil)
