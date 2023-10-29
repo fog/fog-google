@@ -1,6 +1,6 @@
 require "helpers/test_helper"
 
-class UnitTestCollections < MiniTest::Test
+class UnitTestCollections < Minitest::Test
   def setup
     Fog.mock!
 
