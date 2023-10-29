@@ -13,17 +13,31 @@ module Fog
             :page_token => page_token
           }
 
-          if zone
-            data = service.list_servers(zone, **opts).to_h[:items] || []
-          else
-            data = []
-            service.list_aggregated_servers(**opts).items.each_value do |scoped_lst|
-              if scoped_lst && scoped_lst.instances
-                data.concat(scoped_lst.instances.map(&:to_h))
+          items = []
+          next_page_token = nil
+
+          loop do
+            if zone
+              data = service.list_servers(zone, **opts)
+              next_items = data.to_h[:items] || []
+              items.concat(next_items)
+              next_page_token = data.next_page_token
+            else
+              data = service.list_aggregated_servers(**opts)
+              data.items.each_value do |scoped_lst|
+                if scoped_lst && scoped_lst.instances
+                  items.concat(scoped_lst.instances.map(&:to_h))
+                end
               end
+              next_page_token = data.next_page_token
             end
+
+            break if next_page_token.nil? || next_page_token.empty?
+
+            opts[:page_token] = next_page_token
           end
-          load(data)
+
+          load(items)
         end
 
         # TODO: This method needs to take self_links as well as names
