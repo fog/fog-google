@@ -13,17 +13,25 @@ module Fog
             :page_token => page_token
           }
 
-          if zone
-            data = service.list_target_instances(zone, **opts).to_h[:items] || []
-          else
-            data = []
-            service.list_aggregated_target_instances(**opts).items.each_value do |scoped_list|
-              unless scoped_list.nil? || scoped_list.target_instances.nil?
-                data += scoped_list.target_instances.map(&:to_h)
+          items = []
+          next_page_token = nil
+          loop do
+            if zone
+              data = service.list_target_instances(zone, **opts)
+              next_items = data.to_h[:items] || []
+              items.concat(next_items)
+              next_page_token = data.next_page_token
+            else
+              data = service.list_aggregated_target_instances(**opts)
+              data.items.each_value do |scoped_list|
+                items.concat(scoped_list.target_instances.map(&:to_h)) if scoped_list && scoped_list.target_instances
               end
+              next_page_token = data.next_page_token
             end
+            break if next_page_token.nil? || next_page_token.empty?
+            opts[:page_token] = next_page_token
           end
-          load(data)
+          load(items)
         end
 
         def get(identity, zone = nil)

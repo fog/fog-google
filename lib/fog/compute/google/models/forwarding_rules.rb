@@ -11,19 +11,25 @@ module Fog
             :order_by => order_by,
             :page_token => page_token
           }
-
-          if region
-            data = service.list_forwarding_rules(region, **opts).items || []
-          else
-            data = []
-            service.list_aggregated_forwarding_rules(**opts).items
-                   .each_value do |scoped_list|
-              if scoped_list && scoped_list.forwarding_rules
-                data.concat(scoped_list.forwarding_rules)
+          items = []
+          next_page_token = nil
+          loop do
+            if region
+              data = service.list_forwarding_rules(region, **opts)
+              next_items = data.items || []
+              items.concat(next_items)
+              next_page_token = data.next_page_token
+            else
+              data = service.list_aggregated_forwarding_rules(**opts)
+              data.items.each_value do |scoped_list|
+                items.concat(scoped_list.forwarding_rules) if scoped_list && scoped_list.forwarding_rules
               end
+              next_page_token = data.next_page_token
             end
+            break if next_page_token.nil? || next_page_token.empty?
+            opts[:page_token] = next_page_token
           end
-          load(data.map(&:to_h))
+          load(items.map(&:to_h))
         end
 
         def get(identity, region = nil)

@@ -4,9 +4,18 @@ module Fog
       class InstanceTemplates < Fog::Collection
         model Fog::Compute::Google::InstanceTemplate
 
-        def all
-          data = service.list_instance_templates.items || []
-          load(data.map(&:to_h))
+        def all(opts = {})
+          items = []
+          next_page_token = nil
+          loop do
+            data = service.list_instance_templates(**opts)
+            next_items = data.items || []
+            items.concat(next_items)
+            next_page_token = data.next_page_token
+            break if next_page_token.nil? || next_page_token.empty?
+            opts[:page_token] = next_page_token
+          end
+          load(items.map(&:to_h))
         end
 
         def get(identity)

@@ -11,16 +11,25 @@ module Fog
             :order_by => order_by,
             :page_token => page_token
           }
-
-          if zone
-            data = service.list_machine_types(zone, **opts).items
-          else
-            data = []
-            service.list_aggregated_machine_types(**opts).items.each_value do |scoped_list|
-              data.concat(scoped_list.machine_types) if scoped_list && scoped_list.machine_types
+          items = []
+          next_page_token = nil
+          loop do
+            if zone
+              data = service.list_machine_types(zone, **opts)
+              next_items = data.items || []
+              items.concat(next_items)
+              next_page_token = data.next_page_token
+            else
+              data = service.list_aggregated_machine_types(**opts)
+              data.items.each_value do |scoped_list|
+                items.concat(scoped_list.machine_types) if scoped_list && scoped_list.machine_types
+              end
+              next_page_token = data.next_page_token
             end
+            break if next_page_token.nil? || next_page_token.empty?
+            opts[:page_token] = next_page_token
           end
-          load(data.map(&:to_h) || [])
+          load(items.map(&:to_h) || [])
         end
 
         def get(identity, zone = nil)
