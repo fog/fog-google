@@ -35,6 +35,7 @@ module Fog
 
         def get(identity, zone = nil)
           if zone
+
             disk = service.get_disk(identity, zone).to_h
 
             # Force the hash to contain a :users key so that it will override any :users key in the existing object
@@ -49,7 +50,8 @@ module Fog
           end
         rescue ::Google::Apis::ClientError => e
           raise e unless e.status_code == 404
-          nil
+          # Return an empty object so that wait_for processes the block
+          return new({:status => nil})
         end
 
         # Returns an attached disk configuration hash.
