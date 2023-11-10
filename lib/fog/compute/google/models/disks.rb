@@ -36,6 +36,10 @@ module Fog
         def get(identity, zone = nil)
           if zone
             disk = service.get_disk(identity, zone).to_h
+
+            # Force the hash to contain a :users key so that it will override any :users key in the existing object
+            disk[:users] = nil unless disk.include?(:users)
+
             return new(disk)
           elsif identity
             response = all(:filter => "name eq #{identity}",
