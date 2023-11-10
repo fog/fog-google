@@ -35,7 +35,6 @@ module Fog
 
         def get(identity, zone = nil)
           if zone
-
             disk = service.get_disk(identity, zone).to_h
 
             # Force the hash to contain a :users key so that it will override any :users key in the existing object
