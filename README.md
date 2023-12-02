@@ -175,7 +175,7 @@ $ bundle exec pry
 
 ## Supported Ruby Versions
 
-Fog-google is currently supported on Ruby 2.7+.
+Fog-google is currently supported on Ruby 3.0+.
 
 In general we support (and run our CI) for Ruby versions that are actively supported
 by Ruby Core - that is, Ruby versions that are not end of life. Older versions of
