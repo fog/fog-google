@@ -132,6 +132,80 @@ class TestServers < FogIntegrationTest
     assert server.ready?
   end
 
+  def test_attach_disk
+    # Creating server
+    server = @factory.create
+    server.wait_for { ready? }
+
+    disk_name = "fog-test-1-testservers-test-attach-disk-attachable"  # suffix forces disk name to differ from the existing disk
+    # Creating disk #{disk_name}
+    disk = @disks.create(
+      :name => disk_name,
+      :source_image => TEST_IMAGE,
+      :size_gb => 64
+    )
+    device_name = "#{disk.name}-device"
+
+    # Attaching disk #{disk.name} as device #{device_name}
+    self_link = "https://www.googleapis.com/compute/v1/projects/#{TEST_PROJECT}/zones/#{TEST_ZONE}/disks/#{disk.name}"
+    server.attach_disk(self_link, true, device_name: device_name)
+
+    # Waiting for attachment
+    disk.wait_for { ! users.nil? && users != []}
+
+    assert_equal "https://www.googleapis.com/compute/v1/projects/#{TEST_PROJECT}/zones/#{TEST_ZONE}/instances/#{server.name}", disk.users[0]
+
+    server.reload
+    server_attached_disk = server.disks.select{|d| d[:boot] == false}[0]
+    assert_equal device_name, server_attached_disk[:device_name]
+  end
+
+  def test_detach_disk
+    # Creating server
+    server = @factory.create
+    server.wait_for { ready? }
+
+    disk_name = "fog-test-1-testservers-test-detach-attachable"  # suffix forces disk name to differ from the existing disk
+    # Creating disk #{disk_name}
+    disk = @disks.create(
+      :name => disk_name,
+      :source_image => TEST_IMAGE,
+      :size_gb => 64
+    )
+    device_name = "#{disk.name}-device"
+
+    # Attaching disk #{disk.name} as device #{device_name}
+    self_link = "https://www.googleapis.com/compute/v1/projects/#{TEST_PROJECT}/zones/#{TEST_ZONE}/disks/#{disk.name}"
+    server.attach_disk(self_link, true, device_name: device_name)
+    disk.wait_for { ! users.nil? && users != []}
+
+    server.reload
+    server_attached_disk = server.disks.select{|d| d[:boot] == false}[0]
+    assert_equal device_name, server_attached_disk[:device_name]
+
+    # Detaching (synchronous) disk #{disk.name}
+    server.detach_disk(device_name, false)
+
+    disk.reload
+    assert disk.users.nil? || disk.users == []
+
+    # Re-attaching disk #{disk.name} as device #{device_name}
+    server.attach_disk(self_link, true, device_name: device_name)
+    disk.wait_for { ! users.nil? && users != []}
+
+    server.reload
+    server_attached_disk = server.disks.select{|d| d[:boot] == false}[0]
+    assert_equal device_name, server_attached_disk[:device_name]
+
+    # Detaching (async) disk #{disk.name}
+    server.detach_disk(device_name, true)
+
+    # Waiting for detachment
+    disk.wait_for { users.nil? || users == []}
+
+    assert disk.users.nil? || disk.users == []
+  end
+
   def test_reset_windows_password
     win_disk = @disks.create(
       :name => "fog-test-1-testservers-test-reset-windows-password-2",
