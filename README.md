@@ -1,6 +1,6 @@
 # Fog::Google
 
-[![Gem Version](https://badge.fury.io/rb/fog-google.svg)](http://badge.fury.io/rb/fog-google) [![Build Status](https://github.com/fog/fog-google/actions/workflows/ruby.yml/badge.svg)](https://github.com/fog/fog-google/actions/workflows/ruby.yml) [![codecov](https://codecov.io/gh/fog/fog-google/branch/master/graph/badge.svg)](https://codecov.io/gh/fog/fog-google) ![Dependabot Status](https://flat.badgen.net/github/dependabot/fog/fog-google) [![Doc coverage](https://inch-ci.org/github/fog/fog-google.svg?branch=master)](https://inch-ci.org/github/fog/fog-google)
+[![Gem Version](https://badge.fury.io/rb/fog-google.svg)](http://badge.fury.io/rb/fog-google) [![Build Status](https://github.com/fog/fog-google/actions/workflows/unit.yml/badge.svg)](https://github.com/fog/fog-google/actions/workflows/unit.yml) [![codecov](https://codecov.io/gh/fog/fog-google/branch/master/graph/badge.svg)](https://codecov.io/gh/fog/fog-google) ![Dependabot Status](https://flat.badgen.net/github/dependabot/fog/fog-google) [![Doc coverage](https://inch-ci.org/github/fog/fog-google.svg?branch=master)](https://inch-ci.org/github/fog/fog-google)
 
 The main maintainers for the Google sections are @icco, @Temikus and @plribeiro3000. Please send pull requests to them.
 
