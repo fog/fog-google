@@ -6,6 +6,23 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 
 ## Next
 
+## 1.23.0
+
+### User-facing
+
+#### Fixed
+
+- #609 Fixed missing paging on all models [agrare]
+- #608 Fixed `Fog::Compute::Google::Servers#all` paging [agrare]
+
+### Development changes
+
+#### Fixed
+
+- #606 Use `Minitest::Test` instead of `MiniTest::Test` [chubchenko]
+- #605 Bump actions/checkout from 3 to 4 [dependabot]
+- #602 Bump actions/stale from 6 to 8 [dependabot]
+
 ## 1.22.0
 
 ### User-facing
