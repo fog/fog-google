@@ -10,8 +10,8 @@ module Fog
       end
 
       class Real
-        def stop_server(identity, zone)
-          @compute.stop_instance(@project, zone.split("/")[-1], identity)
+        def stop_server(identity, zone, discard_local_ssd=false)
+          @compute.stop_instance(@project, zone.split("/")[-1], identity, discard_local_ssd: discard_local_ssd)
         end
       end
     end
