@@ -20,7 +20,7 @@ Gem::Specification.new do |spec|
   # As of 0.1.1
   spec.required_ruby_version = ">= 2.0"
 
-  spec.add_dependency "fog-core", "< 2.3"
+  spec.add_dependency "fog-core", "< 2.5"
   spec.add_dependency "fog-json", "~> 1.2"
   spec.add_dependency "fog-xml", "~> 0.1.0"
 
