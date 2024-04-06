@@ -32,7 +32,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "google-apis-pubsub_v1", "~> 0.30"
   spec.add_dependency "google-apis-sqladmin_v1beta4", "~> 0.38"
 
-  spec.add_dependency "google-cloud-env", "~> 1.2"
+  spec.add_dependency "google-cloud-env", ">= 1.2", "< 3.0"
 
   spec.add_dependency "addressable", ">= 2.7.0"
 
