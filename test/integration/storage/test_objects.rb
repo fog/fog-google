@@ -4,6 +4,7 @@ require "securerandom"
 require "base64"
 require "tempfile"
 require "net/http"
+require "ostruct"
 
 class TestStorageRequests < StorageShared
   def test_put_object_string
