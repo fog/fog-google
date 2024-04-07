@@ -22,6 +22,15 @@ on:
       - 'lib/fog/google.rb'
       # Trigger workflow on version upgrade
       - 'lib/fog/google/version.rb'
+      # Trigger when workflow itself is updated
+      - '.github/workflows/integration-compute-loadbalancing.yml'
+
+# Setting hard concurrency limit for the project due to cleanup
+# TODO(fog-google#626): remove this once cleanup is fixed
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+
 
 jobs:
   test:
