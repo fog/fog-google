@@ -10,7 +10,7 @@ on:
   pull_request:
     branches: [ master ]
     types: [ assigned, opened, synchronize, reopened, labeled ]
-    # Only run SQL integration tests if SQL code or deps have changed
+    # Only run integration tests if relevant code or deps have changed
     paths:
       # Module-specific paths
       - 'lib/fog/google/sql.rb'
