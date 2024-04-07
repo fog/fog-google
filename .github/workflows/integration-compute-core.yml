@@ -2,7 +2,7 @@
 # is no need to run them if SQL code or deps haven't changed and you cannot
 # trigger jobs based on file changes in the same workflow.
 # See: https://github.com/actions/runner/issues/456
-name: integration-tests-compute-instance_groups
+name: integration-tests-compute-core
 
 on:
   push:
@@ -10,7 +10,7 @@ on:
   pull_request:
     branches: [ master ]
     types: [ assigned, opened, synchronize, reopened, labeled ]
-    # Only run SQL integration tests if SQL code or deps have changed
+    # Only run integration tests if relevant code or deps have changed
     paths:
       # Module-specific paths
       - 'lib/fog/compute/**'
