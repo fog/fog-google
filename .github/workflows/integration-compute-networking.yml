@@ -23,6 +23,12 @@ on:
       # Trigger workflow on version upgrade
       - 'lib/fog/google/version.rb'
 
+# Setting hard concurrency limit for the project due to cleanup
+# TODO(fog-google#626): remove this once cleanup is fixed
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+
 jobs:
   test:
     runs-on: fog-arc-runner
