@@ -339,10 +339,10 @@ module Fog
           operation
         end
 
-        def stop(async = true)
+        def stop(async = true, discard_local_ssd=false)
           requires :identity, :zone
 
-          data = service.stop_server(identity, zone_name)
+          data = service.stop_server(identity, zone_name, discard_local_ssd)
           operation = Fog::Compute::Google::Operations
                       .new(:service => service)
                       .get(data.name, data.zone)

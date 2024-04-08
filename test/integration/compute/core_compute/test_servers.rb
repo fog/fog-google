@@ -132,6 +132,18 @@ class TestServers < FogIntegrationTest
     assert server.ready?
   end
 
+  def test_start_stop_discard_local_ssd
+    server = @factory.create
+
+    async = true
+    discard_local_ssd = true
+
+    server.stop(async, discard_local_ssd)
+    server.wait_for { stopped? }
+
+    assert server.stopped?
+  end
+
   def test_attach_disk
     # Creating server
     server = @factory.create
