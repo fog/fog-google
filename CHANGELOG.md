@@ -6,6 +6,30 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 
 ## Next
 
+
+### User-facing
+
+#### Added
+
+- #613 Spruce up attaching and detaching disks on running servers [rchekaluk]
+- #621 Added support for discard_local_ssd when stopping an instance [rchekaluk]
+
+### Development changes
+
+### Added
+
+- #618 Deprecated Ruby-2.0 support [temikus]
+- #624 Migrated the Integration tests to new ARC runners [temikus]
+- #625 Fixed 'Ostruct' errors in storage tests [temikus]
+- #627 Added concurrency groups to integration test workfows [temikus]
+
+#### Fixed
+
+- #604 Updated pry requirement from = 0.13.0 to = 0.14.2 [dependabot]
+- #619 Updated google-cloud-env requirement from ~> 1.2 to >= 1.2, < 3.0 [dependabot]
+- #620 Bump actions/stale from 8 to 9 [dependabot]
+- #622 Updated fog-core requirement from < 2.3 to < 2.5 [dependabot]
+
 ## 1.23.0
 
 ### User-facing
