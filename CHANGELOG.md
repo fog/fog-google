@@ -7,6 +7,8 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 ## Next
 
 
+## 1.24.0
+
 ### User-facing
 
 #### Added
@@ -16,7 +18,7 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 
 ### Development changes
 
-### Added
+#### Added
 
 - #618 Deprecated Ruby-2.0 support [temikus]
 - #624 Migrated the Integration tests to new ARC runners [temikus]
