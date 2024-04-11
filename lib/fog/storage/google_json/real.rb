@@ -10,16 +10,12 @@ module Fog
 
         def initialize(options = {})
           shared_initialize(options[:google_project], GOOGLE_STORAGE_JSON_API_VERSION, GOOGLE_STORAGE_JSON_BASE_URL)
+          @options = options.dup
           options[:google_api_scope_url] = GOOGLE_STORAGE_JSON_API_SCOPE_URLS.join(" ")
           @host = options[:host] || "storage.googleapis.com"
 
           # TODO(temikus): Do we even need this client?
           @client = initialize_google_client(options)
-          # IAM client used for SignBlob API
-          @iam_service = ::Google::Apis::IamcredentialsV1::IAMCredentialsService.new
-          apply_client_options(@iam_service, {
-                                 google_api_scope_url: GOOGLE_STORAGE_JSON_IAM_API_SCOPE_URLS.join(" ")
-                               })
 
           @storage_json = ::Google::Apis::StorageV1::StorageService.new
           apply_client_options(@storage_json, options)
@@ -141,6 +137,18 @@ DATA
           return key.sign(digest, string_to_sign)
         end
 
+        # IAM client used for SignBlob API.
+        # Lazily initialize this since it requires another authorization request.
+        def iam_service
+          return @iam_service if defined?(@iam_service)
+
+          @iam_service = ::Google::Apis::IamcredentialsV1::IAMCredentialsService.new
+          apply_client_options(@iam_service, @options)
+          iam_options = @options.merge(google_api_scope_url: GOOGLE_STORAGE_JSON_IAM_API_SCOPE_URLS.join(" "))
+          @iam_service.authorization = initialize_auth(iam_options)
+          @iam_service
+        end
+
         ##
         # Fallback URL signer using the IAM SignServiceAccountBlob API, see
         #   Google::Apis::IamcredentialsV1::IAMCredentialsService#sign_service_account_blob
@@ -162,7 +170,7 @@ DATA
           )
 
           resource = "projects/-/serviceAccounts/#{google_access_id}"
-          response = @iam_service.sign_service_account_blob(resource, request)
+          response = iam_service.sign_service_account_blob(resource, request)
 
           return response.signed_blob
         end

@@ -67,20 +67,21 @@ module Fog
           ::Google::Apis.logger.level = ::Logger::DEBUG
         end
 
-        auth = nil
-
-        if options[:google_json_key_location] || options[:google_json_key_string]
-          auth = process_key_auth(options)
-        elsif options[:google_auth]
-          auth = options[:google_auth]
-        elsif options[:google_application_default]
-          auth = process_application_default_auth(options)
-        else
-          auth = process_fallback_auth(options)
+        initialize_auth(options).tap do |auth|
+          ::Google::Apis::RequestOptions.default.authorization = auth
         end
+      end
 
-        ::Google::Apis::RequestOptions.default.authorization = auth
-        auth
+      def initialize_auth(options)
+        if options[:google_json_key_location] || options[:google_json_key_string]
+          process_key_auth(options)
+        elsif options[:google_auth]
+          options[:google_auth]
+        elsif options[:google_application_default]
+          process_application_default_auth(options)
+        else
+          process_fallback_auth(options)
+        end
       end
 
       ##

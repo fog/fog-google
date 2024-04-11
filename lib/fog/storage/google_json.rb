@@ -29,7 +29,7 @@ module Fog
 
       # Version of IAM API used for blob signing, see Fog::Storage::GoogleJSON::Real#iam_signer
       GOOGLE_STORAGE_JSON_IAM_API_VERSION = "v1".freeze
-      GOOGLE_STORAGE_JSON_IAM_API_SCOPE_URLS = %w(https://www.googleapis.com/auth/devstorage.full_control).freeze
+      GOOGLE_STORAGE_JSON_IAM_API_SCOPE_URLS = %w(https://www.googleapis.com/auth/iam).freeze
 
       # TODO: Come up with a way to only request a subset of permissions.
       # https://cloud.google.com/storage/docs/json_api/v1/how-tos/authorizing
