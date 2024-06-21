@@ -350,6 +350,28 @@ module Fog
           operation
         end
 
+        def resume(async = true)
+          requires :identity, :zone
+
+          data = service.resume_server(identity, zone_name)
+          operation = Fog::Compute::Google::Operations
+                      .new(:service => service)
+                      .get(data.name, data.zone)
+          operation.wait_for { ready? } unless async
+          operation
+        end
+
+        def suspend(async = true, discard_local_ssd=false)
+          requires :identity, :zone
+
+          data = service.suspend_server(identity, zone_name, discard_local_ssd)
+          operation = Fog::Compute::Google::Operations
+                      .new(:service => service)
+                      .get(data.name, data.zone)
+          operation.wait_for { ready? } unless async
+          operation
+        end
+
         def serial_port_output(port: 1)
           requires :identity, :zone
 
