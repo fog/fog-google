@@ -188,8 +188,10 @@ module Fog
 
       request :expand_subnetwork_ip_cidr_range
       request :reset_server
+      request :resume_server
       request :start_server
       request :stop_server
+      request :suspend_server
 
       request :invalidate_url_map_cache
       request :validate_url_map
