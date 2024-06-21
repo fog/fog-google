@@ -10,7 +10,7 @@ module Fog
       end
 
       class Real
-        def suspend_server(identity, zone)
+        def resume_server(identity, zone)
           @compute.resume_instance(@project, zone.split("/")[-1], identity)
         end
       end
