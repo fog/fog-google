@@ -1,14 +1,14 @@
 module Fog
-  module DNS
-    class Google
+  module Google
+    class DNS
       class Projects < Fog::Collection
-        model Fog::DNS::Google::Project
+        model Fog::Google::DNS::Project
 
         ##
         # Fetches the representation of an existing Project
         #
         # @param [String] identity Project identity
-        # @return [Fog::DNS::Google::Project] Project resource
+        # @return [Fog::Google::DNS::Project] Project resource
         def get(identity)
           if project = service.get_project(identity).to_h
             new(project)

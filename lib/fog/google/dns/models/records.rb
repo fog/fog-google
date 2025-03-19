@@ -1,15 +1,15 @@
 module Fog
-  module DNS
-    class Google
+  module Google
+    class DNS
       class Records < Fog::Collection
-        model Fog::DNS::Google::Record
+        model Fog::Google::DNS::Record
 
         attribute :zone
 
         ##
         # Enumerates Resource Record Sets that have been created but not yet deleted
         #
-        # @return [Array<Fog::DNS::Google::Record>] List of Resource Record Sets resources
+        # @return [Array<Fog::Google::DNS::Record>] List of Resource Record Sets resources
         def all
           requires :zone
 
@@ -18,6 +18,7 @@ module Fog
           load(data)
         rescue ::Google::Apis::ClientError => e
           raise e unless e.status_code == 404
+
           []
         end
 
@@ -26,7 +27,7 @@ module Fog
         #
         # @param [String] name Resource Record Set name
         # @param [String] type Resource Record Set type
-        # @return [Fog::DNS::Google::Record] Resource Record Set resource
+        # @return [Fog::Google::DNS::Record] Resource Record Set resource
         def get(name, type)
           requires :zone
 
@@ -35,13 +36,14 @@ module Fog
           records.any? ? new(records.first) : nil
         rescue ::Google::Apis::ClientError => e
           raise e unless e.status_code == 404
+
           nil
         end
 
         ##
         # Creates a new instance of a Resource Record Set
         #
-        # @return [Fog::DNS::Google::Record] Resource Record Set resource
+        # @return [Fog::Google::DNS::Record] Resource Record Set resource
         def new(attributes = {})
           requires :zone
 

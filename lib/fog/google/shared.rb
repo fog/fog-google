@@ -41,7 +41,7 @@ module Fog
           # TODO: google-api-client is in gemspec now, re-assess if this initialization logic is still needed
           require "google/apis/monitoring_#{Fog::Google::Monitoring::GOOGLE_MONITORING_API_VERSION}"
           require "google/apis/compute_#{Fog::Google::Compute::GOOGLE_COMPUTE_API_VERSION}"
-          require "google/apis/dns_#{Fog::DNS::Google::GOOGLE_DNS_API_VERSION}"
+          require "google/apis/dns_#{Fog::Google::DNS::GOOGLE_DNS_API_VERSION}"
           require "google/apis/pubsub_#{Fog::Google::Pubsub::GOOGLE_PUBSUB_API_VERSION}"
           require "google/apis/sqladmin_#{Fog::Google::SQL::GOOGLE_SQL_API_VERSION}"
           require "google/apis/storage_#{Fog::Storage::GoogleJSON::GOOGLE_STORAGE_JSON_API_VERSION}"

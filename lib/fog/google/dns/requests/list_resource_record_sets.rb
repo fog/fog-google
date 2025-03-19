@@ -1,6 +1,6 @@
 module Fog
-  module DNS
-    class Google
+  module Google
+    class DNS
       ##
       # Enumerates Resource Record Sets that have been created but not yet deleted.
       #

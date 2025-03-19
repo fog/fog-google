@@ -1,6 +1,6 @@
 module Fog
-  module DNS
-    class Google
+  module Google
+    class DNS
       ##
       # Fetches the representation of an existing Project. Use this method to look up the limits on the number of
       # resources that are associated with your project.

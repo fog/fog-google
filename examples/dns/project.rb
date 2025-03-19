@@ -1,5 +1,5 @@
 def test
-  connection = Fog::DNS::Google.new
+  connection = Fog::Google::DNS.new
 
   puts "Get the Project limits..."
   puts "-------------------------"
