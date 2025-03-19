@@ -36,7 +36,7 @@ module Fog
     end
 
     module Parsers
-      autoload :Storage, 'fog/google/parsers/storage/storage'
+      autoload :Storage, 'fog/google/parsers/storage'
     end
   end
 end
