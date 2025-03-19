@@ -267,7 +267,7 @@ Drop travis usage
 
 #### Fixed
 
-- \#498 Add `:idempotent` flag to Fog::Storage::GoogleXML::Real#head_object, fixing
+- \#498 Add `:idempotent` flag to Fog::Google::StorageXML::Real#head_object, fixing
           `Excon::Error::Socket: end of file reached (EOFError)` in certain scenarios, see \#416 [temikus]
 - \#500 Set default options automatically if missing in `Pubsub#pull_subscription`
 
@@ -449,7 +449,7 @@ Drop travis usage
 
 #### Fixed
 
-- \#412 Fixed `Fog::Storage::GoogleXML::GetObjectHttpUrl#get_object_http_url`
+- \#412 Fixed `Fog::Google::StorageXML::GetObjectHttpUrl#get_object_http_url`
   request
 
 ## 1.7.0
@@ -458,11 +458,11 @@ Drop travis usage
 
 #### Added
 
-- \#409 Support query parameters in `Fog::Storage::Google` GET requests [stanhu]
+- \#409 Support query parameters in `Fog::Google::Storage` GET requests [stanhu]
 - \#394 Add some helper methods to `Fog::Google::Compute::Server` [temikus]
   - `.private_ip_address`
   - `.stopped?`
-- \#375 Add timeout options to `Fog::Storage::GoogleJSON` client [dosuken123]
+- \#375 Add timeout options to `Fog::Google::StorageJSON` client [dosuken123]
 
 #### Changed
 
@@ -476,7 +476,7 @@ Drop travis usage
 
 #### Added
 
-- \#409 Expand `Fog::Storage::Google` unit tests [stanhu]
+- \#409 Expand `Fog::Google::Storage` unit tests [stanhu]
 - \#370 Introducing test coverage back, integrating with codecov.io [temikus]
 - \#373 Increase integration test coverage. [temikus]
   - Add Firewall factory and tests.
@@ -589,7 +589,7 @@ You can override it in a standard manner by passing a parameter to async method,
 - \#346 Fixed get_health when called with an instance name [bpaquet]
 - \#317 Fixed source_image selection to get the image from name if the format is not compatible with new Google API Client [temikus]
 - \#321 Fix string key instead of symbol for subnetworks listing [tumido]
-- \#351 Fixed trailing spaces and added data presence check to `Fog::Storage::GoogleJSON.put_object` [vimutter]
+- \#351 Fixed trailing spaces and added data presence check to `Fog::Google::StorageJSON.put_object` [vimutter]
 
 ### Development changes
 

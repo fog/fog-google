@@ -10,7 +10,7 @@ class UnitTestStorageJSONCollections < Minitest::Test
     descendants = ObjectSpace.each_object(Fog::Collection.singleton_class)
 
     @collections = descendants.select do |d|
-      d.name.match(/Fog::Storage::GoogleJSON/)
+      d.name.match(/Fog::Google::StorageJSON/)
     end
   end
 

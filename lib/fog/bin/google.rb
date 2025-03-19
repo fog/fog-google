@@ -10,9 +10,9 @@ module Google
       when :monitoring
         Fog::Google::Monitoring
       when :storage
-        Fog::Storage::Google
+        Fog::Google::Storage
       when :storage_json
-        Fog::Storage::Google
+        Fog::Google::Storage
       when :sql
         Fog::Google::SQL
       when :pubsub

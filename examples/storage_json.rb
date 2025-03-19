@@ -11,7 +11,7 @@ Bundler.require(:default, :development)
 # Storage -> Storage -> Settings -> "Interoperability" tab -> "Create a new key"
 
 def test
-  connection = Fog::Storage::Google.new
+  connection = Fog::Google::Storage.new
 
   puts "Put a bucket..."
   puts "----------------"

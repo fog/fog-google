@@ -24,7 +24,7 @@ We're proud to be sponsored by MeisterLabs who are generously funding our CI sta
 
 ## Storage
 
-There are two ways to access [Google Cloud Storage](https://cloud.google.com/storage/). The old S3 API and the new JSON API. `Fog::Storage::Google` will automatically direct you to the appropriate API based on the credentials you provide it.
+There are two ways to access [Google Cloud Storage](https://cloud.google.com/storage/). The old S3 API and the new JSON API. `Fog::Google::Storage` will automatically direct you to the appropriate API based on the credentials you provide it.
 
  * The [XML API](https://cloud.google.com/storage/docs/xml-api-overview/) is almost identical to S3. Use [Google's interoperability keys](https://cloud.google.com/storage/docs/migrating#keys) to access it.
  * The new [JSON API](https://cloud.google.com/storage/docs/json_api/) is faster and uses auth similarly to the rest of the Google Cloud APIs using a [service account private key](https://developers.google.com/identity/protocols/OAuth2ServiceAccount).
