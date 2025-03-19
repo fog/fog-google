@@ -16,7 +16,7 @@ class UnitTestPubsubCollections < Minitest::Test
   end
 
   def test_common_methods
-    # This tests whether Fog::Compute::Google collections have common lifecycle methods
+    # This tests whether Fog::Google::Compute collections have common lifecycle methods
     @collections.each do |klass|
       obj = klass.new
       assert obj.respond_to?(:all), "#{klass} should have an .all method"

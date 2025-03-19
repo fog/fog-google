@@ -4,7 +4,7 @@ module Google
     def class_for(key)
       case key
       when :compute
-        Fog::Compute::Google
+        Fog::Google::Compute
       when :dns
         Fog::DNS::Google
       when :monitoring
@@ -24,25 +24,25 @@ module Google
 
     def [](service)
       @@connections ||= Hash.new do |hash, key|
-        hash[key] = case key
-                    when :compute
-                      Fog::Logger.warning("Google[:compute] is not recommended, use Compute[:google] for portability")
-                      Fog::Compute.new(:provider => "Google")
-                    when :dns
-                      Fog::Logger.warning("Google[:dns] is not recommended, use DNS[:google] for portability")
-                      Fog::DNS.new(:provider => "Google")
-                    when :monitoring
-                      Fog::Google::Monitoring.new
-                    when :sql
-                      Fog::Google::SQL.new
-                    when :pubsub
-                      Fog::Google::Pubsub.new
-                    when :storage
-                      Fog::Logger.warning("Google[:storage] is not recommended, use Storage[:google] for portability")
-                      Fog::Storage.new(:provider => "Google")
-                    else
-                      raise ArgumentError, "Unrecognized service: #{key.inspect}"
-                    end
+        case key
+        when :compute
+          Fog::Logger.warning("Google[:compute] is not recommended, use Compute[:google] for portability")
+          hash[key] = Fog::Compute.new(:provider => "Google")
+        when :dns
+          Fog::Logger.warning("Google[:dns] is not recommended, use DNS[:google] for portability")
+          hash[key] = Fog::DNS.new(:provider => "Google")
+        when :monitoring
+          hash[key] = Fog::Google::Monitoring.new
+        when :sql
+          hash[key] = Fog::Google::SQL.new
+        when :pubsub
+          hash[key] = Fog::Google::Pubsub.new
+        when :storage
+          Fog::Logger.warning("Google[:storage] is not recommended, use Storage[:google] for portability")
+          hash[key] = Fog::Storage.new(:provider => "Google")
+        else
+          hash[key] = raise ArgumentError, "Unrecognized service: #{key.inspect}"
+        end
       end
       @@connections[service]
     end
@@ -74,7 +74,7 @@ module Google
         rescue ArgumentError => e
           Fog::Logger.warning(e.message)
           availability = false
-        rescue => e
+        rescue StandardError => e
           availability = false
         end
       end
@@ -83,7 +83,8 @@ module Google
         services.each do |service|
           class_for(service).collections.each do |collection|
             next if respond_to?(collection)
-            class_eval <<-EOS, __FILE__, __LINE__
+
+            class_eval <<-EOS, __FILE__, __LINE__ + 1
                 def self.#{collection}
                   self[:#{service}].#{collection}
                 end

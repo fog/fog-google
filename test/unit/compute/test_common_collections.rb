@@ -10,18 +10,18 @@ class UnitTestCollections < Minitest::Test
     # Exceptions that do not pass test_common_methods:
     #
     # Projects do not have a "list" method in compute API, so 'all' is not implemented
-    @common_method_exceptions = [Fog::Compute::Google::Projects]
+    @common_method_exceptions = [Fog::Google::Compute::Projects]
     # Enumerate all descendants of Fog::Collection
     descendants = ObjectSpace.each_object(Fog::Collection.singleton_class).to_a
 
-    @collections = descendants.select { |d| d.name.match(/Fog::Compute::Google/) }
+    @collections = descendants.select { |d| d.name.match(/Fog::Google::Compute/) }
   end
 
   def teardown
     Fog.unmock!
   end
 
-  # This tests whether Fog::Compute::Google collections have common lifecycle methods
+  # This tests whether Fog::Google::Compute collections have common lifecycle methods
   def test_common_methods
     subjects = @collections - @common_method_exceptions
     subjects.each do |klass|

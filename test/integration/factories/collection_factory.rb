@@ -11,7 +11,7 @@ class CollectionFactory
   #
   # @param async [FalseClass or TrueClass] perform resource destruction asynchronously
   def cleanup(async = false)
-    suit_name = @example.gsub(/\W/, "").tr("_", "-").downcase.split('-')[0]
+    suit_name = @example.gsub(/\W/, "").tr("_", "-").downcase.split("-")[0]
     resources = @subject.all.select { |resource| resource.name.match(/#{PREFIX}-[0-9]*-#{suit_name}/) }
     if DEBUG
       p "Cleanup invoked in #{self} for example: #{@example}"
@@ -22,7 +22,7 @@ class CollectionFactory
     resources.each { |r| Fog.wait_for { !@subject.all.map(&:identity).include? r.identity } }
   end
 
-  # Creates a collection object instance e.g. Fog::Compute::Google::Server
+  # Creates a collection object instance e.g. Fog::Google::Compute::Server
   #
   # @param custom_params [Hash] override factory creation parameters or provide
   #   additional ones. Useful in tests where you need to create a slightly different

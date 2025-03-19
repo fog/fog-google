@@ -33,7 +33,7 @@ There are two ways to access [Google Cloud Storage](https://cloud.google.com/sto
 
 Google Compute Engine is a Virtual Machine hosting service. Currently it is built on version [v1](https://cloud.google.com/compute/docs/reference/v1/) of the GCE API.
 
-As of 2017-12-15, we are still working on making Fog for Google Compute engine (`Fog::Compute::Google`) feature complete. If you are using Fog to interact with GCE, please keep Fog up to date and [file issues](https://github.com/fog/fog-google/issues) for any anomalies you see or features you would like.
+As of 2017-12-15, we are still working on making Fog for Google Compute engine (`Fog::Google::Compute`) feature complete. If you are using Fog to interact with GCE, please keep Fog up to date and [file issues](https://github.com/fog/fog-google/issues) for any anomalies you see or features you would like.
 
 ## SQL
 
@@ -112,10 +112,10 @@ Example workflow for a GCE instance with [service account scopes](https://cloud.
 defined:
 
 ```
-> connection = Fog::Compute::Google.new(:google_project => "my-project", :google_application_default => true)
-=> #<Fog::Compute::Google::Real:32157700...
+> connection = Fog::Google::Compute.new(:google_project => "my-project", :google_application_default => true)
+=> #<Fog::Google::Compute::Real:32157700...
 > connection.servers
-=> [  <Fog::Compute::Google::Server ...  ]
+=> [  <Fog::Google::Compute::Server ...  ]
 ```
 
 #### CarrierWave integration
@@ -166,9 +166,9 @@ Once you've specified your credentials, you should be good to go!
 $ bundle exec pry
 [1] pry(main)> require 'fog/google'
 => true
-[2] pry(main)> connection = Fog::Compute::Google.new
+[2] pry(main)> connection = Fog::Google::Compute.new
 [3] pry(main)> connection.servers
-=> [  <Fog::Compute::Google::Server
+=> [  <Fog::Google::Compute::Server
     name="xxxxxxx",
     kind="compute#instance",
 ```

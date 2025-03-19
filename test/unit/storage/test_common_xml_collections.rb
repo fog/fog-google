@@ -21,7 +21,7 @@ class UnitTestStorageXMLCollections < Minitest::Test
   end
 
   def test_common_methods
-    # This tests whether Fog::Compute::Google collections have common lifecycle methods
+    # This tests whether Fog::Google::Compute collections have common lifecycle methods
     @collections.each do |klass|
       obj = klass.new
       assert obj.respond_to?(:all), "#{klass} should have an .all method"
@@ -39,11 +39,11 @@ class UnitTestStorageXMLCollections < Minitest::Test
   end
 
   def test_metadata
-    attr = { key: 'test-file', body: "hello world\x00" }
+    attr = { key: "test-file", body: "hello world\x00" }
     f = @bucket.files.new(attr)
     assert_equal({}, f.metadata)
 
-    metadata = { 'x-goog-meta-my-header' => 'hello world' }
+    metadata = { "x-goog-meta-my-header" => "hello world" }
     f = @bucket.files.new(attr.merge(metadata))
     assert_equal(metadata, f.metadata)
   end

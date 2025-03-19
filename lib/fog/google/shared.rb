@@ -40,16 +40,16 @@ module Fog
         begin
           # TODO: google-api-client is in gemspec now, re-assess if this initialization logic is still needed
           require "google/apis/monitoring_#{Fog::Google::Monitoring::GOOGLE_MONITORING_API_VERSION}"
-          require "google/apis/compute_#{Fog::Compute::Google::GOOGLE_COMPUTE_API_VERSION}"
+          require "google/apis/compute_#{Fog::Google::Compute::GOOGLE_COMPUTE_API_VERSION}"
           require "google/apis/dns_#{Fog::DNS::Google::GOOGLE_DNS_API_VERSION}"
           require "google/apis/pubsub_#{Fog::Google::Pubsub::GOOGLE_PUBSUB_API_VERSION}"
           require "google/apis/sqladmin_#{Fog::Google::SQL::GOOGLE_SQL_API_VERSION}"
           require "google/apis/storage_#{Fog::Storage::GoogleJSON::GOOGLE_STORAGE_JSON_API_VERSION}"
           require "google/apis/iamcredentials_#{Fog::Storage::GoogleJSON::GOOGLE_STORAGE_JSON_IAM_API_VERSION}"
           require "googleauth"
-        rescue LoadError => error
+        rescue LoadError => e
           Fog::Errors::Error.new("Please install the google-api-client (>= 0.9) gem before using this provider")
-          raise error
+          raise e
         end
 
         validate_client_options(options)
@@ -93,6 +93,7 @@ module Fog
       def apply_client_options(service, options = {})
         google_client_options = options[:google_client_options]
         return if google_client_options.nil? || google_client_options.empty?
+
         (service.client_options.members & google_client_options.keys).each do |option|
           service.client_options[option] = google_client_options[option]
         end
@@ -176,7 +177,7 @@ module Fog
         )
         begin
           return process_application_default_auth(options)
-        rescue
+        rescue StandardError
           raise Fog::Errors::Error.new(
             "Fallback auth failed, could not configure authentication for Fog client.\n" \
               "Check your auth options, must be one of:\n" \

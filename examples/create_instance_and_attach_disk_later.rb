@@ -49,8 +49,8 @@ def example
 
   p "Attach second disk to the running server"
   device_name = "fog-smoke-test-device-#{Time.now.to_i}"
-  # See https://github.com/fog/fog-google/blob/master/lib/fog/compute/google/models/disk.rb#L75-L107
-  # See https://github.com/fog/fog-google/blob/master/lib/fog/compute/google/models/server.rb#L35-L50
+  # See https://github.com/fog/fog-google/blob/master/lib/fog/google/compute/models/disk.rb#L75-L107
+  # See https://github.com/fog/fog-google/blob/master/lib/fog/google/compute/models/server.rb#L35-L50
   config_hash = {
     :device_name => device_name,
     :source => "https://www.googleapis.com/compute/v1/projects/#{PROJECT}/zones/#{ZONE}/disks/#{attached_disk.name}"
@@ -58,13 +58,13 @@ def example
   raise "Could not attach second disk" unless connection.attach_disk(server.name, ZONE, config_hash)
 
   p "Waiting for disk to be attached"
-  attached_disk.wait_for { ! users.nil? && users != []}
+  attached_disk.wait_for { !users.nil? && users != [] }
 
   p "Detach second disk"
   raise "Could not detach second disk" unless connection.detach_disk(server.name, ZONE, device_name)
 
   p "Waiting for second disk to be detached"
-  attached_disk.wait_for { users.nil? || users == []}
+  attached_disk.wait_for { users.nil? || users == [] }
 
   p "Deleting server"
   raise "Could not delete server." unless server.destroy
@@ -74,9 +74,8 @@ def example
 
   p "Waiting for second disk to be destroyed"
   begin
-    rc = attached_disk.wait_for { status.nil? || status == 'DELETING' }
-
-  rescue => e
+    rc = attached_disk.wait_for { status.nil? || status == "DELETING" }
+  rescue StandardError => e
     if e.message !~ /not found/ && e.message !~ /notFound/
       raise e
     end

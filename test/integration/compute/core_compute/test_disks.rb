@@ -36,10 +36,10 @@ class TestDisks < FogIntegrationTest
 
     snapshot = disk.create_snapshot("fog-test-snapshot")
 
-    assert(snapshot.is_a?(Fog::Compute::Google::Snapshot),
+    assert(snapshot.is_a?(Fog::Google::Compute::Snapshot),
            "Resulting snapshot should be a snapshot object.")
 
-    assert_raises(ArgumentError) { snapshot.set_labels(["bar", "test"]) }
+    assert_raises(ArgumentError) { snapshot.set_labels(%w(bar test)) }
 
     snapshot.set_labels(foo: "bar", fog: "test")
 

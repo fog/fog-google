@@ -8,28 +8,28 @@ class TestAuthentication < FogIntegrationTest
   end
 
   def test_authenticates_with_json_key_location
-    c = Fog::Compute::Google.new(:google_key_location => nil,
+    c = Fog::Google::Compute.new(:google_key_location => nil,
                                  :google_key_string => nil,
                                  :google_json_key_location => @google_json_key_location,
                                  :google_json_key_string => nil)
-    assert_kind_of(Fog::Compute::Google::Real, c)
+    assert_kind_of(Fog::Google::Compute::Real, c)
   end
 
   def test_authenticates_with_json_key_string
-    c = Fog::Compute::Google.new(:google_key_location => nil,
+    c = Fog::Google::Compute.new(:google_key_location => nil,
                                  :google_key_string => nil,
                                  :google_json_key_location => nil,
                                  :google_json_key_string => @google_json_key_string)
-    assert_kind_of(Fog::Compute::Google::Real, c)
+    assert_kind_of(Fog::Google::Compute::Real, c)
   end
 
   def test_raises_argument_error_when_google_project_is_missing
-    assert_raises(ArgumentError) { Fog::Compute::Google.new(:google_project => nil) }
+    assert_raises(ArgumentError) { Fog::Google::Compute.new(:google_project => nil) }
   end
 
   def test_raises_argument_error_when_google_keys_are_given
     assert_raises(ArgumentError) do
-      Fog::Compute::Google.new(:google_key_location => nil,
+      Fog::Google::Compute.new(:google_key_location => nil,
                                :google_key_string => nil,
                                :google_json_key_location => nil,
                                :google_json_key_string => nil)
