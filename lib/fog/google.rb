@@ -40,3 +40,28 @@ module Fog
     end
   end
 end
+
+# Add shims for backward compatibility
+# This allows old style references like Fog::Compute::Google to work
+# by redirecting them to the new namespace Fog::Google::Compute
+
+module Fog
+  # List of services from the original module
+  GOOGLE_SERVICES = %w[Compute DNS Monitoring Pubsub Storage SQL]
+
+  # Dynamically create shim modules for each service
+  GOOGLE_SERVICES.each do |service|
+    # Create the module namespace
+    const_set(service, Module.new) unless const_defined?(service)
+
+    # Get reference to the module
+    service_module = const_get(service)
+
+    # Define the Google submodule with the shim
+    service_module.const_set(:Google, Module.new)
+    service_module::Google.define_singleton_method(:new) do |*args|
+      warn "[DEPRECATION] `Fog::#{service}::Google.new` is deprecated. Please use `Fog::Google::#{service}.new` instead."
+      Fog::Google.const_get(service).new(*args)
+    end
+  end
+end
