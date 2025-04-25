@@ -4,20 +4,17 @@ require "fog/xml"
 require "fog/google/version"
 
 module Fog
-  module Compute
-    autoload :Google, File.expand_path("../compute/google", __FILE__)
-  end
-
-  module DNS
-    autoload :Google, File.expand_path("../dns/google", __FILE__)
-  end
-
   module Google
+    autoload :Compute, File.expand_path("../google/compute", __FILE__)
+    autoload :DNS, File.expand_path("../google/dns", __FILE__)
     autoload :Mock, File.expand_path("../google/mock", __FILE__)
     autoload :Monitoring, File.expand_path("../google/monitoring", __FILE__)
     autoload :Pubsub, File.expand_path("../google/pubsub", __FILE__)
     autoload :Shared, File.expand_path("../google/shared", __FILE__)
     autoload :SQL, File.expand_path("../google/sql", __FILE__)
+    autoload :Storage, File.expand_path("../google/storage", __FILE__)
+    autoload :StorageJSON, 'fog/google/storage/storage_json'
+    autoload :StorageXML, 'fog/google/storage/storage_xml'
 
     extend Fog::Provider
 
@@ -37,17 +34,34 @@ module Fog
         "%" + Regexp.last_match(1).unpack("H2" * Regexp.last_match(1).bytesize).join("%").upcase
       end
     end
-  end
 
-  module Parsers
-    module Storage
-      autoload :Google, File.expand_path("../parsers/storage/google", __FILE__)
+    module Parsers
+      autoload :Storage, 'fog/google/parsers/storage'
     end
   end
+end
 
-  module Storage
-    autoload :Google, File.expand_path("../storage/google", __FILE__)
-    autoload :GoogleJSON, File.expand_path("../storage/google_json", __FILE__)
-    autoload :GoogleXML, File.expand_path("../storage/google_xml", __FILE__)
+# Add shims for backward compatibility
+# This allows old style references like Fog::Compute::Google to work
+# by redirecting them to the new namespace Fog::Google::Compute
+
+module Fog
+  # List of services from the original module
+  GOOGLE_SERVICES = %w[Compute DNS Monitoring Pubsub Storage SQL]
+
+  # Dynamically create shim modules for each service
+  GOOGLE_SERVICES.each do |service|
+    # Create the module namespace
+    const_set(service, Module.new) unless const_defined?(service)
+
+    # Get reference to the module
+    service_module = const_get(service)
+
+    # Define the Google submodule with the shim
+    service_module.const_set(:Google, Module.new)
+    service_module::Google.define_singleton_method(:new) do |*args|
+      warn "[DEPRECATION] `Fog::#{service}::Google.new` is deprecated. Please use `Fog::Google::#{service}.new` instead."
+      Fog::Google.const_get(service).new(*args)
+    end
   end
 end

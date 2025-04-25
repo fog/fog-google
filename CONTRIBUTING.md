@@ -1,9 +1,9 @@
 # Getting Involved
 
-New contributors are always welcome, and when in doubt please ask questions! 
+New contributors are always welcome, and when in doubt please ask questions!
 We strive to be an open and welcoming community. Please be nice to one another.
 
-We recommend heading over to fog's [CONTRIBUTING](https://github.com/fog/fog/blob/master/CONTRIBUTING.md) 
+We recommend heading over to fog's [CONTRIBUTING](https://github.com/fog/fog/blob/master/CONTRIBUTING.md)
 and having a look around as well.  It has information and context about the state of the `fog` project as a whole.
 
 ### Coding
@@ -62,7 +62,7 @@ $ rake console
 ### Documentation
 
 Code should be documented using [YARDoc](https://yardoc.org/) syntax.
-We use [inch](https://github.com/rrrene/inch) to keep track of overall doc 
+We use [inch](https://github.com/rrrene/inch) to keep track of overall doc
 coverage and [inch-ci](https://inch-ci.org/) to keep track of changes over time.
 
 You can view a doc coverage report by running:
@@ -72,19 +72,19 @@ $ inch
 
 Or view suggestions on a specific method:
 ```
-$ inch show Fog::Compute::Google::Server#set_metadata
+$ inch show Fog::Google::Compute::Server#set_metadata
 ```
 
 ### Testing
 
-This module is tested with [Minitest](https://github.com/seattlerb/minitest).  
+This module is tested with [Minitest](https://github.com/seattlerb/minitest).
 
 #### Integration tests
 
-Live integration tests can be found in `test/integration/`.  
+Live integration tests can be found in `test/integration/`.
 
 Most of the library functionality is currently covered with them. To simplify things for contributors we have a
-CI system that runs all integration tests in parallel against all pull requests marked with `integrate` label 
+CI system that runs all integration tests in parallel against all pull requests marked with `integrate` label
 that anyone in `fog-google` team can set. Read [CI section](https://github.com/fog/fog-google/blob/master/CONTRIBUTING.md#continuous-integration)
 for more info.
 
@@ -137,7 +137,7 @@ We're in progress of extending the library with more unit tests and contribution
 
 #### The transition from `shindo` to Minitest
 
-Previously, [shindo](https://github.com/geemus/shindo) was the primary testing framework. 
+Previously, [shindo](https://github.com/geemus/shindo) was the primary testing framework.
 We've moved away from it, and to Minitest, but some artifacts may remain.
 
 For more information on transition, read [#50](https://github.com/fog/fog-google/issues/50).
@@ -158,10 +158,10 @@ and contains the standard tests to run for all resources, (e.g. `test_lifecycle`
 It also calls `cleanup` on the resource's factory during teardown, to make sure
 that resources are getting destroyed before the next test run.
 - The **factory**, (e.g. `ServersFactory`, in `test/integration/factories/servers_factory.rb`,)
-automates the creation of resources and/or supplies parameters for explicit 
+automates the creation of resources and/or supplies parameters for explicit
 creation of resources.  For example, `ServersFactory` initializes a `DisksFactory`
 to supply disks in order to create servers, and implements the `params` method
-so that tests can create servers with unique names, correct zones and machine 
+so that tests can create servers with unique names, correct zones and machine
 types, and automatically-created disks.  `ServersFactory` inherits the `create`
 method from `CollectionFactory`, which allows tests to create servers on-demand.
 - The **main test**, (e.g. `TestServers`, in `test/integration/compute/test_servers.rb`,)
@@ -170,6 +170,6 @@ method from `CollectionFactory`, which allows tests to create servers on-demand.
  it initializes a `ServersFactory`, and it includes any other tests specific to
  this collection, (e.g. `test_bootstrap_ssh_destroy`).
 
-If you want to create another resource, you should add live integration tests; 
+If you want to create another resource, you should add live integration tests;
 all you need to do is create a factory in `test/integration/factories/my_resource_factory.rb`
 and a main test in `test/integration/compute/test_my_resource.rb` that mixes in `TestCollection`.

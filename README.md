@@ -24,7 +24,7 @@ We're proud to be sponsored by MeisterLabs who are generously funding our CI sta
 
 ## Storage
 
-There are two ways to access [Google Cloud Storage](https://cloud.google.com/storage/). The old S3 API and the new JSON API. `Fog::Storage::Google` will automatically direct you to the appropriate API based on the credentials you provide it.
+There are two ways to access [Google Cloud Storage](https://cloud.google.com/storage/). The old S3 API and the new JSON API. `Fog::Google::Storage` will automatically direct you to the appropriate API based on the credentials you provide it.
 
  * The [XML API](https://cloud.google.com/storage/docs/xml-api-overview/) is almost identical to S3. Use [Google's interoperability keys](https://cloud.google.com/storage/docs/migrating#keys) to access it.
  * The new [JSON API](https://cloud.google.com/storage/docs/json_api/) is faster and uses auth similarly to the rest of the Google Cloud APIs using a [service account private key](https://developers.google.com/identity/protocols/OAuth2ServiceAccount).
@@ -33,7 +33,7 @@ There are two ways to access [Google Cloud Storage](https://cloud.google.com/sto
 
 Google Compute Engine is a Virtual Machine hosting service. Currently it is built on version [v1](https://cloud.google.com/compute/docs/reference/v1/) of the GCE API.
 
-As of 2017-12-15, we are still working on making Fog for Google Compute engine (`Fog::Compute::Google`) feature complete. If you are using Fog to interact with GCE, please keep Fog up to date and [file issues](https://github.com/fog/fog-google/issues) for any anomalies you see or features you would like.
+As of 2017-12-15, we are still working on making Fog for Google Compute engine (`Fog::Google::Compute`) feature complete. If you are using Fog to interact with GCE, please keep Fog up to date and [file issues](https://github.com/fog/fog-google/issues) for any anomalies you see or features you would like.
 
 ## SQL
 
@@ -112,10 +112,10 @@ Example workflow for a GCE instance with [service account scopes](https://cloud.
 defined:
 
 ```
-> connection = Fog::Compute::Google.new(:google_project => "my-project", :google_application_default => true)
-=> #<Fog::Compute::Google::Real:32157700...
+> connection = Fog::Google::Compute.new(:google_project => "my-project", :google_application_default => true)
+=> #<Fog::Google::Compute::Real:32157700...
 > connection.servers
-=> [  <Fog::Compute::Google::Server ...  ]
+=> [  <Fog::Google::Compute::Server ...  ]
 ```
 
 #### CarrierWave integration
@@ -166,9 +166,9 @@ Once you've specified your credentials, you should be good to go!
 $ bundle exec pry
 [1] pry(main)> require 'fog/google'
 => true
-[2] pry(main)> connection = Fog::Compute::Google.new
+[2] pry(main)> connection = Fog::Google::Compute.new
 [3] pry(main)> connection.servers
-=> [  <Fog::Compute::Google::Server
+=> [  <Fog::Google::Compute::Server
     name="xxxxxxx",
     kind="compute#instance",
 ```

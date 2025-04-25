@@ -9,18 +9,18 @@ class UnitTestDNSCollections < Minitest::Test
     # Exceptions that do not pass test_common_methods:
     #
     # DNS Projects API does not support 'list', so 'all' method is not possible
-    @common_methods_exceptions = [Fog::DNS::Google::Projects]
+    @common_methods_exceptions = [Fog::Google::DNS::Projects]
     # Enumerate all descendants of Fog::Collection
     descendants = ObjectSpace.each_object(Fog::Collection.singleton_class)
 
-    @collections = descendants.select { |d| d.name.match(/Fog::DNS::Google/) }
+    @collections = descendants.select { |d| d.name.match(/Fog::Google::DNS/) }
   end
 
   def teardown
     Fog.unmock!
   end
 
-  # This tests whether Fog::Compute::Google collections have common lifecycle methods
+  # This tests whether Fog::Google::Compute collections have common lifecycle methods
   def test_common_methods
     subjects = @collections - @common_methods_exceptions
     subjects.each do |klass|

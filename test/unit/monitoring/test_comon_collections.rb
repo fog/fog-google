@@ -20,7 +20,7 @@ class UnitTestMonitoringCollections < Minitest::Test
     Fog.unmock!
   end
 
-  # This tests whether Fog::Compute::Google collections have common lifecycle methods
+  # This tests whether Fog::Google::Compute collections have common lifecycle methods
   def test_common_methods
     subjects = @collections - @common_method_exceptions
 
