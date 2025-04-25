@@ -6,6 +6,18 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 
 ## Next
 
+### User-facing
+
+## 1.25.0
+
+### User-facing
+
+fog-core v2.2 and up now requires `Fog::Google:<service>` instead of `Fog::<service>::Google`.
+There are shims in place that will provide backwards compatibility for the latter with
+a deprecation warning, but you should update your code accordingly. The next major release
+will drop support of the old format.
+
+- #636 Support fog-core 2.5 and up [stanhu]
 
 ## 1.24.1
 
