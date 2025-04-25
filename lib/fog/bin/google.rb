@@ -26,10 +26,8 @@ module Google
       @@connections ||= Hash.new do |hash, key|
         case key
         when :compute
-          Fog::Logger.warning("Google[:compute] is not recommended, use Compute[:google] for portability")
           hash[key] = Fog::Compute.new(:provider => "Google")
         when :dns
-          Fog::Logger.warning("Google[:dns] is not recommended, use DNS[:google] for portability")
           hash[key] = Fog::DNS.new(:provider => "Google")
         when :monitoring
           hash[key] = Fog::Google::Monitoring.new
@@ -38,7 +36,6 @@ module Google
         when :pubsub
           hash[key] = Fog::Google::Pubsub.new
         when :storage
-          Fog::Logger.warning("Google[:storage] is not recommended, use Storage[:google] for portability")
           hash[key] = Fog::Storage.new(:provider => "Google")
         else
           hash[key] = raise ArgumentError, "Unrecognized service: #{key.inspect}"
