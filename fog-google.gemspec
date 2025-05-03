@@ -39,7 +39,7 @@ Gem::Specification.new do |spec|
   # Debugger
   # Locked because pry-byebug is broken with 13+
   # see: https://github.com/deivid-rodriguez/pry-byebug/issues/343
-  spec.add_development_dependency "pry", "= 0.14.2"
+  spec.add_development_dependency "pry", "= 0.15.2"
 
   # Testing gems
   spec.add_development_dependency "retriable"
