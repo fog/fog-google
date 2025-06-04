@@ -15,6 +15,9 @@ Style/FormatString:
 Style/RegexpLiteral:
   Enabled: false
 
+# TODO: Some files modify strings in place, so we need to disable this cop.
+# ci runs with RUBYOPT="--enable-frozen-string-literal", files that modify
+# strings have frozen_string_literal: false.
 Style/FrozenStringLiteralComment:
   Enabled: false
 
