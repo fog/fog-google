@@ -34,6 +34,8 @@ concurrency:
 jobs:
   test-compute:
     runs-on: fog-arc-runner
+    env:
+      RUBYOPT: "--enable-frozen-string-literal"
     strategy:
       matrix:
         ruby-version: [ '3.0', '3.1', '3.2' ]
