@@ -277,7 +277,7 @@ module Fog
           requires :identity, :zone
 
           if disk.is_a? Disk
-            disk_obj = disk.get_attached_disk
+            disk_obj = disk.attached_disk_obj(**attached_disk_options)
           elsif disk.is_a? String
             disk_obj = service.disks.attached_disk_obj(disk, **attached_disk_options)
           end
