@@ -49,7 +49,7 @@ module Fog
         def get_bucket(bucket_name, options = {})
           raise ArgumentError.new("bucket_name is required") unless bucket_name
           response = Excon::Response.new
-          name = /(\w+\.?)*/.match(bucket_name)
+          name = /([a-zA-Z0-9][a-zA-Z0-9\-_.]+[a-zA-Z0-9])/.match(bucket_name)
           if bucket_name == name.to_s
             if bucket = data[:buckets][bucket_name]
               contents = bucket[:objects].values.sort_by { |a| a["Key"] }.reject do |object|
