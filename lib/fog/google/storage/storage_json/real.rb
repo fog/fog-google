@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Fog
   module Google
     class StorageJSON
@@ -34,7 +36,7 @@ module Fog
 DATA
 
           google_headers = {}
-          canonical_google_headers = ""
+          canonical_google_headers = +""
           params[:headers].each do |key, value|
             google_headers[key] = value if key[0..6] == "x-goog-"
           end
@@ -45,7 +47,7 @@ DATA
           end
           string_to_sign << canonical_google_headers.to_s
 
-          canonical_resource = "/"
+          canonical_resource = +"/"
           if subdomain = params.delete(:subdomain)
             canonical_resource << "#{CGI.escape(subdomain).downcase}/"
           end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Fog
   module Google
     class StorageXML
@@ -14,11 +16,11 @@ module Fog
         ).freeze
 
         def http_url(params, expires)
-          "http://" << host_path_query(params, expires)
+          "http://#{host_path_query(params, expires)}"
         end
 
         def https_url(params, expires)
-          "https://" << host_path_query(params, expires)
+          "https://#{host_path_query(params, expires)}"
         end
 
         def url(params, expires)
