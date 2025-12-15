@@ -9,6 +9,22 @@ class TestDisks < FogIntegrationTest
     @factory = DisksFactory.new(namespaced_name)
   end
 
+  def test_create_small
+    disk_config = {:size_gb => 10}
+
+    disk = @factory.create(disk_config)
+    disk.wait_for { ready? }
+  end
+
+  def test_create_exceeds_quota
+    disk_config = {:size_gb => 9999} # Must be less than or equal to 65536
+
+    err = assert_raises Fog::Errors::Error do
+      disk = @factory.create(disk_config)
+    end
+    assert_match(/Error creating disk.*size.*. Quota.*exceeded.  Limit:.*compute.googleapis.com.*in region.*./, err.message)
+  end
+
   def test_get_as_configs
     disk = @factory.create
     disk.wait_for { ready? }
