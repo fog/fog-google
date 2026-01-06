@@ -4,6 +4,19 @@ The format is loosely based on [Keep a Changelog](http://keepachangelog.com/en/1
 
 This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 1.27.0
+
+### User-facing
+
+### Fixed
+
+- #648 raise exception if disk quota exceeded [rchekaluk]
+
+### Development changes
+
+- #647 bump actions/checkout from 5 to 6 [dependabot]
+- #649 bump pry from = 0.15.2 to = 0.16.0 [dependabot]
+
 ## 1.26.0
 
 ### User-facing
