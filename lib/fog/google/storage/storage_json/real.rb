@@ -11,20 +11,29 @@ module Fog
         attr_reader :storage_json
 
         def initialize(options = {})
-          shared_initialize(options[:google_project], GOOGLE_STORAGE_JSON_API_VERSION, GOOGLE_STORAGE_JSON_BASE_URL)
+          base_url = options[:google_json_root_url] || GOOGLE_STORAGE_JSON_BASE_URL
+          shared_initialize(options[:google_project], GOOGLE_STORAGE_JSON_API_VERSION, base_url)
           @options = options.dup
           options[:google_api_scope_url] = GOOGLE_STORAGE_JSON_API_SCOPE_URLS.join(" ")
-          @host = options[:host] || "storage.googleapis.com"
 
           # TODO(temikus): Do we even need this client?
           @client = initialize_google_client(options)
 
           @storage_json = ::Google::Apis::StorageV1::StorageService.new
+          @storage_json.root_url = base_url if options[:google_json_root_url]
           apply_client_options(@storage_json, options)
 
           @storage_json.client_options.open_timeout_sec = options[:open_timeout_sec] if options[:open_timeout_sec]
           @storage_json.client_options.read_timeout_sec = options[:read_timeout_sec] if options[:read_timeout_sec]
           @storage_json.client_options.send_timeout_sec = options[:send_timeout_sec] if options[:send_timeout_sec]
+        end
+
+        def bucket_base_url
+          if @options[:google_json_root_url]
+            @options[:google_json_root_url]
+          else
+            GOOGLE_STORAGE_BUCKET_BASE_URL
+          end
         end
 
         def signature(params)

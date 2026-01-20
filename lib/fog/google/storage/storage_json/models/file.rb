@@ -97,7 +97,7 @@ module Fog
 
         def public_url
           requires :directory, :key
-          "https://storage.googleapis.com/#{directory.key}/#{key}"
+          "#{service.bucket_base_url}#{directory.key}/#{key}"
         end
 
         FILE_INSERTABLE_FIELDS = %i(
