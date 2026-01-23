@@ -47,11 +47,7 @@ module Fog
 
         def public_url
           requires :key
-          if service.respond_to?(:bucket_base_url)
-            "#{service.bucket_base_url}#{key}"
-          else
-            "#{GOOGLE_STORAGE_BUCKET_BASE_URL}#{key}"
-          end
+          "#{service.bucket_base_url}#{key}"
         end
 
         def save
