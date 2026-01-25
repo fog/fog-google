@@ -16,6 +16,7 @@ end
 # It ensures we're using the gem, not the built-in Minitest
 # See https://github.com/seattlerb/minitest/#install
 gem "minitest"
+require "minitest/mock"
 require "minitest/autorun"
 
 # This is a workaround for RubyMine debugger that doesn't play nice with Minitest::Reporters
