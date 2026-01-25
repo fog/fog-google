@@ -47,7 +47,7 @@ module Fog
 
         def public_url
           requires :key
-          "#{GOOGLE_STORAGE_BUCKET_BASE_URL}#{key}"
+          "#{service.bucket_base_url}#{key}"
         end
 
         def save
