@@ -8,6 +8,16 @@ This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html
 
 ### User-facing
 
+- #650 add support for custom storage endpoints
+
+### Fixed
+
+### Development changes
+
+## 1.27.0
+
+### User-facing
+
 ### Fixed
 
 - #648 raise exception if disk quota exceeded [rchekaluk]
