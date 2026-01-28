@@ -19,6 +19,24 @@ module Fog
           https_url(params, expires)
         end
 
+        def storage_api_base_url_for_universe(universe_domain)
+          domain = universe_domain.to_s.strip
+          if !domain.empty? && domain != "googleapis.com"
+            "https://storage.#{domain}/storage/"
+          else
+            Fog::Google::StorageJSON::GOOGLE_STORAGE_JSON_BASE_URL
+          end
+        end
+
+        def storage_base_url_for_universe(universe_domain)
+          domain = universe_domain.to_s.strip
+          if !domain.empty?
+            "https://storage.#{universe_domain}/"
+          else
+            Fog::Google::StorageJSON::GOOGLE_STORAGE_BUCKET_BASE_URL
+          end
+        end
+
         private
 
         def host_path_query(params, expires)

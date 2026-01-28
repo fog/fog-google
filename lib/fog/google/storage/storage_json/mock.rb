@@ -8,8 +8,9 @@ module Fog
         MockClient = Struct.new(:issuer)
 
         def initialize(options = {})
-          shared_initialize(options[:google_project], GOOGLE_STORAGE_JSON_API_VERSION, GOOGLE_STORAGE_JSON_BASE_URL)
           @options = options.dup
+          api_base_url = storage_api_base_url_for_universe(universe_domain)
+          shared_initialize(options[:google_project], GOOGLE_STORAGE_JSON_API_VERSION, api_base_url)
           @client = MockClient.new('test')
           @storage_json = MockClient.new('test')
           @iam_service = MockClient.new('test')
@@ -20,15 +21,17 @@ module Fog
         end
 
         def bucket_base_url
-          if @options[:google_json_root_url]
-            @options[:google_json_root_url]
-          else
-            GOOGLE_STORAGE_BUCKET_BASE_URL
-          end
+          storage_base_url_for_universe(universe_domain)
         end
 
         def google_access_id
           "my-account@project.iam.gserviceaccount"
+        end
+
+        private
+
+        def universe_domain
+          universe_domain_from_options(@options)
         end
       end
     end
