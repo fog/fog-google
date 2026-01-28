@@ -17,7 +17,7 @@ module Fog
         :google_key_string,
         :google_json_key_location,
         :google_json_key_string,
-        :google_json_root_url,
+        :universe_domain,
         :open_timeout_sec,
         :read_timeout_sec,
         :send_timeout_sec

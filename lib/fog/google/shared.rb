@@ -157,12 +157,23 @@ module Fog
 
       private
 
+      # Helper method to get universe domain from options or environment
+      #
+      # @param [Hash] options - client options hash
+      # @return [String, nil] - universe domain or nil
+      def universe_domain_from_options(options)
+        options[:universe_domain] || ENV["GOOGLE_CLOUD_UNIVERSE_DOMAIN"]
+      end
+
       # Helper method to process application default authentication
       #
       # @param [Hash]  options - client options hash
       # @return [Google::Auth::DefaultCredentials] - google auth object
       def process_application_default_auth(options)
-        ::Google::Auth.get_application_default(options[:google_api_scope_url])
+        credentials = ::Google::Auth.get_application_default(options[:google_api_scope_url])
+        universe_domain = universe_domain_from_options(options)
+        credentials.universe_domain = universe_domain if universe_domain && credentials.respond_to?(:universe_domain=)
+        credentials
       end
 
       # Helper method to process fallback authentication
@@ -203,10 +214,14 @@ module Fog
 
         validate_json_credentials(json_key)
 
-        ::Google::Auth::ServiceAccountCredentials.make_creds(
+        credentials = ::Google::Auth::ServiceAccountCredentials.make_creds(
           :json_key_io => StringIO.new(json_key),
           :scope => options[:google_api_scope_url]
         )
+
+        universe_domain = universe_domain_from_options(options)
+        credentials.universe_domain = universe_domain if universe_domain && credentials.respond_to?(:universe_domain=)
+        credentials
       end
 
       # Helper method to sort out deprecated and missing auth options
