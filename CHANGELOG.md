@@ -4,7 +4,13 @@ The format is loosely based on [Keep a Changelog](http://keepachangelog.com/en/1
 
 This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## 1.27.0
+## 1.29.0
+
+### User-facing
+
+- #652 Replace google_json_root_url with universe_domain
+
+## 1.28.0
 
 ### User-facing
 
