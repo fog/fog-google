@@ -4,6 +4,12 @@ The format is loosely based on [Keep a Changelog](http://keepachangelog.com/en/1
 
 This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 1.29.1
+
+### User-facing
+
+- #653 Ensure universe domain is applied to all services
+
 ## 1.29.0
 
 ### User-facing
