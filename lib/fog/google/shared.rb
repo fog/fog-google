@@ -88,9 +88,12 @@ module Fog
       # Applies given options to the client instance
       #
       # @param [Google::Apis::Core::BaseService] service API service client instance
-      # @param [Hash] options (all ignored a.t.m., except :google_client_options)
+      # @param [Hash] options (:universe_domain, :google_client_options)
       # @return [void]
       def apply_client_options(service, options = {})
+        universe_domain = universe_domain_from_options(options)
+        service.universe_domain = universe_domain if universe_domain
+
         google_client_options = options[:google_client_options]
         return if google_client_options.nil? || google_client_options.empty?
 
