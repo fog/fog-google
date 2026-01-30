@@ -20,7 +20,6 @@ module Fog
           @client = initialize_google_client(options)
 
           @storage_json = ::Google::Apis::StorageV1::StorageService.new
-          @storage_json.universe_domain = universe_domain if universe_domain
           apply_client_options(@storage_json, options)
 
           @storage_json.client_options.open_timeout_sec = options[:open_timeout_sec] if options[:open_timeout_sec]
