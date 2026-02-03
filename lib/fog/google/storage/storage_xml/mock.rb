@@ -83,6 +83,7 @@ module Fog
 
         def initialize(options = {})
           @google_storage_access_key_id = options[:google_storage_access_key_id]
+          @host = options[:host] || "storage.googleapis.com"
         end
 
         def data
@@ -96,6 +97,8 @@ module Fog
         def signature(_params)
           "foo"
         end
+
+        attr_reader :host
       end
     end
   end
