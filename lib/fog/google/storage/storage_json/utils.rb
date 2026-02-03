@@ -28,13 +28,17 @@ module Fog
           end
         end
 
-        def storage_base_url_for_universe(universe_domain)
+        def storage_host_for_universe(universe_domain)
           domain = universe_domain.to_s.strip
-          if !domain.empty?
-            "https://storage.#{universe_domain}/"
+          if !domain.empty? && domain != "googleapis.com"
+            "storage.#{domain}"
           else
-            Fog::Google::StorageJSON::GOOGLE_STORAGE_BUCKET_BASE_URL
+            "storage.googleapis.com"
           end
+        end
+
+        def storage_base_url_for_universe(universe_domain)
+          "https://#{storage_host_for_universe(universe_domain)}/"
         end
 
         private

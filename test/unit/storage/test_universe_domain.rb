@@ -35,6 +35,7 @@ class TestStorageJSONUniverseDomain < Minitest::Test
     client = Fog::Storage.new(provider: "google", google_project: "test-project")
 
     assert_equal "https://storage.googleapis.com/", client.bucket_base_url
+    assert_equal "storage.googleapis.com", client.host
   end
 
   def test_custom_universe_domain_via_option
@@ -45,6 +46,7 @@ class TestStorageJSONUniverseDomain < Minitest::Test
     )
 
     assert_equal "https://storage.example.com/", client.bucket_base_url
+    assert_equal "storage.example.com", client.host
   end
 
   def test_custom_universe_domain_via_env_variable
@@ -53,6 +55,7 @@ class TestStorageJSONUniverseDomain < Minitest::Test
     client = Fog::Storage.new(provider: "google", google_project: "test-project")
 
     assert_equal "https://storage.test-universe.com/", client.bucket_base_url
+    assert_equal "storage.test-universe.com", client.host
   end
 
   def test_option_takes_precedence_over_env_variable
@@ -65,6 +68,7 @@ class TestStorageJSONUniverseDomain < Minitest::Test
     )
 
     assert_equal "https://storage.option-universe.com/", client.bucket_base_url
+    assert_equal "storage.option-universe.com", client.host
   end
 
   def test_universe_domain_with_real_client

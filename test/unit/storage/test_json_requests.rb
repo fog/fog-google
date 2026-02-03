@@ -44,17 +44,69 @@ class UnitTestJsonRequests < Minitest::Test
 
   def test_unescaped_slashes_in_url
     url = @client.get_object_https_url("bucket",
-                                      "a/b/c.ext",
-                                      Time.now + 2 * 60)
+                                       "a/b/c.ext",
+                                       Time.now + 2 * 60)
     assert_match(/a\/b\/c/, url,
                  "slashes should not be escaped with '%2F'")
   end
 
   def test_unescaped_pluses_in_url
     url = @client.get_object_https_url("bucket",
-                                      "a+c.ext",
-                                      Time.now + 2 * 60)
+                                       "a+c.ext",
+                                       Time.now + 2 * 60)
     assert_match(/a\+c/, url,
                  "pluses should not be escaped with '%2B'")
+  end
+
+  def test_get_object_https_url_uses_default_host
+    url = @client.get_object_https_url("my-bucket",
+                                       "my-file.txt",
+                                       Time.now + 2 * 60)
+
+    assert_match(%r{^https://storage\.googleapis\.com/}, url,
+                 "URL should use default storage.googleapis.com host")
+  end
+
+  def test_get_object_https_url_with_custom_universe_domain
+    Fog.unmock!
+    Fog.mock!
+
+    client = Fog::Storage.new(
+      provider: "google",
+      google_project: "test-project",
+      universe_domain: "example.com"
+    )
+
+    url = client.get_object_https_url("my-bucket",
+                                      "my-file.txt",
+                                      Time.now + 2 * 60)
+
+    assert_match(%r{^https://storage\.example\.com/}, url,
+                 "URL should use custom universe domain host")
+  ensure
+    Fog.unmock!
+    Fog.mock!
+  end
+
+  def test_host_attribute_set_correctly
+    assert_equal "storage.googleapis.com", @client.host,
+                 "host attribute should be set to storage.googleapis.com by default"
+  end
+
+  def test_host_attribute_with_custom_universe_domain
+    Fog.unmock!
+    Fog.mock!
+
+    client = Fog::Storage.new(
+      provider: "google",
+      google_project: "test-project",
+      universe_domain: "custom-universe.com"
+    )
+
+    assert_equal "storage.custom-universe.com", client.host,
+                 "host attribute should match custom universe domain"
+  ensure
+    Fog.unmock!
+    Fog.mock!
   end
 end

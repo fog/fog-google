@@ -7,7 +7,7 @@ module Fog
         include Utils
         include Fog::Google::Shared
 
-        attr_accessor :client
+        attr_accessor :client, :host
         attr_reader :storage_json
 
         def initialize(options = {})
@@ -15,6 +15,9 @@ module Fog
           api_base_url = storage_api_base_url_for_universe(universe_domain)
           shared_initialize(options[:google_project], GOOGLE_STORAGE_JSON_API_VERSION, api_base_url)
           options[:google_api_scope_url] = GOOGLE_STORAGE_JSON_API_SCOPE_URLS.join(" ")
+
+          # Set @host for compatibility with request methods (e.g., get_object_https_url)
+          @host = storage_host_for_universe(universe_domain)
 
           # TODO(temikus): Do we even need this client?
           @client = initialize_google_client(options)
