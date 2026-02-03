@@ -33,7 +33,7 @@ module Fog
           if !domain.empty? && domain != "googleapis.com"
             "storage.#{domain}"
           else
-            "storage.googleapis.com"
+            Fog::Google::StorageJSON::GOOGLE_STORAGE_HOST
           end
         end
 
