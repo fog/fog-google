@@ -36,7 +36,7 @@ class TestStorageJSONUniverseDomain < Minitest::Test
     client = Fog::Storage.new(provider: "google", google_project: "test-project")
 
     assert_equal "https://storage.googleapis.com/", client.bucket_base_url
-    assert_equal Fog::Google::StorageJSON::GOOGLE_STORAGE_HOST, client.host
+    assert_equal Fog::Google::Storage::GOOGLE_STORAGE_HOST, client.host
   end
 
   def test_custom_universe_domain_via_option
