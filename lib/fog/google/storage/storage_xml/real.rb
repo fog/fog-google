@@ -28,7 +28,7 @@ module Fog
           @google_storage_secret_access_key = options[:google_storage_secret_access_key]
           @connection_options = options[:connection_options] || {}
           @hmac = Fog::HMAC.new("sha1", @google_storage_secret_access_key)
-          @host = options[:host] || Fog::Google::StorageXML::GOOGLE_STORAGE_HOST
+          @host = storage_host_for_universe(options[:universe_domain])
           @persistent = options.fetch(:persistent, true)
           @port       = options[:port] || 443
           @scheme     = options[:scheme] || "https"

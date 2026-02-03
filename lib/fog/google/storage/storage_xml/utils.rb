@@ -28,6 +28,10 @@ module Fog
           https_url(params, expires)
         end
 
+        def storage_host_for_universe(universe_domain)
+          Fog::Google::Storage::Utils.storage_host_for_universe(universe_domain)
+        end
+
         private
 
         def host_path_query(params, expires)

@@ -83,7 +83,7 @@ module Fog
 
         def initialize(options = {})
           @google_storage_access_key_id = options[:google_storage_access_key_id]
-          @host = options[:host] || Fog::Google::StorageXML::GOOGLE_STORAGE_HOST
+          @host = storage_host_for_universe(options[:universe_domain])
         end
 
         def data

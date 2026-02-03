@@ -6,7 +6,7 @@ module Fog
       autoload :Utils, "fog/google/storage/storage_xml/utils"
 
       requires :google_storage_access_key_id, :google_storage_secret_access_key
-      recognizes :host, :port, :scheme, :persistent, :path_style
+      recognizes :port, :scheme, :persistent, :path_style, :universe_domain
 
       GOOGLE_STORAGE_HOST = "storage.googleapis.com".freeze
 
