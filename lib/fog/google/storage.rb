@@ -1,6 +1,8 @@
 module Fog
   module Google
     class Storage < Fog::Service
+      GOOGLE_STORAGE_HOST = "storage.googleapis.com".freeze
+
       # Shared utilities for both JSON and XML storage implementations
       module Utils
         def self.storage_host_for_universe(universe_domain)
@@ -8,7 +10,7 @@ module Fog
           if !domain.empty? && domain != "googleapis.com"
             "storage.#{domain}"
           else
-            "storage.googleapis.com"
+            GOOGLE_STORAGE_HOST
           end
         end
       end

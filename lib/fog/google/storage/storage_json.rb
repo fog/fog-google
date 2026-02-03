@@ -27,7 +27,6 @@ module Fog
       GOOGLE_STORAGE_JSON_API_VERSION = "v1".freeze
       GOOGLE_STORAGE_JSON_BASE_URL = "https://www.googleapis.com/storage/".freeze
       GOOGLE_STORAGE_BUCKET_BASE_URL = "https://storage.googleapis.com/".freeze
-      GOOGLE_STORAGE_HOST = "storage.googleapis.com".freeze
 
       # Version of IAM API used for blob signing, see Fog::Google::StorageJSON::Real#iam_signer
       GOOGLE_STORAGE_JSON_IAM_API_VERSION = "v1".freeze
