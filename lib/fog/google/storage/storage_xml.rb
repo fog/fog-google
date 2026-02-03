@@ -8,6 +8,8 @@ module Fog
       requires :google_storage_access_key_id, :google_storage_secret_access_key
       recognizes :host, :port, :scheme, :persistent, :path_style
 
+      GOOGLE_STORAGE_HOST = "storage.googleapis.com".freeze
+
       model_path "fog/google/storage/storage_xml/models"
       collection :directories
       model :directory

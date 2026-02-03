@@ -89,8 +89,8 @@ class UnitTestJsonRequests < Minitest::Test
   end
 
   def test_host_attribute_set_correctly
-    assert_equal "storage.googleapis.com", @client.host,
-                 "host attribute should be set to storage.googleapis.com by default"
+    assert_equal Fog::Google::StorageJSON::GOOGLE_STORAGE_HOST, @client.host,
+                 "host attribute should be set to GOOGLE_STORAGE_HOST by default"
   end
 
   def test_host_attribute_with_custom_universe_domain
