@@ -173,9 +173,8 @@ module Fog
       # @param [Hash]  options - client options hash
       # @return [Google::Auth::DefaultCredentials] - google auth object
       def process_application_default_auth(options)
-        credentials = ::Google::Auth.get_application_default(options[:google_api_scope_url])
-        universe_domain = universe_domain_from_options(options)
-        credentials.universe_domain = universe_domain if universe_domain && credentials.respond_to?(:universe_domain=)
+        google_options = options.slice(:universe_domain)
+        credentials = ::Google::Auth.get_application_default(options[:google_api_scope_url], google_options)
         credentials
       end
 
