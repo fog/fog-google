@@ -174,8 +174,7 @@ module Fog
       # @return [Google::Auth::DefaultCredentials] - google auth object
       def process_application_default_auth(options)
         google_options = options.slice(:universe_domain)
-        credentials = ::Google::Auth.get_application_default(options[:google_api_scope_url], google_options)
-        credentials
+        ::Google::Auth.get_application_default(options[:google_api_scope_url], google_options)
       end
 
       # Helper method to process fallback authentication
@@ -216,14 +215,10 @@ module Fog
 
         validate_json_credentials(json_key)
 
-        credentials = ::Google::Auth::ServiceAccountCredentials.make_creds(
+        ::Google::Auth::ServiceAccountCredentials.make_creds(
           :json_key_io => StringIO.new(json_key),
           :scope => options[:google_api_scope_url]
         )
-
-        universe_domain = universe_domain_from_options(options)
-        credentials.universe_domain = universe_domain if universe_domain && credentials.respond_to?(:universe_domain=)
-        credentials
       end
 
       # Helper method to sort out deprecated and missing auth options
