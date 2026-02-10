@@ -74,7 +74,7 @@ def example
 
   p "Waiting for second disk to be destroyed"
   begin
-    rc = attached_disk.wait_for { status.nil? || status == "DELETING" }
+    attached_disk.wait_for { status.nil? || status == "DELETING" }
   rescue StandardError => e
     if e.message !~ /not found/ && e.message !~ /notFound/
       raise e

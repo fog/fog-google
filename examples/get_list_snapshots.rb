@@ -13,6 +13,7 @@ def test
   puts "---------------------------------"
   snapshots = connection.snapshots.all
   raise "Could not LIST the snapshots" unless snapshots
+
   puts snapshots.inspect
 
   puts "Fetching a single snapshot..."
@@ -21,6 +22,7 @@ def test
   unless snap.nil?
     snap = connection.snapshots.get(snap)
     raise "Could not GET the snapshot" unless snap
+
     puts snap.inspect
   end
 end

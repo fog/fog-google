@@ -13,18 +13,21 @@ def test
   puts "---------------------------------"
   images = connection.images.all
   raise "Could not LIST the images" unless images
+
   puts images.inspect
 
   puts "Listing current (non-deprecated) images in all projects..."
   puts "----------------------------------------------------------"
   images = connection.images.current
   raise "Could not LIST current images" unless images
+
   puts images.inspect
 
   puts "Fetching a single image from a global project..."
   puts "------------------------------------------------"
   img = connection.images.get("debian-11-bullseye-v20220920")
   raise "Could not GET the image" unless img
+
   puts img.inspect
 
   # First, get the name of an image that is in the users 'project' (not global)
@@ -35,6 +38,7 @@ def test
     puts "----------------------------------------------"
     img = connection.images.get(custom_img_name.name)
     raise "Could not GET the (custom) image" unless img
+
     puts img.inspect
   end
 end
