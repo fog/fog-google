@@ -4,6 +4,10 @@ The format is loosely based on [Keep a Changelog](http://keepachangelog.com/en/1
 
 This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 1.29.4
+
+- #657 Fix handling of universe domains with service key
+
 ## 1.29.3
 
 - #656 Fix IAM credentials not setting universe domain properly
