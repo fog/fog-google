@@ -5,16 +5,16 @@ require "fog/google/version"
 
 module Fog
   module Google
-    autoload :Compute, File.expand_path("../google/compute", __FILE__)
-    autoload :DNS, File.expand_path("../google/dns", __FILE__)
-    autoload :Mock, File.expand_path("../google/mock", __FILE__)
-    autoload :Monitoring, File.expand_path("../google/monitoring", __FILE__)
-    autoload :Pubsub, File.expand_path("../google/pubsub", __FILE__)
-    autoload :Shared, File.expand_path("../google/shared", __FILE__)
-    autoload :SQL, File.expand_path("../google/sql", __FILE__)
-    autoload :Storage, File.expand_path("../google/storage", __FILE__)
-    autoload :StorageJSON, 'fog/google/storage/storage_json'
-    autoload :StorageXML, 'fog/google/storage/storage_xml'
+    autoload :Compute, File.expand_path("google/compute", __dir__)
+    autoload :DNS, File.expand_path("google/dns", __dir__)
+    autoload :Mock, File.expand_path("google/mock", __dir__)
+    autoload :Monitoring, File.expand_path("google/monitoring", __dir__)
+    autoload :Pubsub, File.expand_path("google/pubsub", __dir__)
+    autoload :Shared, File.expand_path("google/shared", __dir__)
+    autoload :SQL, File.expand_path("google/sql", __dir__)
+    autoload :Storage, File.expand_path("google/storage", __dir__)
+    autoload :StorageJSON, "fog/google/storage/storage_json"
+    autoload :StorageXML, "fog/google/storage/storage_xml"
 
     extend Fog::Provider
 
@@ -36,7 +36,7 @@ module Fog
     end
 
     module Parsers
-      autoload :Storage, 'fog/google/parsers/storage'
+      autoload :Storage, "fog/google/parsers/storage"
     end
   end
 end
