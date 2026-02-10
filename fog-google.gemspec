@@ -1,4 +1,4 @@
-lib = File.expand_path("../lib", __FILE__)
+lib = File.expand_path("lib", __dir__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require "fog/google/version"
 
@@ -17,19 +17,19 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   # As of 0.1.1
-  spec.required_ruby_version = ">= 2.0"
+  spec.required_ruby_version = ">= 2.3"
 
   spec.add_dependency "fog-core", "~> 2.5"
   spec.add_dependency "fog-json", "~> 1.2"
   spec.add_dependency "fog-xml", "~> 0.1.0"
 
-  spec.add_dependency "google-apis-storage_v1", [">= 0.19", "< 1"]
-  spec.add_dependency "google-apis-iamcredentials_v1", "~> 0.15"
   spec.add_dependency "google-apis-compute_v1", "~> 0.53"
-  spec.add_dependency "google-apis-monitoring_v3", "~> 0.37"
   spec.add_dependency "google-apis-dns_v1", "~> 0.28"
+  spec.add_dependency "google-apis-iamcredentials_v1", "~> 0.15"
+  spec.add_dependency "google-apis-monitoring_v3", "~> 0.37"
   spec.add_dependency "google-apis-pubsub_v1", "~> 0.30"
   spec.add_dependency "google-apis-sqladmin_v1beta4", "~> 0.38"
+  spec.add_dependency "google-apis-storage_v1", [">= 0.19", "< 1"]
 
   spec.add_dependency "google-cloud-env", ">= 1.2", "< 3.0"
 
@@ -41,11 +41,11 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "pry", "= 0.16.0"
 
   # Testing gems
-  spec.add_development_dependency "retriable"
-  spec.add_development_dependency "rake"
   spec.add_development_dependency "minitest"
   spec.add_development_dependency "minitest-mock"
   spec.add_development_dependency "minitest-reporters"
+  spec.add_development_dependency "rake"
+  spec.add_development_dependency "retriable"
   spec.add_development_dependency "shindo"
   spec.add_development_dependency "vcr"
   spec.add_development_dependency "webmock"
