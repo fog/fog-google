@@ -27,7 +27,7 @@ def test
         :source_image => "debian-11-bullseye-v20220920"
       )
       disk.wait_for { disk.ready? }
-    rescue
+    rescue StandardError
       puts "Failed to create disk #{name}-#{i}"
     end
 
@@ -39,7 +39,7 @@ def test
         :zone_name => zone
       )
       servers << server
-    rescue
+    rescue StandardError
       puts "Failed to create instance #{name}-#{i}"
     end
   end
@@ -49,7 +49,7 @@ def test
   begin
     health = gce.http_health_checks.new(:name => name)
     health.save
-  rescue
+  rescue StandardError
     puts "Failed to create health check #{name}"
   end
 
@@ -63,7 +63,7 @@ def test
       :instances => servers.map(&:self_link)
     )
     pool.save
-  rescue
+  rescue StandardError
     puts "Failed to create target pool #{name}"
   end
 
@@ -78,7 +78,7 @@ def test
       :target => pool.self_link
     )
     rule.save
-  rescue
+  rescue StandardError
     puts "Failed to create forwarding rule #{name}"
   end
 
@@ -90,25 +90,25 @@ def test
   puts "--------------------------------"
   begin
     rule.destroy
-  rescue
+  rescue StandardError
     puts "Failed to clean up forwarding rule."
   end
 
   begin
     pool.destroy
-  rescue
+  rescue StandardError
     puts "Failed to clean up target pool."
   end
 
   begin
     health.destroy
-  rescue
+  rescue StandardError
     puts "Failed to clean up health check."
   end
 
   begin
     servers.each(&:destroy)
-  rescue
+  rescue StandardError
     puts "Failed to clean up instances."
   end
 end
