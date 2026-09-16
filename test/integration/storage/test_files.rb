@@ -136,6 +136,16 @@ class TestStorageRequests < StorageShared
     assert_equal(true, found_file, "failed to find expected file while iterating")
   end
 
+  def test_files_each_keeps_options_given_to_all
+    directory = @client.directories.get(some_bucket_name)
+    # keys on both sides of the prefix, so that losing it would bring them in
+    %w(0/1 a/1 a/2 a/3 b/1).each { |key| directory.files.create(:key => key, :body => temp_file_content) }
+
+    keys = []
+    directory.files.all(:prefix => "a/", :max_results => 2).each { |file| keys << file.key }
+    assert_equal(%w(a/1 a/2 a/3), keys)
+  end
+
   def test_files_copy
     target_object_name = new_object_name
     @client.directories.get(some_bucket_name).files.get(some_object_name).copy(some_bucket_name,

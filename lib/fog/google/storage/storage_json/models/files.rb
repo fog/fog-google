@@ -17,7 +17,8 @@ module Fog
 
         def all(options = {})
           requires :directory
-          parent = service.list_objects(directory.key, attributes.merge(options))
+          merge_attributes(options)
+          parent = service.list_objects(directory.key, attributes)
           attributes[:next_page_token] = parent.next_page_token
           data = parent.to_h[:items] || []
           load(data)
