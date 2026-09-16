@@ -27,17 +27,6 @@ module Fog
         attribute :zone
 
 
-        # {:errors=>
-        #   [{:code=>"QUOTA_EXCEEDED",
-        #     :error_details=>
-        #      [{:quota_info=>
-        #         {:dimensions=>{:region=>"us-east4"},
-        #          :limit=>500,
-        #          :limit_name=>"SSD-TOTAL-GB-per-project-region",
-        #          :metric_name=>"compute.googleapis.com/ssd_total_storage"}}],
-        #     :message=>"Quota 'SSD_TOTAL_GB' exceeded.  Limit: 500.0 in region us-east4."}
-        #   ]
-        # }
         class ErrorInfo
           attr_accessor :code
           attr_accessor :error_details
@@ -56,6 +45,20 @@ module Fog
           end
         end  # ErrorInfo
 
+        # {:errors => [
+        #    {:code => "QUOTA_EXCEEDED",
+        #     :error_details => [
+        #       {:quota_info=>
+        #         {:dimensions=>{:region=>"us-east4"},
+        #          :limit=>500,
+        #          :limit_name=>"SSD-TOTAL-GB-per-project-region",
+        #          :metric_name=>"compute.googleapis.com/ssd_total_storage"
+        #         }
+        #       }
+        #     ],
+        #     :message=>"Quota 'SSD_TOTAL_GB' exceeded.  Limit: 500.0 in region us-east4."
+        #   }
+        # ]}
         class QuotaInfo < ErrorInfo
           def initialize(attributes = {})
             code = attributes[:code]
@@ -93,6 +96,36 @@ module Fog
           end
         end  # QuotaInfo
 
+        # {:errors => [
+        #    {:code => "ZONE_RESOURCE_POOL_EXHAUSTED_WITH_DETAILS",
+        #     :error_details => [
+        #       {:help => {:links=>[{:description=>"Troubleshooting documentation", :url=>"https://cloud.google.com/compute/docs/resource-error"}]}},
+        #       {:localized_message => {
+        #          :locale=>"en-US",
+        #          :message=> "A c3d-highmem-4 VM instance is currently unavailable in the us-east4-b zone. Try requesting the VM in another zone. For more information, view the troubleshooting documentation."
+        #       }},
+        #       {:error_info => {
+        #          :domain=>"compute.googleapis.com",
+        #          :metadatas=>{:attachment=>"", :vmType=>"c3d-highmem-4", :zone=>"us-east4-b", :zonesAvailable=>""},
+        #          :reason=>"stockout"
+        #       }}
+        #     ],
+        #     :message => "The zone 'projects/projname/zones/us-east4-b' does not have enough resources available to fulfill the request.  '(resource type:compute)'."
+        #   }
+        # ]}
+        class ResourcePoolInfo < ErrorInfo
+          def initialize(attributes = {})
+            code = attributes[:code]
+            raise Fog::Errors::Error.new("Invalid error code: #{code}") if code !~ /RESOURCE_POOL_EXHAUSTED/
+
+            super(attributes)
+          end
+
+          # Placeholder in case there is a need for future message formatting
+          # def message_pretty
+          # end
+        end
+
 
         def error?
           ! error.nil?
@@ -118,11 +151,18 @@ module Fog
           zone.nil? ? nil : zone.split("/")[-1]
         end
 
+        # https://docs.cloud.google.com/compute/docs/reference/rest/v1/errors
         def error_info_class(code)
           case code
-            when "QUOTA_EXCEEDED" then QuotaInfo
-            else
-              ErrorInfo
+          when "QUOTA_EXCEEDED" then QuotaInfo
+
+          when "REGION_RESOURCE_POOL_EXHAUSTED_WITH_DETAILS" then ResourcePoolInfo
+          when "RESOURCE_POOL_EXHAUSTED"                     then ResourcePoolInfo
+          when "ZONE_RESOURCE_POOL_EXHAUSTED"                then ResourcePoolInfo
+          when "ZONE_RESOURCE_POOL_EXHAUSTED_WITH_DETAILS"   then ResourcePoolInfo
+
+          else
+            ErrorInfo
           end
         end
 

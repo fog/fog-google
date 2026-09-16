@@ -563,6 +563,17 @@ module Fog
                       .new(:service => service)
                       .get(data.name, data.zone)
           operation.wait_for { ready? }
+
+          # Handle errors
+          if operation.error?
+            msg = "Error creating server #{name}."
+
+            err = operation.primary_error
+            msg = "#{msg} #{err.message_pretty}" unless err.nil?
+
+            raise Fog::Errors::Error.new(msg)
+          end
+
           reload
         end
 
