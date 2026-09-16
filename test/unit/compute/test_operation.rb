@@ -154,27 +154,49 @@ class UnitTestOperation < Minitest::Test
   end
 
   def test_message_pretty_zone_pool_exhausted_with_details
-    error= {:errors => [
-             {:code => "ZONE_RESOURCE_POOL_EXHAUSTED_WITH_DETAILS",
-              :error_details => [
-                {:help => {:links=>[{:description=>"Troubleshooting documentation", :url=>"https://cloud.google.com/compute/docs/resource-error"}]}},
-                {:localized_message => {
-                   :locale=>"en-US",
-                   :message=> "A c3d-highmem-4 VM instance is currently unavailable in the us-east4-b zone. Try requesting the VM in another zone. For more information, view the troubleshooting documentation."
-                }},
-                {:error_info => {
-                   :domain=>"compute.googleapis.com",
-                   :metadatas=>{:attachment=>"", :vmType=>"c3d-highmem-4", :zone=>"us-east4-b", :zonesAvailable=>""},
-                   :reason=>"stockout"
-                }}
-              ],
-              :message => "The zone 'projects/projname/zones/us-east4-b' does not have enough resources available to fulfill the request.  '(resource type:compute)'."
+    error = {
+      :errors => [
+        {
+          :code => "ZONE_RESOURCE_POOL_EXHAUSTED_WITH_DETAILS",
+          :error_details => [
+            {
+              :help => {
+                :links => [
+                  {
+                    :description => "Troubleshooting documentation",
+                    :url => "https://cloud.google.com/compute/docs/resource-error"
+                  }
+                ]
+              }
+            },
+            {
+              :localized_message => {
+                :locale => "en-US",
+                :message =>
+                  "A c3d-highmem-4 VM instance is currently unavailable in the us-east4-b zone. Try requesting the VM in another zone. For more information, view the troubleshooting documentation."
+              }
+            },
+            {
+              :error_info => {
+                :domain => "compute.googleapis.com",
+                :metadatas => {
+                  :attachment => "",
+                  :vmType => "c3d-highmem-4",
+                  :zone => "us-east4-b",
+                  :zonesAvailable => ""
+                },
+                :reason => "stockout"
+              }
             }
-          ]}
+          ],
+          :message =>
+            "The zone 'projects/projname/zones/us-east4-b' does not have enough resources available to fulfill the request.  '(resource type:compute)'."
+        }
+      ]
+    }
 
     op = Fog::Google::Compute::Operation.new(:error => error, :name => OP_NAME)
     err = op.primary_error
     assert_equal "The zone 'projects/projname/zones/us-east4-b' does not have enough resources available to fulfill the request.  '(resource type:compute)'.", err.message_pretty
   end
-
 end
